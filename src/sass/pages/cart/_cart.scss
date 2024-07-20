@@ -1,0 +1,90 @@
+.cart {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  &__heading {
+    font-size: 3rem;
+    color: #333;
+  }
+  &__span {
+    color: var(--brown);
+  }
+  &__main-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 2%;
+  }
+  &__container {
+    width: 59%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: center;
+    background-color: #fbfcfa;
+    padding: 2rem;
+    border-radius: 1rem;
+  }
+  &__checkout-container {
+    width: 39%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    background-color: #fbfcfa;
+    padding: 2rem;
+    border-radius: 1rem;
+  }
+  &__horizontal-bar {
+    border-bottom: 1px solid #444;
+    width: 100%;
+  }
+  &__sub-total,
+  &__delivery,
+  &__promo-code,
+  &__total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  &__sub-total-title,
+  &__delivery-title,
+  &__promo-code-title {
+    font-size: 1.2rem;
+    color: #333;
+  }
+  &__sub-total-amount,
+  &__delivery-amount {
+    font-size: 1rem;
+    color: #555;
+  }
+  &__promo-code-input {
+    font-size: 0.9rem;
+    color: #333;
+    text-transform: none;
+    background: #ffffff;
+    width: 8rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 0.5rem 0rem 1.5rem 0rem;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+    &:focus {
+      border: 1px solid #333;
+    }
+  }
+  &__total-title {
+    font-size: 1.4rem;
+    color: #333;
+  }
+  &__total-amount {
+    font-size: 1.4rem;
+    color: #444;
+  }
+}
