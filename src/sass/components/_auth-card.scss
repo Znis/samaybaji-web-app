@@ -5,10 +5,10 @@ $white: #f6f6f6;
 
 $primary: var(--brown);
 
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400|Lora");
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400|Lora');
 
-$sans-serif: "Open Sans", sans-serif;
-$serif: "Lora", serif;
+$sans-serif: 'Open Sans', sans-serif;
+$serif: 'Lora', serif;
 
 .auth-card {
   background: $lavender;
@@ -230,11 +230,11 @@ $serif: "Lora", serif;
       scale: 1.2;
     }
 
-    &--right{
+    &--right {
       top: 0.5rem;
       right: 0.5rem;
     }
-    &--left{
+    &--left {
       visibility: hidden;
       top: 0.5rem;
       left: 0.5rem;
@@ -268,7 +268,7 @@ $serif: "Lora", serif;
     letter-spacing: 1px;
   }
 
-  &__password-input-wrapper{
+  &__password-input-wrapper {
     display: flex;
     align-items: center;
   }
@@ -284,6 +284,4 @@ $serif: "Lora", serif;
       color: #111;
     }
   }
-  
-
 }

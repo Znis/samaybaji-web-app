@@ -1,98 +1,95 @@
 header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    width: 100%;
-    height: 5rem;
-    background: #fff;
-    padding: 1rem 10%;
-    box-shadow: 0 0.3rem 2rem rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 5rem;
+  background: #fff;
+  padding: 1rem 10%;
+  box-shadow: 0 0.3rem 2rem rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    .logo{
-        img{
-            height: 3rem;
-        }
-    }
-    .navbar{
-        &__button-wrapper{
-            display: flex;
-            gap: 3rem;
-            font-size: 1.4rem;
-            color: var(--brown);
-
-        }
-        &__button{
-            cursor: pointer;
-            &:hover{
-                color: #666;
-            }
-        }
-        &__cart-wrapper{
-            position: relative;
-            height: 2rem;
-            width: 2rem;
-        }
-        &__cart-count-circle{
-            display: none;
-            position: absolute;
-            top: -18px;
-            right: -16px;
-            min-width: 1.4rem;
-            height: 1.4rem;
-            border-radius: 50%;
-            background-color: var(--brown);
-            align-items: center;
-            justify-content: center;
-
-            padding: 4px;
-        }
-        &__cart-count{
-            color: #fff;
-            font-size: 0.8rem;
-        }
-        ul{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 3rem;
-            list-style: none;
-
-            li{
-                
-
-                &:hover{
-                    transition: transform 0.2s;
-                    text-decoration: underline;
-                    text-underline-offset: 4px;
-                    text-decoration-thickness: 2px;
-                    color: var(--brown);
-                }
-
-                a{
-                    font-size: 1.2rem;
-                    color: #666;
-                    &:hover{
-                        color: var(--brown);
-                    }
-                    &.active{
-                        color: var(--brown);
-                    }
-                }
-            }
-            
-            .button{
-                margin: 0rem 0rem 0rem 3rem;
-                padding: 0.5rem 2rem;
-                color: #666;
-                font-size: 1.2rem;
-                &:hover{
-                    color: #000000;
-                } 
-            }
-        }
+  .logo {
+    img {
+      height: 3rem;
     }
   }
+  .navbar {
+    &__button-wrapper {
+      display: flex;
+      gap: 3rem;
+      font-size: 1.4rem;
+      color: var(--brown);
+    }
+    &__button {
+      cursor: pointer;
+      &:hover {
+        color: #666;
+      }
+    }
+    &__cart-wrapper {
+      position: relative;
+      height: 2rem;
+      width: 2rem;
+    }
+    &__cart-count-circle {
+      display: none;
+      position: absolute;
+      top: -18px;
+      right: -16px;
+      min-width: 1.4rem;
+      height: 1.4rem;
+      border-radius: 50%;
+      background-color: var(--brown);
+      align-items: center;
+      justify-content: center;
+
+      padding: 4px;
+    }
+    &__cart-count {
+      color: #fff;
+      font-size: 0.8rem;
+    }
+    ul {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      list-style: none;
+
+      li {
+        &:hover {
+          transition: transform 0.2s;
+          text-decoration: underline;
+          text-underline-offset: 4px;
+          text-decoration-thickness: 2px;
+          color: var(--brown);
+        }
+
+        a {
+          font-size: 1.2rem;
+          color: #666;
+          &:hover {
+            color: var(--brown);
+          }
+          &.active {
+            color: var(--brown);
+          }
+        }
+      }
+
+      .button {
+        margin: 0rem 0rem 0rem 3rem;
+        padding: 0.5rem 2rem;
+        color: #666;
+        font-size: 1.2rem;
+        &:hover {
+          color: #000000;
+        }
+      }
+    }
+  }
+}

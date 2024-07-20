@@ -1,32 +1,32 @@
-@import "./base/reset";
-@import "./base/base";
+@import './base/reset';
+@import './base/base';
 
 //app layout section
-@import "./app-section/header";
-@import "./app-section/content";
-@import "./app-section/footer";
+@import './app-section/header';
+@import './app-section/content';
+@import './app-section/footer';
 
 //components
-@import "./components/modal";
-@import "./components/button";
-@import "./components/menu-item";
-@import "./components/auth-card";
-@import "./components/cart-item";
-@import "./components/customer-review";
-@import "./components/rating";
+@import './components/modal';
+@import './components/button';
+@import './components/menu-item';
+@import './components/auth-card';
+@import './components/cart-item';
+@import './components/customer-review';
+@import './components/rating';
 
 //Pages
 //Landing page
-@import "./pages/landing-page/section/hero";
-@import "./pages/landing-page/section/menu";
-@import "./pages/landing-page/section/about";
-@import "./pages/landing-page/section/download-app";
-@import "./pages/landing-page/section/feedback";
+@import './pages/landing-page/section/hero';
+@import './pages/landing-page/section/menu';
+@import './pages/landing-page/section/about';
+@import './pages/landing-page/section/download-app';
+@import './pages/landing-page/section/feedback';
 //Cart
-@import "./pages/cart/cart";
+@import './pages/cart/cart';
 //Menu
-@import "./pages/menu/menu";
-@import "./pages/menu/section/restaurant";
+@import './pages/menu/menu';
+@import './pages/menu/section/restaurant';
 //Dish Detail
-@import "./pages/dish-detail/section/dish-info";
-@import "./pages/dish-detail/section/dish-review";
+@import './pages/dish-detail/section/dish-info';
+@import './pages/dish-detail/section/dish-review';

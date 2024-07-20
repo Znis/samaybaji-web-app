@@ -1,25 +1,24 @@
 {
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:prettier/recommended"
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "prettier"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
     ],
-    "plugins": ["@typescript-eslint", "prettier"],
-    "rules": {
-      "prettier/prettier":  [
-        "error",
-        {
-          "endOfLine": "auto"
-        }
-      ],
-      "@typescript-eslint/no-unused-vars": "warn"
-    },
-    "env": {
-      "browser": true,
-      "es2020": true
-    },
-    "settings": {},
-    "ignorePatterns": ["vite.config.ts"]
-  }
-  
+    "@typescript-eslint/no-unused-vars": "warn"
+  },
+  "env": {
+    "browser": true,
+    "es2020": true
+  },
+  "settings": {},
+  "ignorePatterns": ["vite.config.ts"]
+}

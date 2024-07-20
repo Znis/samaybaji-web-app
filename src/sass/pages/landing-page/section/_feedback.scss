@@ -9,20 +9,19 @@
   }
 
   form {
-
     background: #fff;
     .row {
       display: flex;
-  
+
       background: #fff;
       flex-direction: row;
       flex-wrap: wrap;
       overflow: hidden;
       border-radius: 1rem;
-  
+
       .container {
         display: flex;
-  
+
         flex: 1 1 50%;
         flex-direction: column;
       }
