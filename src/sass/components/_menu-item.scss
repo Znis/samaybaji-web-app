@@ -1,0 +1,108 @@
+.menu-item-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: #fff;
+  width: 15rem;
+  padding: 1.5rem;
+  margin: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative;
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.2);
+  }
+  &--large {
+    min-width: 20rem;
+    padding: 1.5rem;
+    gap: 1rem;
+    img {
+      min-height: 14rem;
+    }
+  }
+
+  .info-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+  }
+  img {
+    height: 8rem;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  h3 {
+    color: #333;
+    font-size: 1.8rem;
+    font-weight: normal;
+  }
+
+  .price {
+    color: #666;
+    font-size: 1.2rem;
+  }
+
+  .quantity {
+    color: rgb(129, 127, 127);
+    font-size: 0.8rem;
+  }
+}
+
+.ribbon {
+  width: 7rem;
+  height: 7rem;
+  overflow: hidden;
+  position: absolute;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    display: block;
+    border: 0.5rem solid var(--brown);
+  }
+
+  span {
+    position: absolute;
+    display: block;
+    width: 13.5rem;
+    padding: 0.5rem 0;
+    background-color: var(--brown);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    font: 0.7rem "Roboto", sans-serif;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    text-align: center;
+  }
+}
+
+.ribbon-top-left {
+  top: -10px;
+  left: -10px;
+
+  &::before,
+  &::after {
+    border-top-color: transparent;
+    border-left-color: transparent;
+  }
+  &::before {
+    top: -6px;
+    right: 27px;
+  }
+  &::after {
+    bottom: 27px;
+    left: -6px;
+  }
+
+  span {
+    right: -25px;
+    top: 20px;
+    transform: rotate(-45deg);
+  }
+}
