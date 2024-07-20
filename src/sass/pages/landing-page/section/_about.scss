@@ -1,0 +1,50 @@
+.about {
+    display: flex;
+    background-color: rgb(252, 252, 252);
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .image-stack {
+      position: relative;
+      flex: 1 1 27rem;
+      height: 30rem;
+    }
+    .image-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+
+    }
+    .image-bottom {
+      position: relative;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+      .content {
+        flex: 1 1 40rem;
+        padding: 3rem;
+      
+        justify-content: center;
+        align-items: center;
+
+        h3 {
+            font-size: 3rem;
+            color: #333;
+          }
+
+          p {
+            font-size: 1.2rem;
+            color: #666;
+            padding: 1rem 0;
+          }
+      }
+  }
+  
