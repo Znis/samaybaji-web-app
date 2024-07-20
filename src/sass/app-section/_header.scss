@@ -37,6 +37,7 @@ header {
             width: 2rem;
         }
         &__cart-count-circle{
+            display: none;
             position: absolute;
             top: -18px;
             right: -16px;
@@ -44,9 +45,9 @@ header {
             height: 1.4rem;
             border-radius: 50%;
             background-color: var(--brown);
-            display: flex;
             align-items: center;
             justify-content: center;
+
             padding: 4px;
         }
         &__cart-count{

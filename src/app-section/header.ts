@@ -18,12 +18,22 @@ export default class Header {
             document.getElementById('modal')!.appendChild(AuthCard.init());
           });
       });
-
     return this.element;
   }
 
-  static render() {
+  static updateCartCount() {
+    const cartLength = Cart.cartList.length;
+    const cartCountCircleDiv = this.element.querySelector(
+      '#cart-count-circle',
+    ) as HTMLDivElement;
+
+    if (!cartLength) {
+      cartCountCircleDiv.style.display = 'none';
+      return;
+    }
+
+    cartCountCircleDiv.style.display = 'flex';
     this.element.querySelector('#cart-count')!.innerHTML =
-      Cart.cartList.length.toString();
+      cartLength.toString();
   }
 }

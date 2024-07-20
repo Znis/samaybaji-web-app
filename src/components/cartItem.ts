@@ -1,3 +1,4 @@
+import Cart from '../pages/cart/cart';
 import MenuItem from './menuItem';
 
 export default class CartItem {
@@ -45,7 +46,9 @@ export default class CartItem {
       'click',
       this.incrementQuantity.bind(this),
     );
-    deleteButton?.addEventListener('click', this.deleteItem.bind(this));
+    deleteButton?.addEventListener('click', () =>
+      Cart.removeItem(this.menuItem),
+    );
   }
 
   decrementQuantity(): void {

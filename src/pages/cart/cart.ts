@@ -1,3 +1,4 @@
+import Header from '../../app-section/header';
 import CartItem from '../../components/cartItem';
 import MenuItem from '../../components/menuItem';
 
@@ -27,11 +28,13 @@ export default class Cart {
   static addItem(menuItem: MenuItem) {
     const cartItem = new CartItem(menuItem);
     this.cartList.push(cartItem);
+    Header.updateCartCount();
     this.render();
   }
   static removeItem(menuItem: MenuItem) {
     const cartItem = this.cartList.find((item) => item.id === menuItem.id);
     this.cartList = this.cartList.filter((item) => item.id !== menuItem.id);
     cartItem!.deleteItem();
+    Header.updateCartCount();
   }
 }
