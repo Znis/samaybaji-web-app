@@ -5,12 +5,13 @@ export default class DishReview {
     './assets/templates/pages/dish-detail/section/dish-review.html';
   static element = document.createElement('section');
 
-  static render(): HTMLElement {
+  static init(): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateURL)
         .then((response) => response.text())
         .then((html) => {
-          this.element!.outerHTML = html;
+          this.element.classList.add('dish-review');
+          this.element.innerHTML = html;
           for (let i = 0; i < 10; i++) {
             const customerReview = new CustomerReview(`review-id-${i + 1}`);
             document

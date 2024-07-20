@@ -15,8 +15,9 @@ export default class CustomerReview {
       fetch(this.url)
         .then((response) => response.text())
         .then((html) => {
+          this.element.classList.add('customer-review');
           this.element.setAttribute('id', this.id);
-          this.element.outerHTML = html;
+          this.element.innerHTML = html;
         });
     }
   }

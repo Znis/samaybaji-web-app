@@ -1,3 +1,5 @@
+import Cart from '../pages/cart/cart';
+
 export default class MenuItem {
   id: string;
   itemName: string;
@@ -8,6 +10,8 @@ export default class MenuItem {
   element: HTMLDivElement;
   className: string;
   type: string | undefined;
+  isAddedToCart: boolean;
+  button: HTMLButtonElement;
 
   constructor(
     id: string,
@@ -26,12 +30,14 @@ export default class MenuItem {
     this.isPopular = isPopular;
     this.type = type;
     this.className = 'menu-item-card';
+    this.isAddedToCart = false;
+    this.button = document.createElement('button');
 
     this.element = document.createElement('div');
-    this.render();
+    this.init();
   }
 
-  render(): void {
+  init(): void {
     if (this.isPopular) {
       const ribbon = this.createIsPopularRibbon();
       this.element.appendChild(ribbon);
@@ -63,17 +69,26 @@ export default class MenuItem {
     priceDiv.classList.add('price');
     priceDiv.innerText = `Rs. ${this.price}`;
 
-    const button = document.createElement('button');
-    button.classList.add('button');
-    button.name = 'addtocartbutton';
-    button.innerText = 'Add to Cart';
+    this.button.classList.add('button');
+    this.button.name = 'addtocartbutton';
+    this.button.innerText = 'Add to Cart';
+    this.button.addEventListener('click', () => {
+      this.toggleButton();
+      if (!this.isAddedToCart) {
+        Cart.addItem(this);
+        this.isAddedToCart = true;
+      } else {
+        Cart.removeItem(this);
+        this.isAddedToCart = false;
+      }
+    });
 
     this.element.appendChild(img);
     infoWrapper.appendChild(h3);
     infoWrapper.appendChild(quantityDiv);
     infoWrapper.appendChild(priceDiv);
     this.element.appendChild(infoWrapper);
-    this.element.appendChild(button);
+    this.element.appendChild(this.button);
   }
 
   createIsPopularRibbon(): HTMLElement {
@@ -84,5 +99,15 @@ export default class MenuItem {
     ribbon.appendChild(span);
 
     return ribbon;
+  }
+
+  toggleButton() {
+    this.button.classList.toggle('button--clicked');
+    if (!this.isAddedToCart) {
+      this.button.innerHTML =
+        'Remove from cart <i class="fas fa-shopping-cart"></i>';
+    } else {
+      this.button.innerHTML = 'Add to Cart';
+    }
   }
 }

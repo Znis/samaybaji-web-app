@@ -5,12 +5,13 @@ export default class Menu {
     './assets/templates/pages/landing-page/section/menu.html';
   static element: HTMLElement = document.createElement('section');
 
-  static render(): HTMLElement {
+  static init(): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
         .then((html) => {
-          this.element.outerHTML = html;
+          this.element.classList.add('menu');
+          this.element.innerHTML = html;
           for (let i = 0; i < 5; i++) {
             const menuItem = new MenuItem(
               `id-${i + 1}`,

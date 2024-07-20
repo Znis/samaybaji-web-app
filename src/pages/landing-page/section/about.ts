@@ -3,12 +3,13 @@ export default class About {
     './assets/templates/pages/landing-page/section/about.html';
   static element: HTMLElement = document.createElement('section');
 
-  static render(): HTMLElement {
+  static init(): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
         .then((html) => {
-          this.element.outerHTML = html;
+          this.element.classList.add('about');
+          this.element.innerHTML = html;
         });
     }
     return this.element;

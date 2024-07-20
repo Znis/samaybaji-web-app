@@ -5,16 +5,17 @@ export default class DishInfo {
     './assets/templates/pages/dish-detail/section/dish-info.html';
   static element = document.createElement('section');
 
-  static render(): HTMLElement {
+  static init(): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateURL)
         .then((response) => response.text())
         .then((html) => {
-          this.element!.outerHTML = html;
+          this.element.classList.add('dish-info');
+          this.element.innerHTML = html;
           const dishId = 1;
           document
             .getElementById('dish-rating')!
-            .appendChild(Rating.render(`rating-id-${dishId}`));
+            .appendChild(Rating.init(`rating-id-${dishId}`));
         });
     }
     return this.element;

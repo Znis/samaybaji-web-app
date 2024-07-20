@@ -9,10 +9,10 @@ export default class RestaurantSectionLayout {
     this.element = document.createElement('section');
     this.id = id;
 
-    this.render();
+    this.init();
   }
 
-  render(): void {
+  init(): void {
     if (this.element) {
       this.element.classList.add('restaurant');
       this.element.setAttribute('id', this.id);

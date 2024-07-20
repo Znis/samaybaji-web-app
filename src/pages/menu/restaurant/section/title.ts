@@ -3,10 +3,10 @@ export default class RestaurantTitle {
   constructor() {
     this.element = document.createElement('div');
 
-    this.render();
+    this.init();
   }
 
-  render(): void {
+  init(): void {
     this.element.classList.add('title-wrapper');
 
     const headingElement = document.createElement('h1');

@@ -3,10 +3,10 @@ import DishReview from './section/dishReview';
 
 export default class DishDetailLayout {
   static element: HTMLElement = document.createElement('div');
-  static render(): HTMLElement {
+  static init(): HTMLElement {
     this.element.setAttribute('id', 'dish-detail-page');
-    this.element.appendChild(DishInfo.render());
-    this.element.appendChild(DishReview.render());
+    this.element.appendChild(DishInfo.init());
+    this.element.appendChild(DishReview.init());
 
     return this.element;
   }

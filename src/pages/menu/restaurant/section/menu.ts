@@ -5,9 +5,9 @@ export default class RestaurantMenuList {
   constructor() {
     this.element = document.createElement('div');
 
-    this.render();
+    this.init();
   }
-  render(): void {
+  init(): void {
     this.element.classList.add('menu-list-wrapper');
     for (let i = 0; i < 5; i++) {
       const menuItem = new MenuItem(

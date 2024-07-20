@@ -6,13 +6,13 @@ import Menu from './section/menu';
 
 export default class LandingPage {
   static element: HTMLElement = document.createElement('div');
-  static render(): HTMLElement {
+  static init(): HTMLElement {
     this.element.setAttribute('id', 'landing-page');
-    this.element.appendChild(Hero.render());
-    this.element.appendChild(Menu.render());
-    this.element.appendChild(About.render());
-    this.element.appendChild(Feedback.render());
-    this.element.appendChild(DownloadApp.render());
+    this.element.appendChild(Hero.init());
+    this.element.appendChild(Menu.init());
+    this.element.appendChild(About.init());
+    this.element.appendChild(Feedback.init());
+    this.element.appendChild(DownloadApp.init());
 
     return this.element;
   }

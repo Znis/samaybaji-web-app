@@ -3,12 +3,13 @@ export default class Feedback {
     './assets/templates/pages/landing-page/section/feedback.html';
   static element: HTMLElement = document.createElement('section');
 
-  static render(): HTMLElement {
+  static init(): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
         .then((html) => {
-          this.element.outerHTML = html;
+          this.element.classList.add('feedback');
+          this.element.innerHTML = html;
         });
     }
     return this.element;

@@ -4,12 +4,13 @@ import Modal from './modal';
 export default class AuthCard {
   static element = document.createElement('div');
   static htmlTemplateURL = './assets/templates/components/auth-card.html';
-  static render(): HTMLElement {
+  static init(): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateURL)
         .then((response) => response.text())
         .then((html) => {
-          this.element.outerHTML = html;
+          this.element.classList.add('auth-card');
+          this.element.innerHTML = html;
           const signupButton = document.getElementById('signup');
           const signinButton = document.getElementById('signin');
           const crossButtonRight = document.getElementById(

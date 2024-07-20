@@ -6,13 +6,13 @@ import MenuPageLayout from '../pages/menu/menuPageLayout';
 export default class Content {
   static element: HTMLElement = document.createElement('div');
 
-  static render(): HTMLElement {
+  static init(): HTMLElement {
     this.element.setAttribute('id', 'content');
 
-    // this.element.appendChild(LandingPage.render());
-    // this.element.appendChild(Cart.render());
-    // this.element.appendChild(MenuPageLayout.render());
-    this.element.appendChild(DishDetailLayout.render());
+    this.element.appendChild(LandingPage.init());
+    this.element.appendChild(Cart.init());
+    this.element.appendChild(MenuPageLayout.init());
+    this.element.appendChild(DishDetailLayout.init());
 
     return this.element;
   }

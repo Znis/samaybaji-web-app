@@ -8,12 +8,20 @@
     cursor: pointer;
     border: 0.2rem solid var(--brown);
 
+    &--clicked{
+      color: var(--brown);
+      &:hover{
+        color: #222;
+      }
+    }
+
     &:hover:enabled {
         background: var(--brown);
         color: #000;
       }
     &:disabled {
         color: var(--brown);
+        opacity: 0.8;
       }
   }
   
