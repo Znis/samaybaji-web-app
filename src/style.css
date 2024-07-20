@@ -712,6 +712,46 @@ body.open #modal {
       color: var(--brown);
       scale: 1.1; }
 
+.customer-review {
+  display: flex;
+  gap: 1rem;
+  width: 50%;
+  padding: 1rem 1.5rem; }
+  .customer-review__image-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    width: 20%; }
+  .customer-review__image {
+    max-width: 100%;
+    max-height: 100%;
+    min-width: 3rem;
+    object-fit: cover; }
+  .customer-review__info {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 0.5rem; }
+  .customer-review__customer-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; }
+  .customer-review__customer-name {
+    font-size: 1.2rem;
+    color: #222;
+    letter-spacing: 1.2px; }
+  .customer-review__stars-wrapper {
+    display: flex;
+    gap: 0.2rem; }
+  .customer-review__description {
+    font-size: 0.9rem;
+    color: #333; }
+  .customer-review__posted-date {
+    font-size: 0.7rem;
+    color: #555;
+    font-style: italic; }
+
 .hero {
   display: flex;
   align-items: center;
