@@ -6,10 +6,10 @@ export default class CartItem {
     this.url = './assets/templates/components/cart-item.html';
     this.element = document.createElement('div');
     this.id = id;
-    this.init();
+    this.render();
   }
 
-  init(): void {
+  render(): void {
     if (this.element) {
       fetch(this.url)
         .then((response) => response.text())
