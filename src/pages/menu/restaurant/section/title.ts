@@ -1,14 +1,22 @@
 export default class RestaurantTitle {
-  static element = document.createElement('h1');
+  element: HTMLElement;
+  constructor() {
+    this.element = document.createElement('div');
 
-  static render(): HTMLElement {
-    this.element.className = 'heading';
-    this.element.textContent = 'our newari ';
+    this.render();
+  }
+
+  render(): void {
+    this.element.classList.add('title-wrapper');
+
+    const headingElement = document.createElement('h1');
+    headingElement.className = 'title-wrapper__heading';
+    headingElement.textContent = 'our newari ';
+    this.element.appendChild(headingElement);
 
     const spanElement = document.createElement('span');
+    spanElement.className = 'title-wrapper__heading-span';
     spanElement.textContent = 'menu';
     this.element.appendChild(spanElement);
-
-    return this.element;
   }
 }

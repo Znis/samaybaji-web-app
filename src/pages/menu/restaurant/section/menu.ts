@@ -1,9 +1,14 @@
 import MenuItem from '../../../../components/menuItem';
 
 export default class RestaurantMenuList {
-  static element = document.createElement('div');
-  static render(): HTMLElement {
-    this.element.classList.add('restaurant-menu-list');
+  element: HTMLElement;
+  constructor() {
+    this.element = document.createElement('div');
+
+    this.render();
+  }
+  render(): void {
+    this.element.classList.add('menu-list-wrapper');
     for (let i = 0; i < 5; i++) {
       const menuItem = new MenuItem(
         `id-${i + 1}`,
@@ -15,6 +20,5 @@ export default class RestaurantMenuList {
       );
       this.element.appendChild(menuItem.element);
     }
-    return this.element;
   }
 }

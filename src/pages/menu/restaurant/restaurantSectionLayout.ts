@@ -17,15 +17,11 @@ export default class RestaurantSectionLayout {
       this.element.classList.add('restaurant');
       this.element.setAttribute('id', this.id);
 
-      const titleContainer = document.createElement('div');
-      titleContainer.classList.add('title-container');
-      titleContainer.appendChild(RestaurantTitle.render());
-      this.element.appendChild(titleContainer);
+      const restaurantTitleSection = new RestaurantTitle();
+      this.element.appendChild(restaurantTitleSection.element);
 
-      const menuListContainer = document.createElement('div');
-      menuListContainer.classList.add('menu-list-container');
-      menuListContainer.appendChild(RestaurantMenuList.render());
-      this.element.appendChild(menuListContainer);
+      const restaurantMenuSection = new RestaurantMenuList();
+      this.element.appendChild(restaurantMenuSection.element);
     }
   }
 }

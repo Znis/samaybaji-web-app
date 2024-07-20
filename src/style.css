@@ -962,3 +962,29 @@ body.open #modal {
   .cart__total-amount {
     font-size: 1.4rem;
     color: #444; }
+
+.restaurant {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(./assets/images/popular-bg.jpg) no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; }
+  .restaurant .title-wrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; }
+    .restaurant .title-wrapper__heading {
+      text-align: center;
+      font-size: 3rem;
+      padding: 0 0.5rem;
+      color: #333; }
+    .restaurant .title-wrapper__heading-span {
+      text-align: center;
+      font-size: 3rem;
+      padding: 0 0.5rem;
+      color: var(--brown); }
+  .restaurant .menu-list-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem 0; }
