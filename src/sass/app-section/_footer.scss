@@ -1,0 +1,52 @@
+footer{
+    margin: 1rem 2rem 0rem 2rem;
+    padding: 1rem 2rem 0rem 2rem;
+    border-top: 0.2rem solid var(--brown);
+}
+.box-container{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.box{
+    margin: 2rem;   
+    h3{
+        font-size: 1.6rem;
+        color: #444;
+        padding: 1rem 0;
+        font-weight: normal;
+    }
+
+    p{
+        font-size: 1rem;
+        color: #444;
+        padding: 1rem 0;
+
+    }
+
+    a{
+        font-size: 1rem;
+        color: #444;
+        padding: 1rem 0;
+        display: block;
+
+        &:hover{
+            color: var(--brown);
+        }
+    }
+}
+
+.credit{
+    font-size: 1.2rem;
+
+    text-align: center;
+    border-top: 0.2rem solid rgba(255, 255, 255, 0.7);
+    padding: 2rem 1rem;
+    font-weight: normal;
+    letter-spacing: 0.1rem;
+   color: #444;
+
+   span{
+    color: var(--brown);
+   }
+}
