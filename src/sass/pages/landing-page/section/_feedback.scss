@@ -1,0 +1,55 @@
+.feedback {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(252, 252, 252);
+
+  h3 {
+    color: #333;
+    font-size: 3rem;
+  }
+
+  form {
+
+    background: #fff;
+    .row {
+      display: flex;
+  
+      background: #fff;
+      flex-direction: row;
+      flex-wrap: wrap;
+      overflow: hidden;
+      border-radius: 1rem;
+  
+      .container {
+        display: flex;
+  
+        flex: 1 1 50%;
+        flex-direction: column;
+      }
+    }
+    .inputbox {
+      font-size: 0.9rem;
+      color: #333;
+      text-transform: none;
+      background: #ffffff;
+      width: 100%;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin: 0.5rem 0rem 1.5rem 0rem;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+
+      &:focus {
+        border: 1px solid #333;
+      }
+    }
+    .box::placeholder {
+      text-transform: capitalize;
+    }
+    .message {
+      resize: none;
+    }
+  }
+}

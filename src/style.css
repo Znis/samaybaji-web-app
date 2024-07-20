@@ -374,3 +374,121 @@ body.open #modal {
     box-shadow: 28px 0px 20px -20px var(--brown);
     border-radius: 20px;
     overflow-x: auto; }
+
+.about {
+  display: flex;
+  background-color: #fcfcfc;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; }
+  .about .image-stack {
+    position: relative;
+    flex: 1 1 27rem;
+    height: 30rem; }
+  .about .image-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover; }
+  .about .image-bottom {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover; }
+  .about .content {
+    flex: 1 1 40rem;
+    padding: 3rem;
+    justify-content: center;
+    align-items: center; }
+    .about .content h3 {
+      font-size: 3rem;
+      color: #333; }
+    .about .content p {
+      font-size: 1.2rem;
+      color: #666;
+      padding: 1rem 0; }
+
+.download-app {
+  display: flex;
+  background: #fcfcfc;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; }
+  .download-app h3 {
+    font-size: 3rem;
+    margin: auto;
+    color: #333; }
+  .download-app p {
+    font-size: 1.2rem;
+    margin: auto;
+    color: #555;
+    padding: 1rem 0; }
+  .download-app .image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex: 1 1 27rem; }
+  .download-app .box1 {
+    margin: auto;
+    display: flex;
+    flex-direction: column; }
+  .download-app .box-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem; }
+    .download-app .box-container .box {
+      margin: auto;
+      display: flex;
+      flex-direction: row;
+      gap: 1rem; }
+      .download-app .box-container .box img {
+        flex: 1 1 50%;
+        height: 4rem; }
+
+.feedback {
+  display: flex;
+  flex-direction: column;
+  background-color: #fcfcfc; }
+  .feedback h3 {
+    color: #333;
+    font-size: 3rem; }
+  .feedback form {
+    background: #fff; }
+    .feedback form .row {
+      display: flex;
+      background: #fff;
+      flex-direction: row;
+      flex-wrap: wrap;
+      overflow: hidden;
+      border-radius: 1rem; }
+      .feedback form .row .container {
+        display: flex;
+        flex: 1 1 50%;
+        flex-direction: column; }
+    .feedback form .inputbox {
+      font-size: 0.9rem;
+      color: #333;
+      text-transform: none;
+      background: #ffffff;
+      width: 100%;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin: 0.5rem 0rem 1.5rem 0rem;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box; }
+      .feedback form .inputbox:focus {
+        border: 1px solid #333; }
+    .feedback form .box::placeholder {
+      text-transform: capitalize; }
+    .feedback form .message {
+      resize: none; }
