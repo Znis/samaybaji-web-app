@@ -1,3 +1,5 @@
+import Modal from '../components/modal.ts';
+
 export default class Header {
   static htmlTemplateURL = './assets/templates/app-section/header.html';
   static element: HTMLElement = document.createElement('header');
@@ -7,6 +9,11 @@ export default class Header {
       .then((response: Response) => response.text())
       .then((html: string) => {
         this.element.innerHTML = html;
+        document
+          .getElementById('authentication')
+          ?.addEventListener('click', () => {
+            Modal.toggle();
+          });
       });
 
     return this.element;

@@ -134,6 +134,13 @@ html {
 body {
   overflow-x: hidden; }
 
+section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 90vh;
+  padding: 2rem 8%; }
+
 header {
   position: fixed;
   top: 0;
@@ -204,6 +211,9 @@ header {
       header .navbar ul .button:hover {
         color: #000000; }
 
+.content {
+  margin-top: 5rem; }
+
 footer {
   margin: 1rem 2rem 0rem 2rem;
   padding: 1rem 2rem 0rem 2rem;
@@ -243,3 +253,60 @@ footer {
   color: #444; }
   .credit span {
     color: var(--brown); }
+
+#dark-background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 2; }
+
+body.open #dark-background-overlay {
+  visibility: visible;
+  opacity: 1; }
+
+@keyframes modal-in {
+  0% {
+    translate: -50% 10%;
+    scale: 0.5; }
+  100% {
+    opacity: 1;
+    scale: 1;
+    visibility: visible; } }
+
+.app,
+#modal,
+#dark-background-overlay {
+  transition: 0.5s; }
+
+#modal {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  background: transparent;
+  transform: translate(-50% -50%);
+  scale: 1;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%; }
+
+body.open > .app {
+  scale: 0.75; }
+
+body.open #modal {
+  opacity: 1;
+  visibility: visible;
+  animation: modal-in 0.5s; }

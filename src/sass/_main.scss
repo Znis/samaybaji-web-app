@@ -3,4 +3,8 @@
 
 //app layout section
 @import "./app-section/header";
+@import "./app-section/content";
 @import "./app-section/footer";
+
+//components
+@import "./components/modal";
