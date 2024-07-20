@@ -1,6 +1,6 @@
-export default class About {
+export default class DownloadApp {
   static htmlTemplateurl =
-    './assets/templates/pages/landing-page/section/about.html';
+    './assets/templates/pages/landing-page/section/download-app.html';
   static element: HTMLElement = document.createElement('section');
 
   static render(): HTMLElement {
