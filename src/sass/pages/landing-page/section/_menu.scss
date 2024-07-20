@@ -1,0 +1,30 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+    url(./assets/images/popular-bg.jpg) no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  .heading {
+    text-align: center;
+    font-size: 3rem;
+    color: #333;
+
+    span {
+      color: var(--brown);
+    }
+  }
+
+  .box-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 1rem 0;
+    box-shadow: 28px 0px 20px -20px var(--brown);
+    border-radius: 20px;
+    overflow-x: auto;
+  }
+}
