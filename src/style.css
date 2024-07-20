@@ -7,6 +7,7 @@
     - The "symbol *" part is to solve Firefox SVG sprite bug
     - The "html" element is excluded, otherwise a bug in Chrome breaks the CSS hyphens property (https://github.com/elad2412/the-new-css-reset/issues/36)
  */
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400|Lora");
 *:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)) {
   all: unset;
   display: revert; }
@@ -407,6 +408,216 @@ body.open #modal {
     right: -25px;
     top: 20px;
     transform: rotate(-45deg); }
+
+.auth-card {
+  background: #cbc0d3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; }
+  .auth-card__container {
+    display: flex;
+    background: #f6f6f6;
+    width: 50%;
+    height: 80%;
+    position: absolute;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); }
+  .auth-card__active-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -5%;
+    left: 5%;
+    background: #f5deb3;
+    width: 50%;
+    height: 110%;
+    border-radius: 5px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.5s ease-in-out;
+    z-index: 2; }
+  .auth-card__form--hidden {
+    display: none;
+    transition: all 0.5s ease; }
+  .auth-card__form--signin, .auth-card__form--signup {
+    gap: 2rem; }
+  .auth-card__divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; }
+  .auth-card__horizontal-line {
+    border-bottom: 1px solid #555;
+    width: 40%; }
+  .auth-card__divider-text {
+    font-size: 0.8rem;
+    font-variant: capitalized;
+    color: #555;
+    padding: 0 0.5rem; }
+  .auth-card__other-login-methods {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem; }
+  .auth-card__icon {
+    color: var(--brown);
+    font-size: 2rem;
+    cursor: pointer; }
+    .auth-card__icon:hover {
+      scale: 1.1; }
+  .auth-card__forgot-password {
+    font-family: "Open Sans", sans-serif;
+    color: var(--brown);
+    font-size: 0.8em;
+    letter-spacing: 1px;
+    text-align: right;
+    cursor: pointer; }
+    .auth-card__forgot-password:hover {
+      text-decoration: underline; }
+  .auth-card__sidebox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    transition: 1s all ease; }
+    .auth-card__sidebox--left {
+      left: -2%; }
+    .auth-card__sidebox--right {
+      right: -2%; }
+  .auth-card__heading {
+    font-family: "Open Sans", sans-serif;
+    text-align: center;
+    margin-top: 4rem;
+    text-transform: uppercase;
+    color: #888;
+    font-size: 2em;
+    letter-spacing: 8px; }
+  .auth-card__account {
+    padding: 1rem;
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #8e9aaf;
+    text-align: center; }
+  .auth-card__image-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 8rem;
+    opacity: 0.7; }
+  .auth-card__image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; }
+  .auth-card__button {
+    background: #f6f6f6;
+    color: var(--brown);
+    border: solid 1px #f5deb3;
+    max-width: 8rem;
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+    border-radius: 10px;
+    outline: none;
+    display: block;
+    padding: 0.8rem;
+    cursor: pointer; }
+    .auth-card__button:hover {
+      background: #f5deb3;
+      color: #888;
+      transition: background-color 0.5s ease-out; }
+    .auth-card__button--submit {
+      border-color: var(--brown);
+      align-self: center; }
+      .auth-card__button--submit:hover {
+        background: #cbc0d3;
+        border-color: #bfb1c9; }
+    .auth-card__button--switch {
+      background: #f6f6f6;
+      color: var(--brown);
+      border: solid 1px #f5deb3; }
+  .auth-card__form-content {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    gap: 1rem; }
+  .auth-card__input {
+    width: 100%;
+    background: #f5deb3;
+    font-size: 1rem;
+    color: #333;
+    text-transform: none;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    position: relative; }
+    .auth-card__input:focus {
+      border: 1px solid #333; }
+    .auth-card__input::placeholder {
+      color: #888;
+      font-size: 0.8rem;
+      font-weight: 100; }
+  .auth-card__cross-button {
+    position: absolute;
+    color: var(--brown);
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 4; }
+    .auth-card__cross-button:hover {
+      scale: 1.2; }
+    .auth-card__cross-button--right {
+      top: 0.5rem;
+      right: 0.5rem; }
+    .auth-card__cross-button--left {
+      visibility: hidden;
+      top: 0.5rem;
+      left: 0.5rem; }
+  .auth-card__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    cursor: pointer;
+    margin-left: 4px; }
+  .auth-card__checkbox-input {
+    color: var(--brown);
+    border: 1px solid var(--brown);
+    height: 10px;
+    width: 10px; }
+    .auth-card__checkbox-input:checked {
+      outline: 1px solid var(--brown);
+      outline-offset: 1px;
+      background-color: var(--brown); }
+  .auth-card__checkbox-label {
+    font-family: "Open Sans", sans-serif;
+    color: var(--brown);
+    font-size: 0.8em;
+    letter-spacing: 1px; }
+  .auth-card__password-input-wrapper {
+    display: flex;
+    align-items: center; }
+  .auth-card__password-toggle-icon {
+    cursor: pointer;
+    font-size: 1rem;
+    color: #444;
+    transition: color 0.3s ease-in-out;
+    margin-left: -2rem;
+    z-index: 2; }
+    .auth-card__password-toggle-icon:hover {
+      color: #111; }
 
 .hero {
   display: flex;

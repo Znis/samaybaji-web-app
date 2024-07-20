@@ -1,3 +1,4 @@
+import AuthCard from '../components/authCard.ts';
 import Modal from '../components/modal.ts';
 
 export default class Header {
@@ -13,6 +14,7 @@ export default class Header {
           .getElementById('authentication')
           ?.addEventListener('click', () => {
             Modal.toggle();
+            document.getElementById('modal')!.appendChild(AuthCard.render());
           });
       });
 

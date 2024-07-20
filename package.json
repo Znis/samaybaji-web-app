@@ -12,6 +12,7 @@
     "sass": "node-sass --watch src/style.scss src/style.css"
   },
   "devDependencies": {
+    "@types/intl-tel-input": "^18.1.4",
     "node-sass": "^9.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.3.4"
@@ -22,6 +23,7 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
+    "intl-tel-input": "^23.6.0",
     "prettier": "^3.3.3"
   }
 }
