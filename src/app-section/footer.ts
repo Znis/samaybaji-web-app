@@ -6,7 +6,7 @@ export default class Footer {
     fetch(this.htmlTemplateURL)
       .then((response: Response) => response.text())
       .then((html: string) => {
-        this.element.innerHTML = html;
+        this.element.outerHTML = html;
       });
 
     return this.element;

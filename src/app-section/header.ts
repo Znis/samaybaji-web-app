@@ -8,7 +8,7 @@ export default class Header {
     fetch(this.htmlTemplateURL)
       .then((response: Response) => response.text())
       .then((html: string) => {
-        this.element.innerHTML = html;
+        this.element.outerHTML = html;
         document
           .getElementById('authentication')
           ?.addEventListener('click', () => {

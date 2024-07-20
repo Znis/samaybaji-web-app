@@ -211,7 +211,7 @@ header {
       header .navbar ul .button:hover {
         color: #000000; }
 
-.content {
+#content {
   margin-top: 5rem; }
 
 footer {
@@ -310,3 +310,45 @@ body.open #modal {
   opacity: 1;
   visibility: visible;
   animation: modal-in 0.5s; }
+
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 4rem; }
+  .hero::before {
+    top: -7rem;
+    background: #fff;
+    box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.1);
+    z-index: -1; }
+  .hero::before, .hero::after {
+    content: "";
+    position: absolute;
+    top: 5rem;
+    right: -25rem;
+    border-radius: 3rem;
+    transform: rotate(-28deg);
+    height: 22rem;
+    width: 60rem;
+    animation: animte 1s linear 1; }
+  .hero .hero-content {
+    flex: 1 1 60%;
+    padding-bottom: 2rem; }
+    .hero .hero-content h3 {
+      color: #333;
+      font-size: 3rem; }
+    .hero .hero-content p {
+      padding: 2rem 0;
+      color: #666;
+      font-size: 1.2rem; }
+  .hero .image {
+    display: flex;
+    flex: 1 1 40%;
+    justify-content: center; }
+    .hero .image img {
+      max-width: 25rem;
+      max-height: 25rem;
+      object-fit: cover; }
+
+@keyframes animte {
+  0% {
+    transform: rotate(32deg) translateY(-40rem); } }
