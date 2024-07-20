@@ -1,5 +1,6 @@
 import AuthCard from '../components/authCard.ts';
 import Modal from '../components/modal.ts';
+import Cart from '../pages/cart/cart.ts';
 
 export default class Header {
   static htmlTemplateURL = './assets/templates/app-section/header.html';
@@ -19,5 +20,10 @@ export default class Header {
       });
 
     return this.element;
+  }
+
+  static render() {
+    this.element.querySelector('#cart-count')!.innerHTML =
+      Cart.cartList.length.toString();
   }
 }
