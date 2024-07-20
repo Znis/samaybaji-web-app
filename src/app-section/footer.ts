@@ -1,6 +1,6 @@
-export default class Header {
-  static htmlTemplateURL = './assets/templates/app-section/header.html';
-  static element: HTMLElement = document.createElement('header');
+export default class Footer {
+  static htmlTemplateURL = './assets/templates/app-section/footer.html';
+  static element: HTMLElement = document.createElement('footer');
 
   static render(): HTMLElement {
     fetch(this.htmlTemplateURL)
