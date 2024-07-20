@@ -1,0 +1,32 @@
+.rating{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--brown);
+    border-radius: 2rem;
+    padding: 0.5rem 1.5rem;
+    gap: 0.5rem;
+
+    &__reviews-count, &__text{
+        font-size: 0.6rem;
+        color: #444;
+    }
+    &__score-wrapper{
+        display: flex;
+        gap: 2rem;
+        justify-content: space-between;
+    }
+    &__stars-wrapper{
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+
+    }
+    &__score{
+        font-size: 1.5rem;
+        color: var(--brown);
+    }
+    &__star{
+        font-size: 1.5rem;
+        color: var(--brown);
+    }
+}

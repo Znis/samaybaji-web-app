@@ -752,6 +752,31 @@ body.open #modal {
     color: #555;
     font-style: italic; }
 
+.rating {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--brown);
+  border-radius: 2rem;
+  padding: 0.5rem 1.5rem;
+  gap: 0.5rem; }
+  .rating__reviews-count, .rating__text {
+    font-size: 0.6rem;
+    color: #444; }
+  .rating__score-wrapper {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between; }
+  .rating__stars-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem; }
+  .rating__score {
+    font-size: 1.5rem;
+    color: var(--brown); }
+  .rating__star {
+    font-size: 1.5rem;
+    color: var(--brown); }
+
 .hero {
   display: flex;
   align-items: center;

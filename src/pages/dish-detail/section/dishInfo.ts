@@ -1,3 +1,5 @@
+import Rating from '../../../components/rating';
+
 export default class DishInfo {
   static htmlTemplateURL =
     './assets/templates/pages/dish-detail/section/dish-info.html';
@@ -9,6 +11,10 @@ export default class DishInfo {
         .then((response) => response.text())
         .then((html) => {
           this.element!.outerHTML = html;
+          const dishId = 1;
+          document
+            .getElementById('dish-rating')!
+            .appendChild(Rating.render(`rating-id-${dishId}`));
         });
     }
     return this.element;
