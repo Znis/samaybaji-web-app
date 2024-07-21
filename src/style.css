@@ -1050,6 +1050,14 @@ body.open .modal {
   .cart__total-amount {
     font-size: 1.4rem;
     color: #444; }
+  .cart__image-wrapper {
+    display: flex;
+    justify-content: center; }
+  .cart__image {
+    max-width: 70%;
+    max-height: 70%;
+    min-width: 8rem;
+    object-fit: cover; }
 
 .restaurant {
   display: flex;

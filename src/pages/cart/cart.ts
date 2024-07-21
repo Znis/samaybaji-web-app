@@ -16,6 +16,7 @@ export default class Cart {
         .then((html) => {
           this.element.classList.add('cart');
           this.element.innerHTML = html;
+          this.render();
         });
     }
 
@@ -23,8 +24,17 @@ export default class Cart {
   }
 
   static render() {
+    const emptyCartImageWrapper = this.element.querySelector(
+      '.cart__image-wrapper',
+    ) as HTMLDivElement;
+    if (this.cartList.length) {
+      emptyCartImageWrapper.style.display = 'none';
+    } else {
+      emptyCartImageWrapper.style.display = 'flex';
+    }
+
     this.cartList.forEach((item) => {
-      document.getElementById('cart-list')!.appendChild(item.element);
+      this.element.querySelector('.cart__container')!.appendChild(item.element);
     });
   }
 
@@ -35,8 +45,12 @@ export default class Cart {
     this.updateTotalPrice();
   }
   static removeItem(menuItem: MenuItem) {
-    const cartItem = this.cartList.find((item) => item.id === menuItem.id);
-    this.cartList = this.cartList.filter((item) => item.id !== menuItem.id);
+    const cartItem = this.cartList.find(
+      (item) => item.menuItem.id === menuItem.id,
+    );
+    this.cartList = this.cartList.filter(
+      (item) => item.menuItem.id !== menuItem.id,
+    );
     cartItem!.element.remove();
     menuItem.toggleButton();
     Header.updateCartCount();
