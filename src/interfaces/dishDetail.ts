@@ -6,7 +6,7 @@ export interface IDishDetailData {
   items: string[];
   imgSrc: string;
   price: number;
-  quantity: number;
+  portion: string;
   rating: number;
   totalReviews: number;
   customerReviews: ICustomerReviewData[];

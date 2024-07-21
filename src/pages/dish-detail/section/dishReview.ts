@@ -1,11 +1,12 @@
 import CustomerReview from '../../../components/customerReview';
+import { ICustomerReviewData } from '../../../interfaces/dishDetail';
 
 export default class DishReview {
   static htmlTemplateURL =
     './assets/templates/pages/dish-detail/section/dish-review.html';
   static element = document.createElement('section');
 
-  static init(): HTMLElement {
+  static init(dishReviews: ICustomerReviewData[]): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateURL)
         .then((response) => response.text())
@@ -13,15 +14,18 @@ export default class DishReview {
           this.element.classList.add('dish-review');
           this.element.innerHTML = html;
           this.setEventListeners();
-          for (let i = 0; i < 10; i++) {
-            const customerReview = new CustomerReview(`review-id-${i + 1}`);
-            document
-              .getElementById('dish-customer-reviews')!
-              .appendChild(customerReview.element);
-          }
+          this.render(dishReviews);
         });
     }
     return this.element;
+  }
+  static render(dishReviews: ICustomerReviewData[]) {
+    dishReviews.forEach((dishReview) => {
+      const customerReview = new CustomerReview(dishReview);
+      this.element
+        .querySelector('.dish-review__customer-reviews')!
+        .appendChild(customerReview.element);
+    });
   }
   static setEventListeners() {
     const toggleButton = this.element.querySelector(

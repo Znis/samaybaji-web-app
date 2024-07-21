@@ -9,19 +9,20 @@ export default class Rating {
     'Excellent',
   ];
   static numOfStars: number = 5;
+  static rating: number = -1;
   static selectedIndex: number = -1;
-  static init(id: string): HTMLElement {
+  static init(rating: number): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateURL)
         .then((response) => response.text())
         .then((html) => {
           this.element.classList.add('rating');
-          this.element.setAttribute('id', id);
           this.element.innerHTML = html;
           this.appendStars();
           this.setupEventListeners();
         });
     }
+    this.rating = rating;
     return this.element;
   }
 
@@ -119,9 +120,8 @@ export default class Rating {
 
   static resetScore(): void {
     const ratingText = this.element.querySelector('.rating__score');
-    const rating = 4;
     if (ratingText) {
-      ratingText.textContent = `${rating}/${this.numOfStars}`;
+      ratingText.textContent = `${this.rating}/${this.numOfStars}`;
     }
   }
   static persistRating(index: number): void {

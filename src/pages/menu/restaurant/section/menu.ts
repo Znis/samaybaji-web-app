@@ -1,24 +1,32 @@
 import MenuItem from '../../../../components/menuItem';
+import { IMenuItemData } from '../../../../interfaces/menu';
 
 export default class RestaurantMenuList {
   element: HTMLElement;
-  constructor() {
+  restaurantMenuData: IMenuItemData[];
+
+  constructor(restaurantMenuData: IMenuItemData[]) {
     this.element = document.createElement('div');
+    this.restaurantMenuData = restaurantMenuData;
 
     this.init();
   }
   init(): void {
     this.element.classList.add('menu-list-wrapper');
-    for (let i = 0; i < 5; i++) {
+    this.render();
+  }
+  render() {
+    this.restaurantMenuData.forEach((item: IMenuItemData) => {
       const menuItem = new MenuItem(
-        `id-${i + 1}`,
-        'Samaybaji',
-        './assets/images/home-img.png',
-        1,
-        150,
-        true,
+        item.id,
+        item.name,
+        item.imgSrc,
+        item.portion,
+        item.price,
+        item.isPopular,
+        'large',
       );
       this.element.appendChild(menuItem.element);
-    }
+    });
   }
 }

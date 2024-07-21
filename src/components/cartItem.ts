@@ -4,7 +4,6 @@ import MenuItem from './menuItem';
 export default class CartItem {
   url: string;
   element: HTMLElement;
-  id: string;
   menuItem: MenuItem;
   totalPrice: number;
   incrementButton: HTMLButtonElement;
@@ -15,7 +14,6 @@ export default class CartItem {
     this.url = './assets/templates/components/cart-item.html';
     this.element = document.createElement('div');
     this.menuItem = menuItem;
-    this.id = this.menuItem.id;
     this.totalPrice = this.menuItem.price;
 
     this.incrementButton = {} as HTMLButtonElement;
@@ -31,33 +29,40 @@ export default class CartItem {
         .then((response) => response.text())
         .then((html) => {
           this.element.classList.add('cart-item');
-          this.element.setAttribute('id', this.id);
           this.element.innerHTML = html;
-          const titleElement = this.element.querySelector(
-            '#cart-item-title',
-          ) as HTMLElement;
-          titleElement!.innerHTML = this.menuItem.itemName;
-          const unitPriceElement = this.element.querySelector(
-            '#cart-item-unit-price',
-          );
-          unitPriceElement!.innerHTML = `Rs. ${this.menuItem.price}`;
-          const totalPriceElement = this.element.querySelector(
-            '#cart-item-total-price',
-          );
-          totalPriceElement!.innerHTML = `Rs. ${this.menuItem.price}`;
-          this.decrementButton = this.element.querySelector(
-            '.cart-item__quantity-semi-rounded-left',
-          ) as HTMLButtonElement;
-          this.decrementButton.disabled = true;
-          this.incrementButton = this.element.querySelector(
-            '.cart-item__quantity-semi-rounded-right',
-          ) as HTMLButtonElement;
-          this.deleteButton = this.element.querySelector(
-            '.cart-item__trash-button',
-          ) as HTMLButtonElement;
+          this.render();
           this.setupEventListeners();
         });
     }
+  }
+  render(): void {
+    const cartImage = this.element.querySelector(
+      '.cart-item__image',
+    ) as HTMLImageElement;
+    cartImage!.src = this.menuItem.imgSrc;
+    cartImage!.alt = `An image of ${this.menuItem.itemName}`;
+    const titleElement = this.element.querySelector(
+      '#cart-item-title',
+    ) as HTMLElement;
+    titleElement!.innerHTML = this.menuItem.itemName;
+    const unitPriceElement = this.element.querySelector(
+      '#cart-item-unit-price',
+    );
+    unitPriceElement!.innerHTML = `Rs. ${this.menuItem.price}`;
+    const totalPriceElement = this.element.querySelector(
+      '#cart-item-total-price',
+    );
+    totalPriceElement!.innerHTML = `Rs. ${this.menuItem.price}`;
+    this.decrementButton = this.element.querySelector(
+      '.cart-item__quantity-semi-rounded-left',
+    ) as HTMLButtonElement;
+    this.decrementButton.disabled = true;
+    this.incrementButton = this.element.querySelector(
+      '.cart-item__quantity-semi-rounded-right',
+    ) as HTMLButtonElement;
+    this.deleteButton = this.element.querySelector(
+      '.cart-item__trash-button',
+    ) as HTMLButtonElement;
   }
   setupEventListeners(): void {
     this.decrementButton?.addEventListener('click', () =>

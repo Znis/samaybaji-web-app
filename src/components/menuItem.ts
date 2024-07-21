@@ -4,7 +4,7 @@ export default class MenuItem {
   id: string;
   itemName: string;
   imgSrc: string;
-  quantity: number;
+  portion: string;
   price: number;
   isPopular: boolean;
   element: HTMLDivElement;
@@ -17,7 +17,7 @@ export default class MenuItem {
     id: string,
     itemName: string,
     imgSrc: string,
-    quantity: number,
+    portion: string,
     price: number,
     isPopular: boolean,
     type?: string | undefined,
@@ -25,7 +25,7 @@ export default class MenuItem {
     this.id = id;
     this.itemName = itemName;
     this.imgSrc = imgSrc;
-    this.quantity = quantity;
+    this.portion = portion;
     this.price = price;
     this.isPopular = isPopular;
     this.type = type;
@@ -53,7 +53,7 @@ export default class MenuItem {
 
     const img = document.createElement('img');
     img.src = this.imgSrc;
-    img.alt = this.itemName;
+    img.alt = `An image of ${this.itemName}`;
 
     const infoWrapper = document.createElement('div');
     infoWrapper.classList.add('info-wrapper');
@@ -61,9 +61,9 @@ export default class MenuItem {
     const h3 = document.createElement('h3');
     h3.innerText = this.itemName;
 
-    const quantityDiv = document.createElement('div');
-    quantityDiv.classList.add('quantity');
-    quantityDiv.innerText = `${this.quantity} Plate`;
+    const portionDiv = document.createElement('div');
+    portionDiv.classList.add('portion');
+    portionDiv.innerText = this.portion;
 
     const priceDiv = document.createElement('div');
     priceDiv.classList.add('price');
@@ -85,7 +85,7 @@ export default class MenuItem {
 
     this.element.appendChild(img);
     infoWrapper.appendChild(h3);
-    infoWrapper.appendChild(quantityDiv);
+    infoWrapper.appendChild(portionDiv);
     infoWrapper.appendChild(priceDiv);
     this.element.appendChild(infoWrapper);
     this.element.appendChild(this.button);

@@ -1,26 +1,29 @@
+import { IRestaurantMenu } from '../../../interfaces/menu';
 import RestaurantMenuList from './section/menu';
 import RestaurantTitle from './section/title';
 
 export default class RestaurantSectionLayout {
   element: HTMLElement;
-  id: string;
+  restaurantMenu: IRestaurantMenu;
 
-  constructor(id: string) {
+  constructor(restaurantMenu: IRestaurantMenu) {
     this.element = document.createElement('section');
-    this.id = id;
-
+    this.restaurantMenu = restaurantMenu;
     this.init();
   }
 
   init(): void {
     if (this.element) {
       this.element.classList.add('restaurant');
-      this.element.setAttribute('id', this.id);
 
-      const restaurantTitleSection = new RestaurantTitle();
+      const restaurantTitleSection = new RestaurantTitle(
+        this.restaurantMenu.name,
+      );
       this.element.appendChild(restaurantTitleSection.element);
 
-      const restaurantMenuSection = new RestaurantMenuList();
+      const restaurantMenuSection = new RestaurantMenuList(
+        this.restaurantMenu.menu,
+      );
       this.element.appendChild(restaurantMenuSection.element);
     }
   }

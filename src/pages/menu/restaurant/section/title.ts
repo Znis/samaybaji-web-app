@@ -1,7 +1,9 @@
 export default class RestaurantTitle {
   element: HTMLElement;
-  constructor() {
+  restaurantMenuName: string;
+  constructor(restaurantMenuName: string) {
     this.element = document.createElement('div');
+    this.restaurantMenuName = restaurantMenuName;
 
     this.init();
   }
@@ -11,7 +13,7 @@ export default class RestaurantTitle {
 
     const headingElement = document.createElement('h1');
     headingElement.className = 'title-wrapper__heading';
-    headingElement.textContent = 'our newari ';
+    headingElement.textContent = this.restaurantMenuName;
     this.element.appendChild(headingElement);
 
     const spanElement = document.createElement('span');

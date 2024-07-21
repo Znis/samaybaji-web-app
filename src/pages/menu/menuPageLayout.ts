@@ -1,13 +1,17 @@
+import { restaurantMenus } from '../../dummyData';
 import RestaurantSectionLayout from './restaurant/restaurantSectionLayout';
 
 export default class MenuPageLayout {
   static element: HTMLElement = document.createElement('div');
   static init(): HTMLElement {
     this.element.setAttribute('id', 'menu-page');
-    for (let i = 0; i < 4; i++) {
-      this.element.appendChild(new RestaurantSectionLayout(`${i + 1}`).element);
-    }
+    this.renderRestaurantsMenu();
 
     return this.element;
+  }
+  static renderRestaurantsMenu() {
+    restaurantMenus.forEach((restaurant) => {
+      this.element.appendChild(new RestaurantSectionLayout(restaurant).element);
+    });
   }
 }

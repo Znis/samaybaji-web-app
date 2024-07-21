@@ -2,7 +2,7 @@ export interface IMenuItemData {
   id: string;
   name: string;
   price: number;
-  quantity: string;
+  portion: string;
   imgSrc: string;
   isPopular: boolean;
 }
