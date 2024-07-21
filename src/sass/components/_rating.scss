@@ -19,6 +19,7 @@
   &__stars-wrapper {
     display: flex;
     align-items: center;
+    cursor: pointer;
     gap: 0.2rem;
   }
   &__score {
@@ -28,5 +29,9 @@
   &__star {
     font-size: 1.5rem;
     color: var(--brown);
+    transition: transform 0.3s;
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 }

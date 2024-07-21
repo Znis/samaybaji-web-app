@@ -785,13 +785,17 @@ body.open #modal {
   .rating__stars-wrapper {
     display: flex;
     align-items: center;
+    cursor: pointer;
     gap: 0.2rem; }
   .rating__score {
     font-size: 1.5rem;
     color: var(--brown); }
   .rating__star {
     font-size: 1.5rem;
-    color: var(--brown); }
+    color: var(--brown);
+    transition: transform 0.3s; }
+    .rating__star:hover {
+      transform: scale(1.1); }
 
 .hero {
   display: flex;
