@@ -1,10 +1,10 @@
-import { menuItemData } from './menu';
+import { IMenuItemData } from './menu';
 
-export interface cartItemData {
-  menuItem: menuItemData;
+export interface ICartItemData {
+  menuItem: IMenuItemData;
   quantity: number;
 }
 
-export interface cartData {
-  cartItems: cartItemData[];
+export interface ICartData {
+  cartItems: ICartItemData[];
 }

@@ -1,4 +1,4 @@
-export interface menuItemData {
+export interface IMenuItemData {
   id: string;
   name: string;
   price: number;
@@ -7,11 +7,11 @@ export interface menuItemData {
   isPopular: boolean;
 }
 
-export interface restaurantMenu {
+export interface IRestaurantMenu {
   name: string;
-  menu: menuItemData[];
+  menu: IMenuItemData[];
 }
 
-export interface popularMenuData {
-  popularMenuData: menuItemData[];
+export interface IPopularMenuData {
+  popularMenuData: IMenuItemData[];
 }

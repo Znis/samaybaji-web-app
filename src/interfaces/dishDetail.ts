@@ -1,4 +1,4 @@
-export interface dishDetailData {
+export interface IDishDetailData {
   id: string;
   name: string;
   description: string;
@@ -9,10 +9,10 @@ export interface dishDetailData {
   quantity: number;
   rating: number;
   totalReviews: number;
-  customerReviews: customerReviewData[];
+  customerReviews: ICustomerReviewData[];
 }
 
-export interface customerReviewData {
+export interface ICustomerReviewData {
   name: string;
   comment: string;
   postedDate: string;
