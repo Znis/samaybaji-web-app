@@ -45,5 +45,53 @@
     display: flex;
     flex-wrap: wrap;
     flex: 1;
+    max-height: 25rem;
+    overflow-y: auto;
   }
+  &__review-input-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 2rem;
+  }
+  &__review-inputbox{
+    width: 40%;
+    height: 0;
+    border: 1px solid #888;
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    color: #222;
+    transition: height 0.5s ease-in-out;
+    opacity: 0;
+
+    &::placeholder{
+      color: #888;
+    }
+    &.visible{
+      height: 8rem;
+      opacity: 1;
+      transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    }
+  }
+  &__button-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    
+    #post-review-button{
+      display: none;
+      opacity: 0;
+      height: 0;
+      &.visible{
+        display: block;
+        height: auto;
+        opacity: 1;
+      }
+    }
+  }
+
+
 }

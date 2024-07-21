@@ -1202,4 +1202,41 @@ body.open #modal {
   .dish-review__customer-reviews {
     display: flex;
     flex-wrap: wrap;
-    flex: 1; }
+    flex: 1;
+    max-height: 25rem;
+    overflow-y: auto; }
+  .dish-review__review-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 2rem; }
+  .dish-review__review-inputbox {
+    width: 40%;
+    height: 0;
+    border: 1px solid #888;
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    color: #222;
+    transition: height 0.5s ease-in-out;
+    opacity: 0; }
+    .dish-review__review-inputbox::placeholder {
+      color: #888; }
+    .dish-review__review-inputbox.visible {
+      height: 8rem;
+      opacity: 1;
+      transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out; }
+  .dish-review__button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem; }
+    .dish-review__button-wrapper #post-review-button {
+      display: none;
+      opacity: 0;
+      height: 0; }
+      .dish-review__button-wrapper #post-review-button.visible {
+        display: block;
+        height: auto;
+        opacity: 1; }
