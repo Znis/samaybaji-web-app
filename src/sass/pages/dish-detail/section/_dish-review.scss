@@ -80,11 +80,12 @@
     align-items: center;
     justify-content: center;
     gap: 2rem;
-    
-    #post-review-button{
+
+    .post-review{
       display: none;
       opacity: 0;
       height: 0;
+      
       &.visible{
         display: block;
         height: auto;

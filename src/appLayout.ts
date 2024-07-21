@@ -7,11 +7,11 @@ export default class AppLayout {
     const appElement: HTMLElement | null = document.getElementById('app');
     if (appElement) {
       const backgroundOverlay = document.createElement('div');
-      backgroundOverlay.setAttribute('id', 'background-overlay');
+      backgroundOverlay.setAttribute('class', 'background-overlay');
       appElement.appendChild(backgroundOverlay);
 
       const modal = document.createElement('div');
-      modal.setAttribute('id', 'modal');
+      modal.setAttribute('class', 'modal');
       appElement.appendChild(modal);
 
       appElement.appendChild(Header.init());

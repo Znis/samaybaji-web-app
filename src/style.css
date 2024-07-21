@@ -219,7 +219,7 @@ header {
       header .navbar ul .button:hover {
         color: #000000; }
 
-#content {
+.content {
   margin-top: 5rem; }
 
 footer {
@@ -262,7 +262,7 @@ footer {
   .credit span {
     color: var(--brown); }
 
-#background-overlay {
+.background-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -280,7 +280,7 @@ footer {
 body.open {
   overflow: hidden; }
 
-body.open #background-overlay {
+body.open .background-overlay {
   visibility: visible;
   opacity: 1; }
 
@@ -294,11 +294,11 @@ body.open #background-overlay {
     visibility: visible; } }
 
 .app,
-#modal,
-#background-overlay {
+.modal,
+.background-overlay {
   transition: 0.5s; }
 
-#modal {
+.modal {
   position: fixed;
   top: 0%;
   left: 0%;
@@ -317,7 +317,7 @@ body.open #background-overlay {
 body.open > .app {
   scale: 0.75; }
 
-body.open #modal {
+body.open .modal {
   opacity: 1;
   visibility: visible;
   animation: modal-in 0.5s; }
@@ -1232,11 +1232,11 @@ body.open #modal {
     align-items: center;
     justify-content: center;
     gap: 2rem; }
-    .dish-review__button-wrapper #post-review-button {
+    .dish-review__button-wrapper .post-review {
       display: none;
       opacity: 0;
       height: 0; }
-      .dish-review__button-wrapper #post-review-button.visible {
+      .dish-review__button-wrapper .post-review.visible {
         display: block;
         height: auto;
         opacity: 1; }

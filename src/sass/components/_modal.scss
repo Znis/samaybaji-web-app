@@ -1,4 +1,4 @@
-#background-overlay {
+.background-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -18,7 +18,7 @@ body.open {
   overflow: hidden;
 }
 
-body.open #background-overlay {
+body.open .background-overlay {
   visibility: visible;
   opacity: 1;
 }
@@ -36,12 +36,12 @@ body.open #background-overlay {
 }
 
 .app,
-#modal,
-#background-overlay {
+.modal,
+.background-overlay {
   transition: 0.5s;
 }
 
-#modal {
+.modal {
   position: fixed;
   top: 0%;
   left: 0%;
@@ -62,7 +62,7 @@ body.open > .app {
   scale: 0.75;
 }
 
-body.open #modal {
+body.open .modal {
   opacity: 1;
   visibility: visible;
   animation: modal-in 0.5s;

@@ -15,7 +15,7 @@ export default class Header {
           .getElementById('authentication')
           ?.addEventListener('click', () => {
             Modal.toggle();
-            document.getElementById('modal')!.appendChild(AuthCard.init());
+            document.querySelector('.modal')!.appendChild(AuthCard.init());
           });
       });
     return this.element;

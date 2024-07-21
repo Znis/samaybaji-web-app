@@ -7,7 +7,7 @@ export default class Content {
   static element: HTMLElement = document.createElement('div');
 
   static init(): HTMLElement {
-    this.element.setAttribute('id', 'content');
+    this.element.setAttribute('class', 'content');
 
     this.element.appendChild(LandingPage.init());
     this.element.appendChild(Cart.init());
