@@ -6,11 +6,21 @@ export default class CartItem {
   element: HTMLElement;
   id: string;
   menuItem: MenuItem;
+  totalPrice: number;
+  incrementButton: HTMLButtonElement;
+  decrementButton: HTMLButtonElement;
+  deleteButton: HTMLButtonElement;
+
   constructor(menuItem: MenuItem) {
     this.url = './assets/templates/components/cart-item.html';
     this.element = document.createElement('div');
     this.menuItem = menuItem;
     this.id = this.menuItem.id;
+    this.totalPrice = this.menuItem.price;
+
+    this.incrementButton = {} as HTMLButtonElement;
+    this.decrementButton = {} as HTMLButtonElement;
+    this.deleteButton = {} as HTMLButtonElement;
 
     this.init();
   }
@@ -23,32 +33,40 @@ export default class CartItem {
           this.element.classList.add('cart-item');
           this.element.setAttribute('id', this.id);
           this.element.innerHTML = html;
+          const titleElement = this.element.querySelector(
+            '#cart-item-title',
+          ) as HTMLElement;
+          titleElement!.innerHTML = this.menuItem.itemName;
+          const unitPriceElement = this.element.querySelector(
+            '#cart-item-unit-price',
+          );
+          unitPriceElement!.innerHTML = `Rs. ${this.menuItem.price}`;
+          const totalPriceElement = this.element.querySelector(
+            '#cart-item-total-price',
+          );
+          totalPriceElement!.innerHTML = `Rs. ${this.menuItem.price}`;
+          this.decrementButton = this.element.querySelector(
+            '.cart-item__quantity-semi-rounded-left',
+          ) as HTMLButtonElement;
+          this.decrementButton.disabled = true;
+          this.incrementButton = this.element.querySelector(
+            '.cart-item__quantity-semi-rounded-right',
+          ) as HTMLButtonElement;
+          this.deleteButton = this.element.querySelector(
+            '.cart-item__trash-button',
+          ) as HTMLButtonElement;
           this.setupEventListeners();
         });
     }
   }
   setupEventListeners(): void {
-    const decrementButton = this.element.querySelector(
-      '.cart-item__quantity-semi-rounded-left',
-    ) as HTMLElement;
-    const incrementButton = this.element.querySelector(
-      '.cart-item__quantity-semi-rounded-right',
-    ) as HTMLElement;
-    const deleteButton = this.element.querySelector(
-      '.cart-item__trash-button',
-    ) as HTMLElement;
-
-    decrementButton?.addEventListener(
-      'click',
-      this.decrementQuantity.bind(this),
+    this.decrementButton?.addEventListener('click', () =>
+      this.decrementQuantity(),
     );
-    incrementButton?.addEventListener(
-      'click',
-      this.incrementQuantity.bind(this),
+    this.incrementButton?.addEventListener('click', () =>
+      this.incrementQuantity(),
     );
-    deleteButton?.addEventListener('click', () =>
-      Cart.removeItem(this.menuItem),
-    );
+    this.deleteButton?.addEventListener('click', () => this.deleteItem());
   }
 
   decrementQuantity(): void {
@@ -61,6 +79,10 @@ export default class CartItem {
       quantityBox.innerText = quantity.toString();
       this.updateTotalPrice(quantity);
     }
+
+    if (quantity === 1) this.decrementButton.disabled = true;
+
+    Cart.updateTotalPrice();
   }
 
   incrementQuantity(): void {
@@ -70,7 +92,9 @@ export default class CartItem {
     let quantity = parseInt(quantityBox.innerText);
     quantity++;
     quantityBox.innerText = quantity.toString();
+    this.decrementButton.disabled = false;
     this.updateTotalPrice(quantity);
+    Cart.updateTotalPrice();
   }
 
   updateTotalPrice(quantity: number): void {
@@ -85,12 +109,12 @@ export default class CartItem {
       unitPriceElement.innerText.replace('Rs. ', ''),
     );
     const totalPrice = unitPrice * quantity;
+    this.totalPrice = totalPrice;
 
-    totalPriceElement.innerText = `Rs. ${totalPrice.toFixed(2)}`;
+    totalPriceElement.innerText = `Rs. ${totalPrice}`;
   }
 
   deleteItem(): void {
-    this.element.remove();
-    this.menuItem.toggleButton();
+    Cart.removeItem(this.menuItem);
   }
 }
