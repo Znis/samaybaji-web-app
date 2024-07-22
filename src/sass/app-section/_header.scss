@@ -61,14 +61,6 @@ header {
       list-style: none;
 
       li {
-        &:hover {
-          transition: transform 0.2s;
-          text-decoration: underline;
-          text-underline-offset: 4px;
-          text-decoration-thickness: 2px;
-          color: var(--brown);
-        }
-
         a {
           font-size: 1.2rem;
           color: #666;

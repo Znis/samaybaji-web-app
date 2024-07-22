@@ -5,7 +5,7 @@ import MenuItem from '../../components/menuItem';
 export default class Cart {
   static htmlTemplateurl = './assets/templates/pages/cart/cart.html';
   static element: HTMLElement = document.createElement('section');
-  static cartList: CartItem[] = [];
+  static cartList: CartItem[] = JSON.parse(localStorage.getItem('cart')!) || [];
   static totalAmount = 0;
   static deliveryAmount = 100;
   static subTotalAmount = 0;
@@ -36,6 +36,12 @@ export default class Cart {
     this.cartList.forEach((item) => {
       this.element.querySelector('.cart__container')!.appendChild(item.element);
     });
+    this.element.querySelector('#sub-total-amount')!.innerHTML =
+      `Rs. ${this.subTotalAmount}`;
+    this.element.querySelector('#delivery-amount')!.innerHTML =
+      `Rs. ${this.deliveryAmount}`;
+    this.element.querySelector('#total-amount')!.innerHTML =
+      `Rs. ${this.totalAmount}`;
   }
 
   static addItem(menuItem: MenuItem) {
@@ -43,6 +49,7 @@ export default class Cart {
     this.cartList.push(cartItem);
     Header.updateCartCount();
     this.updateTotalPrice();
+    localStorage.setItem('cart', JSON.stringify(this.cartList));
   }
   static removeItem(menuItem: MenuItem) {
     const cartItem = this.cartList.find(
@@ -55,25 +62,19 @@ export default class Cart {
     menuItem.toggleButton();
     Header.updateCartCount();
     this.updateTotalPrice();
+    localStorage.setItem('cart', JSON.stringify(this.cartList));
   }
 
   static updateTotalPrice() {
-    console.log(this.cartList);
     this.subTotalAmount = 0;
     this.cartList.length
       ? (this.deliveryAmount = 100)
       : (this.deliveryAmount = 0);
     this.totalAmount = 0;
     this.cartList.forEach((item) => {
-      this.subTotalAmount += item.totalPrice;
+      this.subTotalAmount += item.quantity * item.menuItem.price;
     });
     this.totalAmount = this.subTotalAmount + this.deliveryAmount;
-    this.element.querySelector('#sub-total-amount')!.innerHTML =
-      `Rs. ${this.subTotalAmount}`;
-    this.element.querySelector('#delivery-amount')!.innerHTML =
-      `Rs. ${this.deliveryAmount}`;
-    this.element.querySelector('#total-amount')!.innerHTML =
-      `Rs. ${this.totalAmount}`;
     this.render();
   }
 }

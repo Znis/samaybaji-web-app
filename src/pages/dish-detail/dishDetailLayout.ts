@@ -1,14 +1,17 @@
-import { dishDetailData } from '../../dummyData';
+import { dishDetailArray } from '../../dummyData';
+import { IDishDetailData } from '../../interfaces/dishDetail';
 import DishInfo from './section/dishInfo';
 import DishReview from './section/dishReview';
 
 export default class DishDetailLayout {
   static element: HTMLElement = document.createElement('div');
-  static init(): HTMLElement {
+  static init(id: string): HTMLElement {
     this.element.setAttribute('id', 'dish-detail-page');
-
-    this.element.appendChild(DishInfo.init(dishDetailData));
-    this.element.appendChild(DishReview.init(dishDetailData.customerReviews));
+    const dishDetailData = dishDetailArray.find(
+      (data: IDishDetailData) => data.id === id,
+    );
+    this.element.appendChild(DishInfo.init(dishDetailData!));
+    this.element.appendChild(DishReview.init(dishDetailData!.customerReviews));
 
     return this.element;
   }

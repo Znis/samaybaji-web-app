@@ -1,3 +1,4 @@
+import { ICartItemData } from '../interfaces/cart';
 import Cart from '../pages/cart/cart';
 
 export default class MenuItem {
@@ -30,7 +31,7 @@ export default class MenuItem {
     this.isPopular = isPopular;
     this.type = type;
     this.className = 'menu-item-card';
-    this.isAddedToCart = false;
+    this.isAddedToCart = this.checkIfPresentInCart();
     this.button = document.createElement('button');
 
     this.element = document.createElement('div');
@@ -72,6 +73,12 @@ export default class MenuItem {
     this.button.classList.add('button');
     this.button.name = 'addtocartbutton';
     this.button.innerText = 'Add to Cart';
+
+    if (this.isAddedToCart) {
+      this.button.classList.add('button--clicked');
+      this.button.innerHTML =
+        'Remove from cart <i class="fas fa-shopping-cart"></i>';
+    }
     this.button.addEventListener('click', () => {
       this.toggleButton();
       if (!this.isAddedToCart) {
@@ -101,6 +108,12 @@ export default class MenuItem {
     return ribbon;
   }
 
+  checkIfPresentInCart() {
+    const doesExist = Cart.cartList.some(
+      (item) => item.menuItem.id === this.id,
+    );
+    return doesExist;
+  }
   toggleButton() {
     this.button.classList.toggle('button--clicked');
     if (!this.isAddedToCart) {

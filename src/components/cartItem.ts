@@ -5,7 +5,7 @@ export default class CartItem {
   url: string;
   element: HTMLElement;
   menuItem: MenuItem;
-  totalPrice: number;
+  quantity: number;
   incrementButton: HTMLButtonElement;
   decrementButton: HTMLButtonElement;
   deleteButton: HTMLButtonElement;
@@ -14,7 +14,7 @@ export default class CartItem {
     this.url = './assets/templates/components/cart-item.html';
     this.element = document.createElement('div');
     this.menuItem = menuItem;
-    this.totalPrice = this.menuItem.price;
+    this.quantity = 1;
 
     this.incrementButton = {} as HTMLButtonElement;
     this.decrementButton = {} as HTMLButtonElement;
@@ -114,8 +114,8 @@ export default class CartItem {
       unitPriceElement.innerText.replace('Rs. ', ''),
     );
     const totalPrice = unitPrice * quantity;
-    this.totalPrice = totalPrice;
-
+    this.quantity = quantity;
+    console.log(this.quantity)
     totalPriceElement.innerText = `Rs. ${totalPrice}`;
   }
 

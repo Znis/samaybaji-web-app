@@ -1,5 +1,4 @@
 import UniversalRouter from 'universal-router';
-import generateUrls from 'universal-router/generateUrls';
 
 import Cart from './pages/cart/cart';
 import DishDetailLayout from './pages/dish-detail/dishDetailLayout';
@@ -8,36 +7,37 @@ import MenuPageLayout from './pages/menu/menuPageLayout';
 import Content from './app-section/content';
 import ErrorPage from './pages/error-page/errorPage';
 
+export interface RouterContext {
+  [propName: string]: {
+    [propName: string]: string;
+  };
+}
+
 const routes = [
   { path: '/', action: () => LandingPage.init() },
   { path: '/cart', action: () => Cart.init() },
   { path: '/menu', action: () => MenuPageLayout.init() },
-  { path: '/dish-detail', action: () => DishDetailLayout.init() },
-  { path: '/error', action: () => ErrorPage.init() },
+  {
+    path: '/dish-detail/:id',
+    action: (context: RouterContext) =>
+      DishDetailLayout.init(context.params.id),
+  },
+  { path: '(.*)', action: () => ErrorPage.init() },
 ];
 
 const router = new UniversalRouter(routes);
 
-export const urlGenerator = generateUrls(router);
+export const navigate = async (link: string) => {
+  const route = await router.resolve({ pathname: link });
+  if (route) Content.render(route);
+};
 
 window.addEventListener('popstate', async () => {
-  try {
-    const route = await router.resolve({ pathname: window.location.pathname });
-    if (route) Content.render(route);
-  } catch {
-    const errorRoute = await router.resolve({ pathname: '/error' });
-    if (errorRoute) Content.render(errorRoute);
-    window.history.pushState({}, '', '/error');
-  }
+  const route = await router.resolve({ pathname: window.location.pathname });
+  if (route) Content.render(route);
 });
 
 window.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const route = await router.resolve({ pathname: window.location.pathname });
-    if (route) Content.render(route);
-  } catch {
-    const errorRoute = await router.resolve({ pathname: '/error' });
-    if (errorRoute) Content.render(errorRoute);
-    window.history.pushState({}, '', '/error');
-  }
+  const route = await router.resolve({ pathname: window.location.pathname });
+  if (route) Content.render(route);
 });

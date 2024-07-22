@@ -50,7 +50,7 @@ export const menuItemData: IMenuItemData[] = [
 ];
 
 export const popularMenuData: IPopularMenuData = {
-  popularMenuData: [menuItemData[0], menuItemData[1], menuItemData[3]],
+  popularMenuData: menuItemData.filter((item) => item.isPopular),
 };
 
 export const restaurantMenus: IRestaurantMenu[] = [
@@ -104,22 +104,25 @@ export const customerReviews: ICustomerReviewData[] = [
   },
 ];
 
-export const dishDetailData: IDishDetailData = {
-  id: '1',
-  name: 'Yomari',
-  description: 'Steamed dumplings filled with sweet molasses and sesame seeds.',
-  attributes: ['Sweet', 'Steamed', 'Traditional'],
-  items: ['Molasses', 'Sesame Seeds', 'Rice Flour'],
-  imgSrc: './assets/images/dish/yomari.jpeg',
-  price: 150,
-  portion: '1 Plate',
-  rating: 3,
-  totalReviews: 5,
-  customerReviews: [
-    customerReviews[0],
-    customerReviews[1],
-    customerReviews[2],
-    customerReviews[3],
-    customerReviews[4],
-  ],
-};
+export const dishDetailArray: IDishDetailData[] = [
+  {
+    id: '1',
+    name: 'Yomari',
+    description:
+      'Steamed dumplings filled with sweet molasses and sesame seeds.',
+    attributes: ['Sweet', 'Steamed', 'Traditional'],
+    items: ['Molasses', 'Sesame Seeds', 'Rice Flour'],
+    imgSrc: './assets/images/dish/yomari.jpeg',
+    price: 150,
+    portion: '1 Plate',
+    rating: 3,
+    totalReviews: 5,
+    customerReviews: [
+      customerReviews[0],
+      customerReviews[1],
+      customerReviews[2],
+      customerReviews[3],
+      customerReviews[4],
+    ],
+  },
+];

@@ -198,12 +198,6 @@ header {
     justify-content: center;
     gap: 3rem;
     list-style: none; }
-    header .navbar ul li:hover {
-      transition: transform 0.2s;
-      text-decoration: underline;
-      text-underline-offset: 4px;
-      text-decoration-thickness: 2px;
-      color: var(--brown); }
     header .navbar ul li a {
       font-size: 1.2rem;
       color: #666; }
@@ -402,7 +396,7 @@ body.open .modal {
     background-color: var(--brown);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     color: #fff;
-    font: 0.7rem 'Roboto', sans-serif;
+    font: 0.7rem 'Roboto', sans-serif;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     text-transform: uppercase;
     text-align: center; }
