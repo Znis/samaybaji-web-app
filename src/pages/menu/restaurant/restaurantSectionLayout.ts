@@ -4,27 +4,19 @@ import RestaurantTitle from './section/title';
 
 export default class RestaurantSectionLayout {
   element: HTMLElement;
-  restaurantMenu: IRestaurantMenu;
 
-  constructor(restaurantMenu: IRestaurantMenu) {
+  constructor() {
     this.element = document.createElement('section');
-    this.restaurantMenu = restaurantMenu;
-    this.init();
   }
 
-  init(): void {
-    if (this.element) {
-      this.element.classList.add('restaurant');
+  init(restaurantMenu: IRestaurantMenu): HTMLElement {
+    this.element.classList.add('restaurant');
 
-      const restaurantTitleSection = new RestaurantTitle(
-        this.restaurantMenu.name,
-      );
-      this.element.appendChild(restaurantTitleSection.element);
+    this.element.appendChild(new RestaurantTitle(restaurantMenu.name).init());
+    this.element.appendChild(
+      new RestaurantMenuList(restaurantMenu.menu).init(),
+    );
 
-      const restaurantMenuSection = new RestaurantMenuList(
-        this.restaurantMenu.menu,
-      );
-      this.element.appendChild(restaurantMenuSection.element);
-    }
+    return this.element;
   }
 }

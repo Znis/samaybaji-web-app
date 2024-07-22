@@ -18,7 +18,7 @@ const routes = [
   { path: '/cart', action: () => Cart.init() },
   { path: '/menu', action: () => MenuPageLayout.init() },
   {
-    path: '/dish-detail/:id',
+    path: '/dishdetail/:id',
     action: (context: RouterContext) =>
       DishDetailLayout.init(context.params.id),
   },

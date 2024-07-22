@@ -86,8 +86,6 @@ export default class CartItem {
     }
 
     if (quantity === 1) this.decrementButton.disabled = true;
-
-    Cart.updateTotalPrice();
   }
 
   incrementQuantity(): void {
@@ -99,7 +97,6 @@ export default class CartItem {
     quantityBox.innerText = quantity.toString();
     this.decrementButton.disabled = false;
     this.updateTotalPrice(quantity);
-    Cart.updateTotalPrice();
   }
 
   updateTotalPrice(quantity: number): void {
@@ -115,11 +112,14 @@ export default class CartItem {
     );
     const totalPrice = unitPrice * quantity;
     this.quantity = quantity;
-    console.log(this.quantity)
     totalPriceElement.innerText = `Rs. ${totalPrice}`;
+    Cart.updateTotalPrice();
+    Cart.render();
   }
 
   deleteItem(): void {
     Cart.removeItem(this.menuItem);
+    Cart.updateTotalPrice();
+    Cart.render();
   }
 }

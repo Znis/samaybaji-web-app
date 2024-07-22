@@ -12,7 +12,7 @@ export const menuItemData: IMenuItemData[] = [
     name: 'Yomari',
     price: 150,
     portion: '1 piece',
-    imgSrc: './assets/images/dish/yomari.jpeg',
+    imgSrc: '/assets/images/dish/yomari.jpeg',
     isPopular: true,
   },
   {
@@ -20,7 +20,7 @@ export const menuItemData: IMenuItemData[] = [
     name: 'Chatamari',
     price: 200,
     portion: '1 piece',
-    imgSrc: './assets/images/dish/chatamari.jpg',
+    imgSrc: '/assets/images/dish/chatamari.jpg',
     isPopular: true,
   },
   {
@@ -28,7 +28,7 @@ export const menuItemData: IMenuItemData[] = [
     name: 'Bara',
     price: 100,
     portion: '1 piece',
-    imgSrc: './assets/images/dish/bara.png',
+    imgSrc: '/assets/images/dish/bara.png',
     isPopular: false,
   },
   {
@@ -36,7 +36,7 @@ export const menuItemData: IMenuItemData[] = [
     name: 'Sukuti',
     price: 250,
     portion: '100 grams',
-    imgSrc: './assets/images/dish/sukuti.jpg',
+    imgSrc: '/assets/images/dish/sukuti.jpg',
     isPopular: true,
   },
   {
@@ -44,7 +44,7 @@ export const menuItemData: IMenuItemData[] = [
     name: 'Wo',
     price: 120,
     portion: '1 piece',
-    imgSrc: './assets/images/dish/wo.jpg',
+    imgSrc: '/assets/images/dish/wo.jpg',
     isPopular: false,
   },
 ];
@@ -74,33 +74,33 @@ export const customerReviews: ICustomerReviewData[] = [
     comment:
       'Yomari was absolutely delicious! The filling was perfectly sweet.',
     postedDate: '2024-07-01',
-    profileImgSrc: './assets/images/profiles/gojo.png',
+    profileImgSrc: '/assets/images/profiles/gojo.png',
   },
   {
     name: 'Anita Rai',
     comment:
       'Chatamari was fantastic, loved the crispy edges and the savory toppings.',
     postedDate: '2024-07-05',
-    profileImgSrc: './assets/images/profiles/sakura.jpg',
+    profileImgSrc: '/assets/images/profiles/sakura.jpg',
   },
   {
     name: 'Prakash Maharjan',
     comment:
       'Bara was okay, a bit too oily for my taste but the flavor was good.',
     postedDate: '2024-07-10',
-    profileImgSrc: './assets/images/profiles/spiderman.jpg',
+    profileImgSrc: '/assets/images/profiles/spiderman.jpg',
   },
   {
     name: 'Mina Tamang',
     comment: 'Sukuti was a perfect snack with beer, highly recommend it.',
     postedDate: '2024-07-12',
-    profileImgSrc: './assets/images/profiles/nishimiya.jpeg',
+    profileImgSrc: '/assets/images/profiles/nishimiya.jpeg',
   },
   {
     name: 'Rajesh Shakya',
     comment: 'Wo was soft and flavorful, great as a breakfast item.',
     postedDate: '2024-07-15',
-    profileImgSrc: './assets/images/profiles/ironman.jfif',
+    profileImgSrc: '/assets/images/profiles/ironman.jfif',
   },
 ];
 
@@ -112,7 +112,7 @@ export const dishDetailArray: IDishDetailData[] = [
       'Steamed dumplings filled with sweet molasses and sesame seeds.',
     attributes: ['Sweet', 'Steamed', 'Traditional'],
     items: ['Molasses', 'Sesame Seeds', 'Rice Flour'],
-    imgSrc: './assets/images/dish/yomari.jpeg',
+    imgSrc: '/assets/images/dish/yomari.jpeg',
     price: 150,
     portion: '1 Plate',
     rating: 3,

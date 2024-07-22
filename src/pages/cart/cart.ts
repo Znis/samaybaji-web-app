@@ -5,7 +5,7 @@ import MenuItem from '../../components/menuItem';
 export default class Cart {
   static htmlTemplateurl = './assets/templates/pages/cart/cart.html';
   static element: HTMLElement = document.createElement('section');
-  static cartList: CartItem[] = JSON.parse(localStorage.getItem('cart')!) || [];
+  static cartList: CartItem[] = [];
   static totalAmount = 0;
   static deliveryAmount = 100;
   static subTotalAmount = 0;
@@ -49,7 +49,6 @@ export default class Cart {
     this.cartList.push(cartItem);
     Header.updateCartCount();
     this.updateTotalPrice();
-    localStorage.setItem('cart', JSON.stringify(this.cartList));
   }
   static removeItem(menuItem: MenuItem) {
     const cartItem = this.cartList.find(
@@ -62,7 +61,6 @@ export default class Cart {
     menuItem.toggleButton();
     Header.updateCartCount();
     this.updateTotalPrice();
-    localStorage.setItem('cart', JSON.stringify(this.cartList));
   }
 
   static updateTotalPrice() {
@@ -75,6 +73,5 @@ export default class Cart {
       this.subTotalAmount += item.quantity * item.menuItem.price;
     });
     this.totalAmount = this.subTotalAmount + this.deliveryAmount;
-    this.render();
   }
 }

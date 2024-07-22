@@ -4,11 +4,9 @@ export default class RestaurantTitle {
   constructor(restaurantMenuName: string) {
     this.element = document.createElement('div');
     this.restaurantMenuName = restaurantMenuName;
-
-    this.init();
   }
 
-  init(): void {
+  init(): HTMLElement {
     this.element.classList.add('title-wrapper');
 
     const headingElement = document.createElement('h1');
@@ -20,5 +18,7 @@ export default class RestaurantTitle {
     spanElement.className = 'title-wrapper__heading-span';
     spanElement.textContent = 'menu';
     this.element.appendChild(spanElement);
+
+    return this.element;
   }
 }

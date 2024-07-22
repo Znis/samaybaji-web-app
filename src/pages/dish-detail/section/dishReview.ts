@@ -3,7 +3,7 @@ import { ICustomerReviewData } from '../../../interfaces/dishDetail';
 
 export default class DishReview {
   static htmlTemplateURL =
-    './assets/templates/pages/dish-detail/section/dish-review.html';
+    '/assets/templates/pages/dish-detail/section/dish-review.html';
   static element = document.createElement('section');
 
   static init(dishReviews: ICustomerReviewData[]): HTMLElement {

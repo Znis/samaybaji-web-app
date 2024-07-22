@@ -5,7 +5,7 @@ export default class CustomerReview {
   element: HTMLElement;
   customerReview: ICustomerReviewData;
   constructor(customerReview: ICustomerReviewData) {
-    this.url = './assets/templates/components/customer-review.html';
+    this.url = '/assets/templates/components/customer-review.html';
     this.element = document.createElement('div');
     this.customerReview = customerReview;
 

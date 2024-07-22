@@ -3,7 +3,7 @@ import { IDishDetailData } from '../../../interfaces/dishDetail';
 
 export default class DishInfo {
   static htmlTemplateURL =
-    './assets/templates/pages/dish-detail/section/dish-info.html';
+    '/assets/templates/pages/dish-detail/section/dish-info.html';
   static element = document.createElement('section');
 
   static init(dishDetailData: IDishDetailData): HTMLElement {

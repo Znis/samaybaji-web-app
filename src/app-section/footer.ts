@@ -1,5 +1,5 @@
 export default class Footer {
-  static htmlTemplateURL = './assets/templates/app-section/footer.html';
+  static htmlTemplateURL = '/assets/templates/app-section/footer.html';
   static element: HTMLElement = document.createElement('footer');
 
   static init(): HTMLElement {

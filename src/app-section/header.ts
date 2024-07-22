@@ -4,7 +4,7 @@ import Cart from '../pages/cart/cart.ts';
 import { navigate } from '../router.ts';
 
 export default class Header {
-  static htmlTemplateURL = './assets/templates/app-section/header.html';
+  static htmlTemplateURL = '/assets/templates/app-section/header.html';
   static element: HTMLElement = document.createElement('header');
 
   static init(): HTMLElement {
@@ -23,9 +23,12 @@ export default class Header {
     navLinks.forEach((navLink) => {
       navLink.addEventListener('click', (event) => {
         event.preventDefault();
+
         const href = navLink.getAttribute('href');
         history.pushState(null, '', href);
         navigate(href!);
+        window.scrollTo(0, 0);
+
         navLinks.forEach((navLink) => navLink.classList.remove('active'));
         navLink.classList.add('active');
       });

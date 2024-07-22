@@ -4,16 +4,16 @@ import { IMenuItemData } from '../../../../interfaces/menu';
 export default class RestaurantMenuList {
   element: HTMLElement;
   restaurantMenuData: IMenuItemData[];
-
   constructor(restaurantMenuData: IMenuItemData[]) {
     this.element = document.createElement('div');
     this.restaurantMenuData = restaurantMenuData;
-
-    this.init();
   }
-  init(): void {
+
+  init(): HTMLElement {
     this.element.classList.add('menu-list-wrapper');
     this.render();
+
+    return this.element;
   }
   render() {
     this.restaurantMenuData.forEach((item: IMenuItemData) => {

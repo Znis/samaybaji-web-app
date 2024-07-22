@@ -1,5 +1,5 @@
 export default class Rating {
-  static htmlTemplateURL: string = './assets/templates/components/rating.html';
+  static htmlTemplateURL: string = '/assets/templates/components/rating.html';
   static element: HTMLElement = document.createElement('div');
   static starMessages: string[] = [
     'Poor',

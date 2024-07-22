@@ -1,5 +1,6 @@
 import { ICartItemData } from '../interfaces/cart';
 import Cart from '../pages/cart/cart';
+import { navigate } from '../router';
 
 export default class MenuItem {
   id: string;
@@ -79,10 +80,11 @@ export default class MenuItem {
       this.button.innerHTML =
         'Remove from cart <i class="fas fa-shopping-cart"></i>';
     }
-    this.button.addEventListener('click', () => {
-      this.toggleButton();
+    this.button.addEventListener('click', (event) => {
+      event.stopPropagation();
       if (!this.isAddedToCart) {
         Cart.addItem(this);
+        this.toggleButton();
         this.isAddedToCart = true;
       } else {
         Cart.removeItem(this);
@@ -96,6 +98,12 @@ export default class MenuItem {
     infoWrapper.appendChild(priceDiv);
     this.element.appendChild(infoWrapper);
     this.element.appendChild(this.button);
+
+    this.element.addEventListener('click', () => {
+      history.pushState(null, '', '/dishdetail/1');
+      navigate('/dishdetail/1');
+      window.scrollTo(0, 0);
+    });
   }
 
   createIsPopularRibbon(): HTMLElement {
