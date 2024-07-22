@@ -1,4 +1,3 @@
-import { ICartItemData } from '../interfaces/cart';
 import Cart from '../pages/cart/cart';
 import { navigate } from '../router';
 

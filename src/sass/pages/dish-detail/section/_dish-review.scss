@@ -48,7 +48,7 @@
     max-height: 25rem;
     overflow-y: auto;
   }
-  &__review-input-wrapper{
+  &__review-input-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -56,7 +56,7 @@
     width: 100%;
     gap: 2rem;
   }
-  &__review-inputbox{
+  &__review-inputbox {
     width: 40%;
     height: 0;
     border: 1px solid #888;
@@ -66,33 +66,33 @@
     transition: height 0.5s ease-in-out;
     opacity: 0;
 
-    &::placeholder{
+    &::placeholder {
       color: #888;
     }
-    &.visible{
+    &.visible {
       height: 8rem;
       opacity: 1;
-      transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+      transition:
+        height 0.5s ease-in-out,
+        opacity 0.5s ease-in-out;
     }
   }
-  &__button-wrapper{
+  &__button-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 2rem;
 
-    .post-review{
+    .post-review {
       display: none;
       opacity: 0;
       height: 0;
-      
-      &.visible{
+
+      &.visible {
         display: block;
         height: auto;
         opacity: 1;
       }
     }
   }
-
-
 }
