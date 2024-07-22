@@ -1,0 +1,16 @@
+.error-page{
+&__image-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20rem;
+    width: 20rem;
+    margin: 0 auto;
+}
+&__image{
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+}
