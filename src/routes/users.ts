@@ -10,8 +10,9 @@ import {
   editUser,
   getUserByEmail,
 } from '../controller/users';
-import { authenticate, authorize } from '../middleware/authenticate';
+import { authenticate } from '../middleware/authenticate';
 import { validateReqBody, validateReqQuery } from '../middleware/validator';
+import { authorize } from '../middleware/authorize';
 
 const usersRouter = express();
 

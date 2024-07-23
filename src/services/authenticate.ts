@@ -8,9 +8,9 @@ import UserServices from './users';
 import AuthenticateModel from '../models/authenticate';
 import { ModelError } from '../error/modelError';
 
-const logger = loggerWithNameSpace('Auth Services');
+const logger = loggerWithNameSpace('Authentication Service');
 
-export default class AuthenticateServices {
+export default class AuthenticationService {
   static async login(body: Pick<IUser, 'email' | 'password'>) {
     const existingUser = await UserServices.getUserByEmail(body.email);
 
@@ -83,11 +83,6 @@ export default class AuthenticateServices {
     });
 
     return { accessToken: accessToken };
-  }
-
-  static async getAssignedPermission(userId: string) {
-    const permissions = await UserServices.getAssignedPermission(userId);
-    return permissions;
   }
 
   static async getRefreshToken(refreshTokenId: string) {

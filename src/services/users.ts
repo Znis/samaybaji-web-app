@@ -64,39 +64,4 @@ export default class UserServices {
     }
     return queryResult;
   }
-
-  static async getRoleId(userId: string) {
-    const data = await UserModel.getRoleId(userId);
-    if (!data) {
-      logger.error(`roleId of userId ${userId} not found`);
-      return null;
-    }
-    logger.info(`roleId of userId ${userId} found`);
-    return data.roleId;
-  }
-
-  static async getAssignedPermissionsForRole(roleId: string) {
-    const data = await UserModel.getAssignedPermissionsForRole(roleId);
-    if (!data) {
-      logger.error(`Assigned permissions for roleId ${roleId} not found`);
-      return null;
-    }
-    logger.info(`Assigned permissions for roleId ${roleId} found`);
-    return data.permissions;
-  }
-
-  static async getAssignedPermission(userId: string) {
-    logger.info(`Getting assigned permissions for user with userId ${userId}`);
-    const roleId = await this.getRoleId(userId);
-    if (!roleId!) {
-      logger.error(`roleId for user ${userId} not found`);
-      return [];
-    }
-    const permissions = await this.getAssignedPermissionsForRole(roleId!);
-    if (!permissions!) {
-      logger.error(`No any permission for user with userId ${userId}`);
-      return [];
-    }
-    return permissions!;
-  }
 }

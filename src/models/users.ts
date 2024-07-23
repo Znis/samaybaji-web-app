@@ -66,29 +66,4 @@ export default class UserModel extends BaseModel {
       return null;
     }
   }
-  static getRoleId(userId: string) {
-    try {
-      return this.queryBuilder()
-        .select('role_id')
-        .table('users_roles')
-        .where('user_id', userId)
-        .first();
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  }
-
-  static getAssignedPermissionsForRole(roleId: string) {
-    try {
-      return this.queryBuilder()
-        .select('permissions')
-        .from('roles_permissions')
-        .where('id', roleId)
-        .first();
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  }
 }
