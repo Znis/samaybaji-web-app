@@ -27,6 +27,7 @@
     "@types/pg": "^8.11.6",
     "@types/to-snake-case": "^1.0.2",
     "@types/typescript": "^2.0.0",
+    "@types/uuid": "^10.0.0",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^7.17.0",
     "@typescript-eslint/parser": "^7.17.0",
@@ -48,6 +49,7 @@
     "joi": "^17.13.3",
     "knex": "^3.1.0",
     "to-snake-case": "^1.0.0",
+    "uuid": "^10.0.0",
     "winston": "^3.13.1"
   }
 }
