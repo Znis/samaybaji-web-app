@@ -4,6 +4,6 @@ import authRouter from './authenticate';
 
 const router = express();
 
-router.use('/auth', authRouter);
+router.use('/authenticate', authRouter);
 
 export default router;
