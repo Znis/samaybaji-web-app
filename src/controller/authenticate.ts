@@ -20,11 +20,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 export async function refresh(req: Request, res: Response, next: NextFunction) {
   try {
     const { authorization } = req.headers;
-    const { userId } = req.body;
-    const authResponse = await AuthenticateService.refresh(
-      authorization,
-      userId,
-    );
+    const authResponse = await AuthenticateService.refresh(authorization);
     logger.info('New access token generated');
     return res.status(HttpStatusCode.OK).json(authResponse);
   } catch (error) {
