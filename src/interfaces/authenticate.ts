@@ -1,3 +1,6 @@
 import { Request as expressRequest } from 'express';
+import IUser from './user';
 
-export interface Request extends expressRequest {}
+export interface Request extends expressRequest {
+  user?: IUser;
+}
