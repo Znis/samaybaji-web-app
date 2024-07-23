@@ -6,22 +6,41 @@ import loggerWithNameSpace from '../utils/logger';
 
 const logger = loggerWithNameSpace('Users Controller');
 
+export async function getAllUsers(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const data = await UserService.getAllUsers();
+    if (!data) {
+      next(new BaseError('No Any User Found'));
+      return;
+    }
+    const users = data.map(({ passwordHash, ...user }) => user);
+    return res.status(HttpStatusCode.OK).json(users);
+  } catch (error) {
+    logger.error('User fetch failed');
+    next(error);
+  }
+}
+
 export async function getUserByEmail(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const body = req.body;
-    const data = await UserService.getUserByEmail(body.email);
+    const email = req.query.email as string;
+    const data = await UserService.getUserByEmail(email);
     if (!data) {
-      logger.error(`No user found with email ${body.email}`);
+      logger.error(`No user found with email ${email}`);
       next(new BaseError('No User Found'));
       return;
     }
-    logger.info(`User with email ${body.email} found`);
-    const { password, ...otherData } = data!;
-    return res.status(HttpStatusCode.OK).json(otherData);
+    logger.info(`User with email ${email} found`);
+    const { passwordHash, ...user } = data;
+    return res.status(HttpStatusCode.OK).json(user);
   } catch (error) {
     logger.error('User fetch failed');
     next(error);

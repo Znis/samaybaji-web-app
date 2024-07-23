@@ -15,18 +15,17 @@ export default class AuthorizationModel extends BaseModel {
   }
 
   static getAssignedPermissionsForRole(roleId: string) {
-    try {
-      return this.queryBuilder()
-        .join(
-          'permissions',
-          'roles_permissions.permission_id',
-          'permissions.id',
-        )
-        .where('roles_permissions.role_id', roleId)
-        .select('permissions.id', 'permissions.name');
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
+    return this.queryBuilder()
+      .from('roles_permissions')
+      .join('permissions', 'roles_permissions.permission_id', 'permissions.id')
+      .where('roles_permissions.role_id', roleId)
+      .select('permissions.name')
+      .then((permissions) => {
+        return permissions.map((permission) => permission.name);
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
   }
 }

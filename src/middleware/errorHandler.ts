@@ -7,6 +7,7 @@ import { ModelError } from '../error/modelError';
 import { SchemaError } from '../error/schemaError';
 import { ForbiddenError } from '../error/forbiddenError';
 import loggerWithNameSpace from '../utils/logger';
+import { BaseError } from '../error/baseError';
 
 const logger = loggerWithNameSpace('Error Handler Middleware');
 
@@ -54,9 +55,16 @@ export function genericErrorHandler(
       .status(HttpStatusCode.FORBIDDEN)
       .json({ message: error.message });
   }
+  if (error instanceof BaseError) {
+    logger.error('Base error');
+    return res
+      .status(HttpStatusCode.FORBIDDEN)
+      .json({ message: error.message });
+  }
 
   logger.error(error.message);
   return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
-    message: 'INTERNAL SERVER ERROR',
+    message: error.message,
+    // message: 'INTERNAL SERVER ERROR',
   });
 }

@@ -4,15 +4,16 @@ import AuthorizationService from '../services/authorize';
 import loggerWithNameSpace from '../utils/logger';
 import { NextFunction, Response } from 'express';
 import { Request } from '../interfaces/authenticate';
+import Roles from '../enums/roles';
 
 const logger = loggerWithNameSpace('Authorize Middleware');
 
 export function authorize(permission: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = req.user!;
+      const currentUser = req.user!;
       const permissions = await AuthorizationService.getAssignedPermission(
-        user.id!,
+        currentUser.id!,
       );
       if (!permissions!.includes(permission)) {
         logger.error('Operation not permitted');
@@ -25,4 +26,31 @@ export function authorize(permission: string) {
       next(new ModelError('Permission retrieval error'));
     }
   };
+}
+
+export async function authorizeUserEditOrDelete(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { id } = req.query;
+    const currentUser = req.user!;
+    const userRole = await AuthorizationService.getRoleId(currentUser.id!);
+
+    if (userRole == Roles.SUPERADMIN) {
+      return next();
+    }
+
+    if (userRole == Roles.CUSTOMER) {
+      if (currentUser.id !== id) {
+        logger.error('Customers can only edit or delete their own account');
+        next(new ForbiddenError('Forbidden'));
+        return;
+      }
+      next();
+    }
+  } catch (error) {
+    next(error);
+  }
 }

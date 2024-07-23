@@ -25,7 +25,6 @@ export default class AuthorizationService {
   }
 
   static async getAssignedPermission(userId: string) {
-    logger.info(`Getting assigned permissions for user with userId ${userId}`);
     const roleId = await this.getRoleId(userId);
     if (!roleId!) {
       logger.error(`roleId for user ${userId} not found`);

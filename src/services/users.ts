@@ -3,11 +3,19 @@ import UserModel from '../models/users';
 import Roles from '../enums/roles';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
-import IUser from '../interfaces/user';
+import IUser, { IUpdateUserData } from '../interfaces/user';
 
 const logger = loggerWithNameSpace('Users Service');
 const salt = 10;
 export default class UserServices {
+  static async getAllUsers() {
+    const data = await UserModel.getAllUsers();
+    if (!data) {
+      return null;
+    }
+    logger.info('All Users Found');
+    return data;
+  }
   static async getUserByEmail(email: string) {
     const data = await UserModel.getUserByEmail(email);
     if (!data) {
@@ -21,32 +29,34 @@ export default class UserServices {
   static async createUser(user: IUser) {
     const hashedPassword = await bcrypt.hash(user.password, salt);
     user.password = hashedPassword;
-    const queryResult: number[] = await UserModel.createUser(user)!;
+    const queryResult = await UserModel.createUser(user)!;
     if (!queryResult) {
       logger.error('Could not create new user');
       throw new ModelError('Could not create User');
     }
-    const newUser = await this.getUserByEmail(user.email);
 
-    await this.assignRole(newUser!.id!, Roles.CUSTOMER);
-    return user;
+    await this.assignRole(queryResult.id, Roles.CUSTOMER);
+    return { ...user, id: queryResult.id } as IUser;
   }
 
-  static async editUser(id: string, user: IUser) {
-    const hashedPassword = await bcrypt.hash(user.password, salt);
-    user.password = hashedPassword;
-    const queryResult: number = await UserModel.editUserById(id, user)!;
+  static async editUser(id: string, updateUserData: IUpdateUserData) {
+    if (updateUserData.password) {
+      const hashedPassword = await bcrypt.hash(updateUserData.password, salt);
+      updateUserData.passwordHash = hashedPassword;
+      delete updateUserData.password;
+    }
+    const queryResult = await UserModel.editUserById(id, updateUserData)!;
     if (!queryResult) {
       logger.error(`Editing user with id ${id} failed`);
       logger.error(`Could not edit user with id ${id}`);
       throw new ModelError('Could not edit User');
     }
 
-    return user;
+    return { ...updateUserData, id: queryResult.id } as IUpdateUserData;
   }
 
   static async deleteUser(id: string) {
-    const queryResult: number = await UserModel.deleteUserById(id)!;
+    const queryResult = await UserModel.deleteUserById(id)!;
     if (!queryResult) {
       logger.error(`Deleting user with id ${id} failed`);
       logger.error(`Could not delete user with id ${id}`);
@@ -56,7 +66,7 @@ export default class UserServices {
   }
 
   static async assignRole(userId: string, role: string) {
-    const queryResult: number[] = await UserModel.assignRole(userId, role)!;
+    const queryResult = await UserModel.assignRole(userId, role)!;
     if (!queryResult) {
       logger.error('Cannot insert the data in the database');
       logger.error(`Could not assign role to the user with id ${userId}`);
