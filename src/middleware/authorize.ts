@@ -4,7 +4,7 @@ import AuthorizationService from '../services/authorize';
 import loggerWithNameSpace from '../utils/logger';
 import { NextFunction, Response } from 'express';
 import { Request } from '../interfaces/authenticate';
-import Roles from '../enums/roles';
+import { Roles } from '../enums/roles';
 
 const logger = loggerWithNameSpace('Authorize Middleware');
 
@@ -28,23 +28,24 @@ export function authorize(permission: string) {
   };
 }
 
-export async function authorizeUserEditOrDelete(
+export async function authorizeUserCRUD(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const { id } = req.query;
+    const { id, email } = req.query;
     const currentUser = req.user!;
     const userRole = await AuthorizationService.getRoleId(currentUser.id!);
 
     if (userRole == Roles.SUPERADMIN) {
       return next();
     }
-
     if (userRole == Roles.CUSTOMER) {
-      if (currentUser.id !== id) {
-        logger.error('Customers can only edit or delete their own account');
+      if (currentUser.id !== id && currentUser.email !== email) {
+        logger.error(
+          'Customers can only perform CRUD operations on their own account',
+        );
         next(new ForbiddenError('Forbidden'));
         return;
       }

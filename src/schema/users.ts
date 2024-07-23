@@ -26,13 +26,15 @@ export const createUserBodySchema = joi.object({
   }),
   phoneNumber: joi
     .string()
-    .required()
     .min(minPhoneNumberLength)
     .max(maxPhoneNumberLength)
+    .pattern(/^\+?\d+$/)
+    .required()
     .messages({
       'any.required': 'Phone Number is required',
-      'string.min': 'Phone number must be at least 10 digits',
-      'string.max': 'Phone number must be at most 14 digits',
+      'string.pattern.base': 'Phone Number must be valid format',
+      'string.min': 'Phone Number must be at least 10 characters',
+      'string.max': 'Phone Number must be at most 14 characters',
     }),
 
   password: joi
@@ -76,13 +78,15 @@ export const editUserBodySchema = joi.object({
   }),
   phoneNumber: joi
     .string()
-    .optional()
     .min(minPhoneNumberLength)
     .max(maxPhoneNumberLength)
+    .pattern(/^\+?\d+$/)
+    .optional()
     .messages({
       'any.required': 'Phone Number is required',
-      'string.min': 'Phone number must be at least 10 digits',
-      'string.max': 'Phone number must be at most 14 digits',
+      'string.pattern.base': 'Phone Number must be valid format',
+      'string.min': 'Phone Number must be at least 10 characters',
+      'string.max': 'Phone Number must be at most 14 characters',
     }),
 
   password: joi

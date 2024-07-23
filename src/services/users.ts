@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import UserModel from '../models/users';
-import Roles from '../enums/roles';
+import { Roles } from '../enums/roles';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
 import IUser, { IUpdateUserData } from '../interfaces/user';
