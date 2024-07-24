@@ -3,7 +3,7 @@ export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('users_tokens', (table) => {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
     table.uuid('user_id').notNullable();
-    table.string('refresh_token').notNullable();
+    table.string('refresh_token', 500).notNullable();
     table.timestamp('expiry_time').notNullable();
 
     table

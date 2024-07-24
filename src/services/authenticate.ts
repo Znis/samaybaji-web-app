@@ -28,15 +28,15 @@ export default class AuthenticationService {
       );
       throw new UnauthenticatedError('Invalid Credentials');
     }
-    const payload = {
+    const userInfoPayload = {
       id: existingUser.id,
       name: existingUser.name,
       email: existingUser.email,
     };
-    const accessToken = sign(payload, config.jwt.secret!, {
+    const accessToken = sign(userInfoPayload, config.jwt.secret!, {
       expiresIn: config.jwt.accessTokenExpiryS,
     });
-    const refreshToken = sign(payload, config.jwt.secret!, {
+    const refreshToken = sign(userInfoPayload, config.jwt.secret!, {
       expiresIn: config.jwt.refreshTokenExpiryS,
     });
     const decoded = decode(refreshToken) as { exp: number };
@@ -48,41 +48,55 @@ export default class AuthenticationService {
       expiryTime,
     );
     logger.info('Generated Access Token and Refresh Token');
-    return { accessToken: accessToken, refreshToken: refreshTokenId };
+    return {
+      accessToken: accessToken,
+      refreshTokenId: refreshTokenId,
+      user: userInfoPayload,
+    };
   }
 
-  static async refresh(authorization: string | undefined) {
-    if (!authorization) {
-      logger.error('Authorization header not found');
-      throw new UnauthenticatedError('No Authorization Headers');
+  static async refresh(refreshTokenId: string | undefined) {
+    if (!refreshTokenId) {
+      logger.error('Refresh token Id not found');
+      throw new UnauthenticatedError('Refresh token Id not found');
     }
-    const token = authorization.split(' ');
 
-    if (token.length !== 2 || token[0] !== 'Bearer') {
-      logger.error('Refresh token not found');
-      throw new UnauthenticatedError('No Bearer Token');
-    }
-    const refreshToken = await this.getRefreshToken(token[1]);
+    const refreshToken = await this.getRefreshToken(refreshTokenId);
     if (!refreshToken) {
       logger.error('Refresh token not found');
       throw new UnauthenticatedError('Invalid Token');
     }
-    const verifiedData = jwt.verify(refreshToken, config.jwt.secret!) as IUser;
-    if (!verifiedData) {
-      logger.error('Refresh token invalid');
-      throw new UnauthenticatedError('Invalid Token');
+    try {
+      return jwt.verify(
+        refreshToken,
+        config.jwt.secret!,
+        (
+          err: jwt.VerifyErrors | null,
+          user: string | jwt.JwtPayload | undefined,
+        ) => {
+          if (err) {
+            if (err.name === 'TokenExpiredError') {
+              logger.error('Token Expired');
+              throw new UnauthenticatedError('Token Expired');
+            }
+            logger.error('Refresh token invalid');
+            throw new UnauthenticatedError('Invalid Token');
+          }
+          const decodedUser = user as IUser;
+          const payload = {
+            id: decodedUser.id,
+            name: decodedUser.name,
+            email: decodedUser.email,
+          };
+          const accessToken = sign(payload, config.jwt.secret!, {
+            expiresIn: config.jwt.accessTokenExpiryS,
+          });
+          return { accessToken: accessToken };
+        },
+      );
+    } catch {
+      logger.error('Token Verification failed');
     }
-
-    const payload = {
-      id: verifiedData.id,
-      name: verifiedData.name,
-      email: verifiedData.email,
-    };
-    const accessToken = sign(payload, config.jwt.secret!, {
-      expiresIn: config.jwt.accessTokenExpiryS,
-    });
-
-    return { accessToken: accessToken };
   }
 
   static async getRefreshToken(refreshTokenId: string) {

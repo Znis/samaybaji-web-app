@@ -21,15 +21,21 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
   }
 
   try {
-    const verifiedData = jwt.verify(token[1], config.jwt.secret!) as IUser;
-    if (!verifiedData) {
-      logger.error('Error verifying the authenticity of token');
-      next(new UnauthenticatedError('Unauthenticated'));
-      return;
-    }
-    req.user = verifiedData;
-
-    next();
+    return jwt.verify(token[1], config.jwt.secret!, (err, user) => {
+      if (err) {
+        if (err.name === 'TokenExpiredError') {
+          logger.error('Token Expired');
+          next(new UnauthenticatedError('Token Expired'));
+          return;
+        }
+        logger.error('Error verifying the authenticity of token');
+        next(new UnauthenticatedError('Unauthenticated'));
+        return;
+      }
+      const decodedUser = user as IUser;
+      req.user = decodedUser;
+      next();
+    });
   } catch {
     logger.error('Token Verification failed');
     next(new UnauthenticatedError('Unauthenticated'));
