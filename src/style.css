@@ -164,8 +164,47 @@ header {
   justify-content: space-between; }
   header .logo img {
     height: 3rem; }
+  header .navbar__dropdown {
+    position: relative;
+    display: none;
+    gap: 2rem; }
+    header .navbar__dropdown:hover .navbar__dropdown-content {
+      display: block; }
+  header .navbar__dropdown-content {
+    display: none;
+    position: absolute;
+    top: 3rem;
+    background-color: #f9f9f9;
+    min-width: 10rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1; }
+  header .navbar__dropdown-content-action {
+    color: black;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    display: block; }
+    header .navbar__dropdown-content-action:hover {
+      background-color: #dfdcdc; }
+  header .navbar__authenticated-user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: var(--brown); }
+  header .navbar__authenticated-user-icon {
+    font-size: 0.8rem; }
+  header .navbar__authenticated-user-name {
+    text-align: center;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    padding-right: 0.2rem; }
   header .navbar__button-wrapper {
     display: flex;
+    align-items: center;
     gap: 3rem;
     font-size: 1.4rem;
     color: var(--brown); }
@@ -175,13 +214,15 @@ header {
       color: #666; }
   header .navbar__cart-wrapper {
     position: relative;
+    display: flex;
+    align-items: center;
     height: 2rem;
     width: 2rem; }
   header .navbar__cart-count-circle {
     display: none;
     position: absolute;
-    top: -18px;
-    right: -16px;
+    top: -14px;
+    right: -14px;
     min-width: 1.4rem;
     height: 1.4rem;
     border-radius: 50%;

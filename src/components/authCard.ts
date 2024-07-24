@@ -1,11 +1,12 @@
-import { ResponseCode } from './../enums/responseCode';
 import { LoaderSpinner } from './loaderSpinner';
-import Toastify from 'toastify-js';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import intlTelInput from 'intl-tel-input';
 import Modal from './modal';
 import axios, { HttpStatusCode } from 'axios';
 import { userFormData } from '../interfaces/users';
+import { StateManagement } from '../state-management/stateManagement';
+import Toast from './toast';
+import { fetchAllUsers, login, makeApiCall, register } from '../apiCalls';
 export default class AuthCard {
   static element = document.createElement('div');
   static htmlTemplateURL = './assets/templates/components/auth-card.html';
@@ -191,15 +192,9 @@ export default class AuthCard {
           password: passwordInput.value,
           phoneNumber: phoneNumberInput.value,
         };
-        const response = await this.submitForm(
-          registerButton,
-          'register',
-          formData,
-        );
+        const response = await this.register(registerButton, formData);
 
-        if (response.status == ResponseCode.SUCCESS) {
-          console.log('yo');
-        } else {
+        if (response.status != HttpStatusCode.Accepted) {
           this.showError(registerResponseMessage, response.message);
         }
       }
@@ -233,12 +228,9 @@ export default class AuthCard {
           email: emailInput.value,
           password: passwordInput.value,
         };
-        const response = await this.submitForm(loginButton, 'login', formData);
-        console.log(response);
+        const response = await this.login(loginButton, formData);
 
-        if (response.status == HttpStatusCode.Accepted) {
-          console.log(response);
-        } else {
+        if (response.status != HttpStatusCode.Accepted) {
           this.showError(loginResponseMessage, response.message);
         }
       }
@@ -302,65 +294,62 @@ export default class AuthCard {
     element.textContent = '';
   }
 
-  static async submitForm(
+  static async login(
     formSubmissionButton: HTMLButtonElement,
-    type: string,
     formData: userFormData,
   ) {
     const spinner = LoaderSpinner.render();
-    if (type === 'login') {
-      formSubmissionButton.innerText = 'Logging In';
-    } else {
-      formSubmissionButton.innerText = 'Signing Up';
-    }
+    formSubmissionButton.innerText = 'Logging In';
     formSubmissionButton.classList.add('auth-card__button--loading');
     formSubmissionButton.appendChild(spinner);
 
     formSubmissionButton.disabled = true;
-    let apiEndpoint;
-    if (type === 'login') {
-      apiEndpoint = 'http://localhost:8000/authenticate/login';
-    } else {
-      apiEndpoint = 'http://localhost:8000/users/register';
-    }
-    return await axios
-      .post(apiEndpoint, formData)
-      .then((res) => {
+    return await login(formData)
+      .then((data) => {
         Modal.toggle();
-        Toastify({
-          text: 'User Logged In',
-          duration: 5000,
-          newWindow: true,
-          close: true,
-          gravity: 'bottom', // `top` or `bottom`
-          stopOnFocus: true, // Prevents dismissing of toast on hover
-          style: {
-            position: 'fixed',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '1rem',
-            padding: '1rem 2rem',
-            background: 'var(--brown)',
-            borderRadius: '1rem',
-            bottom: '5vh',
-            right: '2vw',
-            zIndex: '10',
-            color: 'white',
-          },
-        }).showToast();
-        return res.data;
+        StateManagement.state.accessToken = data.accessToken;
+        StateManagement.updateState('user', data.user);
+        Toast.show('User Logged In');
+
+        return data;
       })
       .catch((err) => {
-        return err.response.data;
+        return err;
       })
       .finally(() => {
         formSubmissionButton.disabled = false;
-        if (type === 'login') {
-          formSubmissionButton.innerText = 'Login';
-        } else {
-          formSubmissionButton.innerText = 'Register';
-        }
+        formSubmissionButton.innerText = 'Login';
+
+        spinner.remove();
+        formSubmissionButton.classList.remove('auth-card__button--loading');
+      });
+  }
+  static async register(
+    formSubmissionButton: HTMLButtonElement,
+    formData: userFormData,
+  ) {
+    const spinner = LoaderSpinner.render();
+
+    formSubmissionButton.innerText = 'Signing Up';
+
+    formSubmissionButton.classList.add('auth-card__button--loading');
+    formSubmissionButton.appendChild(spinner);
+
+    formSubmissionButton.disabled = true;
+
+    return await register(formData)
+      .then((data) => {
+        Modal.toggle();
+        Toast.show('User Logged In');
+        return data;
+      })
+      .catch((err) => {
+        return err;
+      })
+      .finally(() => {
+        formSubmissionButton.disabled = false;
+
+        formSubmissionButton.innerText = 'Register';
         spinner.remove();
         formSubmissionButton.classList.remove('auth-card__button--loading');
       });

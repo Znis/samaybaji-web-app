@@ -2,6 +2,8 @@ import AuthCard from '../components/authCard.ts';
 import Modal from '../components/modal.ts';
 import Cart from '../pages/cart/cart.ts';
 import { navigate } from '../router.ts';
+import { StateManagement } from '../state-management/stateManagement.ts';
+import Toast from '../components/toast.ts';
 
 export default class Header {
   static htmlTemplateURL = '/assets/templates/app-section/header.html';
@@ -12,10 +14,29 @@ export default class Header {
       .then((response: Response) => response.text())
       .then((html: string) => {
         this.element.innerHTML = html;
+        this.checkForAuthenticatedUser();
         this.setNavigationLinks();
         this.setupEventListeners();
       });
     return this.element;
+  }
+
+  static checkForAuthenticatedUser() {
+    if (!StateManagement.state.user) {
+      return;
+    }
+    const authenticationButton = this.element.querySelector(
+      '#authentication',
+    ) as HTMLButtonElement;
+    const authenticatedUserElement = this.element.querySelector(
+      '#authenticated-user',
+    ) as HTMLDivElement;
+    const authenticatedUserName = this.element.querySelector(
+      '.navbar__authenticated-user-name',
+    ) as HTMLParagraphElement;
+    authenticationButton.style.display = 'none';
+    authenticatedUserElement.style.display = 'inline-block';
+    authenticatedUserName.innerText = StateManagement.state.user.name;
   }
   static setupEventListeners() {
     const navLinks = document.querySelectorAll('.navbar__link');
@@ -37,8 +58,16 @@ export default class Header {
       Modal.toggle();
       document.querySelector('.modal')!.appendChild(AuthCard.init());
     });
+    this.element
+      .querySelector('#user-logout')
+      ?.addEventListener('click', () => {
+        this.logout();
+      });
   }
-
+  static logout(): void {
+    StateManagement.updateState('user', null);
+    Toast.show('User Logged Out');
+  }
   static setNavigationLinks(): void {
     const homeNav = this.element.querySelector(
       '#home-nav',
