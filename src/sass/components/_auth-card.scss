@@ -296,4 +296,13 @@ $serif: 'Lora', serif;
     font-size: 0.7rem;
     
   }
+  &__response-message{
+    height: 0.7rem;
+    width: 100%;
+    text-wrap: wrap;
+    color: orangered;
+    font-size: 0.7rem;
+    text-align: center;
+    
+  }
 }

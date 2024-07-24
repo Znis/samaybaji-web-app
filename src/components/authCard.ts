@@ -1,8 +1,10 @@
+import { ResponseCode } from './../enums/responseCode';
 import { LoaderSpinner } from './loaderSpinner';
+import Toastify from 'toastify-js';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import intlTelInput from 'intl-tel-input';
 import Modal from './modal';
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 import { userFormData } from '../interfaces/users';
 export default class AuthCard {
   static element = document.createElement('div');
@@ -71,7 +73,7 @@ export default class AuthCard {
       '#login-password-validate-error',
     ) as HTMLDivElement;
     const loginResponseMessage = this.element.querySelector(
-      '.auth-card__login-form-submission-response',
+      '#login-response-message',
     ) as HTMLDivElement;
     const fullNameError = this.element.querySelector(
       '#register-fullname-validate-error',
@@ -92,7 +94,7 @@ export default class AuthCard {
       '#register-tc-validate-error',
     ) as HTMLDivElement;
     const registerResponseMessage = this.element.querySelector(
-      '.auth-card__register-form-submission-response',
+      '#register-response-message',
     ) as HTMLDivElement;
     const loginButton = this.element.querySelector(
       '#login-button',
@@ -183,7 +185,6 @@ export default class AuthCard {
       }
 
       if (isValid) {
-        console.log('Form Submitted');
         const formData = {
           name: fullNameInput.value,
           email: emailInput.value,
@@ -195,7 +196,12 @@ export default class AuthCard {
           'register',
           formData,
         );
-        console.log(response);
+
+        if (response.status == ResponseCode.SUCCESS) {
+          console.log('yo');
+        } else {
+          this.showError(registerResponseMessage, response.message);
+        }
       }
     });
 
@@ -223,13 +229,18 @@ export default class AuthCard {
       }
 
       if (isValid) {
-        console.log('Form Submitted');
         const formData = {
           email: emailInput.value,
           password: passwordInput.value,
         };
         const response = await this.submitForm(loginButton, 'login', formData);
         console.log(response);
+
+        if (response.status == HttpStatusCode.Accepted) {
+          console.log(response);
+        } else {
+          this.showError(loginResponseMessage, response.message);
+        }
       }
     });
   }
@@ -297,37 +308,61 @@ export default class AuthCard {
     formData: userFormData,
   ) {
     const spinner = LoaderSpinner.render();
-    try {
-      if (type === 'login') {
-        formSubmissionButton.innerText = 'Logging In';
-      } else {
-        formSubmissionButton.innerText = 'Signing Up';
-      }
-      formSubmissionButton.classList.add('auth-card__button--loading');
-      formSubmissionButton.appendChild(spinner);
-
-      formSubmissionButton.disabled = true;
-      let apiEndpoint;
-      if (type === 'login') {
-        apiEndpoint = 'http://localhost:8000/authenticate/login';
-      } else {
-        apiEndpoint = 'http://localhost:8000/users/register';
-      }
-      const response = await axios.post(apiEndpoint, formData);
-      console.log('Login successful', response.data);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      return error;
-    } finally {
-      formSubmissionButton.disabled = false;
-      if (type === 'login') {
-        formSubmissionButton.innerText = 'Login';
-      } else {
-        formSubmissionButton.innerText = 'Register';
-      }
-      spinner.remove();
-      formSubmissionButton.classList.remove('auth-card__button--loading');
+    if (type === 'login') {
+      formSubmissionButton.innerText = 'Logging In';
+    } else {
+      formSubmissionButton.innerText = 'Signing Up';
     }
+    formSubmissionButton.classList.add('auth-card__button--loading');
+    formSubmissionButton.appendChild(spinner);
+
+    formSubmissionButton.disabled = true;
+    let apiEndpoint;
+    if (type === 'login') {
+      apiEndpoint = 'http://localhost:8000/authenticate/login';
+    } else {
+      apiEndpoint = 'http://localhost:8000/users/register';
+    }
+    return await axios
+      .post(apiEndpoint, formData)
+      .then((res) => {
+        Modal.toggle();
+        Toastify({
+          text: 'User Logged In',
+          duration: 5000,
+          newWindow: true,
+          close: true,
+          gravity: 'bottom', // `top` or `bottom`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            position: 'fixed',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '1rem',
+            padding: '1rem 2rem',
+            background: 'var(--brown)',
+            borderRadius: '1rem',
+            bottom: '5vh',
+            right: '2vw',
+            zIndex: '10',
+            color: 'white',
+          },
+        }).showToast();
+        return res.data;
+      })
+      .catch((err) => {
+        return err.response.data;
+      })
+      .finally(() => {
+        formSubmissionButton.disabled = false;
+        if (type === 'login') {
+          formSubmissionButton.innerText = 'Login';
+        } else {
+          formSubmissionButton.innerText = 'Register';
+        }
+        spinner.remove();
+        formSubmissionButton.classList.remove('auth-card__button--loading');
+      });
   }
 }

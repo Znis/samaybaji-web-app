@@ -19,7 +19,10 @@
           placeholder="Full Name"
           id="register-fullname"
         />
-        <div class="auth-card__error-message" id="register-fullname-validate-error"></div>
+        <div
+          class="auth-card__error-message"
+          id="register-fullname-validate-error"
+        ></div>
         <input
           type="email"
           maxlength="50"
@@ -28,7 +31,10 @@
           placeholder="Email"
           class="auth-card__input"
         />
-        <div class="auth-card__error-message" id="register-email-validate-error"></div>
+        <div
+          class="auth-card__error-message"
+          id="register-email-validate-error"
+        ></div>
         <div class="auth-card__password-input-wrapper">
           <input
             class="auth-card__input"
@@ -37,21 +43,27 @@
             type="password"
             placeholder="Password"
             pattern="(.{4,})"
-            title="Must contain at least 8 or more characters"
+            title="Must contain at least 4 or more characters"
           />
           <i
             class="fa-solid fa-eye auth-card__password-toggle-icon"
             name="toggle-password"
           ></i>
         </div>
-        <div class="auth-card__error-message" id="register-password-validate-error"></div>
+        <div
+          class="auth-card__error-message"
+          id="register-password-validate-error"
+        ></div>
         <input
           class="auth-card__input"
           type="password"
           placeholder="Confirm Password"
           id="register-confirm-password"
         />
-        <div class="auth-card__error-message" id="register-confirm-password-validate-error"></div>
+        <div
+          class="auth-card__error-message"
+          id="register-confirm-password-validate-error"
+        ></div>
         <input
           class="auth-card__input"
           id="register-phone"
@@ -59,7 +71,10 @@
           placeholder="Mobile Number"
           type="tel"
         />
-        <div class="auth-card__error-message" id="register-phone-validate-error"></div>
+        <div
+          class="auth-card__error-message"
+          id="register-phone-validate-error"
+        ></div>
         <div class="auth-card__checkbox">
           <input
             class="auth-card__checkbox-input"
@@ -71,11 +86,17 @@
             Agree to all the <a>Terms & Conditions</a></label
           >
         </div>
-        <div class="auth-card__error-message" id="register-tc-validate-error"></div>
-        <button class="auth-card__button auth-card__button--submit" id="register-button">
+        <div
+          class="auth-card__error-message"
+          id="register-tc-validate-error"
+        ></div>
+        <button
+          class="auth-card__button auth-card__button--submit"
+          id="register-button"
+        >
           Register
         </button>
-        <div class="auth-card__register-form-submission-response"></div>
+        <div class="auth-card__response-message" id="register-response-message"></div>
       </form>
     </div>
     <div class="auth-card__form auth-card__form--signin">
@@ -91,9 +112,12 @@
           id="login-email"
           placeholder="Email"
           class="auth-card__input"
-         
+          value="admin@admin.com"
         />
-        <div class="auth-card__error-message" id="login-email-validate-error"></div>
+        <div
+          class="auth-card__error-message"
+          id="login-email-validate-error"
+        ></div>
         <div class="auth-card__password-input-wrapper">
           <input
             class="auth-card__input"
@@ -101,17 +125,19 @@
             type="password"
             id="login-password"
             placeholder="Password"
-            pattern="(.{8,})"
-            title="Must contain at least 8 or more characters"
-           
+            pattern="(.{4,})"
+            title="Must contain at least 4 or more characters"
+            value="Admin$"
           />
           <i
             class="fa-solid fa-eye auth-card__password-toggle-icon"
             name="toggle-password"
           ></i>
         </div>
-        <div class="auth-card__error-message" id="login-password-validate-error"></div>
-
+        <div
+          class="auth-card__error-message"
+          id="login-password-validate-error"
+        ></div>
 
         <div class="auth-card__checkbox">
           <input
@@ -125,10 +151,13 @@
           >
         </div>
         <p class="auth-card__forgot-password">Forgot Password?</p>
-        <button class="auth-card__button auth-card__button--submit" id="login-button">
+        <button
+          class="auth-card__button auth-card__button--submit"
+          id="login-button"
+        >
           Login
         </button>
-        <div class="auth-card__login-form-submission-response"></div>
+        <div class="auth-card__response-message" id="login-response-message"></div>
       </form>
       <div class="auth-card__divider">
         <div class="auth-card__horizontal-line"></div>
