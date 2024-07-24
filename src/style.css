@@ -528,25 +528,30 @@ body.open .modal {
     background: #f6f6f6;
     color: var(--brown);
     border: solid 1px #f5deb3;
-    max-width: 8rem;
+    width: 10rem;
     text-align: center;
     font-family: "Open Sans", sans-serif;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     font-size: 11px;
     border-radius: 10px;
     outline: none;
-    display: block;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
     padding: 0.8rem;
     cursor: pointer; }
-    .auth-card__button:hover {
+    .auth-card__button--loading {
+      opacity: 0.8; }
+    .auth-card__button:hover:enabled {
       background: #f5deb3;
       color: #888;
       transition: background-color 0.5s ease-out; }
     .auth-card__button--submit {
       border-color: var(--brown);
       align-self: center; }
-      .auth-card__button--submit:hover {
+      .auth-card__button--submit:hover:enabled {
         background: #cbc0d3;
         border-color: #bfb1c9; }
     .auth-card__button--switch {
@@ -557,7 +562,7 @@ body.open .modal {
     display: flex;
     flex-direction: column;
     margin: 1rem 0;
-    gap: 1rem; }
+    gap: 0.5rem; }
   .auth-card__input {
     width: 100%;
     background: #f5deb3;
@@ -798,6 +803,29 @@ body.open .modal {
     transition: transform 0.3s; }
     .rating__star:hover {
       transform: scale(1.1); }
+
+.loading-spinner {
+  border: 10px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 10px solid var(--brown);
+  width: 10px;
+  height: 10px;
+  -webkit-animation: spin 2s linear infinite;
+  /* Safari */
+  animation: spin 2s linear infinite; }
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg); } }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
 
 .hero {
   display: flex;

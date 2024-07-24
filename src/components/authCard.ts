@@ -1,3 +1,4 @@
+import { LoaderSpinner } from './loaderSpinner';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import intlTelInput from 'intl-tel-input';
 import Modal from './modal';
@@ -91,8 +92,11 @@ export default class AuthCard {
     const registerResponseMessage = this.element.querySelector(
       '.auth-card__register-form-submission-response',
     ) as HTMLDivElement;
-    const formSubmissionButton = this.element.querySelector(
-      '.auth-card__button auth-card__button--submit',
+    const loginButton = this.element.querySelector(
+      '#login-button',
+    ) as HTMLButtonElement;
+    const registerButton = this.element.querySelector(
+      '#register-button',
     ) as HTMLButtonElement;
     if (
       signupButton &&
@@ -128,15 +132,14 @@ export default class AuthCard {
       });
     }
 
-    const input = document.querySelector('#phone') as HTMLInputElement;
+    const input = document.querySelector('#register-phone') as HTMLInputElement;
     intlTelInput(input, {
       initialCountry: 'np',
       utilsScript: "'node_modules/intl-tel-input/build/js/utils.js'",
     });
 
-    signupForm.addEventListener('submit', (event: Event) => {
+    signupForm.addEventListener('submit', async (event: Event) => {
       event.preventDefault();
-
       this.clearError(fullNameError);
       this.clearError(registerEmailError);
       this.clearError(registerPasswordError);
@@ -179,10 +182,11 @@ export default class AuthCard {
 
       if (isValid) {
         console.log('Form Submitted');
+        this.submitForm(registerButton, 'register');
       }
     });
 
-    signinForm.addEventListener('submit', (event: Event) => {
+    signinForm.addEventListener('submit', async (event: Event) => {
       event.preventDefault();
 
       this.clearError(emailError);
@@ -191,6 +195,10 @@ export default class AuthCard {
 
       let isValid = true;
 
+      const existingSpinner = loginButton.querySelector('.loading-spinner');
+      if (existingSpinner) {
+        existingSpinner.remove();
+      }
       if (!this.validateEmail(emailInput.value)) {
         this.showError(emailError, 'Please enter a valid email.');
         isValid = false;
@@ -203,10 +211,40 @@ export default class AuthCard {
 
       if (isValid) {
         console.log('Form Submitted');
+        this.submitForm(loginButton, 'login');
       }
     });
   }
 
+  static submitForm(formSubmissionButton: HTMLButtonElement, type: string) {
+    try {
+      const spinner = LoaderSpinner.render();
+      if (type === 'login') {
+        formSubmissionButton.innerText = 'Logging In';
+      } else {
+        formSubmissionButton.innerText = 'Signing Up';
+      }
+      formSubmissionButton.classList.add('auth-card__button--loading');
+      formSubmissionButton.appendChild(spinner);
+
+      formSubmissionButton.disabled = true;
+
+      setTimeout(() => {
+        formSubmissionButton.disabled = false;
+        if (type === 'login') {
+          formSubmissionButton.innerText = 'Login';
+        } else {
+          formSubmissionButton.innerText = 'Register';
+        }
+        spinner.remove();
+        formSubmissionButton.classList.remove('auth-card__button--loading');
+
+        console.log('Form Submitted');
+      }, 20000);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   static togglePasswordVisibility() {
     const passwordVisibility = document.getElementsByName('toggle-password');
     const passwordInput = document.getElementsByName('password-field');
