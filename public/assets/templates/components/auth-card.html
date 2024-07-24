@@ -16,63 +16,66 @@
         <input
           class="auth-card__input"
           type="text"
-          placeholder="Username"
-          id="username"
-          required
+          placeholder="Full Name"
+          id="register-fullname"
         />
+        <div class="auth-card__error-message" id="register-fullname-validate-error"></div>
         <input
           type="email"
           maxlength="50"
           name="email-field"
-          id="email-field-register"
+          id="register-email"
           placeholder="Email"
           class="auth-card__input"
-          required
         />
+        <div class="auth-card__error-message" id="register-email-validate-error"></div>
         <div class="auth-card__password-input-wrapper">
           <input
             class="auth-card__input"
-            id="password-register"
+            id="register-password"
             name="password-field"
             type="password"
             placeholder="Password"
-            pattern="(.{8,})"
+            pattern="(.{4,})"
             title="Must contain at least 8 or more characters"
-            required
           />
           <i
             class="fa-solid fa-eye auth-card__password-toggle-icon"
             name="toggle-password"
           ></i>
         </div>
+        <div class="auth-card__error-message" id="register-password-validate-error"></div>
         <input
           class="auth-card__input"
           type="password"
           placeholder="Confirm Password"
-          required
+          id="register-confirm-password"
         />
+        <div class="auth-card__error-message" id="register-confirm-password-validate-error"></div>
         <input
           class="auth-card__input"
-          id="phone"
+          id="register-phone"
           name="phonenumber"
           placeholder="Mobile Number"
           type="tel"
-          required
         />
+        <div class="auth-card__error-message" id="register-phone-validate-error"></div>
         <div class="auth-card__checkbox">
           <input
             class="auth-card__checkbox-input"
             type="checkbox"
-            id="terms-conditions"
+            id="register-terms-conditions"
             name="terms-conditions"
           />
           <label class="auth-card__checkbox-label" for="terms-conditions">
             Agree to all the <a>Terms & Conditions</a></label
           >
         </div>
+        <div class="auth-card__error-message" id="register-tc-validate-error"></div>
         <button class="auth-card__button auth-card__button--submit">
           Register
         </button>
+        <div class="auth-card__register-form-submission-response"></div>
       </form>
     </div>
     <div class="auth-card__form auth-card__form--signin">
@@ -85,27 +88,30 @@
           type="email"
           maxlength="50"
           name="email-field"
-          id="email-field-login"
+          id="login-email"
           placeholder="Email"
           class="auth-card__input"
-          required
+         
         />
+        <div class="auth-card__error-message" id="login-email-validate-error"></div>
         <div class="auth-card__password-input-wrapper">
           <input
             class="auth-card__input"
             name="password-field"
             type="password"
-            id="password-login"
+            id="login-password"
             placeholder="Password"
             pattern="(.{8,})"
             title="Must contain at least 8 or more characters"
-            required
+           
           />
           <i
             class="fa-solid fa-eye auth-card__password-toggle-icon"
             name="toggle-password"
           ></i>
         </div>
+        <div class="auth-card__error-message" id="login-password-validate-error"></div>
+
 
         <div class="auth-card__checkbox">
           <input
@@ -122,6 +128,7 @@
         <button class="auth-card__button auth-card__button--submit">
           Login
         </button>
+        <div class="auth-card__login-form-submission-response"></div>
       </form>
       <div class="auth-card__divider">
         <div class="auth-card__horizontal-line"></div>

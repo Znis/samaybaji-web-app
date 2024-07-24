@@ -189,7 +189,6 @@ $serif: 'Lora', serif;
   &__form-content {
     display: flex;
     flex-direction: column;
-    padding: 0.5rem;
     margin: 1rem 0;
     gap: 1rem;
   }
@@ -283,5 +282,13 @@ $serif: 'Lora', serif;
     &:hover {
       color: #111;
     }
+  }
+  &__error-message{
+    height: 0.7rem;
+    width: 100%;
+    text-wrap: wrap;
+    color: orangered;
+    font-size: 0.7rem;
+    
   }
 }
