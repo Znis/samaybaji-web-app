@@ -2,6 +2,8 @@ import { LoaderSpinner } from './loaderSpinner';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import intlTelInput from 'intl-tel-input';
 import Modal from './modal';
+import axios from 'axios';
+import { userFormData } from '../interfaces/users';
 export default class AuthCard {
   static element = document.createElement('div');
   static htmlTemplateURL = './assets/templates/components/auth-card.html';
@@ -182,7 +184,18 @@ export default class AuthCard {
 
       if (isValid) {
         console.log('Form Submitted');
-        this.submitForm(registerButton, 'register');
+        const formData = {
+          name: fullNameInput.value,
+          email: emailInput.value,
+          password: passwordInput.value,
+          phoneNumber: phoneNumberInput.value,
+        };
+        const response = await this.submitForm(
+          registerButton,
+          'register',
+          formData,
+        );
+        console.log(response);
       }
     });
 
@@ -211,40 +224,16 @@ export default class AuthCard {
 
       if (isValid) {
         console.log('Form Submitted');
-        this.submitForm(loginButton, 'login');
+        const formData = {
+          email: emailInput.value,
+          password: passwordInput.value,
+        };
+        const response = await this.submitForm(loginButton, 'login', formData);
+        console.log(response);
       }
     });
   }
 
-  static submitForm(formSubmissionButton: HTMLButtonElement, type: string) {
-    try {
-      const spinner = LoaderSpinner.render();
-      if (type === 'login') {
-        formSubmissionButton.innerText = 'Logging In';
-      } else {
-        formSubmissionButton.innerText = 'Signing Up';
-      }
-      formSubmissionButton.classList.add('auth-card__button--loading');
-      formSubmissionButton.appendChild(spinner);
-
-      formSubmissionButton.disabled = true;
-
-      setTimeout(() => {
-        formSubmissionButton.disabled = false;
-        if (type === 'login') {
-          formSubmissionButton.innerText = 'Login';
-        } else {
-          formSubmissionButton.innerText = 'Register';
-        }
-        spinner.remove();
-        formSubmissionButton.classList.remove('auth-card__button--loading');
-
-        console.log('Form Submitted');
-      }, 20000);
-    } catch (error) {
-      console.log(error);
-    }
-  }
   static togglePasswordVisibility() {
     const passwordVisibility = document.getElementsByName('toggle-password');
     const passwordInput = document.getElementsByName('password-field');
@@ -300,5 +289,45 @@ export default class AuthCard {
 
   static clearError(element: HTMLDivElement) {
     element.textContent = '';
+  }
+
+  static async submitForm(
+    formSubmissionButton: HTMLButtonElement,
+    type: string,
+    formData: userFormData,
+  ) {
+    const spinner = LoaderSpinner.render();
+    try {
+      if (type === 'login') {
+        formSubmissionButton.innerText = 'Logging In';
+      } else {
+        formSubmissionButton.innerText = 'Signing Up';
+      }
+      formSubmissionButton.classList.add('auth-card__button--loading');
+      formSubmissionButton.appendChild(spinner);
+
+      formSubmissionButton.disabled = true;
+      let apiEndpoint;
+      if (type === 'login') {
+        apiEndpoint = 'http://localhost:8000/authenticate/login';
+      } else {
+        apiEndpoint = 'http://localhost:8000/users/register';
+      }
+      const response = await axios.post(apiEndpoint, formData);
+      console.log('Login successful', response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return error;
+    } finally {
+      formSubmissionButton.disabled = false;
+      if (type === 'login') {
+        formSubmissionButton.innerText = 'Login';
+      } else {
+        formSubmissionButton.innerText = 'Register';
+      }
+      spinner.remove();
+      formSubmissionButton.classList.remove('auth-card__button--loading');
+    }
   }
 }
