@@ -8,7 +8,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('location').notNullable();
     table.string('contact_number').notNullable();
     table.string('open_hours').notNullable();
-    table.integer('rating').notNullable();
+    table.integer('rating').nullable();
     table.string('profile_pic').nullable();
     table.string('cover_pic').nullable();
     table.string('pan_number').notNullable().unique();

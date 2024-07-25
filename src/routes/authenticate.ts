@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, refresh } from '../controller/authenticate';
+import { login, refresh } from '../controllers/authenticate';
 import { validateReqBody } from '../middleware/validator';
 import { loginBodySchema } from '../schema/authenticate';
 

@@ -12,7 +12,7 @@ import {
   editUser,
   getAllUsers,
   getUserByEmail,
-} from '../controller/users';
+} from '../controllers/users';
 import { authenticate } from '../middleware/authenticate';
 import { validateReqBody, validateReqQuery } from '../middleware/validator';
 import { authorize, authorizeUserCRUD } from '../middleware/authorize';
