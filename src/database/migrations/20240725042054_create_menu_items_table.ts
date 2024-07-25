@@ -7,6 +7,15 @@ export async function up(knex: Knex): Promise<void> {
     table.string('portion').nullable();
     table.integer('price').notNullable();
     table.string('image_src').notNullable();
+    table.boolean('is_popular').notNullable().defaultTo(false);
+    table.uuid('menu_id').notNullable();
+    table.enu('type', ['Veg', 'Non-Veg', 'Liquor']).notNullable();
+    table.enu('status', ['In Stock', 'Out of Stock']).notNullable();
+    table
+      .foreign('menu_id')
+      .references('id')
+      .inTable('menus')
+      .onDelete('CASCADE');
   });
 }
 
