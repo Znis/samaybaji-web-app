@@ -5,6 +5,7 @@ import loggerWithNameSpace from '../utils/logger';
 import { NextFunction, Response } from 'express';
 import { Request } from '../interfaces/authenticate';
 import { Roles } from '../enums/roles';
+import { SchemaError } from '../error/schemaError';
 
 const logger = loggerWithNameSpace('Authorize Middleware');
 
@@ -34,23 +35,18 @@ export async function authorizeCRUD(
   next: NextFunction,
 ) {
   try {
-    const { userID, email } = req.query;
     const currentUser = req.user!;
     const userRole = await AuthorizationService.getRoleId(currentUser.id!);
 
     if (userRole == Roles.SUPERADMIN) {
+      const userID = req.query.userID;
+      if (!userID) {
+        return next(new SchemaError('UserID is required'));
+      }
       return next();
     }
-    if (userRole == Roles.CUSTOMER) {
-      if (currentUser.id !== userID && currentUser.email !== email) {
-        logger.error(
-          'Customers can perform CRUD operations on their own profile only',
-        );
-        next(new ForbiddenError('Forbidden'));
-        return;
-      }
-      next();
-    }
+    req.query.userID = currentUser.id;
+    next();
   } catch (error) {
     next(error);
   }

@@ -26,20 +26,20 @@ export async function getAllRestaurants(
   }
 }
 
-export async function getRestaurantByUserEmail(
+export async function getRestaurant(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const email = req.query.email as string;
-    const restaurant = await RestaurantService.getRestaurantByUserEmail(email);
+    const userID = req.query.userID as string;
+    const restaurant = await RestaurantService.getRestaurant(userID);
     if (!restaurant) {
-      logger.error(`No restaurant found with email ${email}`);
+      logger.error(`No restaurant found with userID ${userID}`);
       next(new BaseError('No Restaurant Found'));
       return;
     }
-    logger.info(`Restaurant with email ${email} found`);
+    logger.info(`Restaurant with userID ${userID} found`);
     return res.status(HttpStatusCode.OK).json(restaurant);
   } catch (error) {
     logger.error('Restaurant fetch failed');

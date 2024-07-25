@@ -5,8 +5,7 @@ import IRestaurant, { IEditRestaurantData } from '../interfaces/restaurant';
 import UserServices from './users';
 import { Roles } from '../enums/roles';
 
-const logger = loggerWithNameSpace('Users Service');
-const salt = 10;
+const logger = loggerWithNameSpace('Restaurant Service');
 export default class RestaurantServices {
   static async getAllRestaurants() {
     const restaurants = await RestaurantModel.getAllRestaurants();
@@ -16,13 +15,13 @@ export default class RestaurantServices {
     logger.info('All Restaurants Found');
     return restaurants;
   }
-  static async getRestaurantByUserEmail(email: string) {
-    const restaurant = await RestaurantModel.getRestaurantByUserEmail(email);
+  static async getRestaurant(userID: string) {
+    const restaurant = await RestaurantModel.getRestaurant(userID);
     if (!restaurant) {
-      logger.error(`Restaurant with email ${email} not found`);
+      logger.error(`Restaurant with userID ${userID} not found`);
       return null;
     }
-    logger.info(`Restaurant with email ${email} found`);
+    logger.info(`Restaurant with userID ${userID} found`);
     return restaurant;
   }
 

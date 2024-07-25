@@ -17,12 +17,12 @@ export default class RestaurantModel extends BaseModel {
         return null;
       });
   }
-  static getRestaurantByUserEmail(email: string) {
+  static getRestaurant(userID: string) {
     return this.queryBuilder()
       .select('restaurants.*')
       .from('restaurants')
       .join('users', 'restaurants.user_id', 'users.id')
-      .where('users.email', email)
+      .where('users.id', userID)
       .first()
       .then((data) => {
         return data;

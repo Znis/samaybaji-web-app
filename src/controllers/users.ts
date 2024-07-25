@@ -25,20 +25,16 @@ export async function getAllUsers(
   }
 }
 
-export async function getUserByEmail(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) {
+export async function getUser(req: Request, res: Response, next: NextFunction) {
   try {
-    const email = req.query.email as string;
-    const data = await UserService.getUserByEmail(email);
+    const userID = req.query.userID as string;
+    const data = await UserService.getUser(userID);
     if (!data) {
-      logger.error(`No user found with email ${email}`);
+      logger.error(`No user found with userID ${userID}`);
       next(new BaseError('No User Found'));
       return;
     }
-    logger.info(`User with email ${email} found`);
+    logger.info(`User with userID ${userID} found`);
     const { passwordHash, ...user } = data;
     return res.status(HttpStatusCode.OK).json(user);
   } catch (error) {

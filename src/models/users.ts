@@ -14,6 +14,20 @@ export default class UserModel extends BaseModel {
         return null;
       });
   }
+  static getUser(userID: string) {
+    return this.queryBuilder()
+      .select('*')
+      .from('users')
+      .where('id', userID)
+      .first()
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+  }
   static getUserByEmail(email: string) {
     return this.queryBuilder()
       .select('*')

@@ -1,9 +1,4 @@
-import {
-  createUserBodySchema,
-  editOrdeleteUserQuerySchema,
-  editUserBodySchema,
-  getUserByEmailQuerySchema,
-} from './../schema/users';
+import { createUserBodySchema, editUserBodySchema } from './../schema/users';
 import { Permissions } from './../enums/permissions';
 import express from 'express';
 import {
@@ -11,10 +6,10 @@ import {
   deleteUser,
   editUser,
   getAllUsers,
-  getUserByEmail,
+  getUser,
 } from '../controllers/users';
 import { authenticate } from '../middleware/authenticate';
-import { validateReqBody, validateReqQuery } from '../middleware/validator';
+import { validateReqBody } from '../middleware/validator';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 
 const usersRouter = express();
@@ -22,17 +17,16 @@ const usersRouter = express();
 usersRouter.get(
   '/',
   authenticate,
-  authorize(Permissions.VIEW_USER),
+  authorize(Permissions.VIEW_ALL_USER),
   authorizeCRUD,
   getAllUsers,
 );
 usersRouter.post(
   '/',
-  validateReqQuery(getUserByEmailQuerySchema),
   authenticate,
   authorize(Permissions.VIEW_USER),
   authorizeCRUD,
-  getUserByEmail,
+  getUser,
 );
 
 usersRouter.post(
@@ -43,7 +37,6 @@ usersRouter.post(
 
 usersRouter.patch(
   '/edit/',
-  validateReqQuery(editOrdeleteUserQuerySchema),
   validateReqBody(editUserBodySchema),
   authenticate,
   authorize(Permissions.EDIT_USER),
@@ -53,7 +46,6 @@ usersRouter.patch(
 
 usersRouter.delete(
   '/delete/',
-  validateReqQuery(editOrdeleteUserQuerySchema),
   authenticate,
   authorize(Permissions.DELETE_USER),
   authorizeCRUD,

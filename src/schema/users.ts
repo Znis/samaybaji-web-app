@@ -4,17 +4,6 @@ const minPasswordLength = 4;
 const minPhoneNumberLength = 10;
 const maxPhoneNumberLength = 14;
 
-export const getUserByEmailQuerySchema = joi
-  .object({
-    email: joi.string().email().required().messages({
-      'any.required': 'Email is required',
-      'string.email': 'Email must be valid format',
-    }),
-  })
-  .options({
-    stripUnknown: true,
-  });
-
 export const createUserBodySchema = joi.object({
   name: joi.string().required().messages({
     'any.required': 'Name is required',
@@ -120,9 +109,9 @@ export const editUserBodySchema = joi.object({
     }),
 });
 
-export const editOrdeleteUserQuerySchema = joi
+export const userIDQuerySchema = joi
   .object({
-    userID: joi.string().required().messages({
+    userID: joi.string().optional().messages({
       'any.required': 'User ID is required',
     }),
   })

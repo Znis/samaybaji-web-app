@@ -16,6 +16,16 @@ export default class UserServices {
     logger.info('All Users Found');
     return data;
   }
+  static async getUser(userID: string) {
+    const data = await UserModel.getUser(userID);
+    if (!data) {
+      logger.error(`User with id ${userID} not found`);
+      return null;
+    }
+    logger.info(`User with id ${userID} found`);
+    return data;
+  }
+
   static async getUserByEmail(email: string) {
     const data = await UserModel.getUserByEmail(email);
     if (!data) {
@@ -81,6 +91,7 @@ export default class UserServices {
       logger.error(`Could not update role to the userID ${userID}`);
       throw new ModelError('Could not update Role');
     }
+    logger.info(`Updated role of the userID ${userID}`);
     return queryResult;
   }
 }

@@ -1,20 +1,18 @@
 import { Permissions } from './../enums/permissions';
 import express from 'express';
 import { authenticate } from '../middleware/authenticate';
-import { validateReqBody, validateReqQuery } from '../middleware/validator';
+import { validateReqBody } from '../middleware/validator';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 import {
   createRestaurant,
   deleteRestaurant,
   editRestaurant,
   getAllRestaurants,
-  getRestaurantByUserEmail,
+  getRestaurant,
 } from '../controllers/restaurant';
 import {
-  createOrEditOrdeleteRestaurantQuerySchema,
   createRestaurantBodySchema,
   editRestaurantBodySchema,
-  getRestaurantByUserEmailQuerySchema,
 } from '../schema/restaurant';
 
 const restaurantRouter = express();
@@ -22,22 +20,20 @@ const restaurantRouter = express();
 restaurantRouter.get(
   '/',
   authenticate,
-  authorize(Permissions.VIEW_RESTAURANT),
+  authorize(Permissions.VIEW_ALL_RESTAURANT),
   authorizeCRUD,
   getAllRestaurants,
 );
 restaurantRouter.post(
   '/',
-  validateReqQuery(getRestaurantByUserEmailQuerySchema),
   authenticate,
   authorize(Permissions.VIEW_RESTAURANT),
   authorizeCRUD,
-  getRestaurantByUserEmail,
+  getRestaurant,
 );
 
 restaurantRouter.post(
   '/create',
-  validateReqQuery(createOrEditOrdeleteRestaurantQuerySchema),
   validateReqBody(createRestaurantBodySchema),
   authenticate,
   authorize(Permissions.CREATE_RESTAURANT),
@@ -47,7 +43,6 @@ restaurantRouter.post(
 
 restaurantRouter.patch(
   '/edit/',
-  validateReqQuery(createOrEditOrdeleteRestaurantQuerySchema),
   validateReqBody(editRestaurantBodySchema),
   authenticate,
   authorize(Permissions.EDIT_RESTAURANT),
@@ -57,7 +52,6 @@ restaurantRouter.patch(
 
 restaurantRouter.delete(
   '/delete/',
-  validateReqQuery(createOrEditOrdeleteRestaurantQuerySchema),
   authenticate,
   authorize(Permissions.DELETE_RESTAURANT),
   authorizeCRUD,

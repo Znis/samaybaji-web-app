@@ -29,5 +29,10 @@ export async function seed(knex: Knex): Promise<void> {
 
     { id: '19', name: Permissions.PROCESS_ORDER },
     { id: '20', name: Permissions.MAINTAIN_MENU },
+
+    { id: '21', name: Permissions.VIEW_ALL_USER },
+    { id: '22', name: Permissions.VIEW_ALL_RESTAURANT },
+    { id: '23', name: Permissions.VIEW_All_REVIEW },
+    { id: '24', name: Permissions.VIEW_ALL_ORDER },
   ]);
 }

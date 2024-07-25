@@ -3,17 +3,6 @@ import joi from 'joi';
 const minPhoneNumberLength = 10;
 const maxPhoneNumberLength = 14;
 
-export const getRestaurantByUserEmailQuerySchema = joi
-  .object({
-    email: joi.string().email().required().messages({
-      'any.required': 'Email is required',
-      'string.email': 'Email must be valid format',
-    }),
-  })
-  .options({
-    stripUnknown: true,
-  });
-
 export const createRestaurantBodySchema = joi.object({
   name: joi.string().min(3).max(100).required().messages({
     'string.base': 'Name must be a string.',
@@ -119,9 +108,9 @@ export const editRestaurantBodySchema = joi.object({
     }),
 });
 
-export const createOrEditOrdeleteRestaurantQuerySchema = joi
+export const userIDQuerySchema = joi
   .object({
-    userID: joi.string().required().messages({
+    userID: joi.string().optional().messages({
       'any.required': 'User ID is required',
     }),
   })
