@@ -3,6 +3,7 @@ import type { Knex } from 'knex';
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('restaurants', (table) => {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
+    table.string('name').notNullable();
     table.text('description').notNullable();
     table.string('location').notNullable();
     table.string('contact_number').notNullable();
