@@ -28,13 +28,13 @@ export function authorize(permission: string) {
   };
 }
 
-export async function authorizeUserCRUD(
+export async function authorizeCRUD(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const { id, email } = req.query;
+    const { userID, email } = req.query;
     const currentUser = req.user!;
     const userRole = await AuthorizationService.getRoleId(currentUser.id!);
 
@@ -42,9 +42,9 @@ export async function authorizeUserCRUD(
       return next();
     }
     if (userRole == Roles.CUSTOMER) {
-      if (currentUser.id !== id && currentUser.email !== email) {
+      if (currentUser.id !== userID && currentUser.email !== email) {
         logger.error(
-          'Customers can only perform CRUD operations on their own account',
+          'Customers can perform CRUD operations on their own profile only',
         );
         next(new ForbiddenError('Forbidden'));
         return;

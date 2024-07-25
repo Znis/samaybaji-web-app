@@ -47,13 +47,13 @@ export default class RestaurantModel extends BaseModel {
   }
 
   static editRestaurant(
-    restaurantID: string,
+    userID: string,
     editRestaurantData: IEditRestaurantData,
   ) {
     return this.queryBuilder()
       .update(editRestaurantData)
       .from('restaurants')
-      .where('id', restaurantID)
+      .where('user_id', userID)
       .returning('*')
       .then((data) => {
         return data[0];
@@ -63,11 +63,11 @@ export default class RestaurantModel extends BaseModel {
         return null;
       });
   }
-  static deleteRestaurant(restaurantID: string) {
+  static deleteRestaurant(userID: string) {
     return this.queryBuilder()
       .del()
       .from('restaurants')
-      .where('id', restaurantID)
+      .where('user_id', userID)
       .then((data) => {
         return data;
       })

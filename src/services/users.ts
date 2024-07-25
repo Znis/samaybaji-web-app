@@ -74,4 +74,13 @@ export default class UserServices {
     }
     return queryResult;
   }
+  static async updateRole(userID: string, role: string) {
+    const queryResult = await UserModel.updateRole(userID, role)!;
+    if (!queryResult) {
+      logger.error('Cannot update the data in the database');
+      logger.error(`Could not update role to the userID ${userID}`);
+      throw new ModelError('Could not update Role');
+    }
+    return queryResult;
+  }
 }

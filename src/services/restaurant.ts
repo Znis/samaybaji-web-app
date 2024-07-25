@@ -2,6 +2,8 @@ import RestaurantModel from '../models/restaurant';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
 import IRestaurant, { IEditRestaurantData } from '../interfaces/restaurant';
+import UserServices from './users';
+import { Roles } from '../enums/roles';
 
 const logger = loggerWithNameSpace('Users Service');
 const salt = 10;
@@ -33,24 +35,24 @@ export default class RestaurantServices {
       logger.error('Could not create new restaurant');
       throw new ModelError('Could not create restaurant');
     }
-
+    await UserServices.updateRole(userID, Roles.CUSTOMER_WITH_RESTAURANT);
     logger.info(`New restaurant for userID ${userID} created`);
     return { ...restaurant, id: queryResult.id } as IRestaurant;
   }
 
   static async editRestaurant(
-    restaurantID: string,
+    userID: string,
     editRestaurantData: IEditRestaurantData,
   ) {
     const queryResult = await RestaurantModel.editRestaurant(
-      restaurantID,
+      userID,
       editRestaurantData,
     )!;
     if (!queryResult) {
-      logger.error(`Could not edit restaurant with id ${restaurantID}`);
+      logger.error(`Could not edit restaurant of userID ${userID}`);
       throw new ModelError('Could not edit Restaurant');
     }
-    logger.info(`Restaurant for restaurantID ${restaurantID} updated`);
+    logger.info(`Restaurant for restaurantID ${queryResult.id} updated`);
 
     return {
       ...editRestaurantData,
@@ -58,13 +60,13 @@ export default class RestaurantServices {
     } as IEditRestaurantData;
   }
 
-  static async deleteRestaurant(restaurantID: string) {
-    const queryResult = await RestaurantModel.deleteRestaurant(restaurantID)!;
+  static async deleteRestaurant(userID: string) {
+    const queryResult = await RestaurantModel.deleteRestaurant(userID)!;
     if (!queryResult) {
-      logger.error(`Could not delete restaurant with id ${restaurantID}`);
+      logger.error(`Could not delete restaurant of userID ${userID}`);
       throw new ModelError('Could not delete Restaurant');
     }
-    logger.info(`Restaurant with restaurantID ${restaurantID} deleted`);
+    logger.info(`Restaurant of userID ${userID} deleted`);
 
     return true;
   }

@@ -68,10 +68,10 @@ export async function editUser(
   next: NextFunction,
 ) {
   try {
-    const { id } = req.query;
+    const { userID } = req.query;
     const data = req.body;
-    const response = await UserService.editUser(id as string, data);
-    logger.info(`User with id ${id} edited`);
+    const response = await UserService.editUser(userID as string, data);
+    logger.info(`User with id ${userID} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('User update failed');
@@ -84,9 +84,9 @@ export async function deleteUser(
   next: NextFunction,
 ) {
   try {
-    const { id } = req.query;
-    await UserService.deleteUser(id as string);
-    logger.info(`User with id ${id} deleted`);
+    const { userID } = req.query;
+    await UserService.deleteUser(userID as string);
+    logger.info(`User with id ${userID} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('User deletion failed');

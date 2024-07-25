@@ -56,7 +56,7 @@ export async function createRestaurant(
 ) {
   try {
     const restaurantData = req.body;
-    const userID = req.user!.id;
+    const userID = req.query.userID as string;
     const response = await RestaurantService.createRestaurant(
       userID,
       restaurantData,
@@ -75,7 +75,7 @@ export async function editRestaurant(
   next: NextFunction,
 ) {
   try {
-    const userID = req.user!.id;
+    const userID = req.query.userID as string;
     const restaurantData = req.body;
     const response = await RestaurantService.editRestaurant(
       userID,
@@ -95,7 +95,7 @@ export async function deleteRestaurant(
   next: NextFunction,
 ) {
   try {
-    const userID = req.user!.id;
+    const userID = req.query.userID as string;
     await RestaurantService.deleteRestaurant(userID);
     logger.info(`Restaurant of userID ${userID} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');

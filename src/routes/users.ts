@@ -15,7 +15,7 @@ import {
 } from '../controllers/users';
 import { authenticate } from '../middleware/authenticate';
 import { validateReqBody, validateReqQuery } from '../middleware/validator';
-import { authorize, authorizeUserCRUD } from '../middleware/authorize';
+import { authorize, authorizeCRUD } from '../middleware/authorize';
 
 const usersRouter = express();
 
@@ -23,7 +23,7 @@ usersRouter.get(
   '/',
   authenticate,
   authorize(Permissions.VIEW_USER),
-  authorizeUserCRUD,
+  authorizeCRUD,
   getAllUsers,
 );
 usersRouter.post(
@@ -31,7 +31,7 @@ usersRouter.post(
   validateReqQuery(getUserByEmailQuerySchema),
   authenticate,
   authorize(Permissions.VIEW_USER),
-  authorizeUserCRUD,
+  authorizeCRUD,
   getUserByEmail,
 );
 
@@ -47,7 +47,7 @@ usersRouter.patch(
   validateReqBody(editUserBodySchema),
   authenticate,
   authorize(Permissions.EDIT_USER),
-  authorizeUserCRUD,
+  authorizeCRUD,
   editUser,
 );
 
@@ -56,7 +56,7 @@ usersRouter.delete(
   validateReqQuery(editOrdeleteUserQuerySchema),
   authenticate,
   authorize(Permissions.DELETE_USER),
-  authorizeUserCRUD,
+  authorizeCRUD,
   deleteUser,
 );
 export default usersRouter;

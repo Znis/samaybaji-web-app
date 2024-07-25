@@ -5,6 +5,6 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('roles').insert([
     { id: '1', name: 'superadmin' },
     { id: '2', name: 'customer' },
-    { id: '3', name: 'restaurant' },
+    { id: '3', name: 'customer_with_restaurant' },
   ]);
 }

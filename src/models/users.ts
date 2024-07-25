@@ -61,6 +61,21 @@ export default class UserModel extends BaseModel {
         return null;
       });
   }
+  static updateRole(userID: string, role: string) {
+    return this.queryBuilder()
+      .update({
+        roleId: role,
+      })
+      .into('users_roles')
+      .where('user_id', userID)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+  }
   static editUserById(id: string, updateUserData: IUpdateUserData) {
     return this.queryBuilder()
       .update(updateUserData)

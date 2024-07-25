@@ -16,6 +16,28 @@ export async function seed(knex: Knex): Promise<void> {
     throw new Error('Not enough users to seed restaurants.');
   }
 
+  // Retrieve role ID of customer_with_restaurant
+  const roles = await knex('roles').select('id', 'name');
+
+  const roleMap = new Map(roles.map((role) => [role.name, role.id]));
+
+  const customerWithRestaurantRoleId = roleMap.get('customer_with_restaurant');
+
+  if (!customerWithRestaurantRoleId) {
+    throw new Error('Role ID not found in the roles table');
+  }
+
+  // Update user roles
+  try {
+    userIds.forEach(async (userId) => {
+      await knex('users_roles')
+        .update({ role_id: customerWithRestaurantRoleId })
+        .where('user_id', userId);
+    });
+  } catch {
+    throw new Error('Could not update user roles');
+  }
+
   // Insert seed entries
   await knex('restaurants').insert([
     {

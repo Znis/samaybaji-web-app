@@ -122,8 +122,8 @@ export const editUserBodySchema = joi.object({
 
 export const editOrdeleteUserQuerySchema = joi
   .object({
-    id: joi.string().required().messages({
-      'any.required': 'id is required',
+    userID: joi.string().required().messages({
+      'any.required': 'User ID is required',
     }),
   })
   .options({
