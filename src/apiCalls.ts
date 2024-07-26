@@ -4,9 +4,11 @@ import { StateManagement } from './state-management/stateManagement';
 
 const baseUrl = 'http://localhost:8000';
 const usersUrl = '/users';
-const loginUrl = '/authenticate/login';
+const loginUrl = '/login';
 const registerUrl = `${usersUrl}/register`;
 const refreshUrl = '/authenticate/refresh';
+const restaurantUrl = '/restaurants';
+const menuUrl = '/menus';
 
 export const login = async (formData: userFormData) => {
   return await axios
@@ -26,6 +28,28 @@ export const register = async (formData: userFormData) => {
 export const fetchAllUsers = async () => {
   return await axios
     .get(`${baseUrl}${usersUrl}`, {
+      headers: {
+        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+export const fetchAllRestaurants = async () => {
+  return await axios
+    .get(`${baseUrl}${restaurantUrl}`, {
+      headers: {
+        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+export const fetchAllMenus = async () => {
+  return await axios
+    .get(`${baseUrl}${menuUrl}`, {
       headers: {
         Authorization: `Bearer ${StateManagement.state.accessToken}`,
       },
@@ -62,11 +86,12 @@ export async function makeApiCall<T, R>(
   } catch {
     const tokenResponse = await fetchAccessToken();
     if (!tokenResponse.accessToken) {
-      StateManagement.state.accessToken = null;
+      StateManagement.updateState('accessToken', null);
       StateManagement.updateState('user', null);
       return tokenResponse;
     }
-    StateManagement.state.accessToken = tokenResponse.accessToken;
+    StateManagement.updateState('accessToken', tokenResponse.accessToken);
+
     const response = await callbackFn(...args);
     return response;
   }

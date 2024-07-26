@@ -66,6 +66,7 @@ export default class Header {
   }
   static logout(): void {
     StateManagement.updateState('user', null);
+    StateManagement.updateState('accessToken', null);
     Toast.show('User Logged Out');
   }
   static setNavigationLinks(): void {

@@ -6,7 +6,7 @@ import Menu from './section/menu';
 
 export default class LandingPage {
   static element: HTMLElement = document.createElement('div');
-  static init(): HTMLElement {
+  static async init(): Promise<HTMLElement> {
     this.element.setAttribute('id', 'landing-page');
     this.element.appendChild(Hero.init());
     this.element.appendChild(Menu.init());

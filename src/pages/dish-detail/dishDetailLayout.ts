@@ -5,7 +5,7 @@ import DishReview from './section/dishReview';
 
 export default class DishDetailLayout {
   static element: HTMLElement = document.createElement('div');
-  static init(id: string): HTMLElement {
+  static async init(id: string): Promise<HTMLElement> {
     this.element.setAttribute('id', 'dish-detail-page');
     const dishDetailData = dishDetailArray.find(
       (data: IDishDetailData) => data.id === id,

@@ -307,7 +307,7 @@ export default class AuthCard {
     return await login(formData)
       .then((data) => {
         Modal.toggle();
-        StateManagement.state.accessToken = data.accessToken;
+        StateManagement.updateState('accessToken', data.accessToken);
         StateManagement.updateState('user', data.user);
         Toast.show('User Logged In');
 

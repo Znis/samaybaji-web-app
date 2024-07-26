@@ -9,7 +9,7 @@ export default class Cart {
   static totalAmount = 0;
   static deliveryAmount = 100;
   static subTotalAmount = 0;
-  static init(): HTMLElement {
+  static async init(): Promise<HTMLElement> {
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
