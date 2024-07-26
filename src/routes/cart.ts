@@ -1,17 +1,8 @@
 import { Permissions } from './../enums/permissions';
 import express from 'express';
 import { authenticate } from '../middleware/authenticate';
-import { validateReqBody } from '../middleware/validator';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
-import cartItemSchema, { editCartItemSchema } from '../schema/cartItem';
-import {
-  addCartItem,
-  clearCart,
-  deleteCartItem,
-  editCartItem,
-  getAllCarts,
-  getCart,
-} from '../controllers/cart';
+import { clearCart, getAllCarts, getCart } from '../controllers/cart';
 
 const cartRouter = express();
 
@@ -30,32 +21,8 @@ cartRouter.post(
   getCart,
 );
 
-cartRouter.post(
-  '/add-item',
-  validateReqBody(cartItemSchema),
-  authenticate,
-  authorize(Permissions.ADD_CART_ITEM),
-  authorizeCRUD('cart'),
-  addCartItem,
-);
-
-cartRouter.patch(
-  '/edit-item',
-  validateReqBody(editCartItemSchema),
-  authenticate,
-  authorize(Permissions.EDIT_CART_ITEM),
-  authorizeCRUD('cart'),
-  editCartItem,
-);
 cartRouter.delete(
-  '/delete-item',
-  authenticate,
-  authorize(Permissions.DELETE_CART_ITEM),
-  authorizeCRUD('cart'),
-  deleteCartItem,
-);
-cartRouter.delete(
-  '/clear-cart',
+  '/clear',
   authenticate,
   authorize(Permissions.CLEAR_CART),
   authorizeCRUD('cart'),
