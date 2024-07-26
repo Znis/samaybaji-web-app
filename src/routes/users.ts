@@ -14,6 +14,7 @@ import { authorize, authorizeCRUD } from '../middleware/authorize';
 
 const usersRouter = express();
 
+//for admin only
 usersRouter.get(
   '/',
   authenticate,
@@ -21,6 +22,7 @@ usersRouter.get(
   authorizeCRUD('users'),
   getAllUsers,
 );
+
 usersRouter.post(
   '/',
   authenticate,

@@ -2,6 +2,7 @@ import MenuModel from '../models/menu';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
 import IMenu, { ICreateMenuData, IEditMenuData } from '../interfaces/menu';
+import MenuItemServices from './menuItem';
 
 const logger = loggerWithNameSpace('Menu Service');
 
@@ -11,8 +12,14 @@ export default class MenuServices {
     if (!menus) {
       return null;
     }
+    const menuWithmenuItems = await Promise.all(
+      menus.map(async (menu) => {
+        const menuItems = await MenuItemServices.getMenuItemsByMenuID(menu.id);
+        return { name: menu.name, menu: menuItems };
+      }),
+    );
     logger.info('All Menus Found');
-    return menus;
+    return menuWithmenuItems;
   }
   static async getMenu(restaurantID: string) {
     const menu = await MenuModel.getMenu(restaurantID);

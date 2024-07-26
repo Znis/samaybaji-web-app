@@ -29,7 +29,7 @@ export async function getAllCarts(
 export async function getCart(req: Request, res: Response, next: NextFunction) {
   try {
     const userID = req.query.userID as string;
-    const cart = await CartService.getCart(userID);
+    const cart = await CartService.getCartItems(userID);
     if (!cart) {
       logger.error(`No cart found of userID ${userID}`);
       next(new BaseError('No cart Found'));
@@ -51,7 +51,7 @@ export async function clearCart(
   next: NextFunction,
 ) {
   try {
-    const cartID = req.query.cartItemID as string;
+    const cartID = req.query.cartID as string;
     await CartService.clearCart(cartID);
     logger.info(`Cart with cartID ${cartID} cleared`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Cleared Successfully');

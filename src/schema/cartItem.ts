@@ -27,4 +27,24 @@ export const editCartItemSchema = joi.object({
     'any.required': 'Quantity is required.',
   }),
 });
+
+export const cartIDQuerySchema = joi
+  .object({
+    cartID: joi.string().optional().messages({
+      'any.required': 'Cart ID is required',
+    }),
+  })
+  .options({
+    stripUnknown: true,
+  });
+
+export const cartItemIDQuerySchema = joi
+  .object({
+    cartItemID: joi.string().required().messages({
+      'any.required': 'Cart item ID is required',
+    }),
+  })
+  .options({
+    stripUnknown: true,
+  });
 export default cartItemSchema;

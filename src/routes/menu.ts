@@ -14,20 +14,8 @@ import {
 
 const menuRouter = express();
 
-menuRouter.get(
-  '/',
-  authenticate,
-  authorize(Permissions.VIEW_ALL_MENU),
-  authorizeCRUD('menus'),
-  getAllMenus,
-);
-menuRouter.post(
-  '/',
-  authenticate,
-  authorize(Permissions.VIEW_MENU),
-  authorizeCRUD('menus'),
-  getMenu,
-);
+//for everyone
+menuRouter.get('/', getAllMenus);
 
 menuRouter.post(
   '/create',

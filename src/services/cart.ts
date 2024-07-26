@@ -21,6 +21,14 @@ export default class CartServices {
       logger.error(`Cart of userID ${userID} not found`);
       return null;
     }
+    return cart;
+  }
+  static async getCartItems(userID: string) {
+    const cart = await CartModel.getCart(userID);
+    if (!cart) {
+      logger.error(`Cart of userID ${userID} not found`);
+      return null;
+    }
     const cartItems = await CartItemServices.getCartItemsByCartID(cart.id);
     logger.info(`Cart of userID ${userID} found`);
     return cartItems;

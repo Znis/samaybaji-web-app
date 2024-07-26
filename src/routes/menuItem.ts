@@ -17,27 +17,8 @@ import {
 
 const menuItemRouter = express();
 
-menuItemRouter.get(
-  '/',
-  authenticate,
-  authorize(Permissions.VIEW_ALL_MENU_ITEM),
-  authorizeCRUD('menuItems'),
-  getAllMenuItems,
-);
-menuItemRouter.post(
-  '/',
-  authenticate,
-  authorize(Permissions.VIEW_MENU_ITEM),
-  authorizeCRUD('menuItems'),
-  getMenuItem,
-);
-menuItemRouter.post(
-  '/menu',
-  authenticate,
-  authorize(Permissions.VIEW_MENU_ITEM),
-  authorizeCRUD('menuItems'),
-  getMenuItem,
-);
+//for everyone
+menuItemRouter.get('/', getAllMenuItems);
 
 menuItemRouter.post(
   '/create',

@@ -70,4 +70,16 @@ export async function seed(knex: Knex): Promise<void> {
       password_hash: customerPasswords[3],
     },
   ]);
+
+  try {
+    const users = await knex('users').select('id');
+    if (!users.length) throw new Error('Could not query the users');
+
+    const userIds = users.map((user) => user.id);
+    userIds.forEach(async (userId) => {
+      await knex('carts').insert({ user_id: userId });
+    });
+  } catch {
+    throw new Error('Could not add cart to user');
+  }
 }

@@ -60,7 +60,7 @@ export function authorizeCRUD(route: string) {
             return next(new SchemaError('menuItemID is required'));
           }
         }
-
+        console.log('admin', req.query);
         return next();
       }
       if (userRole == Roles.CUSTOMER_WITH_RESTAURANT) {
@@ -76,7 +76,11 @@ export function authorizeCRUD(route: string) {
           req.query.menuID = menuID;
         }
       }
+      const cartID = await AuthorizationService.getCartID(currentUser.id);
+
+      req.query.cartID = cartID;
       req.query.userID = currentUser.id;
+      console.log('customer', req.query);
       next();
     } catch (error) {
       next(error);

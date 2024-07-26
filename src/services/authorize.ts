@@ -1,5 +1,6 @@
 import AuthorizationModel from '../models/authorize';
 import loggerWithNameSpace from '../utils/logger';
+import CartServices from './cart';
 import MenuServices from './menu';
 import RestaurantServices from './restaurant';
 
@@ -47,5 +48,10 @@ export default class AuthorizationService {
   static async getMenuID(restaurantID: string) {
     const menu = await MenuServices.getMenu(restaurantID);
     return menu.id;
+  }
+
+  static async getCartID(userID: string) {
+    const cart = await CartServices.getCart(userID);
+    return cart.id;
   }
 }

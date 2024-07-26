@@ -17,13 +17,9 @@ import {
 
 const restaurantRouter = express();
 
-restaurantRouter.get(
-  '/',
-  authenticate,
-  authorize(Permissions.VIEW_ALL_RESTAURANT),
-  authorizeCRUD('restaurants'),
-  getAllRestaurants,
-);
+//for everyone
+restaurantRouter.get('/', getAllRestaurants);
+
 restaurantRouter.post(
   '/',
   authenticate,

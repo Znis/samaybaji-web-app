@@ -6,6 +6,7 @@ import { clearCart, getAllCarts, getCart } from '../controllers/cart';
 
 const cartRouter = express();
 
+//only for admin
 cartRouter.get(
   '/',
   authenticate,
@@ -13,6 +14,7 @@ cartRouter.get(
   authorizeCRUD('cart'),
   getAllCarts,
 );
+
 cartRouter.post(
   '/',
   authenticate,

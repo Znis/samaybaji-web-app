@@ -10,8 +10,8 @@ import {
   editCartItem,
 } from '../controllers/cartItem';
 
-const cartRouter = express();
-cartRouter.post(
+const cartItemRouter = express();
+cartItemRouter.post(
   '/add-item',
   validateReqBody(cartItemSchema),
   authenticate,
@@ -20,7 +20,7 @@ cartRouter.post(
   addCartItem,
 );
 
-cartRouter.patch(
+cartItemRouter.patch(
   '/edit-item',
   validateReqBody(editCartItemSchema),
   authenticate,
@@ -28,10 +28,12 @@ cartRouter.patch(
   authorizeCRUD('cartItem'),
   editCartItem,
 );
-cartRouter.delete(
+cartItemRouter.delete(
   '/delete-item',
   authenticate,
   authorize(Permissions.DELETE_CART_ITEM),
   authorizeCRUD('cartItem'),
   deleteCartItem,
 );
+
+export default cartItemRouter;

@@ -16,12 +16,12 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('menus').insert([
     {
       restaurant_id: restaurantIds[0], // Restaurant 1
-      name: 'Newari Special Menu',
+      name: 'Newari Special',
       description: 'A special menu featuring traditional Newari dishes.',
     },
     {
       restaurant_id: restaurantIds[1], // Restaurant 2
-      name: 'Nepali Feast Menu',
+      name: 'Nepali Feast',
       description: 'A feast of popular Nepali dishes.',
     },
   ]);
