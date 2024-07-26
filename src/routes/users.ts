@@ -18,14 +18,14 @@ usersRouter.get(
   '/',
   authenticate,
   authorize(Permissions.VIEW_ALL_USER),
-  authorizeCRUD,
+  authorizeCRUD('users'),
   getAllUsers,
 );
 usersRouter.post(
   '/',
   authenticate,
   authorize(Permissions.VIEW_USER),
-  authorizeCRUD,
+  authorizeCRUD('users'),
   getUser,
 );
 
@@ -40,7 +40,7 @@ usersRouter.patch(
   validateReqBody(editUserBodySchema),
   authenticate,
   authorize(Permissions.EDIT_USER),
-  authorizeCRUD,
+  authorizeCRUD('users'),
   editUser,
 );
 
@@ -48,7 +48,7 @@ usersRouter.delete(
   '/delete/',
   authenticate,
   authorize(Permissions.DELETE_USER),
-  authorizeCRUD,
+  authorizeCRUD('users'),
   deleteUser,
 );
 export default usersRouter;

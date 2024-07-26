@@ -1,5 +1,7 @@
 import AuthorizationModel from '../models/authorize';
 import loggerWithNameSpace from '../utils/logger';
+import MenuServices from './menu';
+import RestaurantServices from './restaurant';
 
 const logger = loggerWithNameSpace('Authorization Service');
 
@@ -36,5 +38,14 @@ export default class AuthorizationService {
       return [];
     }
     return permissions!;
+  }
+
+  static async getRestaurantID(userID: string) {
+    const restaurant = await RestaurantServices.getRestaurant(userID);
+    return restaurant.id;
+  }
+  static async getMenuID(restaurantID: string) {
+    const menu = await MenuServices.getMenu(restaurantID);
+    return menu.id;
   }
 }

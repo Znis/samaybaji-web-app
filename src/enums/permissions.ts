@@ -11,6 +11,18 @@ export enum Permissions {
   VIEW_RESTAURANT = 'view_restaurant',
   VIEW_ALL_RESTAURANT = 'view_all_restaurant',
 
+  CREATE_MENU = 'create_menu',
+  DELETE_MENU = 'delete_menu',
+  EDIT_MENU = 'edit_menu',
+  VIEW_MENU = 'view_menu',
+  VIEW_ALL_MENU = 'view_all_menu',
+
+  CREATE_MENU_ITEM = 'create_menu_item',
+  DELETE_MENU_ITEM = 'delete_menu_item',
+  EDIT_MENU_ITEM = 'edit_menu_item',
+  VIEW_MENU_ITEM = 'view_menu_item',
+  VIEW_ALL_MENU_ITEM = 'view_all_menu_item',
+
   ADD_REVIEW = 'add_review',
   DELETE_REVIEW = 'delete_review',
   EDIT_REVIEW = 'edit_review',

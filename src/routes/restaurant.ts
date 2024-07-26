@@ -21,14 +21,14 @@ restaurantRouter.get(
   '/',
   authenticate,
   authorize(Permissions.VIEW_ALL_RESTAURANT),
-  authorizeCRUD,
+  authorizeCRUD('restaurants'),
   getAllRestaurants,
 );
 restaurantRouter.post(
   '/',
   authenticate,
   authorize(Permissions.VIEW_RESTAURANT),
-  authorizeCRUD,
+  authorizeCRUD('restaurants'),
   getRestaurant,
 );
 
@@ -37,7 +37,7 @@ restaurantRouter.post(
   validateReqBody(createRestaurantBodySchema),
   authenticate,
   authorize(Permissions.CREATE_RESTAURANT),
-  authorizeCRUD,
+  authorizeCRUD('restaurants'),
   createRestaurant,
 );
 
@@ -46,7 +46,7 @@ restaurantRouter.patch(
   validateReqBody(editRestaurantBodySchema),
   authenticate,
   authorize(Permissions.EDIT_RESTAURANT),
-  authorizeCRUD,
+  authorizeCRUD('restaurants'),
   editRestaurant,
 );
 
@@ -54,7 +54,7 @@ restaurantRouter.delete(
   '/delete/',
   authenticate,
   authorize(Permissions.DELETE_RESTAURANT),
-  authorizeCRUD,
+  authorizeCRUD('restaurants'),
   deleteRestaurant,
 );
 export default restaurantRouter;

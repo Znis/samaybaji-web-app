@@ -35,11 +35,11 @@ export async function getRestaurant(
     const userID = req.query.userID as string;
     const restaurant = await RestaurantService.getRestaurant(userID);
     if (!restaurant) {
-      logger.error(`No restaurant found with userID ${userID}`);
+      logger.error(`No restaurant found for userID ${userID}`);
       next(new BaseError('No Restaurant Found'));
       return;
     }
-    logger.info(`Restaurant with userID ${userID} found`);
+    logger.info(`Restaurant for userID ${userID} found`);
     return res.status(HttpStatusCode.OK).json(restaurant);
   } catch (error) {
     logger.error('Restaurant fetch failed');
@@ -75,13 +75,13 @@ export async function editRestaurant(
   next: NextFunction,
 ) {
   try {
-    const userID = req.query.userID as string;
+    const restaurantID = req.query.restaurantID as string;
     const restaurantData = req.body;
     const response = await RestaurantService.editRestaurant(
-      userID,
+      restaurantID,
       restaurantData,
     );
-    logger.info(`Restaurant of userID ${userID} edited`);
+    logger.info(`Restaurant of restaurantID ${restaurantID} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Restaurant edit failed');
@@ -95,9 +95,9 @@ export async function deleteRestaurant(
   next: NextFunction,
 ) {
   try {
-    const userID = req.query.userID as string;
-    await RestaurantService.deleteRestaurant(userID);
-    logger.info(`Restaurant of userID ${userID} deleted`);
+    const restaurantID = req.query.restaurantID as string;
+    await RestaurantService.deleteRestaurant(restaurantID);
+    logger.info(`Restaurant of restaurantID ${restaurantID} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Restaurant deletion failed');

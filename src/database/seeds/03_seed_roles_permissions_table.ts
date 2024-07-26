@@ -24,6 +24,14 @@ export async function seed(knex: Knex): Promise<void> {
     { id: uuidv4(), role_id: '1', permission_id: '22' },
     { id: uuidv4(), role_id: '1', permission_id: '23' },
     { id: uuidv4(), role_id: '1', permission_id: '24' },
+    { id: uuidv4(), role_id: '1', permission_id: '25' },
+    { id: uuidv4(), role_id: '1', permission_id: '26' },
+    { id: uuidv4(), role_id: '1', permission_id: '27' },
+    { id: uuidv4(), role_id: '1', permission_id: '29' },
+    { id: uuidv4(), role_id: '1', permission_id: '30' },
+    { id: uuidv4(), role_id: '1', permission_id: '31' },
+    { id: uuidv4(), role_id: '1', permission_id: '32' },
+    { id: uuidv4(), role_id: '1', permission_id: '34' },
 
     // customer permissions
     { id: uuidv4(), role_id: '2', permission_id: '2' },
@@ -41,6 +49,9 @@ export async function seed(knex: Knex): Promise<void> {
     { id: uuidv4(), role_id: '2', permission_id: '16' },
     { id: uuidv4(), role_id: '2', permission_id: '17' },
     { id: uuidv4(), role_id: '2', permission_id: '18' },
+    { id: uuidv4(), role_id: '2', permission_id: '25' },
+    { id: uuidv4(), role_id: '2', permission_id: '22' },
+    { id: uuidv4(), role_id: '2', permission_id: '30' },
 
     // restaurant permissions
     { id: uuidv4(), role_id: '3', permission_id: '2' },
@@ -60,7 +71,18 @@ export async function seed(knex: Knex): Promise<void> {
     { id: uuidv4(), role_id: '3', permission_id: '18' },
     { id: uuidv4(), role_id: '3', permission_id: '19' },
     { id: uuidv4(), role_id: '3', permission_id: '20' },
+    { id: uuidv4(), role_id: '3', permission_id: '22' },
     { id: uuidv4(), role_id: '3', permission_id: '6' },
     { id: uuidv4(), role_id: '3', permission_id: '7' },
+    { id: uuidv4(), role_id: '3', permission_id: '25' },
+    { id: uuidv4(), role_id: '3', permission_id: '26' },
+    { id: uuidv4(), role_id: '3', permission_id: '27' },
+    { id: uuidv4(), role_id: '3', permission_id: '28' },
+    { id: uuidv4(), role_id: '3', permission_id: '29' },
+    { id: uuidv4(), role_id: '3', permission_id: '30' },
+    { id: uuidv4(), role_id: '3', permission_id: '31' },
+    { id: uuidv4(), role_id: '3', permission_id: '32' },
+    { id: uuidv4(), role_id: '3', permission_id: '33' },
+    { id: uuidv4(), role_id: '3', permission_id: '34' },
   ]);
 }

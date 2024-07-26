@@ -117,3 +117,12 @@ export const userIDQuerySchema = joi
   .options({
     stripUnknown: true,
   });
+export const restaurantIDQuerySchema = joi
+  .object({
+    restaurantID: joi.string().required().messages({
+      'any.required': 'Restaurant ID is required',
+    }),
+  })
+  .options({
+    stripUnknown: true,
+  });

@@ -1,7 +1,10 @@
 import RestaurantModel from '../models/restaurant';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
-import IRestaurant, { IEditRestaurantData } from '../interfaces/restaurant';
+import IRestaurant, {
+  ICreateRestaurantData,
+  IEditRestaurantData,
+} from '../interfaces/restaurant';
 import UserServices from './users';
 import { Roles } from '../enums/roles';
 
@@ -25,7 +28,10 @@ export default class RestaurantServices {
     return restaurant;
   }
 
-  static async createRestaurant(userID: string, restaurant: IRestaurant) {
+  static async createRestaurant(
+    userID: string,
+    restaurant: ICreateRestaurantData,
+  ) {
     const queryResult = await RestaurantModel.createRestaurant(
       userID,
       restaurant,
@@ -40,32 +46,36 @@ export default class RestaurantServices {
   }
 
   static async editRestaurant(
-    userID: string,
+    restaurantID: string,
     editRestaurantData: IEditRestaurantData,
   ) {
     const queryResult = await RestaurantModel.editRestaurant(
-      userID,
+      restaurantID,
       editRestaurantData,
     )!;
     if (!queryResult) {
-      logger.error(`Could not edit restaurant of userID ${userID}`);
+      logger.error(
+        `Could not edit restaurant with restaurantID ${restaurantID}`,
+      );
       throw new ModelError('Could not edit Restaurant');
     }
-    logger.info(`Restaurant for restaurantID ${queryResult.id} updated`);
+    logger.info(`Restaurant with restaurantID ${queryResult.id} updated`);
 
     return {
       ...editRestaurantData,
-      id: queryResult.id,
-    } as IEditRestaurantData;
+      id: restaurantID,
+    } as IRestaurant;
   }
 
-  static async deleteRestaurant(userID: string) {
-    const queryResult = await RestaurantModel.deleteRestaurant(userID)!;
+  static async deleteRestaurant(restaurantID: string) {
+    const queryResult = await RestaurantModel.deleteRestaurant(restaurantID)!;
     if (!queryResult) {
-      logger.error(`Could not delete restaurant of userID ${userID}`);
+      logger.error(
+        `Could not delete restaurant with restaurantID ${restaurantID}`,
+      );
       throw new ModelError('Could not delete Restaurant');
     }
-    logger.info(`Restaurant of userID ${userID} deleted`);
+    logger.info(`Restaurant with restaurantID ${restaurantID} deleted`);
 
     return true;
   }

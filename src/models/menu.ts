@@ -1,14 +1,11 @@
-import IRestaurant, {
-  ICreateRestaurantData,
-  IEditRestaurantData,
-} from '../interfaces/restaurant';
+import { ICreateMenuData, IEditMenuData } from '../interfaces/menu';
 import { BaseModel } from './base';
 
-export default class RestaurantModel extends BaseModel {
-  static getAllRestaurants() {
+export default class MenuModel extends BaseModel {
+  static getAllMenus() {
     return this.queryBuilder()
       .select('*')
-      .from('restaurants')
+      .from('menus')
       .then((data) => {
         return data;
       })
@@ -17,12 +14,11 @@ export default class RestaurantModel extends BaseModel {
         return null;
       });
   }
-  static getRestaurant(userID: string) {
+  static getMenu(restaurantID: string) {
     return this.queryBuilder()
-      .select('restaurants.*')
-      .from('restaurants')
-      .join('users', 'restaurants.user_id', 'users.id')
-      .where('users.id', userID)
+      .select('*')
+      .from('menus')
+      .where('restaurant_id', restaurantID)
       .first()
       .then((data) => {
         return data;
@@ -32,10 +28,10 @@ export default class RestaurantModel extends BaseModel {
         return null;
       });
   }
-  static createRestaurant(userID: string, restaurant: ICreateRestaurantData) {
+  static createMenu(restaurantID: string, menuData: ICreateMenuData) {
     return this.queryBuilder()
-      .insert({ ...restaurant, userId: userID })
-      .into('restaurants')
+      .insert({ ...menuData, restaurantId: restaurantID })
+      .into('menus')
       .returning('id')
       .then((data) => {
         return data[0];
@@ -46,14 +42,11 @@ export default class RestaurantModel extends BaseModel {
       });
   }
 
-  static editRestaurant(
-    restaurantID: string,
-    editRestaurantData: IEditRestaurantData,
-  ) {
+  static editMenu(menuID: string, editMenuData: IEditMenuData) {
     return this.queryBuilder()
-      .update(editRestaurantData)
-      .from('restaurants')
-      .where('id', restaurantID)
+      .update(editMenuData)
+      .from('menus')
+      .where('id', menuID)
       .returning('*')
       .then((data) => {
         return data[0];
@@ -63,11 +56,11 @@ export default class RestaurantModel extends BaseModel {
         return null;
       });
   }
-  static deleteRestaurant(restaurantID: string) {
+  static deleteMenu(menuID: string) {
     return this.queryBuilder()
       .del()
-      .from('restaurants')
-      .where('id', restaurantID)
+      .from('menus')
+      .where('id', menuID)
       .then((data) => {
         return data;
       })

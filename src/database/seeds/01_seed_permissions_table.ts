@@ -34,5 +34,17 @@ export async function seed(knex: Knex): Promise<void> {
     { id: '22', name: Permissions.VIEW_ALL_RESTAURANT },
     { id: '23', name: Permissions.VIEW_All_REVIEW },
     { id: '24', name: Permissions.VIEW_ALL_ORDER },
+
+    { id: '25', name: Permissions.VIEW_ALL_MENU },
+    { id: '26', name: Permissions.EDIT_MENU },
+    { id: '27', name: Permissions.DELETE_MENU },
+    { id: '28', name: Permissions.CREATE_MENU },
+    { id: '29', name: Permissions.VIEW_MENU },
+
+    { id: '30', name: Permissions.VIEW_ALL_MENU_ITEM },
+    { id: '31', name: Permissions.EDIT_MENU_ITEM },
+    { id: '32', name: Permissions.DELETE_MENU_ITEM },
+    { id: '33', name: Permissions.CREATE_MENU_ITEM },
+    { id: '34', name: Permissions.VIEW_MENU_ITEM },
   ]);
 }
