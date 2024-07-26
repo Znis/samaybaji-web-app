@@ -1,5 +1,3 @@
-import { status, type } from '../enums/menuItem';
-
 interface ICartItem {
   id: string;
   menuItemID: string;

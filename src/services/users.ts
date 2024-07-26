@@ -4,6 +4,7 @@ import { Roles } from '../enums/roles';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
 import IUser, { IUpdateUserData } from '../interfaces/user';
+import CartServices from './cart';
 
 const logger = loggerWithNameSpace('Users Service');
 const salt = 10;
@@ -46,6 +47,7 @@ export default class UserServices {
     }
 
     await this.assignRole(queryResult.id, Roles.CUSTOMER);
+    await CartServices.createCart(queryResult.id);
     return { ...user, id: queryResult.id } as IUser;
   }
 

@@ -1,60 +1,48 @@
-import MenuModel from '../models/menu';
+import CartModel from '../models/cart';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
-import IMenu, { ICreateMenuData, IEditMenuData } from '../interfaces/menu';
+import CartItemServices from './cartItem';
+import ICart from '../interfaces/cart';
 
-const logger = loggerWithNameSpace('Menu Service');
+const logger = loggerWithNameSpace('Cart Service');
 
-export default class MenuServices {
-  static async getAllMenus() {
-    const menus = await MenuModel.getAllMenus();
-    if (!menus) {
+export default class CartServices {
+  static async getAllCarts() {
+    const carts = await CartModel.getAllCarts();
+    if (!carts) {
       return null;
     }
-    logger.info('All Menus Found');
-    return menus;
+    logger.info('All Carts Found');
+    return carts;
   }
-  static async getMenu(restaurantID: string) {
-    const menu = await MenuModel.getMenu(restaurantID);
-    if (!menu) {
-      logger.error(`Menu of restaurantID ${restaurantID} not found`);
+  static async getCart(userID: string) {
+    const cart = await CartModel.getCart(userID);
+    if (!cart) {
+      logger.error(`Cart of userID ${userID} not found`);
       return null;
     }
-    logger.info(`Menu of restaurantID ${restaurantID} found`);
-    return menu;
+    const cartItems = await CartItemServices.getCartItemsByCartID(cart.id);
+    logger.info(`Cart of userID ${userID} found`);
+    return cartItems;
   }
 
-  static async createMenu(restaurantID: string, menuData: ICreateMenuData) {
-    const queryResult = await MenuModel.createMenu(restaurantID, menuData)!;
+  static async createCart(userID: string) {
+    const queryResult = await CartModel.createCart(userID)!;
     if (!queryResult) {
-      logger.error('Could not create new menu');
-      throw new ModelError('Could not create menu');
+      logger.error('Could not create new cart');
+      throw new ModelError('Could not create cart');
     }
 
-    return { ...menuData, id: queryResult.id } as IMenu;
+    return { userID: userID, id: queryResult.id } as ICart;
   }
 
-  static async editMenu(menuID: string, editMenuData: IEditMenuData) {
-    const queryResult = await MenuModel.editMenu(menuID, editMenuData)!;
+  static async clearCart(cartID: string) {
+    const queryResult = await CartModel.clearCart(cartID)!;
     if (!queryResult) {
-      logger.error(`Could not edit menu with menuID ${menuID}`);
-      throw new ModelError('Could not edit Menu');
+      logger.error(`Could not clear cart with cartID ${cartID}`);
+      throw new ModelError('Could not clear cart');
     }
-    logger.info(`Menu with menuID ${menuID} updated`);
-
-    return {
-      ...editMenuData,
-      id: menuID,
-    } as IMenu;
-  }
-
-  static async deleteMenu(menuID: string) {
-    const queryResult = await MenuModel.deleteMenu(menuID)!;
-    if (!queryResult) {
-      logger.error(`Could not delete menu with menuID ${menuID}`);
-      throw new ModelError('Could not delete Menu');
-    }
-    logger.info(`Menu with menuID ${menuID} deleted`);
+    logger.info(`Cart with cartID ${cartID} cleared`);
 
     return true;
   }
