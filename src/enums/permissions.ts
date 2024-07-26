@@ -38,7 +38,7 @@ export enum Permissions {
   VIEW_ALL_CART = 'view_all_cart',
   EDIT_CART = 'edit_cart',
   VIEW_CART = 'view_cart',
-  EMPTY_CART = 'delete_cart',
+  CLEAR_CART = 'clear_cart',
 
   ADD_CART_ITEM = 'add_cart_item',
   EDIT_CART_ITEM = 'edit_cart_item',

@@ -4,6 +4,14 @@ import { authenticate } from '../middleware/authenticate';
 import { validateReqBody } from '../middleware/validator';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 import cartItemSchema, { editCartItemSchema } from '../schema/cartItem';
+import {
+  addCartItem,
+  clearCart,
+  deleteCartItem,
+  editCartItem,
+  getAllCarts,
+  getCart,
+} from '../controllers/cart';
 
 const cartRouter = express();
 
@@ -12,7 +20,7 @@ cartRouter.get(
   authenticate,
   authorize(Permissions.VIEW_ALL_CART),
   authorizeCRUD('cart'),
-  getAllCart,
+  getAllCarts,
 );
 cartRouter.post(
   '/',
@@ -47,11 +55,11 @@ cartRouter.delete(
   deleteCartItem,
 );
 cartRouter.delete(
-  '/delete',
+  '/clear-cart',
   authenticate,
-  authorize(Permissions.EMPTY_CART),
+  authorize(Permissions.CLEAR_CART),
   authorizeCRUD('cart'),
-  deleteCart,
+  clearCart,
 );
 
 export default cartRouter;
