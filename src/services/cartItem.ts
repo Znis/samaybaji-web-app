@@ -1,4 +1,4 @@
-import CartItemModel from '../models/menu';
+import CartItemModel from '../models/cartItem';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
 import ICartItem, {
