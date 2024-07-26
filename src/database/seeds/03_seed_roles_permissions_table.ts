@@ -32,6 +32,8 @@ export async function seed(knex: Knex): Promise<void> {
     { id: uuidv4(), role_id: '1', permission_id: '31' },
     { id: uuidv4(), role_id: '1', permission_id: '32' },
     { id: uuidv4(), role_id: '1', permission_id: '34' },
+    { id: uuidv4(), role_id: '1', permission_id: '35' },
+    { id: uuidv4(), role_id: '1', permission_id: '36' },
 
     // customer permissions
     { id: uuidv4(), role_id: '2', permission_id: '2' },
@@ -52,6 +54,10 @@ export async function seed(knex: Knex): Promise<void> {
     { id: uuidv4(), role_id: '2', permission_id: '25' },
     { id: uuidv4(), role_id: '2', permission_id: '22' },
     { id: uuidv4(), role_id: '2', permission_id: '30' },
+    { id: uuidv4(), role_id: '2', permission_id: '36' },
+    { id: uuidv4(), role_id: '2', permission_id: '37' },
+    { id: uuidv4(), role_id: '2', permission_id: '38' },
+    { id: uuidv4(), role_id: '2', permission_id: '39' },
 
     // restaurant permissions
     { id: uuidv4(), role_id: '3', permission_id: '2' },
@@ -84,5 +90,9 @@ export async function seed(knex: Knex): Promise<void> {
     { id: uuidv4(), role_id: '3', permission_id: '32' },
     { id: uuidv4(), role_id: '3', permission_id: '33' },
     { id: uuidv4(), role_id: '3', permission_id: '34' },
+    { id: uuidv4(), role_id: '3', permission_id: '36' },
+    { id: uuidv4(), role_id: '3', permission_id: '37' },
+    { id: uuidv4(), role_id: '3', permission_id: '38' },
+    { id: uuidv4(), role_id: '3', permission_id: '39' },
   ]);
 }

@@ -46,5 +46,12 @@ export async function seed(knex: Knex): Promise<void> {
     { id: '32', name: Permissions.DELETE_MENU_ITEM },
     { id: '33', name: Permissions.CREATE_MENU_ITEM },
     { id: '34', name: Permissions.VIEW_MENU_ITEM },
+
+    { id: '35', name: Permissions.VIEW_ALL_CART },
+    { id: '36', name: Permissions.EMPTY_CART },
+
+    { id: '37', name: Permissions.ADD_CART_ITEM },
+    { id: '38', name: Permissions.EDIT_CART_ITEM },
+    { id: '39', name: Permissions.DELETE_CART_ITEM },
   ]);
 }

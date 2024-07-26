@@ -35,8 +35,14 @@ export enum Permissions {
   CANCEL_ORDER = 'cancel_order',
   VIEW_ALL_ORDER = 'view_all_order',
 
+  VIEW_ALL_CART = 'view_all_cart',
   EDIT_CART = 'edit_cart',
   VIEW_CART = 'view_cart',
+  EMPTY_CART = 'delete_cart',
+
+  ADD_CART_ITEM = 'add_cart_item',
+  EDIT_CART_ITEM = 'edit_cart_item',
+  DELETE_CART_ITEM = 'delete_cart_item',
 
   PROCESS_ORDER = 'process_order',
   MAINTAIN_MENU = 'maintain_menu',
