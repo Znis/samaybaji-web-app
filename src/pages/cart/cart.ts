@@ -28,12 +28,11 @@ export default class Cart {
       this.element.innerHTML = '';
       if (StateManagement.state.user) {
         this.fetchCartItems();
-        this.initialiseCartItemArray();
       } else {
         this.initialiseCartItemArray();
         this.render();
+        this.setEventListeners();
       }
-      this.setEventListeners();
     });
     return this.element;
   }
@@ -57,6 +56,11 @@ export default class Cart {
     const checkoutButton = this.element.querySelector(
       '#checkout-button',
     ) as HTMLButtonElement;
+    if (!StateManagement.state.user || !StateManagement.state.cart.length) {
+      checkoutButton.disabled = true;
+      return;
+    }
+    checkoutButton.disabled = false;
     checkoutButton.addEventListener('click', () => {
       history.pushState(null, '', '/checkout');
       navigate('/checkout');
@@ -87,7 +91,9 @@ export default class Cart {
           };
         }),
       );
+      this.initialiseCartItemArray();
       this.render();
+      this.setEventListeners();
     } catch (error) {
       this.element.innerHTML = `<h3>${error}</h3>`;
     } finally {

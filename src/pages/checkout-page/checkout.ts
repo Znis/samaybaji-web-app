@@ -25,6 +25,7 @@ export default class Checkout {
       this.render();
       this.renderAccordion();
       this.renderCartItems();
+      this.renderOrderBilling();
       this.setEventListeners();
     });
     return this.element;
@@ -97,6 +98,7 @@ export default class Checkout {
     const cartItemContainer = this.element.querySelector(
       '.checkout__cart-container',
     ) as HTMLDivElement;
+    cartItemContainer.innerHTML = '';
     StateManagement.state.cart.forEach((item) => {
       cartItemContainer.append(new CartItemCheckout(item).element);
     });
@@ -115,12 +117,6 @@ export default class Checkout {
       '.order-billing__total-amount',
     ) as HTMLParagraphElement;
     totalAmount.innerText = `Rs. ${this.subTotalAmount + this.deliveryAmount}`;
-    const cartItemContainer = this.element.querySelector(
-      '.checkout__cart-container',
-    ) as HTMLDivElement;
-    StateManagement.state.cart.forEach((item) => {
-      cartItemContainer.append(new CartItemCheckout(item).element);
-    });
   }
   static setEventListeners() {
     const editCartButton = this.element.querySelector(
