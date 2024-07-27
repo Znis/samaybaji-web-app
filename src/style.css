@@ -149,6 +149,9 @@ section {
   min-height: 90vh;
   padding: 2rem 8%; }
 
+input[type='radio'] {
+  -webkit-appearance: radio; }
+
 header {
   position: fixed;
   top: 0;
@@ -697,6 +700,8 @@ body.open .modal {
   box-shadow: 0 0.4rem 0.5rem rgba(0, 0, 0, 0.2);
   border-radius: 2rem;
   padding: 0.5rem 1rem; }
+  .cart-item--small {
+    scale: 0.85; }
   .cart-item__image-wrapper {
     height: 4rem;
     width: 5rem; }
@@ -712,7 +717,7 @@ body.open .modal {
     flex-direction: column;
     justify-content: center;
     gap: 0.2rem; }
-  .cart-item__title {
+  .cart-item__title, .cart-item__item-count {
     color: #333;
     font-size: 1.2rem;
     letter-spacing: 1.2px; }
@@ -1093,15 +1098,15 @@ body.open .modal {
   .cart__horizontal-bar {
     border-bottom: 1px solid #444;
     width: 100%; }
-  .cart__sub-total, .cart__delivery, .cart__promo-code, .cart__total {
+  .cart__sub-total, .cart__discount, .cart__promo-code, .cart__total {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%; }
-  .cart__sub-total-title, .cart__delivery-title, .cart__promo-code-title {
+  .cart__sub-total-title, .cart__discount-title, .cart__promo-code-title {
     font-size: 1.2rem;
     color: #333; }
-  .cart__sub-total-amount, .cart__delivery-amount {
+  .cart__sub-total-amount, .cart__discount-amount {
     font-size: 1rem;
     color: #555; }
   .cart__promo-code-input {
@@ -1334,3 +1339,184 @@ body.open .modal {
         display: block;
         height: auto;
         opacity: 1; }
+
+.checkout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; }
+  .checkout__heading {
+    font-size: 3rem;
+    color: #333; }
+  .checkout__span {
+    color: var(--brown); }
+  .checkout__main-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 2%; }
+  .checkout__form-container {
+    width: 54%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    border-radius: 1rem; }
+  .checkout__horizontal-bar {
+    border-bottom: 1px solid #444;
+    width: 100%; }
+  .checkout__accordion {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0.5rem;
+    overflow: hidden; }
+  .checkout__accordion-item {
+    border-bottom: 1px solid #ddd; }
+  .checkout__accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f5f5f5;
+    padding: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    position: relative; }
+  .checkout__accordion-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem; }
+  .checkout__accordion-title {
+    font-size: 1rem; }
+  .checkout__accordion-content-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 1px; }
+  .checkout__accordion-header-icon, .checkout__accordion-header-trailing-icon {
+    color: var(--brown); }
+  .checkout__accordion-header.active .checkout__accordion-header-trailing-icon {
+    transform: rotate(180deg); }
+  .checkout__input {
+    width: 100%;
+    max-width: 20rem;
+    font-size: 1rem;
+    color: #333;
+    text-transform: none;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    position: relative; }
+    .checkout__input:focus {
+      border: 1px solid #333; }
+    .checkout__input::placeholder {
+      color: #888;
+      font-size: 0.8rem;
+      font-weight: 400; }
+  .checkout__input-datetime {
+    width: 100%;
+    max-width: 20rem;
+    font-size: 0.9rem;
+    color: #333;
+    text-transform: none;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    position: relative; }
+    .checkout__input-datetime:focus {
+      border: 1px solid #333; }
+    .checkout__input-datetime::placeholder {
+      color: #888;
+      font-size: 0.8rem;
+      font-weight: 400; }
+  .checkout__address-mapbox {
+    height: 10rem;
+    width: 20rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem; }
+  .checkout__radio-button-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer; }
+  .checkout__accordion-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+    padding: 0 1rem;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem; }
+  .checkout__accordion-content.open {
+    max-height: 20rem;
+    padding: 1rem; }
+  .checkout__right-container {
+    width: 44%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem; }
+  .checkout__cart, .checkout__order-billing {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fbfcfa;
+    padding: 2rem;
+    border-radius: 1rem;
+    gap: 1rem; }
+  .checkout__cart-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem; }
+
+input[type='radio']:checked::after {
+  width: 14px;
+  height: 14px;
+  border-radius: 15px;
+  top: -2px;
+  left: -1px;
+  position: relative;
+  background-color: var(--brown);
+  content: '';
+  display: inline-block;
+  visibility: visible;
+  border: 2px solid white;
+  outline: 1px solid #444; }
+
+.order-billing__sub-total, .order-billing__delivery, .order-billing__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; }
+
+.order-billing__horizontal-bar {
+  border-bottom: 1px solid #444;
+  width: 100%; }
+
+.order-billing__sub-total-title, .order-billing__delivery-title {
+  font-size: 1.2rem;
+  color: #333; }
+
+.order-billing__sub-total-amount, .order-billing__delivery-amount {
+  font-size: 1rem;
+  color: #555; }
+
+.order-billing__total-title {
+  font-size: 1.4rem;
+  color: #333; }
+
+.order-billing__total-amount {
+  font-size: 1.4rem;
+  color: #444; }

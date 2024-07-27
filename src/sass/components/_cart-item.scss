@@ -9,7 +9,9 @@
   box-shadow: 0 0.4rem 0.5rem rgba(0, 0, 0, 0.2);
   border-radius: 2rem;
   padding: 0.5rem 1rem;
-
+  &--small {
+    scale: 0.85;
+  }
   &__image-wrapper {
     height: 4rem;
     width: 5rem;
@@ -29,7 +31,8 @@
     justify-content: center;
     gap: 0.2rem;
   }
-  &__title {
+  &__title,
+  &__item-count {
     color: #333;
     font-size: 1.2rem;
     letter-spacing: 1.2px;

@@ -141,6 +141,7 @@ export default class AuthCard {
     const input = document.querySelector('#register-phone') as HTMLInputElement;
     intlTelInput(input, {
       initialCountry: 'np',
+      onlyCountries: ['np'],
       utilsScript: "'node_modules/intl-tel-input/build/js/utils.js'",
     });
 

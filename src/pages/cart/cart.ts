@@ -9,13 +9,14 @@ import CartItem from '../../components/cartItem';
 import { LoaderSpinner } from '../../components/loaderSpinner';
 import { ICartItemData } from '../../interfaces/cart';
 import { IMenuItemData } from '../../interfaces/menu';
+import { navigate } from '../../router';
 import { StateManagement } from '../../state-management/stateManagement';
 
 export default class Cart {
   static htmlTemplateUrl = './assets/templates/pages/cart/cart.html';
   static element: HTMLElement = document.createElement('section');
   static totalAmount = 0;
-  static deliveryAmount = 100;
+  static discountAmount = 50;
   static subTotalAmount = 0;
   static spinner = LoaderSpinner.render(50);
   static html = '';
@@ -32,6 +33,7 @@ export default class Cart {
         this.initialiseCartItemArray();
         this.render();
       }
+      this.setEventListeners();
     });
     return this.element;
   }
@@ -50,6 +52,15 @@ export default class Cart {
       console.error('Failed to load HTML template', error);
       return '<h3>Failed to load the cart template.</h3>';
     }
+  }
+  static setEventListeners() {
+    const checkoutButton = this.element.querySelector(
+      '#checkout-button',
+    ) as HTMLButtonElement;
+    checkoutButton.addEventListener('click', () => {
+      history.pushState(null, '', '/checkout');
+      navigate('/checkout');
+    });
   }
   static async fetchCartItems() {
     this.element.appendChild(this.spinner);
@@ -161,15 +172,15 @@ export default class Cart {
       (sum, item) => sum + item.quantity * item.menuItem.price,
       0,
     );
-    this.deliveryAmount = StateManagement.state.cart.length ? 100 : 0;
-    this.totalAmount = this.subTotalAmount + this.deliveryAmount;
+    this.discountAmount = StateManagement.state.cart.length ? 50 : 0;
+    this.totalAmount = this.subTotalAmount - this.discountAmount;
   }
 
   static updatePriceDisplay(): void {
     this.element.querySelector('#sub-total-amount')!.innerHTML =
       `Rs. ${this.subTotalAmount}`;
-    this.element.querySelector('#delivery-amount')!.innerHTML =
-      `Rs. ${this.deliveryAmount}`;
+    this.element.querySelector('#discount-amount')!.innerHTML =
+      `Rs. ${this.discountAmount}`;
     this.element.querySelector('#total-amount')!.innerHTML =
       `Rs. ${this.totalAmount}`;
   }
