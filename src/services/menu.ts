@@ -30,6 +30,16 @@ export default class MenuServices {
     logger.info(`Menu of restaurantID ${restaurantID} found`);
     return menu;
   }
+  static async getMenuItems(restaurantID: string) {
+    const menu = await MenuModel.getMenu(restaurantID);
+    if (!menu) {
+      logger.error(`Menu of restaurantID ${restaurantID} not found`);
+      return null;
+    }
+    const menuItems = await MenuItemServices.getMenuItemsByMenuID(menu.id);
+    logger.info(`Menu of restaurantID ${restaurantID} found`);
+    return menuItems;
+  }
 
   static async createMenu(restaurantID: string, menuData: ICreateMenuData) {
     const queryResult = await MenuModel.createMenu(restaurantID, menuData)!;

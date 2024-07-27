@@ -1,7 +1,7 @@
 import joi from 'joi';
 
 const cartItemSchema = joi.object({
-  menu_item_id: joi.string().guid({ version: 'uuidv4' }).required().messages({
+  menuItemID: joi.string().guid({ version: 'uuidv4' }).required().messages({
     'string.base': 'Menu Item ID must be a string.',
     'string.guid': 'Menu Item ID must be a valid UUID.',
     'any.required': 'Menu Item ID is required.',
@@ -13,9 +13,13 @@ const cartItemSchema = joi.object({
     'any.required': 'Quantity is required.',
   }),
 });
+const cartItemArraySchema = joi.array().items(cartItemSchema).messages({
+  'array.base': 'Cart items must be an array.',
+  'array.includes': 'Each item in the cart must be a valid cart item.',
+});
 
 export const editCartItemSchema = joi.object({
-  menu_item_id: joi.string().guid({ version: 'uuidv4' }).optional().messages({
+  menuItemID: joi.string().guid({ version: 'uuidv4' }).optional().messages({
     'string.base': 'Menu Item ID must be a string.',
     'string.guid': 'Menu Item ID must be a valid UUID.',
     'any.required': 'Menu Item ID is required.',
@@ -47,4 +51,4 @@ export const cartItemIDQuerySchema = joi
   .options({
     stripUnknown: true,
   });
-export default cartItemSchema;
+export default cartItemArraySchema;

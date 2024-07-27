@@ -29,13 +29,15 @@ export async function editCartItem(
   next: NextFunction,
 ) {
   try {
-    const cartItemID = req.query.cartItemID as string;
+    const menuItemID = req.query.menuItemID as string;
+    const cartID = req.query.cartID as string;
     const cartItemData = req.body;
     const response = await CartItemService.editCartItem(
-      cartItemID,
+      menuItemID,
+      cartID,
       cartItemData,
     );
-    logger.info(`Cart Item with cartItemID ${cartItemID} edited`);
+    logger.info(`Cart Item with menuItemID ${menuItemID} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Cart item edit failed');
@@ -49,9 +51,10 @@ export async function deleteCartItem(
   next: NextFunction,
 ) {
   try {
-    const cartItemID = req.query.cartItemID as string;
-    await CartItemService.deleteCartItem(cartItemID);
-    logger.info(`Cart item with cartItemID ${cartItemID} deleted`);
+    const menuItemID = req.query.menuItemID as string;
+    const cartID = req.query.cartID as string;
+    await CartItemService.deleteCartItem(menuItemID, cartID);
+    logger.info(`Cart item with menuItemID ${menuItemID} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Cart item deletion failed');

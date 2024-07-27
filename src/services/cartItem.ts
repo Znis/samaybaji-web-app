@@ -21,7 +21,7 @@ export default class CartItemServices {
 
   static async createCartItem(
     cartID: string,
-    cartItemData: ICreateCartItemData,
+    cartItemData: ICreateCartItemData[],
   ) {
     const queryResult = await CartItemModel.createCartItem(
       cartID,
@@ -31,37 +31,40 @@ export default class CartItemServices {
       logger.error('Could not create new cart item');
       throw new ModelError('Could not create cart item');
     }
-
-    return { ...cartItemData, id: queryResult.id } as ICartItem;
+    return queryResult.map((item: { id: string }, idx: number) => {
+      return { ...cartItemData[idx], id: item.id };
+    }) as ICartItem[];
   }
 
   static async editCartItem(
-    cartItemID: string,
+    menuItemID: string,
+    cartID: string,
     editCartItemData: IEditCartItemData,
   ) {
     const queryResult = await CartItemModel.editCartItem(
-      cartItemID,
+      menuItemID,
+      cartID,
       editCartItemData,
     )!;
     if (!queryResult) {
-      logger.error(`Could not edit cart item with cartItemID ${cartItemID}`);
+      logger.error(`Could not edit cart item with menuItemID ${menuItemID}`);
       throw new ModelError('Could not edit Menu');
     }
-    logger.info(`Cart item with cartItemID ${cartItemID} updated`);
+    logger.info(`Cart item with menuItemID ${menuItemID} updated`);
 
     return {
       ...editCartItemData,
-      id: cartItemID,
+      id: queryResult.id,
     } as ICartItem;
   }
 
-  static async deleteCartItem(cartItemID: string) {
-    const queryResult = await CartItemModel.deleteCartItem(cartItemID)!;
+  static async deleteCartItem(menuItemID: string, cartID: string) {
+    const queryResult = await CartItemModel.deleteCartItem(menuItemID, cartID)!;
     if (!queryResult) {
-      logger.error(`Could not delete cart item with cartItemID ${cartItemID}`);
+      logger.error(`Could not delete cart item with menuItemID ${menuItemID}`);
       throw new ModelError('Could not delete cart item');
     }
-    logger.info(`Cart item with cartItemID ${cartItemID} deleted`);
+    logger.info(`Cart item with menuItemID ${menuItemID} deleted`);
 
     return true;
   }

@@ -26,17 +26,21 @@ export async function getAllMenus(
   }
 }
 
-export async function getMenu(req: Request, res: Response, next: NextFunction) {
+export async function getMenuItems(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const restaurantID = req.query.restaurantID as string;
-    const menu = await MenuService.getMenu(restaurantID);
-    if (!menu) {
-      logger.error(`No menu found of restaurantID ${restaurantID}`);
+    const menuItems = await MenuService.getMenuItems(restaurantID);
+    if (!menuItems) {
+      logger.error(`No menu items found of restaurantID ${restaurantID}`);
       next(new BaseError('No menu Found'));
       return;
     }
-    logger.info(`Menu of restaurantID ${restaurantID} found`);
-    return res.status(HttpStatusCode.OK).json(menu);
+    logger.info(`Menu items of restaurantID ${restaurantID} found`);
+    return res.status(HttpStatusCode.OK).json(menuItems);
   } catch (error) {
     logger.error('Menu fetch failed');
     logger.error(`Error: `, error);

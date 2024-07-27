@@ -29,61 +29,34 @@ export function authorize(permission: string) {
   };
 }
 
-export function authorizeCRUD(route: string) {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const currentUser = req.user!;
-      const userRole = await AuthorizationService.getRoleId(currentUser.id!);
+export async function authorizeCRUD(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const currentUser = req.user!;
+    const userRole = await AuthorizationService.getRoleId(currentUser.id!);
 
-      if (userRole == Roles.SUPERADMIN) {
-        if (route == 'users') {
-          const userID = req.query.userID as string;
-          if (!userID) {
-            return next(new SchemaError('UserID is required'));
-          }
-        }
-        if (route == 'restaurants') {
-          const restaurantID = req.query.restaurantID as string;
-          if (!restaurantID) {
-            return next(new SchemaError('restaurantID is required'));
-          }
-        }
-        if (route == 'menus') {
-          const menuID = req.query.menuID as string;
-          if (!menuID) {
-            return next(new SchemaError('menuID is required'));
-          }
-        }
-        if (route == 'menuItems') {
-          const menuItemID = req.query.menuItemID as string;
-          if (!menuItemID) {
-            return next(new SchemaError('menuItemID is required'));
-          }
-        }
-        console.log('admin', req.query);
-        return next();
-      }
-      if (userRole == Roles.CUSTOMER_WITH_RESTAURANT) {
-        const restaurantID = (await AuthorizationService.getRestaurantID(
-          currentUser.id,
-        )) as string;
-        req.query.restaurantID = restaurantID;
-        if (route == 'menus') {
-          const menuID = await AuthorizationService.getMenuID(restaurantID);
-          if (!menuID) {
-            return next(new SchemaError('No menu found'));
-          }
-          req.query.menuID = menuID;
-        }
-      }
-      const cartID = await AuthorizationService.getCartID(currentUser.id);
-
-      req.query.cartID = cartID;
-      req.query.userID = currentUser.id;
-      console.log('customer', req.query);
-      next();
-    } catch (error) {
-      next(error);
+    if (userRole == Roles.SUPERADMIN) {
+      return next();
     }
-  };
+    if (userRole == Roles.CUSTOMER_WITH_RESTAURANT) {
+      const restaurantID = (await AuthorizationService.getRestaurantID(
+        currentUser.id,
+      )) as string;
+      req.query.restaurantID = restaurantID;
+      const menuID = await AuthorizationService.getMenuID(restaurantID);
+      if (menuID) {
+        req.query.menuID = menuID;
+      }
+    }
+    const cartID = await AuthorizationService.getCartID(currentUser.id);
+
+    req.query.cartID = cartID;
+    req.query.userID = currentUser.id;
+    next();
+  } catch (error) {
+    next(error);
+  }
 }

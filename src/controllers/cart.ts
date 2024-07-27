@@ -26,7 +26,11 @@ export async function getAllCarts(
   }
 }
 
-export async function getCart(req: Request, res: Response, next: NextFunction) {
+export async function getCartItems(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const userID = req.query.userID as string;
     const cart = await CartService.getCartItems(userID);

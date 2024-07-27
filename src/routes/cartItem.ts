@@ -9,30 +9,31 @@ import {
   deleteCartItem,
   editCartItem,
 } from '../controllers/cartItem';
+import cartItemArraySchema from '../schema/cartItem';
 
 const cartItemRouter = express();
 cartItemRouter.post(
-  '/add-item',
-  validateReqBody(cartItemSchema),
+  '/add',
+  validateReqBody(cartItemArraySchema),
   authenticate,
   authorize(Permissions.ADD_CART_ITEM),
-  authorizeCRUD('cartItem'),
+  authorizeCRUD,
   addCartItem,
 );
 
 cartItemRouter.patch(
-  '/edit-item',
+  '/edit',
   validateReqBody(editCartItemSchema),
   authenticate,
   authorize(Permissions.EDIT_CART_ITEM),
-  authorizeCRUD('cartItem'),
+  authorizeCRUD,
   editCartItem,
 );
 cartItemRouter.delete(
-  '/delete-item',
+  '/delete',
   authenticate,
   authorize(Permissions.DELETE_CART_ITEM),
-  authorizeCRUD('cartItem'),
+  authorizeCRUD,
   deleteCartItem,
 );
 

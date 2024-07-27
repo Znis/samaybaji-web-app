@@ -9,7 +9,7 @@ import {
   deleteMenu,
   editMenu,
   getAllMenus,
-  getMenu,
+  getMenuItems,
 } from '../controllers/menu';
 
 const menuRouter = express();
@@ -18,11 +18,19 @@ const menuRouter = express();
 menuRouter.get('/', getAllMenus);
 
 menuRouter.post(
+  '/',
+  authenticate,
+  authorize(Permissions.VIEW_MENU),
+  authorizeCRUD,
+  getMenuItems,
+);
+
+menuRouter.post(
   '/create',
   validateReqBody(createMenuBodySchema),
   authenticate,
   authorize(Permissions.CREATE_MENU),
-  authorizeCRUD('menus'),
+  authorizeCRUD,
   createMenu,
 );
 
@@ -31,7 +39,7 @@ menuRouter.patch(
   validateReqBody(editMenuBodySchema),
   authenticate,
   authorize(Permissions.EDIT_MENU),
-  authorizeCRUD('menus'),
+  authorizeCRUD,
   editMenu,
 );
 
@@ -39,7 +47,7 @@ menuRouter.delete(
   '/delete/',
   authenticate,
   authorize(Permissions.DELETE_MENU),
-  authorizeCRUD('menus'),
+  authorizeCRUD,
   deleteMenu,
 );
 export default menuRouter;
