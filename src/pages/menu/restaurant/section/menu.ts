@@ -17,15 +17,7 @@ export default class RestaurantMenuList {
   }
   render() {
     this.restaurantMenuData.forEach((item: IMenuItemData) => {
-      const menuItem = new MenuItem(
-        item.id,
-        item.name,
-        item.imgSrc,
-        item.portion,
-        item.price,
-        item.isPopular,
-        'large',
-      );
+      const menuItem = new MenuItem(item, 'large');
       this.element.appendChild(menuItem.element);
     });
   }

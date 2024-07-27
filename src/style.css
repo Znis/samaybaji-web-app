@@ -855,6 +855,7 @@ body.open .modal {
 .loading-spinner {
   width: 10px;
   height: 10px;
+  align-self: center;
   border: calc(50px / 6) solid rgba(0, 0, 0, 0.1);
   border-top: calc(50px / 6) solid var(--brown);
   border-radius: 50%;

@@ -1,77 +1,176 @@
-import Header from '../../app-section/header';
+import {
+  addCartItem,
+  clearCart,
+  fetchCartItems,
+  makeApiCall,
+  removeCartItem,
+} from '../../apiCalls';
 import CartItem from '../../components/cartItem';
-import MenuItem from '../../components/menuItem';
+import { LoaderSpinner } from '../../components/loaderSpinner';
+import { ICartItemData } from '../../interfaces/cart';
+import { IMenuItemData } from '../../interfaces/menu';
+import { StateManagement } from '../../state-management/stateManagement';
 
 export default class Cart {
-  static htmlTemplateurl = './assets/templates/pages/cart/cart.html';
+  static htmlTemplateUrl = './assets/templates/pages/cart/cart.html';
   static element: HTMLElement = document.createElement('section');
-  static cartList: CartItem[] = [];
   static totalAmount = 0;
   static deliveryAmount = 100;
   static subTotalAmount = 0;
-  static async init(): Promise<HTMLElement> {
-    if (this.element) {
-      fetch(this.htmlTemplateurl)
-        .then((response) => response.text())
-        .then((html) => {
-          this.element.classList.add('cart');
-          this.element.innerHTML = html;
-          this.render();
-        });
-    }
-
+  static spinner = LoaderSpinner.render(50);
+  static html = '';
+  static cartItemArray: CartItem[] = [];
+  static init(): HTMLElement {
+    this.element.classList.add('cart');
+    this.loadHtmlTemplate().then((html) => {
+      this.html = html;
+      this.element.innerHTML = '';
+      if (StateManagement.state.user) {
+        this.fetchCartItems();
+        this.initialiseCartItemArray();
+      } else {
+        this.initialiseCartItemArray();
+        this.render();
+      }
+    });
     return this.element;
   }
+  static initialiseCartItemArray() {
+    this.cartItemArray = [];
+    StateManagement.state.cart.forEach((item) => {
+      const cartItem = new CartItem(item);
+      this.cartItemArray.push(cartItem);
+    });
+  }
+  static async loadHtmlTemplate(): Promise<string> {
+    try {
+      const response = await fetch(this.htmlTemplateUrl);
+      return await response.text();
+    } catch (error) {
+      console.error('Failed to load HTML template', error);
+      return '<h3>Failed to load the cart template.</h3>';
+    }
+  }
+  static async fetchCartItems() {
+    this.element.appendChild(this.spinner);
+    try {
+      if (StateManagement.state.cart.length) {
+        await makeApiCall(clearCart);
+        await makeApiCall(
+          addCartItem,
+          StateManagement.state.cart.map((item) => {
+            return { quantity: item.quantity, menuItemID: item.menuItem.id };
+          }),
+        );
+        StateManagement.updateState('cart', []);
+      }
+      const cartItems = (await makeApiCall(
+        fetchCartItems,
+      )) as unknown as ICartItemData[];
+      StateManagement.updateState(
+        'cart',
+        cartItems.map((item) => {
+          return {
+            quantity: item.quantity,
+            menuItem: item.menuItem,
+          };
+        }),
+      );
+      this.render();
+    } catch (error) {
+      this.element.innerHTML = `<h3>${error}</h3>`;
+    } finally {
+      this.spinner.remove();
+    }
+  }
+  static render(): void {
+    this.element.innerHTML = this.html;
 
-  static render() {
     const emptyCartImageWrapper = this.element.querySelector(
       '.cart__image-wrapper',
     ) as HTMLDivElement;
-    if (this.cartList.length) {
-      emptyCartImageWrapper.style.display = 'none';
-    } else {
-      emptyCartImageWrapper.style.display = 'flex';
-    }
+    this.updatePrices();
 
-    this.cartList.forEach((item) => {
+    if (!StateManagement.state.cart.length) {
+      emptyCartImageWrapper.style.display = 'flex';
+      return;
+    }
+    emptyCartImageWrapper.style.display = 'none';
+    this.element.querySelector('.cart__container')!.innerHTML = '';
+    this.cartItemArray.forEach((item) => {
       this.element.querySelector('.cart__container')!.appendChild(item.element);
     });
+    this.updatePriceDisplay();
+  }
+
+  static async addItem(menuItemData: IMenuItemData) {
+    StateManagement.updateState('cart', [
+      ...StateManagement.state.cart,
+      {
+        quantity: 1,
+        menuItem: menuItemData,
+      },
+    ]);
+    this.updatePrices();
+    if (StateManagement.state.user) {
+      try {
+        await makeApiCall(addCartItem, [
+          {
+            quantity: 1,
+            menuItemID: menuItemData.id,
+          },
+        ]);
+      } catch (error) {
+        StateManagement.updateState(
+          'cart',
+          StateManagement.state.cart.filter(
+            (item) => item.menuItem.id !== menuItemData.id,
+          ),
+        );
+        this.updatePrices();
+      }
+    }
+  }
+
+  static async removeItem(menuItemData: IMenuItemData) {
+    StateManagement.updateState(
+      'cart',
+      StateManagement.state.cart.filter(
+        (item) => item.menuItem.id !== menuItemData.id,
+      ),
+    );
+    this.updatePrices();
+    if (StateManagement.state.user) {
+      try {
+        await makeApiCall(removeCartItem, menuItemData.id);
+      } catch (error) {
+        StateManagement.updateState('cart', [
+          ...StateManagement.state.cart,
+          {
+            quantity: 1,
+            menuItem: menuItemData,
+          },
+        ]);
+        this.updatePrices();
+      }
+    }
+  }
+
+  static updatePrices(): void {
+    this.subTotalAmount = StateManagement.state.cart.reduce(
+      (sum, item) => sum + item.quantity * item.menuItem.price,
+      0,
+    );
+    this.deliveryAmount = StateManagement.state.cart.length ? 100 : 0;
+    this.totalAmount = this.subTotalAmount + this.deliveryAmount;
+  }
+
+  static updatePriceDisplay(): void {
     this.element.querySelector('#sub-total-amount')!.innerHTML =
       `Rs. ${this.subTotalAmount}`;
     this.element.querySelector('#delivery-amount')!.innerHTML =
       `Rs. ${this.deliveryAmount}`;
     this.element.querySelector('#total-amount')!.innerHTML =
       `Rs. ${this.totalAmount}`;
-  }
-
-  static addItem(menuItem: MenuItem) {
-    const cartItem = new CartItem(menuItem);
-    this.cartList.push(cartItem);
-    Header.updateCartCount();
-    this.updateTotalPrice();
-  }
-  static removeItem(menuItem: MenuItem) {
-    const cartItem = this.cartList.find(
-      (item) => item.menuItem.id === menuItem.id,
-    );
-    this.cartList = this.cartList.filter(
-      (item) => item.menuItem.id !== menuItem.id,
-    );
-    cartItem!.element.remove();
-    menuItem.toggleButton();
-    Header.updateCartCount();
-    this.updateTotalPrice();
-  }
-
-  static updateTotalPrice() {
-    this.subTotalAmount = 0;
-    this.cartList.length
-      ? (this.deliveryAmount = 100)
-      : (this.deliveryAmount = 0);
-    this.totalAmount = 0;
-    this.cartList.forEach((item) => {
-      this.subTotalAmount += item.quantity * item.menuItem.price;
-    });
-    this.totalAmount = this.subTotalAmount + this.deliveryAmount;
   }
 }

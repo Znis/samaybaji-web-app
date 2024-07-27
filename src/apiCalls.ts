@@ -1,14 +1,22 @@
-import axios, { AxiosResponse } from 'axios';
+import { menuItemData } from './dummyData';
+import axios, { AxiosError } from 'axios';
 import { userFormData } from './interfaces/users';
 import { StateManagement } from './state-management/stateManagement';
+import { IFormattedCartItemDataForAPI } from './interfaces/cart';
 
 const baseUrl = 'http://localhost:8000';
 const usersUrl = '/users';
 const loginUrl = '/login';
 const registerUrl = `${usersUrl}/register`;
-const refreshUrl = '/authenticate/refresh';
+const refreshUrl = '/refresh';
 const restaurantUrl = '/restaurants';
 const menuUrl = '/menus';
+const cartUrl = '/carts';
+const cartItemsUrl = '/cart-items';
+const addCartItemUrl = `${cartItemsUrl}/add`;
+const removeCartItemUrl = `${cartItemsUrl}/delete`;
+const editCartItemUrl = `${cartItemsUrl}/edit`;
+const clearCartUrl = `${cartUrl}/clear`;
 
 export const login = async (formData: userFormData) => {
   return await axios
@@ -25,6 +33,82 @@ export const register = async (formData: userFormData) => {
   });
 };
 
+export const fetchAllRestaurants = async () => {
+  return await axios.get(`${baseUrl}${restaurantUrl}`).then((res) => {
+    return res.data;
+  });
+};
+export const fetchAllMenus = async () => {
+  return await axios.get(`${baseUrl}${menuUrl}`).then((res) => {
+    return res.data;
+  });
+};
+export const fetchCartItems = async () => {
+  return await axios
+    .get(`${baseUrl}${cartUrl}`, {
+      headers: {
+        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+export const addCartItem = async (
+  cartItemData: IFormattedCartItemDataForAPI[],
+) => {
+  return await axios
+    .post(`${baseUrl}${addCartItemUrl}`, cartItemData, {
+      headers: {
+        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+export const removeCartItem = async (menuItemID: string) => {
+  return await axios
+    .delete(`${baseUrl}${removeCartItemUrl}`, {
+      params: { menuItemID: menuItemID },
+      headers: {
+        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+export const editCartItem = async (
+  editCartItemData: IFormattedCartItemDataForAPI,
+) => {
+  return await axios
+    .patch(
+      `${baseUrl}${editCartItemUrl}`,
+      { quantity: editCartItemData.quantity },
+      {
+        params: { menuItemID: editCartItemData.menuItemID },
+
+        headers: {
+          Authorization: `Bearer ${StateManagement.state.accessToken}`,
+        },
+      },
+    )
+    .then((res) => {
+      return res.data;
+    });
+};
+export const clearCart = async () => {
+  return await axios
+    .delete(`${baseUrl}${clearCartUrl}`, {
+      headers: {
+        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
 export const fetchAllUsers = async () => {
   return await axios
     .get(`${baseUrl}${usersUrl}`, {
@@ -36,29 +120,6 @@ export const fetchAllUsers = async () => {
       return res.data;
     });
 };
-export const fetchAllRestaurants = async () => {
-  return await axios
-    .get(`${baseUrl}${restaurantUrl}`, {
-      headers: {
-        Authorization: `Bearer ${StateManagement.state.accessToken}`,
-      },
-    })
-    .then((res) => {
-      return res.data;
-    });
-};
-export const fetchAllMenus = async () => {
-  return await axios
-    .get(`${baseUrl}${menuUrl}`, {
-      headers: {
-        Authorization: `Bearer ${StateManagement.state.accessToken}`,
-      },
-    })
-    .then((res) => {
-      return res.data;
-    });
-};
-
 export const fetchAccessToken = async () => {
   return await axios
     .post(
@@ -76,23 +137,69 @@ export const fetchAccessToken = async () => {
     });
 };
 
-export async function makeApiCall<T, R>(
+export async function makeApiCall<T>(
   callbackFn: (...args: T[]) => Promise<Response>,
   ...args: T[]
-): Promise<Response> {
+) {
   try {
-    const response = await callbackFn(...args);
-    return response;
-  } catch {
-    const tokenResponse = await fetchAccessToken();
-    if (!tokenResponse.accessToken) {
-      StateManagement.updateState('accessToken', null);
-      StateManagement.updateState('user', null);
-      return tokenResponse;
+    return await callbackFn(...args);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.message === 'Token Expired') {
+        const tokenResponse = await handleTokenExpiration();
+        if (!tokenResponse.accessToken) {
+          logoutUser();
+          throw new Error(`Failed to refresh access token: ${tokenResponse}`);
+        }
+        StateManagement.updateState('accessToken', tokenResponse.accessToken);
+        try {
+          return await callbackFn(...args);
+        } catch (retryError) {
+          if (axios.isAxiosError(retryError)) {
+            console.error(
+              'API Error:',
+              retryError.response!.status,
+              retryError.response!.statusText,
+            );
+            throw new Error(
+              `API Error:
+              ${retryError.response!.status} 
+              ${retryError.response!.statusText}`,
+            );
+          }
+          console.error('API Error:', retryError);
+        }
+      } else {
+        console.error('API Error:', error);
+        throw new Error(`${error}`);
+      }
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error(`Unexpected Error: ${error}`);
     }
-    StateManagement.updateState('accessToken', tokenResponse.accessToken);
-
-    const response = await callbackFn(...args);
-    return response;
   }
+}
+
+async function handleTokenExpiration(): Promise<{
+  accessToken: string | null;
+}> {
+  try {
+    return await fetchAccessToken();
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        'Error fetching access token:',
+        error.response!.status,
+        error.response!.statusText,
+      );
+      throw new Error('Error fetching access token');
+    }
+    console.error('Error fetching access token:', error);
+    throw new Error('Error fetching access token');
+  }
+}
+
+function logoutUser(): void {
+  StateManagement.resetState();
+  console.warn('User logged out due to token expiration');
 }

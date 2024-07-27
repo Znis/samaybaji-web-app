@@ -1,35 +1,19 @@
 import Cart from '../pages/cart/cart';
 import { navigate } from '../router';
+import { IMenuItemData } from '../interfaces/menu';
+import { StateManagement } from '../state-management/stateManagement';
 
 export default class MenuItem {
-  id: string;
-  itemName: string;
-  imgSrc: string;
-  portion: string;
-  price: number;
-  isPopular: boolean;
-  element: HTMLDivElement;
-  className: string;
+  menuItemData: IMenuItemData;
   type: string | undefined;
   isAddedToCart: boolean;
   button: HTMLButtonElement;
+  className: string;
+  element: HTMLDivElement;
 
-  constructor(
-    id: string,
-    itemName: string,
-    imgSrc: string,
-    portion: string,
-    price: number,
-    isPopular: boolean,
-    type?: string | undefined,
-  ) {
-    this.id = id;
-    this.itemName = itemName;
-    this.imgSrc = imgSrc;
-    this.portion = portion;
-    this.price = price;
-    this.isPopular = isPopular;
+  constructor(menuItemData: IMenuItemData, type?: string | undefined) {
     this.type = type;
+    this.menuItemData = menuItemData;
     this.className = 'menu-item-card';
     this.isAddedToCart = this.checkIfPresentInCart();
     this.button = document.createElement('button');
@@ -39,7 +23,7 @@ export default class MenuItem {
   }
 
   init(): void {
-    if (this.isPopular) {
+    if (this.menuItemData.isPopular) {
       const ribbon = this.createIsPopularRibbon();
       this.element.appendChild(ribbon);
     }
@@ -50,25 +34,25 @@ export default class MenuItem {
     this.element.classList.add(this.className);
     this.type ? this.element.classList.add(`${this.className}--large`) : '';
 
-    this.element.setAttribute('id', this.id);
+    this.element.setAttribute('id', this.menuItemData.id);
 
     const img = document.createElement('img');
-    img.src = this.imgSrc;
-    img.alt = `An image of ${this.itemName}`;
+    img.src = this.menuItemData.imgSrc;
+    img.alt = `An image of ${this.menuItemData.name}`;
 
     const infoWrapper = document.createElement('div');
     infoWrapper.classList.add('info-wrapper');
 
     const h3 = document.createElement('h3');
-    h3.innerText = this.itemName;
+    h3.innerText = this.menuItemData.name;
 
     const portionDiv = document.createElement('div');
     portionDiv.classList.add('portion');
-    portionDiv.innerText = this.portion;
+    portionDiv.innerText = this.menuItemData.portion;
 
     const priceDiv = document.createElement('div');
     priceDiv.classList.add('price');
-    priceDiv.innerText = `Rs. ${this.price}`;
+    priceDiv.innerText = `Rs. ${this.menuItemData.price}`;
 
     this.button.classList.add('button');
     this.button.name = 'addtocartbutton';
@@ -82,11 +66,12 @@ export default class MenuItem {
     this.button.addEventListener('click', (event) => {
       event.stopPropagation();
       if (!this.isAddedToCart) {
-        Cart.addItem(this);
+        Cart.addItem(this.menuItemData);
         this.toggleButton();
         this.isAddedToCart = true;
       } else {
-        Cart.removeItem(this);
+        Cart.removeItem(this.menuItemData);
+        this.toggleButton();
         this.isAddedToCart = false;
       }
     });
@@ -116,8 +101,8 @@ export default class MenuItem {
   }
 
   checkIfPresentInCart() {
-    const doesExist = Cart.cartList.some(
-      (item) => item.menuItem.id === this.id,
+    const doesExist = StateManagement.state.cart.some(
+      (item) => item.menuItem.id === this.menuItemData.id,
     );
     return doesExist;
   }

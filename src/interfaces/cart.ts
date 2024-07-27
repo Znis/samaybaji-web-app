@@ -4,7 +4,7 @@ export interface ICartItemData {
   menuItem: IMenuItemData;
   quantity: number;
 }
-
-export interface ICartData {
-  cartItems: ICartItemData[];
+export interface IFormattedCartItemDataForAPI {
+  menuItemID: string;
+  quantity: number;
 }

@@ -7,6 +7,7 @@ import { userFormData } from '../interfaces/users';
 import { StateManagement } from '../state-management/stateManagement';
 import Toast from './toast';
 import { fetchAllUsers, login, makeApiCall, register } from '../apiCalls';
+import Cart from '../pages/cart/cart';
 export default class AuthCard {
   static element = document.createElement('div');
   static htmlTemplateURL = './assets/templates/components/auth-card.html';
@@ -310,7 +311,7 @@ export default class AuthCard {
         StateManagement.updateState('accessToken', data.accessToken);
         StateManagement.updateState('user', data.user);
         Toast.show('User Logged In');
-
+        Cart.fetchCartItems();
         return data;
       })
       .catch((err) => {

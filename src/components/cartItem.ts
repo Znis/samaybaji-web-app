@@ -1,20 +1,20 @@
+import { editCartItem, makeApiCall } from '../apiCalls';
+import { ICartItemData } from '../interfaces/cart';
 import Cart from '../pages/cart/cart';
-import MenuItem from './menuItem';
+import { StateManagement } from '../state-management/stateManagement';
 
 export default class CartItem {
   url: string;
   element: HTMLElement;
-  menuItem: MenuItem;
-  quantity: number;
+  cartItemData: ICartItemData;
   incrementButton: HTMLButtonElement;
   decrementButton: HTMLButtonElement;
   deleteButton: HTMLButtonElement;
 
-  constructor(menuItem: MenuItem) {
+  constructor(cartItemData: ICartItemData) {
     this.url = './assets/templates/components/cart-item.html';
     this.element = document.createElement('div');
-    this.menuItem = menuItem;
-    this.quantity = 1;
+    this.cartItemData = cartItemData;
 
     this.incrementButton = {} as HTMLButtonElement;
     this.decrementButton = {} as HTMLButtonElement;
@@ -39,30 +39,35 @@ export default class CartItem {
     const cartImage = this.element.querySelector(
       '.cart-item__image',
     ) as HTMLImageElement;
-    cartImage!.src = this.menuItem.imgSrc;
-    cartImage!.alt = `An image of ${this.menuItem.itemName}`;
+    cartImage!.src = this.cartItemData.menuItem.imgSrc;
+    cartImage!.alt = `An image of ${this.cartItemData.menuItem.name}`;
     const titleElement = this.element.querySelector(
       '#cart-item-title',
     ) as HTMLElement;
-    titleElement!.innerHTML = this.menuItem.itemName;
+    titleElement!.innerHTML = this.cartItemData.menuItem.name;
     const unitPriceElement = this.element.querySelector(
       '#cart-item-unit-price',
     );
-    unitPriceElement!.innerHTML = `Rs. ${this.menuItem.price}`;
+    unitPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItem.price}`;
     const totalPriceElement = this.element.querySelector(
       '#cart-item-total-price',
     );
-    totalPriceElement!.innerHTML = `Rs. ${this.menuItem.price}`;
+    totalPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItem.price}`;
     this.decrementButton = this.element.querySelector(
       '.cart-item__quantity-semi-rounded-left',
     ) as HTMLButtonElement;
-    this.decrementButton.disabled = true;
+    this.decrementButton.disabled =
+      this.cartItemData.quantity === 1 ? true : false;
     this.incrementButton = this.element.querySelector(
       '.cart-item__quantity-semi-rounded-right',
     ) as HTMLButtonElement;
     this.deleteButton = this.element.querySelector(
       '.cart-item__trash-button',
     ) as HTMLButtonElement;
+    const quantityBox = this.element.querySelector(
+      '.cart-item__quantity-small-rounded-box',
+    ) as HTMLElement;
+    quantityBox.innerText = `${this.cartItemData.quantity}`;
   }
   setupEventListeners(): void {
     this.decrementButton?.addEventListener('click', () =>
@@ -81,7 +86,7 @@ export default class CartItem {
     let quantity = parseInt(quantityBox.innerText);
     if (quantity > 1) {
       quantity--;
-      quantityBox.innerText = quantity.toString();
+      quantityBox.innerText = `${quantity}`;
       this.updateTotalPrice(quantity);
     }
 
@@ -94,12 +99,12 @@ export default class CartItem {
     ) as HTMLElement;
     let quantity = parseInt(quantityBox.innerText);
     quantity++;
-    quantityBox.innerText = quantity.toString();
+    quantityBox.innerText = `${quantity}`;
     this.decrementButton.disabled = false;
     this.updateTotalPrice(quantity);
   }
 
-  updateTotalPrice(quantity: number): void {
+  async updateTotalPrice(quantity: number) {
     const unitPriceElement = this.element.querySelector(
       '.cart-item__unit-price',
     ) as HTMLElement;
@@ -111,15 +116,32 @@ export default class CartItem {
       unitPriceElement.innerText.replace('Rs. ', ''),
     );
     const totalPrice = unitPrice * quantity;
-    this.quantity = quantity;
+    this.cartItemData.quantity = quantity;
     totalPriceElement.innerText = `Rs. ${totalPrice}`;
-    Cart.updateTotalPrice();
+
+    const cartItem = StateManagement.state.cart.find(
+      (item) => item.menuItem.id === this.cartItemData.menuItem.id,
+    );
+    cartItem!.quantity = quantity;
+    StateManagement.updateState('cart', StateManagement.state.cart);
+
+    Cart.updatePrices();
     Cart.render();
+    if (StateManagement.state.user) {
+      try {
+        await makeApiCall(editCartItem, {
+          menuItemID: this.cartItemData.menuItem.id,
+          quantity: quantity,
+        });
+      } catch (error) {
+        console.error('Error updating cart:', error);
+      }
+    }
   }
 
   deleteItem(): void {
-    Cart.removeItem(this.menuItem);
-    Cart.updateTotalPrice();
+    Cart.removeItem(this.cartItemData.menuItem);
+    Cart.updatePrices();
     Cart.render();
   }
 }

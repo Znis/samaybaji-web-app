@@ -1,8 +1,12 @@
 import Header from '../app-section/header';
+import { ICartItemData } from '../interfaces/cart';
+import Cart from '../pages/cart/cart';
+import MenuPageLayout from '../pages/menu/menuPageLayout';
 
 interface AppState {
   accessToken: string | null;
   user: { id: string; name: string; email: string; phoneNumber: string } | null;
+  cart: ICartItemData[];
 }
 
 export class StateManagement {
@@ -12,6 +16,14 @@ export class StateManagement {
     this.state[key] = value;
     this.saveStateToSessionStorage();
     this.render();
+  }
+
+  static resetState() {
+    this.state = this.getInitialState();
+    this.saveStateToSessionStorage();
+    this.render();
+    MenuPageLayout.init();
+    Cart.init();
   }
 
   static render() {
@@ -38,6 +50,7 @@ export class StateManagement {
     return {
       accessToken: null,
       user: null,
+      cart: [],
     };
   }
 }

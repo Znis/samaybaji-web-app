@@ -1,6 +1,5 @@
 import AuthCard from '../components/authCard.ts';
 import Modal from '../components/modal.ts';
-import Cart from '../pages/cart/cart.ts';
 import { navigate } from '../router.ts';
 import { StateManagement } from '../state-management/stateManagement.ts';
 import Toast from '../components/toast.ts';
@@ -17,6 +16,7 @@ export default class Header {
         this.checkForAuthenticatedUser();
         this.setNavigationLinks();
         this.setupEventListeners();
+        this.updateCartCount();
       });
     return this.element;
   }
@@ -65,8 +65,7 @@ export default class Header {
       });
   }
   static logout(): void {
-    StateManagement.updateState('user', null);
-    StateManagement.updateState('accessToken', null);
+    StateManagement.resetState();
     Toast.show('User Logged Out');
   }
   static setNavigationLinks(): void {
@@ -90,7 +89,7 @@ export default class Header {
   }
 
   static updateCartCount() {
-    const cartLength = Cart.cartList.length;
+    const cartLength = StateManagement.state.cart.length;
     const cartCountCircleDiv = this.element.querySelector(
       '#cart-count-circle',
     ) as HTMLDivElement;
