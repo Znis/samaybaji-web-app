@@ -7,46 +7,46 @@ import { ICreateReview, IEditReview, IReview } from '../interfaces/review';
 const logger = loggerWithNameSpace('Review Service');
 export default class ReviewServices {
   static async getAllReviews() {
-    const Reviews = await ReviewModel.getAllReviews();
-    if (!Reviews) {
+    const reviews = await ReviewModel.getAllReviews();
+    if (!reviews) {
       return null;
     }
     logger.info('All Reviews Found');
-    return Reviews;
+    return reviews;
   }
   static async getReviewsByUserID(
     userID: string,
     targetType: ReviewTargetType,
   ) {
-    const Reviews = await ReviewModel.getReviewsByUserID(userID, targetType);
-    if (!Reviews) {
+    const reviews = await ReviewModel.getReviewsByUserID(userID, targetType);
+    if (!reviews) {
       return null;
     }
     logger.info(`All Reviews of userID ${userID} for ${targetType} Found`);
-    return Reviews;
+    return reviews;
   }
   static async getReview(
     userID: string,
     targetType: ReviewTargetType,
     targetID: string,
   ) {
-    const Review = await ReviewModel.getReview(userID, targetType, targetID);
-    if (!Review) {
+    const review = await ReviewModel.getReview(userID, targetType, targetID);
+    if (!review) {
       logger.error(`Review for ${targetType} with ID ${targetID} not found`);
       return null;
     }
     logger.info(`Review for ${targetType} with ID ${targetID} found`);
-    return Review;
+    return review;
   }
 
-  static async createReview(ReviewData: ICreateReview) {
-    const queryResult = await ReviewModel.createReview(ReviewData)!;
+  static async createReview(reviewData: ICreateReview) {
+    const queryResult = await ReviewModel.createReview(reviewData)!;
     if (!queryResult) {
       logger.error('Could not create new Review');
       throw new ModelError('Could not create Review');
     }
-    logger.info(`New Review for ${ReviewData.targetType} created`);
-    return { ...ReviewData, id: queryResult.id } as IReview;
+    logger.info(`New Review for ${reviewData.targetType} created`);
+    return { ...reviewData, id: queryResult.id } as IReview;
   }
 
   static async editReview(reviewID: string, editReviewData: IEditReview) {
