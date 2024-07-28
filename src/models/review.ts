@@ -63,7 +63,7 @@ export default class ReviewModel extends BaseModel {
       });
   }
 
-  static editRestaurant(reviewID: string, editReviewData: IEditReview) {
+  static editReview(reviewID: string, editReviewData: IEditReview) {
     return this.queryBuilder()
       .update(editReviewData)
       .from('reviews')
@@ -77,7 +77,7 @@ export default class ReviewModel extends BaseModel {
         return null;
       });
   }
-  static deleteDish(reviewID: string) {
+  static deleteReview(reviewID: string) {
     return this.queryBuilder()
       .del()
       .from('reviews')

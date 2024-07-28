@@ -42,7 +42,7 @@ export default class DishModel extends BaseModel {
       });
   }
 
-  static editRestaurant(dishID: string, editDishData: IEditDish) {
+  static editDish(dishID: string, editDishData: IEditDish) {
     return this.queryBuilder()
       .update(editDishData)
       .from('dishes')

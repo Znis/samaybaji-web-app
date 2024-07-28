@@ -1,78 +1,75 @@
-import RestaurantModel from '../models/restaurant';
+import ReviewModel from '../models/review';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
-import IRestaurant, {
-  ICreateRestaurantData,
-  IEditRestaurantData,
-} from '../interfaces/restaurant';
+import { ReviewTargetType } from '../enums/review';
+import { ICreateReview, IEditReview, IReview } from '../interfaces/review';
 
-const logger = loggerWithNameSpace('Restaurant Service');
-export default class RestaurantServices {
-  static async getAllRestaurants() {
-    const restaurants = await RestaurantModel.getAllRestaurants();
-    if (!restaurants) {
+const logger = loggerWithNameSpace('Review Service');
+export default class ReviewServices {
+  static async getAllReviews() {
+    const Reviews = await ReviewModel.getAllReviews();
+    if (!Reviews) {
       return null;
     }
-    logger.info('All Restaurants Found');
-    return restaurants;
+    logger.info('All Reviews Found');
+    return Reviews;
   }
-  static async getRestaurant(userID: string) {
-    const restaurant = await RestaurantModel.getRestaurant(userID);
-    if (!restaurant) {
-      logger.error(`Restaurant with userID ${userID} not found`);
-      return null;
-    }
-    logger.info(`Restaurant with userID ${userID} found`);
-    return restaurant;
-  }
-
-  static async createRestaurant(
+  static async getReviewsByUserID(
     userID: string,
-    restaurant: ICreateRestaurantData,
+    targetType: ReviewTargetType,
   ) {
-    const queryResult = await RestaurantModel.createRestaurant(
-      userID,
-      restaurant,
-    )!;
-    if (!queryResult) {
-      logger.error('Could not create new restaurant');
-      throw new ModelError('Could not create restaurant');
+    const Reviews = await ReviewModel.getReviewsByUserID(userID, targetType);
+    if (!Reviews) {
+      return null;
     }
-    logger.info(`New restaurant for userID ${userID} created`);
-    return { ...restaurant, id: queryResult.id } as IRestaurant;
+    logger.info(`All Reviews of userID ${userID} for ${targetType} Found`);
+    return Reviews;
+  }
+  static async getReview(
+    userID: string,
+    targetType: ReviewTargetType,
+    targetID: string,
+  ) {
+    const Review = await ReviewModel.getReview(userID, targetType, targetID);
+    if (!Review) {
+      logger.error(`Review for ${targetType} with ID ${targetID} not found`);
+      return null;
+    }
+    logger.info(`Review for ${targetType} with ID ${targetID} found`);
+    return Review;
   }
 
-  static async editRestaurant(
-    restaurantID: string,
-    editRestaurantData: IEditRestaurantData,
-  ) {
-    const queryResult = await RestaurantModel.editRestaurant(
-      restaurantID,
-      editRestaurantData,
-    )!;
+  static async createReview(ReviewData: ICreateReview) {
+    const queryResult = await ReviewModel.createReview(ReviewData)!;
     if (!queryResult) {
-      logger.error(
-        `Could not edit restaurant with restaurantID ${restaurantID}`,
-      );
-      throw new ModelError('Could not edit Restaurant');
+      logger.error('Could not create new Review');
+      throw new ModelError('Could not create Review');
     }
-    logger.info(`Restaurant with restaurantID ${queryResult.id} updated`);
+    logger.info(`New Review for ${ReviewData.targetType} created`);
+    return { ...ReviewData, id: queryResult.id } as IReview;
+  }
+
+  static async editReview(reviewID: string, editReviewData: IEditReview) {
+    const queryResult = await ReviewModel.editReview(reviewID, editReviewData)!;
+    if (!queryResult) {
+      logger.error(`Could not edit Review with reviewID ${reviewID}`);
+      throw new ModelError('Could not edit Review');
+    }
+    logger.info(`Review with reviewID ${queryResult.id} updated`);
 
     return {
-      ...editRestaurantData,
-      id: restaurantID,
-    } as IRestaurant;
+      ...editReviewData,
+      id: reviewID,
+    } as IReview;
   }
 
-  static async deleteRestaurant(restaurantID: string) {
-    const queryResult = await RestaurantModel.deleteRestaurant(restaurantID)!;
+  static async deleteReview(reviewID: string) {
+    const queryResult = await ReviewModel.deleteReview(reviewID)!;
     if (!queryResult) {
-      logger.error(
-        `Could not delete restaurant with restaurantID ${restaurantID}`,
-      );
-      throw new ModelError('Could not delete Restaurant');
+      logger.error(`Could not delete Review with reviewID ${reviewID}`);
+      throw new ModelError('Could not delete Review');
     }
-    logger.info(`Restaurant with restaurantID ${restaurantID} deleted`);
+    logger.info(`Review with reviewID ${reviewID} deleted`);
 
     return true;
   }
