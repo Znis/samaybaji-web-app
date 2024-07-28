@@ -42,6 +42,24 @@ export default class OrderModel extends BaseModel {
         return null;
       });
   }
+
+  static getOrdersByRestaurantID(restaurantID: string) {
+    return this.queryBuilder()
+      .select('orders.*')
+      .from('orders')
+      .join('order_items', 'orders.id', 'order_items.order_id')
+      .join('menu_items', 'order_items.menu_item_id', 'menu_items.id')
+      .join('menus', 'menu_items.menu_id', 'menus.id')
+      .join('restaurants', 'menus.restaurant_id', 'restaurants.id')
+      .where('restaurants.id', restaurantID)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+  }
   static createOrder(userID: string, orderData: ICreateOrderDetails) {
     return this.queryBuilder()
       .insert({ ...orderData, userId: userID })

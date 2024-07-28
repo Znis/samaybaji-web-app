@@ -3,31 +3,41 @@ import express from 'express';
 import { authenticate } from '../middleware/authenticate';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 import { validateReqBody } from '../middleware/validator';
+import {
+  addOrderItem,
+  deleteOrderItem,
+  editOrderItem,
+} from '../controllers/orderItem';
+import {
+  createOrderItemArraySchema,
+  editOrderItemByRestaurantSchema,
+} from '../schema/orderItem';
 
 const orderItemRouter = express();
 orderItemRouter.post(
   '/add',
-  validateReqBody(cartItemArraySchema),
+  validateReqBody(createOrderItemArraySchema),
   authenticate,
-  authorize(Permissions.ADD_ORDER_ITEM),
+  // authorize(Permissions.ADD_ORDER_ITEM),
   authorizeCRUD,
-  addCartItem,
+  addOrderItem,
 );
 
 orderItemRouter.patch(
   '/edit',
-  validateReqBody(editCartItemSchema),
+  validateReqBody(editOrderItemByRestaurantSchema),
   authenticate,
-  authorize(Permissions.EDIT_ORDER_ITEM),
+  // authorize(Permissions.EDIT_ORDER_ITEM),
   authorizeCRUD,
-  editCartItem,
+  editOrderItem,
 );
+
 orderItemRouter.delete(
   '/delete',
   authenticate,
-  authorize(Permissions.DELETE_ORDER_ITEM),
+  // authorize(Permissions.DELETE_ORDER_ITEM),
   authorizeCRUD,
-  deleteCartItem,
+  deleteOrderItem,
 );
 
 export default orderItemRouter;

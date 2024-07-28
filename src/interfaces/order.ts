@@ -44,7 +44,6 @@ export interface IEditOrder {
   deliveryAmount?: number;
   paymentMethod?: string;
   orderItems?: IOrderItem[];
-
 }
 export interface ICreateOrderDetails {
   phoneNumber: string;

@@ -1,5 +1,10 @@
 import joi from 'joi';
 import { OrderStatus } from '../enums/order';
+import {
+  createOrderItemSchema,
+  editOrderItemByCustomerSchema,
+  editOrderItemByRestaurantSchema,
+} from './orderItem';
 
 const minPhoneNumberLength = 10;
 const maxPhoneNumberLength = 14;
@@ -66,6 +71,17 @@ export const createOrderSchema = joi.object({
   notes: joi.string().optional().allow('').messages({
     'string.base': 'Notes must be a string.',
   }),
+  orderItems: joi
+    .array()
+    .required()
+    .items(createOrderItemSchema)
+    .messages({
+      'array.base': 'Order items must be an array.',
+      'any.required': 'Order items are required.',
+    })
+    .options({
+      stripUnknown: true,
+    }),
 });
 
 export const editOrderByCustomerSchema = joi.object({
@@ -121,7 +137,19 @@ export const editOrderByCustomerSchema = joi.object({
   notes: joi.string().optional().allow('').messages({
     'string.base': 'Notes must be a string.',
   }),
+  orderItems: joi
+    .array()
+    .optional()
+    .items(editOrderItemByCustomerSchema)
+    .messages({
+      'array.base': 'Order items must be an array.',
+      'any.required': 'Order items are required.',
+    })
+    .options({
+      stripUnknown: true,
+    }),
 });
+
 export const editOrderByAdminSchema = joi.object({
   status: joi
     .string()
@@ -139,5 +167,16 @@ export const editOrderByAdminSchema = joi.object({
       'any.only':
         'Status must be one of [pending, cooking, ready, en_route, delivered, cancelled].',
       'any.required': 'Status is required.',
+    }),
+  orderItems: joi
+    .array()
+    .optional()
+    .items(editOrderItemByRestaurantSchema)
+    .messages({
+      'array.base': 'Order items must be an array.',
+      'any.required': 'Order items are required.',
+    })
+    .options({
+      stripUnknown: true,
     }),
 });

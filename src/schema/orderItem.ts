@@ -23,10 +23,24 @@ export const createOrderItemSchema = joi.object({
     'number.positive': 'Unit price must be a positive number.',
     'any.required': 'Unit price is required.',
   }),
-  notes: joi.string().optional().allow('').messages({
-    'string.base': 'Notes must be a string.',
-  }),
+  notes: joi
+    .string()
+    .optional()
+    .allow('')
+    .messages({
+      'string.base': 'Notes must be a string.',
+    })
+    .options({
+      stripUnknown: true,
+    }),
 });
+export const createOrderItemArraySchema = joi
+  .array()
+  .items(createOrderItemSchema)
+  .messages({
+    'array.base': 'Cart items must be an array.',
+    'array.includes': 'Each item in the cart must be a valid cart item.',
+  });
 export const editOrderItemByCustomerSchema = joi.object({
   quantity: joi.number().integer().min(1).optional().messages({
     'number.base': 'Quantity must be a number.',
@@ -40,9 +54,16 @@ export const editOrderItemByCustomerSchema = joi.object({
     'any.required': 'Unit price is required.',
   }),
 
-  notes: joi.string().optional().allow('').messages({
-    'string.base': 'Notes must be a string.',
-  }),
+  notes: joi
+    .string()
+    .optional()
+    .allow('')
+    .messages({
+      'string.base': 'Notes must be a string.',
+    })
+    .options({
+      stripUnknown: true,
+    }),
 });
 
 export const editOrderItemByRestaurantSchema = joi.object({
@@ -59,5 +80,8 @@ export const editOrderItemByRestaurantSchema = joi.object({
       'string.base': 'Status must be a string.',
       'any.only': 'Status must be one of [pending, cooking, ready, cancelled].',
       'any.required': 'Status is required.',
+    })
+    .options({
+      stripUnknown: true,
     }),
 });

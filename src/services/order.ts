@@ -1,4 +1,4 @@
-import OrderModel from '../models/orders';
+import OrderModel from '../models/order';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
 import OrderItemServices from './orderItem';
@@ -49,6 +49,23 @@ export default class OrderServices {
       }),
     );
     logger.info(`Orders of userID ${userID} Found`);
+    return orderWithOrderItems;
+  }
+  static async getOrdersByRestaurantID(restaurantID: string) {
+    const orders = await OrderModel.getOrdersByRestaurantID(restaurantID);
+    if (!orders) {
+      logger.error(`Order of restaurantID ${restaurantID} not found`);
+      return null;
+    }
+    const orderWithOrderItems = await Promise.all(
+      orders.map(async (order) => {
+        const orderItems = await OrderItemServices.getOrderItemsByOrderID(
+          order.id,
+        );
+        return { orderDetails: order, orderItems: orderItems };
+      }),
+    );
+    logger.info(`Orders of restaurantID ${restaurantID} Found`);
     return orderWithOrderItems;
   }
 
