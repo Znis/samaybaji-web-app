@@ -1,4 +1,4 @@
-import { ICreateOrder, IEditOrder } from '../interfaces/order';
+import { ICreateOrderDetails, IEditOrderDetails } from '../interfaces/order';
 import { BaseModel } from './base';
 
 export default class OrderModel extends BaseModel {
@@ -42,7 +42,7 @@ export default class OrderModel extends BaseModel {
         return null;
       });
   }
-  static createOrder(userID: string, orderData: ICreateOrder) {
+  static createOrder(userID: string, orderData: ICreateOrderDetails) {
     return this.queryBuilder()
       .insert({ ...orderData, userId: userID })
       .into('orders')
@@ -55,7 +55,7 @@ export default class OrderModel extends BaseModel {
         return null;
       });
   }
-  static editOrder(orderID: string, editOrderData: IEditOrder) {
+  static editOrder(orderID: string, editOrderData: IEditOrderDetails) {
     return this.queryBuilder()
       .update(editOrderData)
       .into('orders')
