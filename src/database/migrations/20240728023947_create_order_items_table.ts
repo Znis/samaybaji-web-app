@@ -1,5 +1,5 @@
 import type { Knex } from 'knex';
-import { OrderStatus } from '../../enums/orderStatus';
+import { OrderItemStatus } from '../../enums/order';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('order_items', (table) => {
@@ -17,14 +17,15 @@ export async function up(knex: Knex): Promise<void> {
       .inTable('menu_items');
     table
       .enu('status', [
-        OrderStatus.PENDING,
-        OrderStatus.COOKING,
-        OrderStatus.READY,
-        OrderStatus.CANCELLED,
+        OrderItemStatus.PENDING,
+        OrderItemStatus.COOKING,
+        OrderItemStatus.READY,
+        OrderItemStatus.CANCELLED,
       ])
-      .notNullable();
+      .defaultTo(OrderItemStatus.PENDING);
     table.integer('quantity').notNullable();
     table.integer('unit_price').notNullable();
+    table.text('notes').nullable();
   });
 }
 

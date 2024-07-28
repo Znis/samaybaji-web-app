@@ -1,6 +1,6 @@
 import type { Knex } from 'knex';
 import { v4 as uuidv4 } from 'uuid';
-import { OrderStatus } from '../../enums/orderStatus';
+import { OrderStatus } from '../../enums/order';
 
 export async function seed(knex: Knex): Promise<void> {
   await knex('orders').del(); // Deletes ALL existing entries

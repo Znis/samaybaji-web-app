@@ -1,5 +1,5 @@
 import type { Knex } from 'knex';
-import { OrderStatus } from '../../enums/orderStatus';
+import { OrderStatus } from '../../enums/order';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('orders', (table) => {
@@ -19,7 +19,7 @@ export async function up(knex: Knex): Promise<void> {
         OrderStatus.EN_ROUTE,
         OrderStatus.CANCELLED,
       ])
-      .notNullable();
+      .defaultTo(OrderStatus.PENDING);
     table.date('order_date').notNullable();
     table.time('order_time').notNullable();
     table.enu('payment_method', ['cod', 'online']).notNullable();

@@ -1,6 +1,6 @@
 import type { Knex } from 'knex';
 import { v4 as uuidv4 } from 'uuid';
-import { OrderStatus } from '../../enums/orderStatus';
+import { OrderItemStatus } from '../../enums/order';
 
 export async function seed(knex: Knex): Promise<void> {
   await knex('order_items').del(); // Deletes ALL existing entries
@@ -19,7 +19,8 @@ export async function seed(knex: Knex): Promise<void> {
       menu_item_id: menuItems[0].id,
       quantity: 2,
       unit_price: 300,
-      status: OrderStatus.PENDING,
+      status: OrderItemStatus.PENDING,
+      notes: 'test notes',
     },
     {
       id: uuidv4(),
@@ -27,7 +28,8 @@ export async function seed(knex: Knex): Promise<void> {
       menu_item_id: menuItems[1].id,
       quantity: 1,
       unit_price: 200,
-      status: OrderStatus.PENDING,
+      status: OrderItemStatus.PENDING,
+      notes: 'test notes',
     },
     {
       id: uuidv4(),
@@ -35,7 +37,8 @@ export async function seed(knex: Knex): Promise<void> {
       menu_item_id: menuItems[2].id,
       quantity: 3,
       unit_price: 300,
-      status: OrderStatus.COOKING,
+      status: OrderItemStatus.COOKING,
+      notes: 'test notes',
     },
     {
       id: uuidv4(),
@@ -43,7 +46,8 @@ export async function seed(knex: Knex): Promise<void> {
       menu_item_id: menuItems[3].id,
       quantity: 1,
       unit_price: 250,
-      status: OrderStatus.READY,
+      status: OrderItemStatus.READY,
+      notes: 'test notes',
     },
     {
       id: uuidv4(),
@@ -51,7 +55,8 @@ export async function seed(knex: Knex): Promise<void> {
       menu_item_id: menuItems[4].id,
       quantity: 2,
       unit_price: 500,
-      status: OrderStatus.READY,
+      status: OrderItemStatus.READY,
+      notes: 'test notes',
     },
     {
       id: uuidv4(),
@@ -59,7 +64,8 @@ export async function seed(knex: Knex): Promise<void> {
       menu_item_id: menuItems[1].id,
       quantity: 1,
       unit_price: 200,
-      status: OrderStatus.COOKING,
+      status: OrderItemStatus.COOKING,
+      notes: 'test notes',
     },
   ];
 
