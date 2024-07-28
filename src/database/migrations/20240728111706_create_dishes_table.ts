@@ -13,7 +13,6 @@ export async function up(knex: Knex): Promise<void> {
     table.string('img_src').nullable();
     table.integer('price').notNullable();
     table.string('portion').nullable();
-    table.integer('rating').nullable();
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());
 
