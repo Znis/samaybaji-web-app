@@ -8,6 +8,9 @@ import cartRouter from './cart';
 import cartItemRouter from './cartItem';
 import orderItemRouter from './orderItem';
 import orderRouter from './order';
+import dishRouter from './dish';
+import reviewRouter from './review';
+import ratingRouter from './rating';
 
 const router = express();
 
@@ -20,5 +23,8 @@ router.use('/menu-items', menuItemRouter);
 router.use('/restaurants', restaurantRouter);
 router.use('/orders', orderRouter);
 router.use('/order-items', orderItemRouter);
+router.use('/dish', dishRouter);
+router.use('/reviews', reviewRouter);
+router.use('/ratings', ratingRouter);
 
 export default router;

@@ -16,6 +16,11 @@ export const getRatingQuerySchema = joi.object({
     }),
 });
 export const getRatingByTargetIDQuerySchema = joi.object({
+  targetID: joi.string().guid({ version: 'uuidv4' }).required().messages({
+    'string.base': 'Target ID must be a string.',
+    'string.guid': 'Target ID must be a valid UUID.',
+    'any.required': 'Target ID is required.',
+  }),
   targetType: joi
     .string()
     .valid(ReviewTargetType.DISH, ReviewTargetType.RESTAURANT)
@@ -28,11 +33,6 @@ export const getRatingByTargetIDQuerySchema = joi.object({
     .options({
       stripUnknown: true,
     }),
-  targetID: joi.string().guid({ version: 'uuidv4' }).required().messages({
-    'string.base': 'Target ID must be a string.',
-    'string.guid': 'Target ID must be a valid UUID.',
-    'any.required': 'Target ID is required.',
-  }),
 });
 export const createOrEditRatingBodySchema = joi.object({
   targetType: joi
@@ -58,7 +58,7 @@ export const createOrEditRatingBodySchema = joi.object({
     }),
 });
 
-export const createOrEditRatingQuerySchema = joi.object({
+export const createOrEditOrDeleteRatingQuerySchema = joi.object({
   targetID: joi
     .string()
     .guid({ version: 'uuidv4' })

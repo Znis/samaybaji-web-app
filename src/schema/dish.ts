@@ -90,7 +90,7 @@ export const editDishBodySchema = joi.object({
       stripUnknown: true,
     }),
 });
-export const createDishQuerySchema = joi.object({
+export const getOrCreateDishQuerySchema = joi.object({
   menuItemID: joi
     .string()
     .guid({ version: 'uuidv4' })
@@ -104,7 +104,7 @@ export const createDishQuerySchema = joi.object({
       stripUnknown: true,
     }),
 });
-export const editDishQuerySchema = joi.object({
+export const editOrDeleteDishQuerySchema = joi.object({
   dishID: joi
     .string()
     .guid({ version: 'uuidv4' })
