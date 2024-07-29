@@ -7,6 +7,7 @@ import loggerWithNameSpace from '../utils/logger';
 import UserServices from './users';
 import AuthenticateModel from '../models/authenticate';
 import { ModelError } from '../error/modelError';
+import AuthorizationService from './authorize';
 
 const logger = loggerWithNameSpace('Authentication Service');
 
@@ -47,11 +48,16 @@ export default class AuthenticationService {
       refreshToken,
       expiryTime,
     );
+    const roleID = (await AuthorizationService.getRoleId(
+      userInfoPayload.id,
+    )) as string;
+    const authenticatedUser = { ...userInfoPayload, roleID: roleID };
+
     logger.info('Generated Access Token and Refresh Token');
     return {
       accessToken: accessToken,
       refreshTokenId: refreshTokenId,
-      user: userInfoPayload,
+      user: authenticatedUser,
     };
   }
 

@@ -72,10 +72,12 @@ export default class OrderServices {
 
   static async createOrder(userID: string, orderData: ICreateOrder) {
     const { orderItems, ...orderDetails } = orderData;
-    orderDetails.totalAmount = orderItems.reduce(
+    orderDetails.subTotalAmount = orderItems.reduce(
       (acc, item) => acc + item.unitPrice * item.quantity,
       0,
     );
+    orderDetails.totalAmount =
+      orderDetails.subTotalAmount + orderDetails.deliveryAmount;
     const queryResult = await OrderModel.createOrder(userID, orderDetails)!;
     const createOrderItems = await OrderItemServices.createOrderItem(
       queryResult.id,

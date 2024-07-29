@@ -25,9 +25,9 @@ export async function up(knex: Knex): Promise<void> {
     table.string('delivery_address').notNullable();
     table.string('customer_name').notNullable();
     table.string('customer_phone').notNullable();
-    table.integer('discount_amount').notNullable();
     table.integer('delivery_amount').notNullable();
     table.integer('total_amount').notNullable();
+    table.integer('sub_total_amount').notNullable();
     table.text('notes').nullable();
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());

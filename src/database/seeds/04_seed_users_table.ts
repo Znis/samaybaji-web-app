@@ -44,6 +44,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       id: uuidv4(),
       name: 'Customer One',
+      image_src: '/assets/images/profiles/sakura.jpg',
       email: 'customer1@example.com',
       phone_number: '2222222222',
       password_hash: customerPasswords[0],
@@ -58,6 +59,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       id: uuidv4(),
       name: 'Customer Three',
+      image_src: '/assets/images/profiles/sakura.jpg',
       email: 'customer3@example.com',
       phone_number: '4444444444',
       password_hash: customerPasswords[2],

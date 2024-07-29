@@ -26,19 +26,14 @@ export const createMenuItemBodySchema = joi.object({
     'boolean.base': 'Is popular must be a boolean.',
     'any.required': 'Is popular is required.',
   }),
-  type: joi.string().valid('Veg', 'Non-Veg', 'Liquor').required().messages({
-    'string.base': 'Type must be a string.',
-    'any.only': 'Type must be one of Veg, Non-Veg, or Liquor.',
-    'any.required': 'Type is required.',
-  }),
-  status: joi
+  type: joi
     .string()
-    .valid('In Stock', 'Out of Stock')
+    .valid('Veg', 'Non-Veg', 'Liquor')
     .required()
     .messages({
-      'string.base': 'Status must be a string.',
-      'any.only': 'Status must be either "In Stock" or "Out of Stock".',
-      'any.required': 'Status is required.',
+      'string.base': 'Type must be a string.',
+      'any.only': 'Type must be one of Veg, Non-Veg, or Liquor.',
+      'any.required': 'Type is required.',
     })
 
     .options({

@@ -48,15 +48,20 @@ export const createOrderSchema = joi.object({
       'string.min': 'Phone Number must be at least 10 characters',
       'string.max': 'Phone Number must be at most 14 characters',
     }),
-  discountAmount: joi.number().positive().required().messages({
-    'number.base': 'Discount amount must be a number.',
-    'number.positive': 'Discount amount must be a positive number.',
-    'any.required': 'Discount amount is required.',
-  }),
-  deliveryAmount: joi.number().positive().required().messages({
+  deliveryAmount: joi.number().required().messages({
     'number.base': 'Delivery amount must be a number.',
     'number.positive': 'Delivery amount must be a positive number.',
     'any.required': 'Delivery amount is required.',
+  }),
+  totalAmount: joi.number().required().messages({
+    'number.base': 'Total amount must be a number.',
+    'number.positive': 'Total amount must be a positive number.',
+    'any.required': 'Total amount is required.',
+  }),
+  subTotalAmount: joi.number().required().messages({
+    'number.base': 'Sub Total amount must be a number.',
+    'number.positive': 'Sub Total amount must be a positive number.',
+    'any.required': 'Sub Total amount is required.',
   }),
   notes: joi.string().optional().allow('').messages({
     'string.base': 'Notes must be a string.',
@@ -96,6 +101,21 @@ export const editOrderByCustomerSchema = joi.object({
   deliveryAddress: joi.string().optional().messages({
     'string.base': 'Delivery address must be a string.',
     'any.required': 'Delivery address is required.',
+  }),
+  deliveryAmount: joi.number().optional().messages({
+    'number.base': 'Delivery amount must be a number.',
+    'number.positive': 'Delivery amount must be a positive number.',
+    'any.required': 'Delivery amount is required.',
+  }),
+  totalAmount: joi.number().optional().messages({
+    'number.base': 'Total amount must be a number.',
+    'number.positive': 'Total amount must be a positive number.',
+    'any.required': 'Total amount is required.',
+  }),
+  subTotalAmount: joi.number().optional().messages({
+    'number.base': 'Sub Total amount must be a number.',
+    'number.positive': 'Sub Total amount must be a positive number.',
+    'any.required': 'Sub Total amount is required.',
   }),
   customerName: joi.string().optional().messages({
     'string.base': 'Customer name must be a string.',

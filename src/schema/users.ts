@@ -13,6 +13,10 @@ export const createUserBodySchema = joi.object({
     'any.required': 'Email is required',
     'string.email': 'Email must be valid format',
   }),
+  imageSrc: joi.string().optional().messages({
+    'string.base': 'Image source must be a string.',
+    'any.required': 'Image source is required.',
+  }),
   phoneNumber: joi
     .string()
     .min(minPhoneNumberLength)
@@ -64,6 +68,10 @@ export const editUserBodySchema = joi.object({
   email: joi.string().email().optional().messages({
     'any.required': 'Email is required',
     'string.email': 'Email must be valid format',
+  }),
+  imageSrc: joi.string().optional().messages({
+    'string.base': 'Image source must be a string.',
+    'any.required': 'Image source is required.',
   }),
   phoneNumber: joi
     .string()
