@@ -5,7 +5,14 @@ import MenuPageLayout from '../pages/menu/menuPageLayout';
 
 interface AppState {
   accessToken: string | null;
-  user: { id: string; name: string; email: string; phoneNumber: string } | null;
+  user: {
+    id: string;
+    name: string;
+    imageSrc: string;
+    roleID: string;
+    email: string;
+    phoneNumber: string;
+  } | null;
   cart: IFormattedCartItemData[];
 }
 

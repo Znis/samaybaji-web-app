@@ -15,7 +15,6 @@ export default class Menu {
         .then((html) => {
           this.element.classList.add('menu');
           this.element.innerHTML = html;
-          this.element.innerHTML = '';
           const spinner = LoaderSpinner.render(50);
           this.element.appendChild(spinner);
           this.fetchMenus(spinner);
@@ -27,16 +26,21 @@ export default class Menu {
     try {
       const menu = await fetchAllMenus();
       this.renderMenu(menu[0]);
+      console.log(menu);
     } catch (error) {
       this.element.innerHTML = `<h3>${error}</h3>`;
     } finally {
       spinner.remove();
     }
   }
-  static async renderMenu(menu: IMenu) {
+  static renderMenu(menu: IMenu) {
+    const menuListContainer = this.element.querySelector(
+      '#menu-list',
+    ) as HTMLDivElement;
+    menuListContainer.innerHTML = '';
     menu.menuItems.forEach((item) => {
       const menuItem = new MenuItem(item, 'large');
-      document.getElementById('menu-list')!.appendChild(menuItem.element);
+      menuListContainer.appendChild(menuItem.element);
     });
   }
 }

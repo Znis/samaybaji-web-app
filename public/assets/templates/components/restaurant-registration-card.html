@@ -1,0 +1,103 @@
+<div class="modal__heading-wrapper">
+  <h3 class="modal__heading">Register Your Restaurant</h3>
+</div>
+
+<form id="restaurant-registration-form" class="modal__form">
+  <i class="fa-solid fa-xmark modal__cross-button" id="modal-cross-button"></i>
+  <div class="form__row-group">
+    <div class="form__group">
+      <label for="name" class="form__label">Restaurant Name:</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        class="form__inputbox"
+        required
+      />
+    </div>
+    <div class="form__group">
+      <label for="location" class="form__label">Location:</label>
+      <input
+        type="text"
+        id="location"
+        name="location"
+        class="form__inputbox"
+        required
+      />
+    </div>
+  </div>
+  <div class="form__row-group">
+    <div class="form__group">
+      <label for="contactNumber" class="form__label">Contact Number:</label>
+      <input
+        type="tel"
+        id="contactNumber"
+        name="contactNumber"
+        class="form__inputbox"
+        pattern="[0-9]{10}"
+        required
+      />
+    </div>
+
+    <div class="form__group">
+      <label for="openHours" class="form__label">Open Hours:</label>
+      <input
+        type="text"
+        id="openHours"
+        name="openHours"
+        class="form__inputbox"
+        required
+      />
+    </div>
+  </div>
+  <div class="form__row-group">
+    <div class="form__group">
+      <label for="panNumber" class="form__label">PAN Number:</label>
+      <input
+        type="text"
+        id="panNumber"
+        name="panNumber"
+        class="form__inputbox"
+        required
+      />
+    </div>
+  </div>
+
+  <div class="form__row-group">
+    <div class="form__group">
+      <label for="profilePic" class="form__label">Profile Picture URL:</label>
+      <input
+        type="file"
+        id="profilePic"
+        name="profilePic"
+        class="form__inputbox"
+        required
+      />
+    </div>
+
+    <div class="form__group">
+      <label for="coverPic" class="form__label">Cover Picture URL:</label>
+      <input
+        type="file"
+        id="coverPic"
+        name="coverPic"
+        class="form__inputbox"
+        required
+      />
+    </div>
+  </div>
+
+  <div class="form__row-group">
+    <div class="form__group">
+      <label for="description" class="form__label">Description:</label>
+      <textarea
+        id="description"
+        name="description"
+        class="form__inputbox"
+        required
+      ></textarea>
+    </div>
+  </div>
+
+  <button type="submit" class="button">Register</button>
+</form>

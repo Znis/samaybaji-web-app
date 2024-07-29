@@ -6,15 +6,18 @@ import { StateManagement } from '../../state-management/stateManagement';
 import CartItemCheckout from '../../components/cartItemCheckout';
 import Cart from '../cart/cart';
 import { navigate } from '../../router';
-import { createOrder, makeApiCall } from '../../apiCalls';
+import { clearCart, createOrder, makeApiCall } from '../../apiCalls';
 
 export default class Checkout {
   static htmlTemplateUrl =
     './assets/templates/pages/checkout-page/checkout-page.html';
   static element: HTMLElement = document.createElement('section');
-  static totalAmount = 0;
   static deliveryAmount = 100;
-  static subTotalAmount = Cart.subTotalAmount;
+  static subTotalAmount = StateManagement.state.cart.reduce(
+    (acc, item) => acc + item.menuItemData.price * item.quantity,
+    0,
+  );
+  static totalAmount = this.subTotalAmount + this.deliveryAmount;
   static spinner = LoaderSpinner.render(50);
   static html = '';
   static cartItemArray: CartItem[] = [];
@@ -127,6 +130,14 @@ export default class Checkout {
     const editCartButton = this.element.querySelector(
       '#edit-cart-button',
     ) as HTMLButtonElement;
+    const trackOrderButton = this.element.querySelector(
+      '#track-order-button',
+    ) as HTMLButtonElement;
+    trackOrderButton.style.display = 'none';
+    const successContainer = this.element.querySelector(
+      '.checkout__success-container',
+    ) as HTMLDivElement;
+    successContainer.style.display = 'none';
     editCartButton.addEventListener('click', () => {
       history.pushState(null, '', '/cart');
       navigate('/cart');
@@ -135,8 +146,10 @@ export default class Checkout {
       '#checkout-form',
     ) as HTMLFormElement;
     checkoutForm.addEventListener('submit', async (event) => {
-      if (checkoutForm.checkValidity()) {
-        event.preventDefault();
+      event.preventDefault();
+      if (!checkoutForm.checkValidity()) {
+        checkoutForm.reportValidity();
+        return;
       }
       const formData = new FormData(checkoutForm);
       const data = Object.fromEntries(formData.entries());
@@ -157,17 +170,72 @@ export default class Checkout {
         orderDate: data['order_date'] as string,
         orderTime: data['order_time'] as string,
         paymentMethod: data['payment_method'] as string,
+        subTotalAmount: this.subTotalAmount,
         totalAmount: this.totalAmount,
-        discountAmount: Cart.discountAmount,
         deliveryAmount: this.deliveryAmount,
         orderItems: orderItems,
       };
 
       try {
         const response = await makeApiCall(createOrder, order);
-        console.log(response);
-        history.pushState(null, '', '/');
-        navigate('/');
+        await makeApiCall(clearCart);
+        const trackOrderButton = this.element.querySelector(
+          '#track-order-button',
+        ) as HTMLButtonElement;
+        trackOrderButton.style.display = 'flex';
+        const submitOrderButton = this.element.querySelector(
+          '#confirm-order-button',
+        ) as HTMLButtonElement;
+        submitOrderButton.style.display = 'none';
+
+        const editOrderButton = this.element.querySelector(
+          '#edit-cart-button',
+        ) as HTMLButtonElement;
+        editOrderButton.style.display = 'none';
+        const checkoutAccordion = this.element.querySelector(
+          '.checkout__accordion',
+        ) as HTMLDivElement;
+        checkoutAccordion.style.display = 'none';
+        const successContainer = this.element.querySelector(
+          '.checkout__success-container',
+        ) as HTMLDivElement;
+        successContainer.style.display = 'flex';
+        window.scrollTo(0, 0);
+
+        const orderSummaryName = this.element.querySelector(
+          '#order-summary-name',
+        ) as HTMLSpanElement;
+        orderSummaryName.innerHTML = `${order.customerName || ''}`;
+        const orderSummaryPhone = this.element.querySelector(
+          '#order-summary-phone',
+        ) as HTMLSpanElement;
+        orderSummaryPhone.innerHTML = `${order.customerPhone || ''}`;
+        const orderSummaryDate = this.element.querySelector(
+          '#order-summary-date',
+        ) as HTMLSpanElement;
+        orderSummaryDate.innerHTML = `${order.orderDate || ''}`;
+        const orderSummaryTime = this.element.querySelector(
+          '#order-summary-time',
+        ) as HTMLSpanElement;
+        orderSummaryTime.innerHTML = `${order.orderTime || ''}`;
+        const orderSummaryAddress = this.element.querySelector(
+          '#order-summary-address',
+        ) as HTMLSpanElement;
+        orderSummaryAddress.innerHTML = `${order.deliveryAddress || ''}`;
+        const orderSummaryPaymentMethod = this.element.querySelector(
+          '#order-summary-payment-method',
+        ) as HTMLSpanElement;
+        orderSummaryPaymentMethod.innerHTML = `${order.paymentMethod || ''}`;
+        const orderSummaryNote = this.element.querySelector(
+          '#order-summary-note',
+        ) as HTMLSpanElement;
+        orderSummaryNote.innerHTML = `${order.notes || ''}`;
+
+        trackOrderButton.addEventListener('click', () => {
+          StateManagement.updateState('cart', []);
+          history.pushState(null, '', '/');
+          navigate('/');
+        });
       } catch (error) {
         console.log(error);
       }

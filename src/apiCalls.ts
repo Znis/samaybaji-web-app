@@ -2,7 +2,11 @@ import axios, { AxiosError } from 'axios';
 import { StateManagement } from './state-management/stateManagement';
 import { ICreateOrder } from './interfaces/order';
 import { IAuthUser, ICreateUser } from './interfaces/users';
-import ICartItem, { IEditCartItemData, IFormattedCartItemData } from './interfaces/cartItem';
+import ICartItem, {
+  ICreateCartItemData,
+  IEditCartItemData,
+  IFormattedCartItemData,
+} from './interfaces/cartItem';
 
 const baseUrl = 'http://localhost:8000';
 const usersUrl = '/users';
@@ -55,7 +59,7 @@ export const fetchCartItems = async () => {
       return res.data;
     });
 };
-export const addCartItem = async (cartItemData: IFormattedCartItemData[]) => {
+export const addCartItem = async (cartItemData: ICreateCartItemData[]) => {
   return await axios
     .post(`${baseUrl}${addCartItemUrl}`, cartItemData, {
       headers: {
@@ -78,13 +82,16 @@ export const removeCartItem = async (menuItemID: string) => {
       return res.data;
     });
 };
-export const editCartItem = async (menuItemID: string, editCartItemData: IEditCartItemData) => {
+export const editCartItem = async (
+  menuItemID: string,
+  editCartItemData: IEditCartItemData,
+) => {
   return await axios
     .patch(
       `${baseUrl}${editCartItemUrl}`,
       { quantity: editCartItemData.quantity },
       {
-        params: { menuItemID: menuItemID},
+        params: { menuItemID: menuItemID },
 
         headers: {
           Authorization: `Bearer ${StateManagement.state.accessToken}`,
@@ -145,9 +152,9 @@ export const fetchAccessToken = async () => {
     });
 };
 
-export async function makeApiCall<T>(
-  callbackFn: (...args: T[]) => Promise<Response>,
-  ...args: T[]
+export async function makeApiCall<T extends unknown[]>(
+  callbackFn: (...args: T) => Promise<Response>,
+  ...args: T
 ) {
   try {
     return await callbackFn(...args);

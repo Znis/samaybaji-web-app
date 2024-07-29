@@ -178,7 +178,7 @@ header {
     position: absolute;
     top: 3rem;
     background-color: #f9f9f9;
-    min-width: 10rem;
+    min-width: 14rem;
     border-radius: 0.5rem;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1; }
@@ -881,6 +881,89 @@ body.open .modal {
   100% {
     transform: rotate(360deg); } }
 
+.restaurant-registration-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fdfdfa;
+  border-radius: 2rem;
+  gap: 2rem;
+  padding: 2rem;
+  width: 80%;
+  height: 90vh; }
+
+.modal__cross-button {
+  position: absolute;
+  top: 7%;
+  right: 11%;
+  color: var(--brown);
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 4; }
+  .modal__cross-button:hover {
+    scale: 1.2; }
+
+.modal__heading-wrapper {
+  height: 7rem; }
+
+.modal__heading {
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  color: #333; }
+
+.modal__form {
+  display: flex;
+  width: 100%;
+  padding: 0rem 10%;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fefefe;
+  align-items: center;
+  gap: 2rem;
+  overflow-y: auto; }
+
+.form__inputbox {
+  width: 100%;
+  background: #f5deb3;
+  font-size: 1rem;
+  color: #333;
+  text-transform: none;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  position: relative; }
+  .form__inputbox:focus {
+    border: 1px solid #333; }
+  .form__inputbox::placeholder {
+    color: #888;
+    font-size: 0.8rem;
+    font-weight: 100; }
+
+.form__label {
+  font-size: 1rem;
+  color: #444; }
+
+.form__group {
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem; }
+
+.form__row-group {
+  display: flex;
+  width: 100%;
+  gap: 2rem;
+  justify-content: space-evenly;
+  align-items: center; }
+
 .hero {
   display: flex;
   align-items: center;
@@ -1480,6 +1563,38 @@ body.open .modal {
     align-items: center;
     justify-content: center;
     gap: 0.5rem; }
+  .checkout__success-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem; }
+  .checkout__success-heading {
+    font-size: 1.8rem;
+    letter-spacing: 1.5px;
+    color: #333; }
+  .checkout__order-summary {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fbfcfa;
+    gap: 1rem;
+    border: 1px solid #888;
+    border-radius: 2rem;
+    padding: 1rem; }
+  .checkout__order-summary-heading {
+    font-size: 1.5rem;
+    letter-spacing: 1.5px;
+    color: #333; }
+  .checkout__order-summary-attribute {
+    font-size: 1rem;
+    letter-spacing: 0.8px;
+    color: #444; }
+  .checkout__order-summary-attribute-value {
+    font-size: 1rem;
+    letter-spacing: 0.8px;
+    font-weight: 500; }
 
 input[type='radio']:checked::after {
   width: 14px;

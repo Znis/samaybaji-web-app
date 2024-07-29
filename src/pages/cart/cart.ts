@@ -74,7 +74,10 @@ export default class Cart {
         await makeApiCall(
           addCartItem,
           StateManagement.state.cart.map((item) => {
-            return { quantity: item.quantity, menuItemID: item.menuItem.id };
+            return {
+              quantity: item.quantity,
+              menuItemID: item.menuItemData.id,
+            };
           }),
         );
         StateManagement.updateState('cart', []);
@@ -87,7 +90,7 @@ export default class Cart {
         cartItems.map((item) => {
           return {
             quantity: item.quantity,
-            menuItem: item.menuItemData,
+            menuItemData: item.menuItemData,
           };
         }),
       );
@@ -125,7 +128,7 @@ export default class Cart {
       ...StateManagement.state.cart,
       {
         quantity: 1,
-        menuItem: menuItemData,
+        menuItemData: menuItemData,
       },
     ]);
     this.updatePrices();
@@ -141,7 +144,7 @@ export default class Cart {
         StateManagement.updateState(
           'cart',
           StateManagement.state.cart.filter(
-            (item) => item.menuItem.id !== menuItemData.id,
+            (item) => item.menuItemData.id !== menuItemData.id,
           ),
         );
         this.updatePrices();
@@ -153,7 +156,7 @@ export default class Cart {
     StateManagement.updateState(
       'cart',
       StateManagement.state.cart.filter(
-        (item) => item.menuItem.id !== menuItemData.id,
+        (item) => item.menuItemData.id !== menuItemData.id,
       ),
     );
     this.updatePrices();
@@ -165,7 +168,7 @@ export default class Cart {
           ...StateManagement.state.cart,
           {
             quantity: 1,
-            menuItem: menuItemData,
+            menuItemData: menuItemData,
           },
         ]);
         this.updatePrices();
@@ -175,7 +178,7 @@ export default class Cart {
 
   static updatePrices(): void {
     this.subTotalAmount = StateManagement.state.cart.reduce(
-      (sum, item) => sum + item.quantity * item.menuItem.price,
+      (sum, item) => sum + item.quantity * item.menuItemData.price,
       0,
     );
     this.discountAmount = StateManagement.state.cart.length ? 50 : 0;

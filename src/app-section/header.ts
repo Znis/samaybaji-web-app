@@ -3,6 +3,8 @@ import Modal from '../components/modal.ts';
 import { navigate } from '../router.ts';
 import { StateManagement } from '../state-management/stateManagement.ts';
 import Toast from '../components/toast.ts';
+import { Roles } from '../enums/roles.ts';
+import { RegisterRestaurantCard } from '../components/registerRestaurantCard.ts';
 
 export default class Header {
   static htmlTemplateURL = '/assets/templates/app-section/header.html';
@@ -58,11 +60,50 @@ export default class Header {
       Modal.toggle();
       document.querySelector('.modal')!.appendChild(AuthCard.init());
     });
-    this.element
-      .querySelector('#user-logout')
-      ?.addEventListener('click', () => {
-        this.logout();
-      });
+
+    const dashboardLink = this.element.querySelector(
+      '#user-dashboard-link',
+    ) as HTMLButtonElement;
+    dashboardLink.addEventListener('click', () => {
+      const href = '/';
+      history.pushState(null, '', href);
+      navigate(href);
+      window.scrollTo(0, 0);
+    });
+    const restaurantProfile = this.element.querySelector(
+      '#user-restaurant-profile-link',
+    ) as HTMLButtonElement;
+
+    restaurantProfile.addEventListener('click', () => {
+      const href = '/restaurant/dashboard';
+      history.pushState(null, '', href);
+      navigate(href);
+      window.scrollTo(0, 0);
+    });
+    const registerRestaurant = this.element.querySelector(
+      '#user-register-restaurant-link',
+    ) as HTMLButtonElement;
+    registerRestaurant.addEventListener('click', () => {
+      Modal.toggle();
+      const modal = document.querySelector('.modal') as HTMLDivElement;
+      modal.innerHTML = '';
+      modal.appendChild(RegisterRestaurantCard.init());
+    });
+    if (StateManagement.state.user) {
+      if (
+        StateManagement.state.user?.roleID != Roles.CUSTOMER_WITH_RESTAURANT
+      ) {
+        restaurantProfile.style.display = 'none';
+      } else {
+        registerRestaurant.style.display = 'none';
+      }
+    }
+    const logoutLink = this.element.querySelector(
+      '#user-logout',
+    ) as HTMLButtonElement;
+    logoutLink.addEventListener('click', () => {
+      this.logout();
+    });
   }
   static logout(): void {
     StateManagement.resetState();

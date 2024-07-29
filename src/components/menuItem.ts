@@ -102,7 +102,7 @@ export default class MenuItem {
 
   checkIfPresentInCart() {
     const doesExist = StateManagement.state.cart.some(
-      (item) => item.menuItem.id === this.menuItemData.id,
+      (item) => item.menuItemData.id === this.menuItemData.id,
     );
     return doesExist;
   }

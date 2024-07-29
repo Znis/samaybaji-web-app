@@ -129,7 +129,7 @@ export default class CartItem {
     Cart.render();
     if (StateManagement.state.user) {
       try {
-        await makeApiCall(editCartItem,this.cartItemData.menuItemData.id, {
+        await makeApiCall(editCartItem, this.cartItemData.menuItemData.id, {
           quantity: quantity,
         });
       } catch (error) {

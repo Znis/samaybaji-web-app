@@ -3,6 +3,63 @@
 </h1>
 <form class="checkout__form-container" id="checkout-form" autocomplete="off">
   <div class="checkout__left-container">
+    <div class="checkout__success-container">
+      <h3 class="checkout__success-heading">
+        Your order has been placed successfully.
+      </h3>
+      <div class="checkout__order-summary">
+        <h3 class="checkout__order-summary-heading">Order Summary</h3>
+        <p class="checkout__order-summary-attribute">
+          Name:
+          <span
+            class="checkout__order-summary-attribute-value"
+            id="order-summary-name"
+          ></span>
+        </p>
+        <p class="checkout__order-summary-attribute">
+          Phone Number:
+          <span
+            class="checkout__order-summary-attribute-value"
+            id="order-summary-phone"
+          ></span>
+        </p>
+        <p class="checkout__order-summary-attribute">
+          Order Date:
+          <span
+            class="checkout__order-summary-attribute-value"
+            id="order-summary-date"
+          ></span>
+        </p>
+        <p class="checkout__order-summary-attribute">
+          Order Time:
+          <span
+            class="checkout__order-summary-attribute-value"
+            id="order-summary-time"
+          ></span>
+        </p>
+        <p class="checkout__order-summary-attribute">
+          Address:
+          <span
+            class="checkout__order-summary-attribute-value"
+            id="order-summary-address"
+          ></span>
+        </p>
+        <p class="checkout__order-summary-attribute">
+          Payment Method:
+          <span
+            class="checkout__order-summary-attribute-value"
+            id="order-summary-payment-method"
+          ></span>
+        </p>
+        <p class="checkout__order-summary-attribute">
+          Additional Note:
+          <span
+            class="checkout__order-summary-attribute-value"
+            id="order-summary-note"
+          ></span>
+        </p>
+      </div>
+    </div>
     <div class="checkout__accordion">
       <div class="checkout__accordion-item">
         <div class="checkout__accordion-header">
@@ -31,6 +88,8 @@
             name="customer_phone"
             placeholder="Mobile Number"
             type="tel"
+            minlength="10"
+            maxlength="14"
             required
           />
           <input
@@ -97,11 +156,22 @@
             Select Payment Method:
           </p>
           <div class="checkout__radio-button-wrapper">
-            <input type="radio" id="cod" name="payment_method" value="cod" checked />
+            <input
+              type="radio"
+              id="cod"
+              name="payment_method"
+              value="cod"
+              checked
+            />
             <label for="cod">Cash on Delivery</label>
           </div>
           <div class="checkout__radio-button-wrapper">
-            <input type="radio" id="online" name="payment_method" value="online" />
+            <input
+              type="radio"
+              id="online"
+              name="payment_method"
+              value="online"
+            />
             <label for="online">Online</label>
           </div>
         </div>
@@ -133,5 +203,6 @@
       Confirm Order
       <i class="fa-solid fa-arrow-right button__icon"></i>
     </button>
+    <button class="button" id="track-order-button">Track Order</button>
   </div>
 </form>
