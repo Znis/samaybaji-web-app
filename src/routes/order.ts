@@ -1,4 +1,3 @@
-import { editOrderByAdminSchema } from './../schema/order';
 import { Permissions } from './../enums/permissions';
 import express from 'express';
 import { authenticate } from '../middleware/authenticate';

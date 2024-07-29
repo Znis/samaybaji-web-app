@@ -20,6 +20,12 @@ const config = {
     port: Number(process.env.DB_PORT),
     user: process.env.DB_USER,
   },
+  minio: {
+    MINIO_ROOT_USER: process.env.MINIO_ROOT_USER,
+    MINIO_ROOT_PASSWORD: process.env.MINIO_ROOT_PASSWORD,
+    MINIO_API_PORT: process.env.MINIO_API_PORT || 9000,
+    MINIO_CONSOLE_PORT: process.env.MINIO_CONSOLE_PORT || 9001,
+  },
 };
 
 export default config;

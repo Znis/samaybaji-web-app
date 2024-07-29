@@ -11,6 +11,7 @@ import orderRouter from './order';
 import dishRouter from './dish';
 import reviewRouter from './review';
 import ratingRouter from './rating';
+import minioRouter from './minio';
 
 const router = express();
 
@@ -26,5 +27,6 @@ router.use('/order-items', orderItemRouter);
 router.use('/dish', dishRouter);
 router.use('/reviews', reviewRouter);
 router.use('/ratings', ratingRouter);
+router.use('/upload-url', minioRouter);
 
 export default router;
