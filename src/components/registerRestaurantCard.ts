@@ -1,6 +1,15 @@
-import { getUploadUrl, makeApiCall, uploadImage } from '../apiCalls';
+import { status } from './../enums/menuItem';
+import {
+  createRestaurant,
+  getUploadUrl,
+  makeApiCall,
+  uploadImage,
+} from '../apiCalls';
 import { ICreateRestaurant } from '../interfaces/restaurant';
 import Modal from './modal';
+import { HttpStatusCode } from 'axios';
+import { LoaderSpinner } from './loaderSpinner';
+import Toast from './toast';
 
 export class RegisterRestaurantCard {
   static htmlTemplateURL =
@@ -14,80 +23,109 @@ export class RegisterRestaurantCard {
         .then(async (html) => {
           this.element.classList.add('restaurant-registration-modal');
           this.element.innerHTML = html;
-          // this.setupEventListeners();
-          const profilePic =
-            (this.element.querySelector('#profilePic') as HTMLInputElement)
-              .files?.[0] || null;
-          const coverPic =
-            (this.element.querySelector('#coverPic') as HTMLInputElement)
-              .files?.[0] || null;
-
-          const coverPicUrl = await makeApiCall(getUploadUrl);
-          const profilePicUrl = await makeApiCall(getUploadUrl);
-          console.log(coverPicUrl, profilePicUrl);
-          await makeApiCall(uploadImage, profilePicUrl!.url, profilePic!);
+          this.innerElements();
+          this.setupEventListeners();
         });
     }
     return this.element;
   }
-  static setupEventListeners() {
-    const crossButton = this.element.querySelector(
-      '#modal-cross-button',
-    ) as HTMLElement;
-    crossButton.addEventListener('click', () => Modal.toggle());
-  }
-
-  static validateForm(event: Event): boolean {
-    event.preventDefault();
-
-    const formData: ICreateRestaurant = {
-      name: (document.getElementById('name') as HTMLInputElement).value,
-      description: (document.getElementById('description') as HTMLInputElement)
-        .value,
-      location: (document.getElementById('location') as HTMLInputElement).value,
-      contactNumber: (
-        document.getElementById('contactNumber') as HTMLInputElement
-      ).value,
-      openHours: (document.getElementById('openHours') as HTMLInputElement)
-        .value,
-      profilePic:
-        (document.getElementById('profilePic') as HTMLInputElement)
-          .files?.[0] || null,
-      coverPic:
-        (document.getElementById('coverPic') as HTMLInputElement).files?.[0] ||
-        null,
-      panNumber: (document.getElementById('panNumber') as HTMLInputElement)
-        .value,
-      userID: (document.getElementById('userID') as HTMLInputElement).value,
+  static innerElements() {
+    return {
+      registrationForm: this.element.querySelector(
+        '#restaurant-registration-form',
+      ) as HTMLInputElement,
+      restaurantName: this.element.querySelector(
+        '#restaurant-name',
+      ) as HTMLInputElement,
+      location: this.element.querySelector('#location') as HTMLInputElement,
+      contactNumber: this.element.querySelector(
+        '#contact-number',
+      ) as HTMLInputElement,
+      openingTime: this.element.querySelector(
+        '#opening-time',
+      ) as HTMLInputElement,
+      closingTime: this.element.querySelector(
+        '#closing-time',
+      ) as HTMLInputElement,
+      panNumber: this.element.querySelector('#pan-number') as HTMLInputElement,
+      profilePic: this.element.querySelector(
+        '#profile-image',
+      ) as HTMLInputElement,
+      coverPic: this.element.querySelector('#cover-image') as HTMLInputElement,
+      description: this.element.querySelector(
+        '#description',
+      ) as HTMLInputElement,
+      registerButton: this.element.querySelector(
+        '#register-restaurant-button',
+      ) as HTMLButtonElement,
+      crossButton: this.element.querySelector(
+        '#modal-cross-button',
+      ) as HTMLElement,
     };
+  }
+  static setupEventListeners() {
+    this.innerElements().crossButton.addEventListener('click', () =>
+      Modal.toggle(),
+    );
+    this.innerElements().registrationForm.addEventListener(
+      'submit',
+      async (event) => {
+        event.preventDefault();
+        if (!this.innerElements().registrationForm.checkValidity()) {
+          this.innerElements().registrationForm.reportValidity();
+          return;
+        }
+        this.submitFormRegistration();
+      },
+    );
+  }
+  static async submitFormRegistration() {
+    const profileImageUploadUrl = (await makeApiCall(
+      getUploadUrl,
+    )) as unknown as {
+      url: { url: string; fileName: string; bucketName: string };
+    };
+    const profileImageUploadResponse = await makeApiCall(
+      uploadImage,
+      profileImageUploadUrl!.url.url,
+      this.innerElements().profilePic.files![0],
+    );
+    const coverImageUploadUrl = (await makeApiCall(
+      getUploadUrl,
+    )) as unknown as {
+      url: { url: string; fileName: string; bucketName: string };
+    };
+    const coverImageUploadResponse = await makeApiCall(
+      uploadImage,
+      coverImageUploadUrl!.url.url,
+      this.innerElements().coverPic.files![0],
+    );
 
-    if (
-      !formData.name ||
-      !formData.description ||
-      !formData.location ||
-      !formData.contactNumber ||
-      !formData.openHours ||
-      !formData.profilePic ||
-      !formData.coverPic ||
-      !formData.panNumber ||
-      !formData.userID
-    ) {
-      alert('All fields are required.');
-      return false;
+    const openHours = `${this.innerElements().openingTime.value} - ${this.innerElements().closingTime.value}`;
+    const data: ICreateRestaurant = {
+      name: this.innerElements().restaurantName.value,
+      location: this.innerElements().location.value,
+      contactNumber: this.innerElements().contactNumber.value,
+      openHours: openHours,
+      panNumber: this.innerElements().panNumber.value,
+      profilePic: profileImageUploadUrl.url.fileName,
+      coverPic: coverImageUploadUrl.url.fileName,
+      description: this.innerElements().description.value,
+    };
+    const spinner = LoaderSpinner.render();
+    try {
+      this.innerElements().registerButton.append(spinner);
+      const formSubmissionResponse = await makeApiCall(createRestaurant, data);
+      if (formSubmissionResponse!.status === HttpStatusCode.Accepted) {
+        Toast.show('Restaurant Registration Submitted');
+        Modal.toggle();
+      }
+    } catch (error) {
+      console.log(error);
+      Toast.show('Restaurant Registration Failed');
+    } finally {
+      spinner.remove();
     }
-
-    if (formData.profilePic && !this.isValidImage(formData.profilePic)) {
-      alert('Invalid profile picture. Please upload a valid image file.');
-      return false;
-    }
-
-    if (formData.coverPic && !this.isValidImage(formData.coverPic)) {
-      alert('Invalid cover picture. Please upload a valid image file.');
-      return false;
-    }
-
-    alert('Form submitted successfully!');
-    return true;
   }
 
   static isValidImage(file: File): boolean {

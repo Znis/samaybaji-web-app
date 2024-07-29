@@ -7,6 +7,7 @@ import ICartItem, {
   IEditCartItemData,
   IFormattedCartItemData,
 } from './interfaces/cartItem';
+import { ICreateRestaurant } from './interfaces/restaurant';
 
 const baseUrl = 'http://localhost:8000';
 const usersUrl = '/users';
@@ -23,6 +24,7 @@ const editCartItemUrl = `${cartItemsUrl}/edit`;
 const clearCartUrl = `${cartUrl}/clear`;
 const createOrderUrl = `/orders/create`;
 const getUploadUrlRoute = `/upload-url/`;
+const createRestaurantUrl = `/restaurants/create`;
 
 export const login = async (formData: IAuthUser) => {
   return await axios
@@ -88,7 +90,7 @@ export const uploadImage = async (url: string, image: File) => {
   return await axios
     .put(`${url}`, {
       headers: {
-       'Content-Type': image.type,
+        'Content-Type': image.type,
       },
     })
     .then((res) => {
@@ -141,6 +143,17 @@ export const clearCart = async () => {
 export const createOrder = async (orderData: ICreateOrder) => {
   return await axios
     .post(`${baseUrl}${createOrderUrl}`, orderData, {
+      headers: {
+        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+export const createRestaurant = async (restaurantData: ICreateRestaurant) => {
+  return await axios
+    .post(`${baseUrl}${createRestaurantUrl}`, restaurantData, {
       headers: {
         Authorization: `Bearer ${StateManagement.state.accessToken}`,
       },
