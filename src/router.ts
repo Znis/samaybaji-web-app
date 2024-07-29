@@ -8,6 +8,7 @@ import MenuPageLayout from './pages/menu/menuPageLayout';
 import Content from './app-section/content';
 import ErrorPage from './pages/error-page/errorPage';
 import Checkout from './pages/checkout-page/checkout';
+import DashboardLayout from './pages/customer-dashboard/layout';
 
 export interface RouterContext {
   [propName: string]: {
@@ -19,6 +20,7 @@ const routes = [
   { path: '/', action: () => LandingPage.init() },
   { path: '/cart', action: () => Cart.init() },
   { path: '/menu', action: () => MenuPageLayout.init() },
+  { path: '/dashboard', action: () => DashboardLayout.init() },
   {
     path: '/checkout',
     action: () => {
