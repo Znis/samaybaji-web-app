@@ -4,9 +4,9 @@ export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
   await knex('reviews').del();
 
-  const users = await knex('users').select('id').limit(2);
-  const user1 = users[0]?.id;
-  const user2 = users[1]?.id;
+  const users = await knex('users').select('id').limit(4);
+  const user1 = users[1]?.id;
+  const user2 = users[2]?.id;
 
   const dishes = await knex('dishes').select('id').limit(2);
   const dish1 = dishes[0]?.id;

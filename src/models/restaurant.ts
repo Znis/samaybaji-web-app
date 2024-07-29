@@ -1,6 +1,6 @@
 import IRestaurant, {
-  ICreateRestaurantData,
-  IEditRestaurantData,
+  ICreateRestaurant,
+  IEditRestaurant,
 } from '../interfaces/restaurant';
 import { BaseModel } from './base';
 
@@ -32,7 +32,7 @@ export default class RestaurantModel extends BaseModel {
         return null;
       });
   }
-  static createRestaurant(userID: string, restaurant: ICreateRestaurantData) {
+  static createRestaurant(userID: string, restaurant: ICreateRestaurant) {
     return this.queryBuilder()
       .insert({ ...restaurant, userId: userID })
       .into('restaurants')
@@ -48,7 +48,7 @@ export default class RestaurantModel extends BaseModel {
 
   static editRestaurant(
     restaurantID: string,
-    editRestaurantData: IEditRestaurantData,
+    editRestaurantData: IEditRestaurant,
   ) {
     return this.queryBuilder()
       .update(editRestaurantData)

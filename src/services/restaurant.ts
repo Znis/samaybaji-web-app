@@ -2,8 +2,8 @@ import RestaurantModel from '../models/restaurant';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
 import IRestaurant, {
-  ICreateRestaurantData,
-  IEditRestaurantData,
+  ICreateRestaurant,
+  IEditRestaurant,
 } from '../interfaces/restaurant';
 import UserServices from './users';
 import { Roles } from '../enums/roles';
@@ -28,10 +28,7 @@ export default class RestaurantServices {
     return restaurant;
   }
 
-  static async createRestaurant(
-    userID: string,
-    restaurant: ICreateRestaurantData,
-  ) {
+  static async createRestaurant(userID: string, restaurant: ICreateRestaurant) {
     const queryResult = await RestaurantModel.createRestaurant(
       userID,
       restaurant,
@@ -47,7 +44,7 @@ export default class RestaurantServices {
 
   static async editRestaurant(
     restaurantID: string,
-    editRestaurantData: IEditRestaurantData,
+    editRestaurantData: IEditRestaurant,
   ) {
     const queryResult = await RestaurantModel.editRestaurant(
       restaurantID,

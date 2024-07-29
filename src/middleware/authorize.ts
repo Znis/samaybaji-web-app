@@ -5,7 +5,6 @@ import loggerWithNameSpace from '../utils/logger';
 import { NextFunction, Response } from 'express';
 import { Request } from '../interfaces/authenticate';
 import { Roles } from '../enums/roles';
-import { SchemaError } from '../error/schemaError';
 
 const logger = loggerWithNameSpace('Authorize Middleware');
 

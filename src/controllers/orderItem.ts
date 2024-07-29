@@ -14,7 +14,10 @@ export async function addOrderItem(
   try {
     const orderItemData = req.body;
     const orderID = req.query.orderID as string;
-    const response = await OrderItemService.createOrderItem(orderItemData);
+    const response = await OrderItemService.createOrderItem(
+      orderID,
+      orderItemData,
+    );
     logger.info(`New order item for orderID ${orderID} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {

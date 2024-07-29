@@ -20,8 +20,11 @@ export default class OrderItemServices {
     return orderItems;
   }
 
-  static async createOrderItem(orderData: ICreateOrderItem[]) {
-    const queryResult = await OrderItemModel.createOrderItem(orderData)!;
+  static async createOrderItem(orderID: string, orderData: ICreateOrderItem[]) {
+    const queryResult = await OrderItemModel.createOrderItem(
+      orderID,
+      orderData,
+    )!;
     if (!queryResult) {
       logger.error('Could not create new order item');
       throw new ModelError('Could not create order item');

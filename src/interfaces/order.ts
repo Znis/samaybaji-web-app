@@ -1,9 +1,9 @@
 import { OrderStatus } from '../enums/order';
-import { IOrderItem } from './orderItem';
+import { IOrderItem, ICreateOrderItem } from './orderItem';
 
 export interface IOrder {
   id: string;
-  phoneNumber: string;
+  customerPhone: string;
   deliveryAddress: string;
   customerName: string;
   notes: string;
@@ -18,21 +18,20 @@ export interface IOrder {
   orderItems: IOrderItem[];
 }
 export interface ICreateOrder {
-  phoneNumber: string;
+  customerPhone: string;
   deliveryAddress: string;
   customerName: string;
   notes: string;
   orderDate: string;
   orderTime: string;
-  status: OrderStatus;
   totalAmount: number;
   discountAmount: number;
   deliveryAmount: number;
   paymentMethod: string;
-  orderItems: IOrderItem[];
+  orderItems: ICreateOrderItem[];
 }
 export interface IEditOrder {
-  phoneNumber?: string;
+  customerPhone?: string;
   deliveryAddress?: string;
   customerName?: string;
   notes?: string;
@@ -43,16 +42,15 @@ export interface IEditOrder {
   discountAmount?: number;
   deliveryAmount?: number;
   paymentMethod?: string;
-  orderItems?: IOrderItem[];
+  orderItems?: ICreateOrderItem[];
 }
 export interface ICreateOrderDetails {
-  phoneNumber: string;
+  customerPhone: string;
   deliveryAddress: string;
   customerName: string;
   notes: string;
   orderDate: string;
   orderTime: string;
-  status: OrderStatus;
   totalAmount: number;
   discountAmount: number;
   deliveryAmount: number;
@@ -60,7 +58,7 @@ export interface ICreateOrderDetails {
 }
 
 export interface IEditOrderDetails {
-  phoneNumber?: string;
+  customerPhone?: string;
   deliveryAddress?: string;
   customerName?: string;
   notes?: string;

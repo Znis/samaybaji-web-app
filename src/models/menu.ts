@@ -1,4 +1,4 @@
-import { ICreateMenuData, IEditMenuData } from '../interfaces/menu';
+import { ICreateMenu, IEditMenu } from '../interfaces/menu';
 import { BaseModel } from './base';
 
 export default class MenuModel extends BaseModel {
@@ -28,7 +28,7 @@ export default class MenuModel extends BaseModel {
         return null;
       });
   }
-  static createMenu(restaurantID: string, menuData: ICreateMenuData) {
+  static createMenu(restaurantID: string, menuData: ICreateMenu) {
     return this.queryBuilder()
       .insert({ ...menuData, restaurantId: restaurantID })
       .into('menus')
@@ -42,7 +42,7 @@ export default class MenuModel extends BaseModel {
       });
   }
 
-  static editMenu(menuID: string, editMenuData: IEditMenuData) {
+  static editMenu(menuID: string, editMenuData: IEditMenu) {
     return this.queryBuilder()
       .update(editMenuData)
       .from('menus')

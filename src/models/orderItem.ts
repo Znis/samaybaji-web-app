@@ -41,16 +41,15 @@ export default class OrderItemModel extends BaseModel {
         return null;
       });
   }
-  static createOrderItem(orderItemData: ICreateOrderItem[]) {
+  static createOrderItem(orderID: string, orderItemData: ICreateOrderItem[]) {
     return this.queryBuilder()
       .insert(
         orderItemData.map((item) => {
           return {
-            orderId: item.orderID,
+            orderId: orderID,
             menuItemId: item.menuItemID,
             quantity: item.quantity,
             unitPrice: item.unitPrice,
-            status: item.status,
             notes: item.notes,
           };
         }),

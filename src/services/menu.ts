@@ -1,7 +1,7 @@
 import MenuModel from '../models/menu';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
-import IMenu, { ICreateMenuData, IEditMenuData } from '../interfaces/menu';
+import IMenu, { ICreateMenu, IEditMenu } from '../interfaces/menu';
 import MenuItemServices from './menuItem';
 
 const logger = loggerWithNameSpace('Menu Service');
@@ -41,7 +41,7 @@ export default class MenuServices {
     return menuItems;
   }
 
-  static async createMenu(restaurantID: string, menuData: ICreateMenuData) {
+  static async createMenu(restaurantID: string, menuData: ICreateMenu) {
     const queryResult = await MenuModel.createMenu(restaurantID, menuData)!;
     if (!queryResult) {
       logger.error('Could not create new menu');
@@ -51,7 +51,7 @@ export default class MenuServices {
     return { ...menuData, id: queryResult.id } as IMenu;
   }
 
-  static async editMenu(menuID: string, editMenuData: IEditMenuData) {
+  static async editMenu(menuID: string, editMenuData: IEditMenu) {
     const queryResult = await MenuModel.editMenu(menuID, editMenuData)!;
     if (!queryResult) {
       logger.error(`Could not edit menu with menuID ${menuID}`);

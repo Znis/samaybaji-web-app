@@ -10,11 +10,6 @@ const minPhoneNumberLength = 10;
 const maxPhoneNumberLength = 14;
 
 export const createOrderSchema = joi.object({
-  totalPrice: joi.number().positive().required().messages({
-    'number.base': 'Total price must be a number.',
-    'number.positive': 'Total price must be a positive number.',
-    'any.required': 'Total price is required.',
-  }),
   orderDate: joi.date().required().messages({
     'date.base': 'Order date must be a valid date.',
     'any.required': 'Order date is required.',
@@ -63,11 +58,6 @@ export const createOrderSchema = joi.object({
     'number.positive': 'Delivery amount must be a positive number.',
     'any.required': 'Delivery amount is required.',
   }),
-  totalAmount: joi.number().positive().required().messages({
-    'number.base': 'Total amount must be a number.',
-    'number.positive': 'Total amount must be a positive number.',
-    'any.required': 'Total amount is required.',
-  }),
   notes: joi.string().optional().allow('').messages({
     'string.base': 'Notes must be a string.',
   }),
@@ -85,11 +75,6 @@ export const createOrderSchema = joi.object({
 });
 
 export const editOrderByCustomerSchema = joi.object({
-  totalPrice: joi.number().positive().optional().messages({
-    'number.base': 'Total price must be a number.',
-    'number.positive': 'Total price must be a positive number.',
-    'any.required': 'Total price is required.',
-  }),
   orderDate: joi.date().optional().messages({
     'date.base': 'Order date must be a valid date.',
     'any.required': 'Order date is required.',
@@ -129,11 +114,6 @@ export const editOrderByCustomerSchema = joi.object({
       'string.max': 'Phone Number must be at most 14 characters',
     }),
 
-  totalAmount: joi.number().positive().optional().messages({
-    'number.base': 'Total amount must be a number.',
-    'number.positive': 'Total amount must be a positive number.',
-    'any.required': 'Total amount is required.',
-  }),
   notes: joi.string().optional().allow('').messages({
     'string.base': 'Notes must be a string.',
   }),

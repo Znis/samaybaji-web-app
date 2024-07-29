@@ -3,6 +3,7 @@ import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
 import OrderItemServices from './orderItem';
 import { ICreateOrder, IEditOrder, IOrder } from '../interfaces/order';
+import { OrderStatus } from '../enums/order';
 
 const logger = loggerWithNameSpace('Order Service');
 
@@ -71,16 +72,27 @@ export default class OrderServices {
 
   static async createOrder(userID: string, orderData: ICreateOrder) {
     const { orderItems, ...orderDetails } = orderData;
+    orderDetails.totalAmount = orderItems.reduce(
+      (acc, item) => acc + item.unitPrice * item.quantity,
+      0,
+    );
     const queryResult = await OrderModel.createOrder(userID, orderDetails)!;
-    const createOrderItems =
-      await OrderItemServices.createOrderItem(orderItems);
+    const createOrderItems = await OrderItemServices.createOrderItem(
+      queryResult.id,
+      orderItems,
+    );
     if (!queryResult || !createOrderItems) {
       logger.error('Could not create new order');
       throw new ModelError('Could not create order');
     }
     logger.info(`Order with orderID ${queryResult.id} created`);
 
-    return { ...orderData, id: queryResult.id } as IOrder;
+    return {
+      ...orderData,
+      id: queryResult.id,
+      userID: userID,
+      status: OrderStatus.PENDING,
+    } as IOrder;
   }
 
   static async editOrder(orderID: string, editOrderData: IEditOrder) {

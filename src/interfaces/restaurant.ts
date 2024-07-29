@@ -11,7 +11,7 @@ interface IRestaurant {
   panNumber: string;
   userID: string;
 }
-export interface ICreateRestaurantData {
+export interface ICreateRestaurant {
   name: string;
   description: string;
   location: string;
@@ -22,7 +22,7 @@ export interface ICreateRestaurantData {
   panNumber: string;
   userID: string;
 }
-export interface IEditRestaurantData {
+export interface IEditRestaurant {
   name?: string;
   description?: string;
   location?: string;

@@ -2,11 +2,6 @@ import joi from 'joi';
 import { OrderItemStatus } from '../enums/order';
 
 export const createOrderItemSchema = joi.object({
-  orderID: joi.string().guid({ version: 'uuidv4' }).required().messages({
-    'string.base': 'Order ID must be a string.',
-    'string.guid': 'Order ID must be a valid UUID.',
-    'any.required': 'Order ID is required.',
-  }),
   menuItemID: joi.string().guid({ version: 'uuidv4' }).required().messages({
     'string.base': 'Menu Item ID must be a string.',
     'string.guid': 'Menu Item ID must be a valid UUID.',
@@ -42,6 +37,11 @@ export const createOrderItemArraySchema = joi
     'array.includes': 'Each item in the cart must be a valid cart item.',
   });
 export const editOrderItemByCustomerSchema = joi.object({
+  orderItemID: joi.string().guid({ version: 'uuidv4' }).required().messages({
+    'string.base': 'Order item ID must be a string.',
+    'string.guid': 'Order item ID must be a valid UUID.',
+    'any.required': 'Order item ID is required.',
+  }),
   quantity: joi.number().integer().min(1).optional().messages({
     'number.base': 'Quantity must be a number.',
     'number.integer': 'Quantity must be an integer.',
@@ -67,6 +67,11 @@ export const editOrderItemByCustomerSchema = joi.object({
 });
 
 export const editOrderItemByRestaurantSchema = joi.object({
+  orderItemID: joi.string().guid({ version: 'uuidv4' }).required().messages({
+    'string.base': 'Order ID must be a string.',
+    'string.guid': 'Order ID must be a valid UUID.',
+    'any.required': 'Order ID is required.',
+  }),
   status: joi
     .string()
     .valid(

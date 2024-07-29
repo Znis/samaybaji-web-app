@@ -10,7 +10,6 @@ export async function up(knex: Knex): Promise<void> {
       .references('id')
       .inTable('users')
       .onDelete('CASCADE');
-    table.integer('total_price').notNullable();
     table
       .enu('status', [
         OrderStatus.PENDING,

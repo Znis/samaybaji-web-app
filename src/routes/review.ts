@@ -22,25 +22,28 @@ const reviewRouter = express();
 
 //for admin only
 reviewRouter.get(
-  '/',
+  '/all',
   authenticate,
   authorize(Permissions.VIEW_All_REVIEW),
+  authorizeCRUD,
   getAllReviews,
 );
 
 reviewRouter.get(
-  '/:userID',
+  '/user',
   authenticate,
-  authorize(Permissions.VIEW_All_REVIEW),
+  authorize(Permissions.VIEW_REVIEW),
   validateReqQuery(getReviewQuerySchema),
+  authorizeCRUD,
   getReviewsByUserID,
 );
 
 reviewRouter.get(
-  '/:targetID',
+  '/',
   authenticate,
   authorize(Permissions.VIEW_REVIEW),
   validateReqQuery(getReviewByTargetIDQuerySchema),
+  authorizeCRUD,
   getReview,
 );
 

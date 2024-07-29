@@ -1,4 +1,4 @@
-import { ICreateMenuItemData, IEditMenuItemData } from '../interfaces/menuItem';
+import { ICreateMenuItem, IEditMenuItem } from '../interfaces/menuItem';
 import { BaseModel } from './base';
 
 export default class MenuItemModel extends BaseModel {
@@ -41,7 +41,7 @@ export default class MenuItemModel extends BaseModel {
         return null;
       });
   }
-  static createMenuItem(menuID: string, menuItemData: ICreateMenuItemData) {
+  static createMenuItem(menuID: string, menuItemData: ICreateMenuItem) {
     return this.queryBuilder()
       .insert({ ...menuItemData, menuId: menuID })
       .into('menu_items')
@@ -55,7 +55,7 @@ export default class MenuItemModel extends BaseModel {
       });
   }
 
-  static editMenuItem(menuItemID: string, editMenuItemData: IEditMenuItemData) {
+  static editMenuItem(menuItemID: string, editMenuItemData: IEditMenuItem) {
     return this.queryBuilder()
       .update(editMenuItemData)
       .from('menu_items')

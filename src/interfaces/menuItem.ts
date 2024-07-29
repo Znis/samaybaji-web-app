@@ -11,16 +11,15 @@ interface IMenuItem {
   status: status;
   menuID: string;
 }
-export interface ICreateMenuItemData {
+export interface ICreateMenuItem {
   name: string;
   portion: string;
   price: string;
   imageSrc: string;
   isPopular: boolean;
   type: type;
-  status: status;
 }
-export interface IEditMenuItemData {
+export interface IEditMenuItem {
   name?: string;
   portion?: string;
   price?: string;

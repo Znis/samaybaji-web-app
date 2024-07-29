@@ -2,8 +2,8 @@ import MenuItemModel from '../models/menuItem';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
 import IMenuItem, {
-  ICreateMenuItemData,
-  IEditMenuItemData,
+  ICreateMenuItem,
+  IEditMenuItem,
 } from '../interfaces/menuItem';
 
 const logger = loggerWithNameSpace('Menu Item Service');
@@ -38,10 +38,7 @@ export default class MenuItemServices {
     return menuItems;
   }
 
-  static async createMenuItem(
-    menuID: string,
-    menuItemData: ICreateMenuItemData,
-  ) {
+  static async createMenuItem(menuID: string, menuItemData: ICreateMenuItem) {
     const queryResult = await MenuItemModel.createMenuItem(
       menuID,
       menuItemData,
@@ -56,7 +53,7 @@ export default class MenuItemServices {
 
   static async editMenuItem(
     menuItemID: string,
-    editMenuItemData: IEditMenuItemData,
+    editMenuItemData: IEditMenuItem,
   ) {
     const queryResult = await MenuItemModel.editMenuItem(
       menuItemID,

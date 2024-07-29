@@ -3,15 +3,23 @@ interface IUser {
   name: string;
   email: string;
   phoneNumber: string;
+  passwordHash: string;
+}
+export interface IAuthUser {
+  email: string;
   password: string;
 }
-export interface IUpdateUserData {
-  id?: string;
+export interface ICreateUser {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+}
+export interface IUpdateUser {
   name?: string;
   email?: string;
   phoneNumber?: string;
   password?: string;
-  passwordHash?: string;
 }
 
 export default IUser;

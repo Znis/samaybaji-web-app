@@ -1,4 +1,4 @@
-import IUser, { IUpdateUserData } from '../interfaces/user';
+import IUser, { ICreateUser, IUpdateUser } from '../interfaces/user';
 import { BaseModel } from './base';
 
 export default class UserModel extends BaseModel {
@@ -42,7 +42,7 @@ export default class UserModel extends BaseModel {
         return null;
       });
   }
-  static createUser(user: IUser) {
+  static createUser(user: ICreateUser) {
     return this.queryBuilder()
       .insert({
         name: user.name,
@@ -51,7 +51,7 @@ export default class UserModel extends BaseModel {
         phoneNumber: user.phoneNumber,
       })
       .into('users')
-      .returning('id')
+      .returning('*')
       .then((data) => {
         return data[0];
       })
@@ -90,7 +90,7 @@ export default class UserModel extends BaseModel {
         return null;
       });
   }
-  static editUserById(id: string, updateUserData: IUpdateUserData) {
+  static editUserById(id: string, updateUserData: IUpdateUser) {
     return this.queryBuilder()
       .update(updateUserData)
       .from('users')

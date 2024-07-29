@@ -11,11 +11,9 @@ export interface IOrderItem {
 }
 
 export interface ICreateOrderItem {
-  orderID: string;
   menuItemID: string;
   quantity: number;
   unitPrice: number;
-  status: OrderItemStatus;
   notes: string;
 }
 

@@ -1,6 +1,6 @@
 import jwt, { decode, sign } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import IUser from '../interfaces/user';
+import IUser, { IAuthUser } from '../interfaces/user';
 import config from '../config';
 import { UnauthenticatedError } from '../error/unauthenticatedError';
 import loggerWithNameSpace from '../utils/logger';
@@ -11,7 +11,7 @@ import { ModelError } from '../error/modelError';
 const logger = loggerWithNameSpace('Authentication Service');
 
 export default class AuthenticationService {
-  static async login(body: Pick<IUser, 'email' | 'password'>) {
+  static async login(body: Pick<IAuthUser, 'email' | 'password'>) {
     const existingUser = await UserServices.getUserByEmail(body.email);
 
     if (!existingUser) {

@@ -18,7 +18,7 @@ orderItemRouter.post(
   '/add',
   validateReqBody(createOrderItemArraySchema),
   authenticate,
-  // authorize(Permissions.ADD_ORDER_ITEM),
+  authorize(Permissions.CREATE_ORDER),
   authorizeCRUD,
   addOrderItem,
 );
@@ -27,7 +27,7 @@ orderItemRouter.patch(
   '/edit',
   validateReqBody(editOrderItemByRestaurantSchema),
   authenticate,
-  // authorize(Permissions.EDIT_ORDER_ITEM),
+  authorize(Permissions.EDIT_ORDER),
   authorizeCRUD,
   editOrderItem,
 );
@@ -35,7 +35,7 @@ orderItemRouter.patch(
 orderItemRouter.delete(
   '/delete',
   authenticate,
-  // authorize(Permissions.DELETE_ORDER_ITEM),
+  authorize(Permissions.CANCEL_ORDER),
   authorizeCRUD,
   deleteOrderItem,
 );

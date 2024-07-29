@@ -3,7 +3,7 @@ import UserModel from '../models/users';
 import { Roles } from '../enums/roles';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
-import IUser, { IUpdateUserData } from '../interfaces/user';
+import IUser, { ICreateUser, IUpdateUser } from '../interfaces/user';
 import CartServices from './cart';
 
 const logger = loggerWithNameSpace('Users Service');
@@ -37,7 +37,7 @@ export default class UserServices {
     return data;
   }
 
-  static async createUser(user: IUser) {
+  static async createUser(user: ICreateUser) {
     const hashedPassword = await bcrypt.hash(user.password, salt);
     user.password = hashedPassword;
     const queryResult = await UserModel.createUser(user)!;
@@ -48,14 +48,13 @@ export default class UserServices {
 
     await this.assignRole(queryResult.id, Roles.CUSTOMER);
     await CartServices.createCart(queryResult.id);
-    return { ...user, id: queryResult.id } as IUser;
+    return queryResult as IUser;
   }
 
-  static async editUser(id: string, updateUserData: IUpdateUserData) {
+  static async editUser(id: string, updateUserData: IUpdateUser) {
     if (updateUserData.password) {
       const hashedPassword = await bcrypt.hash(updateUserData.password, salt);
-      updateUserData.passwordHash = hashedPassword;
-      delete updateUserData.password;
+      updateUserData.password = hashedPassword;
     }
     const queryResult = await UserModel.editUserById(id, updateUserData)!;
     if (!queryResult) {
@@ -64,7 +63,7 @@ export default class UserServices {
       throw new ModelError('Could not edit User');
     }
 
-    return { ...updateUserData, id: queryResult.id } as IUpdateUserData;
+    return queryResult as IUser;
   }
 
   static async deleteUser(id: string) {

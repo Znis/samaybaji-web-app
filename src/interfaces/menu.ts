@@ -4,11 +4,11 @@ interface IMenu {
   description: string;
   restaurantID: string;
 }
-export interface ICreateMenuData {
+export interface ICreateMenu {
   name: string;
   description: string;
 }
-export interface IEditMenuData {
+export interface IEditMenu {
   name?: string;
   description?: string;
 }
