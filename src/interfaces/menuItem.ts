@@ -1,10 +1,10 @@
 import { status, type } from '../enums/menuItem';
 
-interface IMenuItem {
+export interface IMenuItem {
   id: string;
   name: string;
   portion: string;
-  price: string;
+  price: number;
   imageSrc: string;
   isPopular: boolean;
   type: type;
@@ -14,7 +14,7 @@ interface IMenuItem {
 export interface ICreateMenuItem {
   name: string;
   portion: string;
-  price: string;
+  price: number;
   imageSrc: string;
   isPopular: boolean;
   type: type;
@@ -22,11 +22,10 @@ export interface ICreateMenuItem {
 export interface IEditMenuItem {
   name?: string;
   portion?: string;
-  price?: string;
+  price?: number;
   imageSrc?: string;
   isPopular?: boolean;
   type?: type;
   status?: status;
 }
-
 export default IMenuItem;

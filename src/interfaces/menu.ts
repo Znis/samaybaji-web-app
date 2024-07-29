@@ -1,8 +1,11 @@
+import IMenuItem from './menuItem';
+
 interface IMenu {
   id: string;
   name: string;
   description: string;
   restaurantID: string;
+  menuItems: IMenuItem[];
 }
 export interface ICreateMenu {
   name: string;

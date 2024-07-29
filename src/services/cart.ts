@@ -4,6 +4,7 @@ import loggerWithNameSpace from '../utils/logger';
 import CartItemServices from './cartItem';
 import ICart from '../interfaces/cart';
 import MenuItemServices from './menuItem';
+import { IFormattedCartItemData } from '../interfaces/cartItem';
 
 const logger = loggerWithNameSpace('Cart Service');
 
@@ -29,7 +30,10 @@ export default class CartServices {
         const menuItem = await MenuItemServices.getMenuItem(
           cartItem.menuItemId,
         );
-        return { quantity: cartItem.quantity, menuItem: menuItem };
+        return {
+          quantity: cartItem.quantity,
+          menuItemData: menuItem,
+        } as IFormattedCartItemData;
       }),
     );
     logger.info(`Cart of userID ${userID} found`);

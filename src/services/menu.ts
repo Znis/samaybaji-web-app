@@ -15,7 +15,7 @@ export default class MenuServices {
     const menuWithmenuItems = await Promise.all(
       menus.map(async (menu) => {
         const menuItems = await MenuItemServices.getMenuItemsByMenuID(menu.id);
-        return { name: menu.name, menu: menuItems };
+        return { ...menu, menuItems: menuItems };
       }),
     );
     logger.info('All Menus Found');
