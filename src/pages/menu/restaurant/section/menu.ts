@@ -1,10 +1,10 @@
 import MenuItem from '../../../../components/menuItem';
-import { IMenuItemData } from '../../../../interfaces/menu';
+import { IMenuItem } from '../../../../interfaces/menuItem';
 
 export default class RestaurantMenuList {
   element: HTMLElement;
-  restaurantMenuData: IMenuItemData[];
-  constructor(restaurantMenuData: IMenuItemData[]) {
+  restaurantMenuData: IMenuItem[];
+  constructor(restaurantMenuData: IMenuItem[]) {
     this.element = document.createElement('div');
     this.restaurantMenuData = restaurantMenuData;
   }
@@ -16,7 +16,7 @@ export default class RestaurantMenuList {
     return this.element;
   }
   render() {
-    this.restaurantMenuData.forEach((item: IMenuItemData) => {
+    this.restaurantMenuData.forEach((item: IMenuItem) => {
       const menuItem = new MenuItem(item, 'large');
       this.element.appendChild(menuItem.element);
     });

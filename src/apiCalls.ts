@@ -1,8 +1,8 @@
-import { menuItemData } from './dummyData';
 import axios, { AxiosError } from 'axios';
-import { userFormData } from './interfaces/users';
 import { StateManagement } from './state-management/stateManagement';
-import { IFormattedCartItemDataForAPI } from './interfaces/cart';
+import { ICreateOrder } from './interfaces/order';
+import { IAuthUser, ICreateUser } from './interfaces/users';
+import ICartItem, { IEditCartItemData, IFormattedCartItemData } from './interfaces/cartItem';
 
 const baseUrl = 'http://localhost:8000';
 const usersUrl = '/users';
@@ -17,8 +17,9 @@ const addCartItemUrl = `${cartItemsUrl}/add`;
 const removeCartItemUrl = `${cartItemsUrl}/delete`;
 const editCartItemUrl = `${cartItemsUrl}/edit`;
 const clearCartUrl = `${cartUrl}/clear`;
+const createOrderUrl = `/orders/create`;
 
-export const login = async (formData: userFormData) => {
+export const login = async (formData: IAuthUser) => {
   return await axios
     .post(`${baseUrl}${loginUrl}`, formData, {
       withCredentials: true,
@@ -27,7 +28,7 @@ export const login = async (formData: userFormData) => {
       return res.data;
     });
 };
-export const register = async (formData: userFormData) => {
+export const register = async (formData: ICreateUser) => {
   return await axios.post(`${baseUrl}${registerUrl}`, formData).then((res) => {
     return res.data;
   });
@@ -54,9 +55,7 @@ export const fetchCartItems = async () => {
       return res.data;
     });
 };
-export const addCartItem = async (
-  cartItemData: IFormattedCartItemDataForAPI[],
-) => {
+export const addCartItem = async (cartItemData: IFormattedCartItemData[]) => {
   return await axios
     .post(`${baseUrl}${addCartItemUrl}`, cartItemData, {
       headers: {
@@ -79,15 +78,13 @@ export const removeCartItem = async (menuItemID: string) => {
       return res.data;
     });
 };
-export const editCartItem = async (
-  editCartItemData: IFormattedCartItemDataForAPI,
-) => {
+export const editCartItem = async (menuItemID: string, editCartItemData: IEditCartItemData) => {
   return await axios
     .patch(
       `${baseUrl}${editCartItemUrl}`,
       { quantity: editCartItemData.quantity },
       {
-        params: { menuItemID: editCartItemData.menuItemID },
+        params: { menuItemID: menuItemID},
 
         headers: {
           Authorization: `Bearer ${StateManagement.state.accessToken}`,
@@ -101,6 +98,17 @@ export const editCartItem = async (
 export const clearCart = async () => {
   return await axios
     .delete(`${baseUrl}${clearCartUrl}`, {
+      headers: {
+        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+export const createOrder = async (orderData: ICreateOrder) => {
+  return await axios
+    .post(`${baseUrl}${createOrderUrl}`, orderData, {
       headers: {
         Authorization: `Bearer ${StateManagement.state.accessToken}`,
       },

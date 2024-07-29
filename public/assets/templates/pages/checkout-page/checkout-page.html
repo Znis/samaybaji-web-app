@@ -1,8 +1,8 @@
 <h1 class="checkout__heading">
   Order <span class="checkout__span">Checkout</span>
 </h1>
-<div class="checkout__main-wrapper">
-  <div class="checkout__form-container">
+<form class="checkout__form-container" id="checkout-form" autocomplete="off">
+  <div class="checkout__left-container">
     <div class="checkout__accordion">
       <div class="checkout__accordion-item">
         <div class="checkout__accordion-header">
@@ -22,12 +22,13 @@
             type="text"
             placeholder="Full Name"
             id="order-fullname"
+            name="customer_name"
             required
           />
           <input
             class="checkout__input"
             id="order-phone"
-            name="phonenumber"
+            name="customer_phone"
             placeholder="Mobile Number"
             type="tel"
             required
@@ -36,14 +37,14 @@
             class="checkout__input-datetime"
             type="date"
             id="order-date"
-            name="date"
+            name="order_date"
             required
           />
           <input
             class="checkout__input-datetime"
             type="time"
             id="order-time"
-            name="time"
+            name="order_time"
             required
           />
           <textarea
@@ -74,6 +75,7 @@
             type="text"
             placeholder="Address"
             id="order-address"
+            name="delivery_address"
             required
           />
         </div>
@@ -95,11 +97,11 @@
             Select Payment Method:
           </p>
           <div class="checkout__radio-button-wrapper">
-            <input type="radio" id="cod" name="payment" value="cod" checked />
+            <input type="radio" id="cod" name="payment_method" value="cod" checked />
             <label for="cod">Cash on Delivery</label>
           </div>
           <div class="checkout__radio-button-wrapper">
-            <input type="radio" id="online" name="payment" value="online" />
+            <input type="radio" id="online" name="payment_method" value="online" />
             <label for="online">Online</label>
           </div>
         </div>
@@ -115,13 +117,11 @@
     <div class="checkout__order-billing">
       <div class="order-billing__sub-total">
         <p class="order-billing__sub-total-title">Sub Total</p>
-        <p class="order-billing__sub-total-amount" id="sub-total-amount">
-        </p>
+        <p class="order-billing__sub-total-amount" id="sub-total-amount"></p>
       </div>
       <div class="order-billing__delivery">
         <p class="order-billing__delivery-title">Delivery</p>
-        <p class="order-billing__delivery-amount" id="delivery-amount">
-        </p>
+        <p class="order-billing__delivery-amount" id="delivery-amount"></p>
       </div>
       <div class="order-billing__horizontal-bar"></div>
       <div class="order-billing__total">
@@ -129,5 +129,9 @@
         <p class="order-billing__total-amount" id="total-amount"></p>
       </div>
     </div>
+    <button type="submit" class="button" id="confirm-order-button">
+      Confirm Order
+      <i class="fa-solid fa-arrow-right button__icon"></i>
+    </button>
   </div>
-</div>
+</form>

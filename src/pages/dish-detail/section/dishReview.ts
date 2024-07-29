@@ -1,12 +1,13 @@
 import CustomerReview from '../../../components/customerReview';
-import { ICustomerReviewData } from '../../../interfaces/dishDetail';
+import { IReview } from '../../../interfaces/review';
+import IUser from '../../../interfaces/users';
 
 export default class DishReview {
   static htmlTemplateURL =
     '/assets/templates/pages/dish-detail/section/dish-review.html';
   static element = document.createElement('section');
 
-  static init(dishReviews: ICustomerReviewData[]): HTMLElement {
+  static init(dishReviews: IReview[]): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateURL)
         .then((response) => response.text())
@@ -19,9 +20,9 @@ export default class DishReview {
     }
     return this.element;
   }
-  static render(dishReviews: ICustomerReviewData[]) {
+  static render(dishReviews: IReview[]) {
     dishReviews.forEach((dishReview) => {
-      const customerReview = new CustomerReview(dishReview);
+      const customerReview = new CustomerReview(dishReview, {} as IUser);
       this.element
         .querySelector('.dish-review__customer-reviews')!
         .appendChild(customerReview.element);

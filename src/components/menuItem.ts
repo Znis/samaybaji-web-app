@@ -1,17 +1,17 @@
+import { IMenuItem } from '../interfaces/menuItem';
 import Cart from '../pages/cart/cart';
 import { navigate } from '../router';
-import { IMenuItemData } from '../interfaces/menu';
 import { StateManagement } from '../state-management/stateManagement';
 
 export default class MenuItem {
-  menuItemData: IMenuItemData;
+  menuItemData: IMenuItem;
   type: string | undefined;
   isAddedToCart: boolean;
   button: HTMLButtonElement;
   className: string;
   element: HTMLDivElement;
 
-  constructor(menuItemData: IMenuItemData, type?: string | undefined) {
+  constructor(menuItemData: IMenuItem, type?: string | undefined) {
     this.type = type;
     this.menuItemData = menuItemData;
     this.className = 'menu-item-card';
@@ -37,7 +37,7 @@ export default class MenuItem {
     this.element.setAttribute('id', this.menuItemData.id);
 
     const img = document.createElement('img');
-    img.src = this.menuItemData.imgSrc;
+    img.src = this.menuItemData.imageSrc;
     img.alt = `An image of ${this.menuItemData.name}`;
 
     const infoWrapper = document.createElement('div');

@@ -1,12 +1,12 @@
 import Header from '../app-section/header';
-import { ICartItemData } from '../interfaces/cart';
+import { IFormattedCartItemData } from '../interfaces/cartItem';
 import Cart from '../pages/cart/cart';
 import MenuPageLayout from '../pages/menu/menuPageLayout';
 
 interface AppState {
   accessToken: string | null;
   user: { id: string; name: string; email: string; phoneNumber: string } | null;
-  cart: ICartItemData[];
+  cart: IFormattedCartItemData[];
 }
 
 export class StateManagement {

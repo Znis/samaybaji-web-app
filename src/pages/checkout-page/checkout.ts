@@ -6,6 +6,7 @@ import { StateManagement } from '../../state-management/stateManagement';
 import CartItemCheckout from '../../components/cartItemCheckout';
 import Cart from '../cart/cart';
 import { navigate } from '../../router';
+import { createOrder, makeApiCall } from '../../apiCalls';
 
 export default class Checkout {
   static htmlTemplateUrl =
@@ -83,12 +84,16 @@ export default class Checkout {
       '.checkout__accordion-header',
     );
 
-    accordionHeaders.forEach((header) => {
+    accordionHeaders.forEach((header, idx) => {
+      const accordionItem = header.parentElement;
+      const accordionContent = accordionItem!.querySelector(
+        '.checkout__accordion-content',
+      ) as HTMLDivElement;
+      if (idx === 0) {
+        accordionContent.classList.add('open');
+        header.classList.add('active');
+      }
       header.addEventListener('click', () => {
-        const accordionItem = header.parentElement;
-        const accordionContent = accordionItem!.querySelector(
-          '.checkout__accordion-content',
-        ) as HTMLDivElement;
         header.classList.toggle('active');
         accordionContent.classList.toggle('open');
       });
@@ -125,6 +130,47 @@ export default class Checkout {
     editCartButton.addEventListener('click', () => {
       history.pushState(null, '', '/cart');
       navigate('/cart');
+    });
+    const checkoutForm = this.element.querySelector(
+      '#checkout-form',
+    ) as HTMLFormElement;
+    checkoutForm.addEventListener('submit', async (event) => {
+      if (checkoutForm.checkValidity()) {
+        event.preventDefault();
+      }
+      const formData = new FormData(checkoutForm);
+      const data = Object.fromEntries(formData.entries());
+
+      const orderItems = StateManagement.state.cart.map((item) => {
+        return {
+          menuItemID: item.menuItemData.id,
+          quantity: item.quantity,
+          unitPrice: item.menuItemData.price,
+          notes: '',
+        };
+      });
+      const order = {
+        customerPhone: data['customer_phone'] as string,
+        deliveryAddress: data['delivery_address'] as string,
+        customerName: data['customer_name'] as string,
+        notes: data['notes'] as string,
+        orderDate: data['order_date'] as string,
+        orderTime: data['order_time'] as string,
+        paymentMethod: data['payment_method'] as string,
+        totalAmount: this.totalAmount,
+        discountAmount: Cart.discountAmount,
+        deliveryAmount: this.deliveryAmount,
+        orderItems: orderItems,
+      };
+
+      try {
+        const response = await makeApiCall(createOrder, order);
+        console.log(response);
+        history.pushState(null, '', '/');
+        navigate('/');
+      } catch (error) {
+        console.log(error);
+      }
     });
   }
 }

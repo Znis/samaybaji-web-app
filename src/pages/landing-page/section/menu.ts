@@ -1,5 +1,7 @@
+import { fetchAllMenus } from '../../../apiCalls';
+import { LoaderSpinner } from '../../../components/loaderSpinner';
 import MenuItem from '../../../components/menuItem';
-import { popularMenuData } from '../../../dummyData';
+import { IMenu } from '../../../interfaces/menu';
 
 export default class Menu {
   static htmlTemplateurl =
@@ -13,22 +15,27 @@ export default class Menu {
         .then((html) => {
           this.element.classList.add('menu');
           this.element.innerHTML = html;
-          this.render();
+          this.element.innerHTML = '';
+          const spinner = LoaderSpinner.render(50);
+          this.element.appendChild(spinner);
+          this.fetchMenus(spinner);
         });
     }
     return this.element;
   }
-  static render() {
-    popularMenuData.popularMenuData.forEach((item) => {
-      const menuItem = new MenuItem(
-        item.id,
-        item.name,
-        item.imgSrc,
-        item.portion,
-        item.price,
-        item.isPopular,
-        'large',
-      );
+  static async fetchMenus(spinner: HTMLElement) {
+    try {
+      const menu = await fetchAllMenus();
+      this.renderMenu(menu[0]);
+    } catch (error) {
+      this.element.innerHTML = `<h3>${error}</h3>`;
+    } finally {
+      spinner.remove();
+    }
+  }
+  static async renderMenu(menu: IMenu) {
+    menu.menuItems.forEach((item) => {
+      const menuItem = new MenuItem(item, 'large');
       document.getElementById('menu-list')!.appendChild(menuItem.element);
     });
   }

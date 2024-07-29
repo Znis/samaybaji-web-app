@@ -1,12 +1,12 @@
 import Rating from '../../../components/rating';
-import { IDishDetailData } from '../../../interfaces/dishDetail';
+import { IDish } from '../../../interfaces/dish';
 
 export default class DishInfo {
   static htmlTemplateURL =
     '/assets/templates/pages/dish-detail/section/dish-info.html';
   static element = document.createElement('section');
 
-  static init(dishDetailData: IDishDetailData): HTMLElement {
+  static init(dishDetailData: IDish): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateURL)
         .then((response) => response.text())
@@ -19,8 +19,8 @@ export default class DishInfo {
     return this.element;
   }
 
-  static render(dishDetailData: IDishDetailData): void {
-    this.renderRating(dishDetailData.rating);
+  static render(dishDetailData: IDish): void {
+    this.renderRating(1);
     this.renderDishInfoAttribute(dishDetailData.attributes);
     this.renderDishInfoItem(dishDetailData.items);
 

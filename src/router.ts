@@ -1,3 +1,4 @@
+import { StateManagement } from './state-management/stateManagement';
 import UniversalRouter from 'universal-router';
 
 import Cart from './pages/cart/cart';
@@ -18,7 +19,16 @@ const routes = [
   { path: '/', action: () => LandingPage.init() },
   { path: '/cart', action: () => Cart.init() },
   { path: '/menu', action: () => MenuPageLayout.init() },
-  { path: '/checkout', action: () => Checkout.init() },
+  {
+    path: '/checkout',
+    action: () => {
+      if (StateManagement.state.user && StateManagement.state.cart.length) {
+        return Checkout.init();
+      } else {
+        ErrorPage.init();
+      }
+    },
+  },
   {
     path: '/dishdetail/:id',
     action: (context: RouterContext) =>

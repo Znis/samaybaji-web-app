@@ -3,7 +3,7 @@ import 'intl-tel-input/build/css/intlTelInput.css';
 import intlTelInput from 'intl-tel-input';
 import Modal from './modal';
 import axios, { HttpStatusCode } from 'axios';
-import { userFormData } from '../interfaces/users';
+import { IAuthUser, ICreateUser } from '../interfaces/users';
 import { StateManagement } from '../state-management/stateManagement';
 import Toast from './toast';
 import { fetchAllUsers, login, makeApiCall, register } from '../apiCalls';
@@ -298,7 +298,7 @@ export default class AuthCard {
 
   static async login(
     formSubmissionButton: HTMLButtonElement,
-    formData: userFormData,
+    formData: IAuthUser,
   ) {
     const spinner = LoaderSpinner.render();
     formSubmissionButton.innerText = 'Logging In';
@@ -328,7 +328,7 @@ export default class AuthCard {
   }
   static async register(
     formSubmissionButton: HTMLButtonElement,
-    formData: userFormData,
+    formData: ICreateUser,
   ) {
     const spinner = LoaderSpinner.render();
 

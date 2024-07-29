@@ -1,17 +1,17 @@
-export interface IMenuItemData {
+import { IMenuItem } from './menuItem';
+
+export interface IMenu {
   id: string;
   name: string;
-  price: number;
-  portion: string;
-  imgSrc: string;
-  isPopular: boolean;
+  description: string;
+  restaurantID: string;
+  menuItems: IMenuItem[];
 }
-
-export interface IRestaurantMenu {
+export interface ICreateMenu {
   name: string;
-  menu: IMenuItemData[];
+  description: string;
 }
-
-export interface IPopularMenuData {
-  popularMenuData: IMenuItemData[];
+export interface IEditMenu {
+  name?: string;
+  description?: string;
 }

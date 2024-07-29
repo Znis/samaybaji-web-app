@@ -7,8 +7,8 @@ import {
 } from '../../apiCalls';
 import CartItem from '../../components/cartItem';
 import { LoaderSpinner } from '../../components/loaderSpinner';
-import { ICartItemData } from '../../interfaces/cart';
-import { IMenuItemData } from '../../interfaces/menu';
+import ICartItem, { IFormattedCartItemData } from '../../interfaces/cartItem';
+import { IMenuItem } from '../../interfaces/menuItem';
 import { navigate } from '../../router';
 import { StateManagement } from '../../state-management/stateManagement';
 
@@ -81,13 +81,13 @@ export default class Cart {
       }
       const cartItems = (await makeApiCall(
         fetchCartItems,
-      )) as unknown as ICartItemData[];
+      )) as unknown as IFormattedCartItemData[];
       StateManagement.updateState(
         'cart',
         cartItems.map((item) => {
           return {
             quantity: item.quantity,
-            menuItem: item.menuItem,
+            menuItem: item.menuItemData,
           };
         }),
       );
@@ -120,7 +120,7 @@ export default class Cart {
     this.updatePriceDisplay();
   }
 
-  static async addItem(menuItemData: IMenuItemData) {
+  static async addItem(menuItemData: IMenuItem) {
     StateManagement.updateState('cart', [
       ...StateManagement.state.cart,
       {
@@ -149,7 +149,7 @@ export default class Cart {
     }
   }
 
-  static async removeItem(menuItemData: IMenuItemData) {
+  static async removeItem(menuItemData: IMenuItem) {
     StateManagement.updateState(
       'cart',
       StateManagement.state.cart.filter(

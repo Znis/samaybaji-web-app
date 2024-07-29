@@ -1,9 +1,10 @@
-import { ICartItemData } from '../interfaces/cart';
+import { IFormattedCartItemData } from '../interfaces/cartItem';
+
 export default class CartItemCheckout {
   htmlTemplateUrl: string;
   element: HTMLElement;
-  cartItemData: ICartItemData;
-  constructor(cartItemData: ICartItemData) {
+  cartItemData: IFormattedCartItemData;
+  constructor(cartItemData: IFormattedCartItemData) {
     this.htmlTemplateUrl =
       './assets/templates/components/cart-item-checkout.html';
     this.element = document.createElement('div');
@@ -28,20 +29,20 @@ export default class CartItemCheckout {
     const cartImage = this.element.querySelector(
       '.cart-item__image',
     ) as HTMLImageElement;
-    cartImage!.src = this.cartItemData.menuItem.imgSrc;
-    cartImage!.alt = `An image of ${this.cartItemData.menuItem.name}`;
+    cartImage!.src = this.cartItemData.menuItemData.imageSrc;
+    cartImage!.alt = `An image of ${this.cartItemData.menuItemData.name}`;
     const titleElement = this.element.querySelector(
       '#cart-item-title',
     ) as HTMLElement;
-    titleElement!.innerHTML = this.cartItemData.menuItem.name;
+    titleElement!.innerHTML = this.cartItemData.menuItemData.name;
     const unitPriceElement = this.element.querySelector(
       '#cart-item-unit-price',
     );
-    unitPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItem.price}`;
+    unitPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItemData.price}`;
     const totalPriceElement = this.element.querySelector(
       '#cart-item-total-price',
     );
-    totalPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItem.price}`;
+    totalPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItemData.price}`;
     const quantityElement = this.element.querySelector(
       '.cart-item__item-count',
     ) as HTMLElement;

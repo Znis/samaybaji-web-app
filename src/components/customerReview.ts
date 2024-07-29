@@ -1,12 +1,15 @@
-import { ICustomerReviewData } from '../interfaces/dishDetail';
+import { IReview } from '../interfaces/review';
+import IUser from '../interfaces/users';
 
 export default class CustomerReview {
   url: string;
   element: HTMLElement;
-  customerReview: ICustomerReviewData;
-  constructor(customerReview: ICustomerReviewData) {
+  customerReview: IReview;
+  customer: IUser;
+  constructor(customerReview: IReview, customer: IUser) {
     this.url = '/assets/templates/components/customer-review.html';
     this.element = document.createElement('div');
+    this.customer = customer;
     this.customerReview = customerReview;
 
     this.init();
@@ -26,16 +29,16 @@ export default class CustomerReview {
 
   render(): void {
     const customerImage = this.element.querySelector('.customer-review__image');
-    customerImage!.setAttribute('src', this.customerReview.profileImgSrc);
+    // customerImage!.setAttribute('src', this.customer.profileImage);
     customerImage!.setAttribute(
       'alt',
-      `Profile picture of ${this.customerReview.name}`,
+      `Profile picture of ${this.customer.name}`,
     );
 
     const customerName = this.element.querySelector(
       '.customer-review__customer-name',
     );
-    customerName!.textContent = this.customerReview.name;
+    customerName!.textContent = this.customer.name;
 
     const reviewDescription = this.element.querySelector(
       '.customer-review__comment',
@@ -45,6 +48,6 @@ export default class CustomerReview {
     const postedDate = this.element.querySelector(
       '.customer-review__posted-date',
     );
-    postedDate!.textContent = this.customerReview.postedDate;
+    postedDate!.textContent = this.customerReview.postedDate.toString();
   }
 }

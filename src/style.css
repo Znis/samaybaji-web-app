@@ -1349,12 +1349,12 @@ body.open .modal {
     color: #333; }
   .checkout__span {
     color: var(--brown); }
-  .checkout__main-wrapper {
+  .checkout__form-container {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     gap: 2%; }
-  .checkout__form-container {
+  .checkout__left-container {
     width: 54%;
     display: flex;
     flex-direction: column;
@@ -1495,6 +1495,12 @@ input[type='radio']:checked::after {
   border: 2px solid white;
   outline: 1px solid #444; }
 
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem; }
+
 .order-billing__sub-total, .order-billing__delivery, .order-billing__total {
   display: flex;
   align-items: center;
@@ -1506,7 +1512,7 @@ input[type='radio']:checked::after {
   width: 100%; }
 
 .order-billing__sub-total-title, .order-billing__delivery-title {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #333; }
 
 .order-billing__sub-total-amount, .order-billing__delivery-amount {
@@ -1514,9 +1520,9 @@ input[type='radio']:checked::after {
   color: #555; }
 
 .order-billing__total-title {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: #333; }
 
 .order-billing__total-amount {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: #444; }

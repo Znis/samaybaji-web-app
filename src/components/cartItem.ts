@@ -1,17 +1,17 @@
 import { editCartItem, makeApiCall } from '../apiCalls';
-import { ICartItemData } from '../interfaces/cart';
+import { IFormattedCartItemData } from '../interfaces/cartItem';
 import Cart from '../pages/cart/cart';
 import { StateManagement } from '../state-management/stateManagement';
 
 export default class CartItem {
   url: string;
   element: HTMLElement;
-  cartItemData: ICartItemData;
+  cartItemData: IFormattedCartItemData;
   incrementButton: HTMLButtonElement;
   decrementButton: HTMLButtonElement;
   deleteButton: HTMLButtonElement;
 
-  constructor(cartItemData: ICartItemData) {
+  constructor(cartItemData: IFormattedCartItemData) {
     this.url = './assets/templates/components/cart-item.html';
     this.element = document.createElement('div');
     this.cartItemData = cartItemData;
@@ -39,20 +39,20 @@ export default class CartItem {
     const cartImage = this.element.querySelector(
       '.cart-item__image',
     ) as HTMLImageElement;
-    cartImage!.src = this.cartItemData.menuItem.imgSrc;
-    cartImage!.alt = `An image of ${this.cartItemData.menuItem.name}`;
+    cartImage!.src = this.cartItemData.menuItemData.imageSrc;
+    cartImage!.alt = `An image of ${this.cartItemData.menuItemData.name}`;
     const titleElement = this.element.querySelector(
       '#cart-item-title',
     ) as HTMLElement;
-    titleElement!.innerHTML = this.cartItemData.menuItem.name;
+    titleElement!.innerHTML = this.cartItemData.menuItemData.name;
     const unitPriceElement = this.element.querySelector(
       '#cart-item-unit-price',
     );
-    unitPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItem.price}`;
+    unitPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItemData.price}`;
     const totalPriceElement = this.element.querySelector(
       '#cart-item-total-price',
     );
-    totalPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItem.price}`;
+    totalPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItemData.price}`;
     this.decrementButton = this.element.querySelector(
       '.cart-item__quantity-semi-rounded-left',
     ) as HTMLButtonElement;
@@ -120,7 +120,7 @@ export default class CartItem {
     totalPriceElement.innerText = `Rs. ${totalPrice}`;
 
     const cartItem = StateManagement.state.cart.find(
-      (item) => item.menuItem.id === this.cartItemData.menuItem.id,
+      (item) => item.menuItemData.id === this.cartItemData.menuItemData.id,
     );
     cartItem!.quantity = quantity;
     StateManagement.updateState('cart', StateManagement.state.cart);
@@ -129,8 +129,7 @@ export default class CartItem {
     Cart.render();
     if (StateManagement.state.user) {
       try {
-        await makeApiCall(editCartItem, {
-          menuItemID: this.cartItemData.menuItem.id,
+        await makeApiCall(editCartItem,this.cartItemData.menuItemData.id, {
           quantity: quantity,
         });
       } catch (error) {
@@ -140,7 +139,7 @@ export default class CartItem {
   }
 
   deleteItem(): void {
-    Cart.removeItem(this.cartItemData.menuItem);
+    Cart.removeItem(this.cartItemData.menuItemData);
     Cart.updatePrices();
     Cart.render();
   }
