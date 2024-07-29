@@ -890,8 +890,7 @@ body.open .modal {
   border-radius: 2rem;
   gap: 2rem;
   padding: 2rem;
-  width: 80%;
-  height: 90vh; }
+  width: 80%; }
 
 .modal__cross-button {
   position: absolute;
@@ -904,9 +903,6 @@ body.open .modal {
   z-index: 4; }
   .modal__cross-button:hover {
     scale: 1.2; }
-
-.modal__heading-wrapper {
-  height: 7rem; }
 
 .modal__heading {
   font-size: 2rem;
@@ -923,7 +919,14 @@ body.open .modal {
   background-color: #fefefe;
   align-items: center;
   gap: 2rem;
-  overflow-y: auto; }
+  overflow-y: auto;
+  max-height: 90vh; }
+
+.form__container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%; }
 
 .form__inputbox {
   width: 100%;

@@ -22,6 +22,7 @@ const removeCartItemUrl = `${cartItemsUrl}/delete`;
 const editCartItemUrl = `${cartItemsUrl}/edit`;
 const clearCartUrl = `${cartUrl}/clear`;
 const createOrderUrl = `/orders/create`;
+const getUploadUrlRoute = `/upload-url/`;
 
 export const login = async (formData: IAuthUser) => {
   return await axios
@@ -64,6 +65,30 @@ export const addCartItem = async (cartItemData: ICreateCartItemData[]) => {
     .post(`${baseUrl}${addCartItemUrl}`, cartItemData, {
       headers: {
         Authorization: `Bearer ${StateManagement.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+
+export const getUploadUrl = async () => {
+  return await axios
+    .get(`${baseUrl}${getUploadUrlRoute}`, {
+      headers: {
+        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+
+export const uploadImage = async (url: string, image: File) => {
+  return await axios
+    .put(`${url}`, {
+      headers: {
+       'Content-Type': image.type,
       },
     })
     .then((res) => {

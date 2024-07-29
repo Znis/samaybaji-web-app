@@ -1,3 +1,4 @@
+import { getUploadUrl, makeApiCall, uploadImage } from '../apiCalls';
 import { ICreateRestaurant } from '../interfaces/restaurant';
 import Modal from './modal';
 
@@ -10,10 +11,21 @@ export class RegisterRestaurantCard {
     if (this.element) {
       fetch(this.htmlTemplateURL)
         .then((response) => response.text())
-        .then((html) => {
+        .then(async (html) => {
           this.element.classList.add('restaurant-registration-modal');
           this.element.innerHTML = html;
-          this.setupEventListeners();
+          // this.setupEventListeners();
+          const profilePic =
+            (this.element.querySelector('#profilePic') as HTMLInputElement)
+              .files?.[0] || null;
+          const coverPic =
+            (this.element.querySelector('#coverPic') as HTMLInputElement)
+              .files?.[0] || null;
+
+          const coverPicUrl = await makeApiCall(getUploadUrl);
+          const profilePicUrl = await makeApiCall(getUploadUrl);
+          console.log(coverPicUrl, profilePicUrl);
+          await makeApiCall(uploadImage, profilePicUrl!.url, profilePic!);
         });
     }
     return this.element;
