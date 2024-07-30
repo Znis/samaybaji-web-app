@@ -15,9 +15,9 @@ import {
 const menuRouter = express();
 
 //for everyone
-menuRouter.get('/', getAllMenus);
+menuRouter.get('/all', getAllMenus);
 
-menuRouter.post(
+menuRouter.get(
   '/',
   authenticate,
   authorize(Permissions.VIEW_MENU),

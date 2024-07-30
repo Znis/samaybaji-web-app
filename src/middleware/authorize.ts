@@ -45,10 +45,10 @@ export async function authorizeCRUD(
         currentUser.id,
       )) as string;
       req.query.restaurantID = restaurantID;
-      // const menuID = await AuthorizationService.getMenuID(restaurantID);
-      // if (menuID) {
-      //   req.query.menuID = menuID;
-      // }
+      const menuID = await AuthorizationService.getMenuID(restaurantID);
+      if (menuID) {
+        req.query.menuID = menuID;
+      }
     }
     const cartID = await AuthorizationService.getCartID(currentUser.id);
 
