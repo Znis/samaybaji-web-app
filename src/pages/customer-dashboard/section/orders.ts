@@ -13,7 +13,7 @@ export default class OrdersDashboard {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
         .then((html) => {
-          this.element.classList.add('order-dashboard');
+          this.element.classList.add('dashboard');
           this.element.innerHTML = html;
           this.fetchAllOrders();
         });
@@ -63,8 +63,31 @@ export default class OrdersDashboard {
     const angleDownIcon = document.createElement('i');
     angleDownIcon.className =
       'fa-solid fa-angle-down accordion-header-trailing-icon';
+    const statusSelect = document.createElement('select');
+    statusSelect.classList.add('accordion-header-status-select');
+
+    const options = [
+      { value: OrderStatus.PENDING, text: OrderStatus.PENDING },
+      { value: OrderStatus.COOKING, text: OrderStatus.COOKING },
+      { value: OrderStatus.EN_ROUTE, text: OrderStatus.EN_ROUTE },
+      { value: OrderStatus.READY, text: OrderStatus.READY },
+      { value: OrderStatus.DELIVERED, text: OrderStatus.DELIVERED },
+    ];
+
+    options.forEach((optionData) => {
+      const option = document.createElement('option');
+      option.classList.add('accordion-status-select-option');
+      option.value = optionData.value;
+      option.textContent = optionData.text;
+    
+
+      statusSelect.appendChild(option);
+    });
+
+
     const iconWrapper = document.createElement('div');
     iconWrapper.classList.add('accordion-header-icon-wrapper');
+    iconWrapper.appendChild(statusSelect);
     iconWrapper.appendChild(deleteOrderIcon);
     iconWrapper.appendChild(cancelOrderIcon);
     iconWrapper.appendChild(angleDownIcon);

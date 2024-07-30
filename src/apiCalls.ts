@@ -15,7 +15,7 @@ const loginUrl = '/login';
 const registerUrl = `${usersUrl}/register`;
 const refreshUrl = '/refresh';
 const restaurantUrl = '/restaurants';
-const menuUrl = '/menus';
+const menuUrl = '/menus/all';
 const cartUrl = '/carts';
 const cartItemsUrl = '/cart-items';
 const addCartItemUrl = `${cartItemsUrl}/add`;
@@ -25,6 +25,7 @@ const clearCartUrl = `${cartUrl}/clear`;
 const createOrderUrl = `/orders/create`;
 const getUploadUrlRoute = `/upload-url/`;
 const ordersUrl = `/orders/`;
+const menuItemsUrl = `/menus/`;
 const createRestaurantUrl = `/restaurants/create`;
 
 export const login = async (formData: IAuthUser) => {
@@ -66,6 +67,17 @@ export const fetchCartItems = async () => {
 export const fetchAllOrders = async () => {
   return await axios
     .get(`${baseUrl}${ordersUrl}`, {
+      headers: {
+        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+export const fetchAllMenuItems = async () => {
+  return await axios
+    .get(`${baseUrl}${menuItemsUrl}`, {
       headers: {
         Authorization: `Bearer ${StateManagement.state.accessToken}`,
       },

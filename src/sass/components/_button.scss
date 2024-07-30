@@ -1,10 +1,12 @@
 .button {
+  width: fit-content;
   font-size: 1.1rem;
   padding: 0.5rem 2rem;
   border-radius: 5rem;
   background: none;
   color: #222;
   text-align: center;
+  margin: 0 auto;
   cursor: pointer;
   border: 0.2rem solid var(--brown);
 
