@@ -1,4 +1,3 @@
-import { status } from './../enums/menuItem';
 import {
   createRestaurant,
   getUploadUrl,

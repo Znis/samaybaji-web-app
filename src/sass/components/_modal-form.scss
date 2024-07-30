@@ -1,0 +1,13 @@
+.modal-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fdfdfa;
+    border-radius: 2rem;
+    padding: 1rem;
+    gap: 2rem;
+    width: 80%;
+    height: 80vh;
+    position: absolute;
+}
