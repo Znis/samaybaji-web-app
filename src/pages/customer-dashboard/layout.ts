@@ -1,3 +1,5 @@
+import OrdersDashboard from './section/orders';
+
 export default class DashboardLayout {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
@@ -9,8 +11,15 @@ export default class DashboardLayout {
         .then((html) => {
           this.element.classList.add('dashboard-page');
           this.element.innerHTML = html;
+          this.render();
         });
     }
     return this.element;
+  }
+  static render() {
+    const orderContainer = this.element.querySelector(
+      '.main-container',
+    ) as HTMLDivElement;
+    orderContainer.appendChild(OrdersDashboard.init());
   }
 }

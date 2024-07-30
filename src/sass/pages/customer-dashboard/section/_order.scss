@@ -1,0 +1,22 @@
+.order-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    &__heading{
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    }
+    &__order-container{
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ddd;
+        gap: 1rem;
+        padding: 1rem;
+        border-radius: 1rem;
+    }
+    &__order-container-heading{
+        font-size: 1.6rem;
+        color: #333;
+    }
+}

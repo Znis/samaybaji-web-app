@@ -956,16 +956,10 @@ body.open .modal {
     justify-content: space-evenly;
     align-items: center; }
 
-.order__accordion {
-  width: 100%;
-  margin: 0 auto;
-  border-radius: 0.5rem;
-  overflow: hidden; }
-
-.order__accordion-item {
+.accordion-item {
   border-bottom: 1px solid #ddd; }
 
-.order__accordion-header {
+.accordion-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -975,24 +969,72 @@ body.open .modal {
   font-weight: 600;
   position: relative; }
 
-.order__accordion-title-wrapper {
+.accordion-title-wrapper {
   display: flex;
   align-items: center;
   gap: 1rem; }
 
-.order__accordion-title {
+.accordion-title {
   font-size: 1rem; }
 
-.order__accordion-content-title {
+.accordion-content-title {
   font-size: 1.1rem;
   font-weight: 500;
   letter-spacing: 1px; }
 
-.order__accordion-header-icon, .order__accordion-header-trailing-icon {
+.accordion-header-icon-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4rem; }
+
+.accordion-header-icon, .accordion-header-action-icon, .accordion-header-trailing-icon {
   color: var(--brown); }
 
-.order__accordion-header.active .order__accordion-header-trailing-icon {
+.accordion-header.active .accordion-header-trailing-icon {
   transform: rotate(180deg); }
+
+.accordion-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+  padding: 0 1rem;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem; }
+
+.accordion-content.open {
+  max-height: 40rem;
+  padding: 1rem; }
+
+.order__summary {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fbfcfa;
+  gap: 1rem;
+  border: 1px solid #888;
+  border-radius: 2rem;
+  padding: 1rem; }
+
+.order__summary-heading {
+  font-size: 1.5rem;
+  letter-spacing: 1.5px;
+  color: #333; }
+
+.order__summary-attribute {
+  font-size: 1rem;
+  letter-spacing: 0.8px;
+  color: #444; }
+
+.order__summary-attribute-value {
+  font-size: 1rem;
+  letter-spacing: 0.8px;
+  font-weight: 500; }
 
 .hero {
   display: flex;
@@ -1721,9 +1763,28 @@ button {
       background-color: #d1eee4; }
 
 .main-container {
-  width: 100%;
+  flex: 1;
   height: 100%;
   display: flex;
   flex-direction: column;
   padding: 1rem 2rem;
   border: 1px solid red; }
+
+.order-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; }
+  .order-dashboard__heading {
+    font-size: 2rem;
+    color: #333;
+    text-align: center; }
+  .order-dashboard__order-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 1rem; }
+  .order-dashboard__order-container-heading {
+    font-size: 1.6rem;
+    color: #333; }

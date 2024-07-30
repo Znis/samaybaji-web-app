@@ -1,0 +1,28 @@
+.order {
+  &__summary {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fbfcfa;
+    gap: 1rem;
+    border: 1px solid #888;
+    border-radius: 2rem;
+    padding: 1rem;
+  }
+  &__summary-heading {
+    font-size: 1.5rem;
+    letter-spacing: 1.5px;
+    color: #333;
+  }
+  &__summary-attribute {
+    font-size: 1rem;
+    letter-spacing: 0.8px;
+    color: #444;
+  }
+  &__summary-attribute-value {
+    font-size: 1rem;
+    letter-spacing: 0.8px;
+    font-weight: 500;
+  }
+}
