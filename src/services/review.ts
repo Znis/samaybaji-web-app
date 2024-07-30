@@ -5,7 +5,7 @@ import { ReviewTargetType } from '../enums/review';
 import { ICreateReview, IEditReview, IReview } from '../interfaces/review';
 
 const logger = loggerWithNameSpace('Review Service');
-export default class ReviewServices {
+export default class ReviewService {
   static async getAllReviews() {
     const reviews = await ReviewModel.getAllReviews();
     if (!reviews) {

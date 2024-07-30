@@ -1,6 +1,6 @@
 import { MinioModel } from '../models/minio';
 
-export default class MinioServices {
+export default class MinioService {
   static presignedPutObject(bucketName: string, fileName: string) {
     return MinioModel.presignedPutObject(bucketName, fileName);
   }

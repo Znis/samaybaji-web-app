@@ -8,7 +8,7 @@ import IMenuItem, {
 
 const logger = loggerWithNameSpace('Menu Item Service');
 
-export default class MenuItemServices {
+export default class MenuItemService {
   static async getAllMenuItems() {
     const menuItems = await MenuItemModel.getAllMenuItems();
     if (!menuItems) {

@@ -8,7 +8,7 @@ import { IFormattedCartItemData } from '../interfaces/cartItem';
 
 const logger = loggerWithNameSpace('Cart Service');
 
-export default class CartServices {
+export default class CartService {
   static async getAllCarts() {
     const carts = await CartModel.getAllCarts();
     if (!carts) {

@@ -8,7 +8,7 @@ import CartServices from './cart';
 
 const logger = loggerWithNameSpace('Users Service');
 const salt = 10;
-export default class UserServices {
+export default class UserService {
   static async getAllUsers() {
     const data = await UserModel.getAllUsers();
     if (!data) {

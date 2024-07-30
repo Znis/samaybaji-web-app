@@ -20,7 +20,6 @@ export interface ICreateRestaurant {
   profilePic: string;
   coverPic: string;
   panNumber: string;
-  userID: string;
 }
 export interface IEditRestaurant {
   name?: string;

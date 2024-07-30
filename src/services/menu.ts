@@ -6,7 +6,7 @@ import MenuItemServices from './menuItem';
 
 const logger = loggerWithNameSpace('Menu Service');
 
-export default class MenuServices {
+export default class MenuService {
   static async getAllMenus() {
     const menus = await MenuModel.getAllMenus();
     if (!menus) {

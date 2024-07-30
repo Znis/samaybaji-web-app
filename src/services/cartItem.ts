@@ -8,7 +8,7 @@ import ICartItem, {
 
 const logger = loggerWithNameSpace('Cart Item Service');
 
-export default class CartItemServices {
+export default class CartItemService {
   static async getCartItemsByCartID(cartID: string) {
     const cartItems = await CartItemModel.getCartItemsByCartID(cartID);
     if (!cartItems) {

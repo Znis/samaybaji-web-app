@@ -7,7 +7,7 @@ import { OrderStatus } from '../enums/order';
 
 const logger = loggerWithNameSpace('Order Service');
 
-export default class OrderServices {
+export default class OrderService {
   static async getAllOrders() {
     const orders = await OrderModel.getAllOrders();
     if (!orders) {
@@ -18,7 +18,7 @@ export default class OrderServices {
         const orderItems = await OrderItemServices.getOrderItemsByOrderID(
           order.id,
         );
-        return { orderDetails: order, orderItems: orderItems };
+        return { ...order, orderItems: orderItems };
       }),
     );
     logger.info('All Orders Found');
@@ -46,7 +46,7 @@ export default class OrderServices {
         const orderItems = await OrderItemServices.getOrderItemsByOrderID(
           order.id,
         );
-        return { orderDetails: order, orderItems: orderItems };
+        return { ...order, orderItems: orderItems };
       }),
     );
     logger.info(`Orders of userID ${userID} Found`);
@@ -63,7 +63,7 @@ export default class OrderServices {
         const orderItems = await OrderItemServices.getOrderItemsByOrderID(
           order.id,
         );
-        return { orderDetails: order, orderItems: orderItems };
+        return { ...order, orderItems: orderItems };
       }),
     );
     logger.info(`Orders of restaurantID ${restaurantID} Found`);

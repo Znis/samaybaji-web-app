@@ -9,7 +9,7 @@ import UserServices from './users';
 import { Roles } from '../enums/roles';
 
 const logger = loggerWithNameSpace('Restaurant Service');
-export default class RestaurantServices {
+export default class RestaurantService {
   static async getAllRestaurants() {
     const restaurants = await RestaurantModel.getAllRestaurants();
     if (!restaurants) {

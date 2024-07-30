@@ -4,7 +4,7 @@ import loggerWithNameSpace from '../utils/logger';
 import { ICreateDish, IDish, IEditDish } from '../interfaces/dish';
 
 const logger = loggerWithNameSpace('Dish Service');
-export default class DishServices {
+export default class DishService {
   static async getAllDishes() {
     const dishes = await DishModel.getAllDishes();
     if (!dishes) {

@@ -9,7 +9,7 @@ import {
 
 const logger = loggerWithNameSpace('Order Item Service');
 
-export default class OrderItemServices {
+export default class OrderItemService {
   static async getOrderItemsByOrderID(orderID: string) {
     const orderItems = await OrderItemModel.getOrderItemsByOrderID(orderID);
     if (!orderItems) {
