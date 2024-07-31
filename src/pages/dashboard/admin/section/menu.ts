@@ -153,12 +153,8 @@ export default class AdminMenuDashboard {
 
       const accordion = new Accordion(accordionContent, accordionHeader);
 
-      const inStockMenuItemContainer =
-        this.element.querySelector('#in-stock-menu');
-      const outOfStockMenuItemContainer =
-        this.element.querySelector('#out-of-stock-menu');
-      inStockMenuItemContainer!.appendChild(accordion.element);
-      outOfStockMenuItemContainer!.appendChild(accordion.element);
+      const menusContainer = this.element.querySelector('#menus-container');
+      menusContainer!.appendChild(accordion.element);
     });
   }
 }

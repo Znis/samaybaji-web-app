@@ -142,11 +142,16 @@ export default class AdminRestaurantsDashboard {
 
       const accordion = new Accordion(accordionContent, accordionHeader);
 
-      const reviewContainer = this.element.querySelector(
-        '#review-container',
+      const pendingApprovalRestaurantContainer = this.element.querySelector(
+        '#restaurants-pending-approval-container',
       ) as HTMLDivElement;
 
-      reviewContainer!.appendChild(accordion.element);
+      pendingApprovalRestaurantContainer!.appendChild(accordion.element);
+      const approvedRestaurantContainer = this.element.querySelector(
+        '#restaurants-approved-container',
+      ) as HTMLDivElement;
+
+      approvedRestaurantContainer!.appendChild(accordion.element);
     });
   }
 }

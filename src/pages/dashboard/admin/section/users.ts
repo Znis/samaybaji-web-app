@@ -121,11 +121,11 @@ export default class AdminUsersDashboard {
 
       const accordion = new Accordion(accordionContent, accordionHeader);
 
-      const reviewContainer = this.element.querySelector(
-        '#review-container',
+      const usersContainer = this.element.querySelector(
+        '#users-container',
       ) as HTMLDivElement;
 
-      reviewContainer!.appendChild(accordion.element);
+      usersContainer!.appendChild(accordion.element);
     });
   }
 }
