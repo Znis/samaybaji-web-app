@@ -26,6 +26,14 @@ const routes = [
     action: () => DashboardLayout.init('restaurant'),
   },
   {
+    path: '/admin/login',
+    action: () => DashboardLayout.init('restaurant'),
+  },
+  {
+    path: '/admin/dashboard',
+    action: () => DashboardLayout.init('restaurant'),
+  },
+  {
     path: '/checkout',
     action: () => {
       if (StateManagement.state.user && StateManagement.state.cart.length) {

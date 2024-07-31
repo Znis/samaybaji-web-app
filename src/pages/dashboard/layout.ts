@@ -2,6 +2,16 @@ import ReviewDashboard from './restaurant/section/review';
 import EditDetailsDashboard from './restaurant/section/editDetail';
 import MenuDashboard from './restaurant/section/menu';
 import OrdersDashboard from './restaurant/section/orders';
+import AdminMenuDashboard from './admin/section/menu';
+import AdminOrdersDashboard from './admin/section/orders';
+import AdminUsersDashboard from './admin/section/users';
+import AdminRestaurantsDashboard from './admin/section/restaurant';
+import AdminReviewDashboard from './admin/section/review';
+import RestaurantMenuDashboard from './restaurant/section/menu';
+import RestaurantOrdersDashboard from './restaurant/section/orders';
+import RestaurantReviewDashboard from './restaurant/section/review';
+import CustomerOrdersDashboard from './customer/section/orders';
+import CustomerReviewDashboard from './customer/section/review';
 
 export default class DashboardLayout {
   static element: HTMLElement = document.createElement('div');
@@ -23,26 +33,58 @@ export default class DashboardLayout {
   static innerElements() {
     return {
       admin: {
-        userMenuOption: this.element.querySelector('#users-option'),
-        ordersMenuOption: this.element.querySelector('#orders-option'),
-        reviewsMenuOption: this.element.querySelector('#reviews-option'),
-        menuOption: this.element.querySelector('#menu-option'),
-        restaurantMenuOption: this.element.querySelector('#restaurants-option'),
+        userMenuOption: this.element.querySelector(
+          '#users-option',
+        ) as HTMLElement,
+        ordersMenuOption: this.element.querySelector(
+          '#orders-option',
+        ) as HTMLElement,
+        reviewsMenuOption: this.element.querySelector(
+          '#reviews-option',
+        ) as HTMLElement,
+        menuOption: this.element.querySelector('#menu-option') as HTMLElement,
+        restaurantMenuOption: this.element.querySelector(
+          '#restaurants-option',
+        ) as HTMLElement,
       },
       restaurant: {
-        ordersMenuOption: this.element.querySelector('#orders-option'),
-        reviewsMenuOption: this.element.querySelector('#reviews-option'),
-        menuOption: this.element.querySelector('#menu-option'),
-        editDetailsOption: this.element.querySelector('#edit-details-option'),
+        ordersMenuOption: this.element.querySelector(
+          '#orders-option',
+        ) as HTMLElement,
+        reviewsMenuOption: this.element.querySelector(
+          '#reviews-option',
+        ) as HTMLElement,
+        menuOption: this.element.querySelector('#menu-option') as HTMLElement,
+        editDetailsOption: this.element.querySelector(
+          '#edit-details-option',
+        ) as HTMLElement,
       },
       customer: {
-        ordersMenuOption: this.element.querySelector('#orders-option'),
-        reviewsMenuOption: this.element.querySelector('#reviews-option'),
-        editDetailsOption: this.element.querySelector('#edit-details-option'),
+        ordersMenuOption: this.element.querySelector(
+          '#orders-option',
+        ) as HTMLElement,
+        reviewsMenuOption: this.element.querySelector(
+          '#reviews-option',
+        ) as HTMLElement,
+        editDetailsOption: this.element.querySelector(
+          '#edit-details-option',
+        ) as HTMLElement,
       },
     };
   }
 
+  static setActiveMenuOption(
+    role: { [key: string]: HTMLElement | null },
+    activeOption: HTMLElement,
+  ) {
+    Object.values(role).forEach((option: HTMLElement | null) => {
+      if (option === activeOption) {
+        option.classList.add('aside__menu-option--active');
+      } else {
+        option!.classList.remove('aside__menu-option--active');
+      }
+    });
+  }
   static renderSidebar(type: string) {
     if (type === 'admin') {
       this.renderAdminSidebar();
@@ -53,97 +95,119 @@ export default class DashboardLayout {
     }
   }
   static setEventListeners(type: string) {
+    const innerElems = this.innerElements();
     if (type === 'admin') {
+      this.renderContent(AdminUsersDashboard.init());
       this.innerElements().admin.userMenuOption!.addEventListener(
         'click',
-        () => {},
+        () => {
+          this.renderContent(AdminUsersDashboard.init());
+          this.setActiveMenuOption(
+            innerElems.admin,
+            innerElems.admin.userMenuOption!,
+          );
+        },
       );
       this.innerElements().admin.menuOption!.addEventListener('click', () => {
-        this.renderContent(MenuDashboard.init());
-        this.innerElements().admin.menuOption!.classList.toggle(
-          'aside__menu-option--active',
+        this.renderContent(AdminMenuDashboard.init());
+        this.setActiveMenuOption(
+          innerElems.admin,
+          innerElems.admin.menuOption!,
         );
       });
       this.innerElements().admin.ordersMenuOption!.addEventListener(
         'click',
         () => {
-          this.renderContent(OrdersDashboard.init());
-          this.innerElements().admin.ordersMenuOption!.classList.toggle(
-            'aside__menu-option--active',
+          this.renderContent(AdminOrdersDashboard.init());
+          this.setActiveMenuOption(
+            innerElems.admin,
+            innerElems.admin.ordersMenuOption!,
           );
         },
       );
       this.innerElements().admin.restaurantMenuOption!.addEventListener(
         'click',
         () => {
-          this.renderContent(MenuDashboard.init());
-          this.innerElements().admin.restaurantMenuOption!.classList.toggle(
-            'aside__menu-option--active',
+          this.renderContent(AdminRestaurantsDashboard.init());
+          this.setActiveMenuOption(
+            innerElems.admin,
+            innerElems.admin.restaurantMenuOption!,
           );
         },
       );
       this.innerElements().admin.reviewsMenuOption!.addEventListener(
         'click',
         () => {
-          this.renderContent(ReviewDashboard.init());
-          this.innerElements().admin.reviewsMenuOption!.classList.toggle(
-            'aside__menu-option--active',
+          this.renderContent(AdminReviewDashboard.init());
+          this.setActiveMenuOption(
+            innerElems.admin,
+            innerElems.admin.reviewsMenuOption!,
           );
         },
       );
     } else if (type === 'restaurant') {
+      this.renderContent(RestaurantMenuDashboard.init());
+
       this.innerElements().restaurant.editDetailsOption!.addEventListener(
         'click',
         () => {
           this.renderContent(EditDetailsDashboard.init());
-          this.innerElements().restaurant.editDetailsOption!.classList.toggle(
-            'aside__menu-option--active',
+          this.setActiveMenuOption(
+            innerElems.restaurant,
+            innerElems.restaurant.editDetailsOption!,
           );
         },
       );
       this.innerElements().restaurant.menuOption!.addEventListener(
         'click',
         () => {
-          this.renderContent(MenuDashboard.init());
-          this.innerElements().restaurant.menuOption!.classList.toggle(
-            'aside__menu-option--active',
+          this.renderContent(RestaurantMenuDashboard.init());
+          this.setActiveMenuOption(
+            innerElems.restaurant,
+            innerElems.restaurant.menuOption!,
           );
         },
       );
       this.innerElements().restaurant.ordersMenuOption!.addEventListener(
         'click',
         () => {
-          this.renderContent(OrdersDashboard.init());
-          this.innerElements().restaurant.ordersMenuOption!.classList.toggle(
-            'aside__menu-option--active',
+          this.renderContent(RestaurantOrdersDashboard.init());
+          this.setActiveMenuOption(
+            innerElems.restaurant,
+            innerElems.restaurant.ordersMenuOption!,
           );
         },
       );
       this.innerElements().restaurant.reviewsMenuOption!.addEventListener(
         'click',
         () => {
-          this.renderContent(ReviewDashboard.init());
-          this.innerElements().restaurant.reviewsMenuOption!.classList.toggle(
-            'aside__menu-option--active',
+          this.renderContent(RestaurantReviewDashboard.init());
+          this.setActiveMenuOption(
+            innerElems.restaurant,
+            innerElems.restaurant.reviewsMenuOption!,
           );
         },
       );
     } else {
+      this.renderContent(CustomerOrdersDashboard.init());
+
       this.innerElements().customer.ordersMenuOption!.addEventListener(
         'click',
         () => {
-          this.renderContent(OrdersDashboard.init());
-          this.innerElements().customer.ordersMenuOption!.classList.toggle(
-            'aside__menu-option--active',
+          this.renderContent(CustomerOrdersDashboard.init());
+          this.setActiveMenuOption(
+            innerElems.customer,
+            innerElems.customer.ordersMenuOption!,
           );
         },
       );
       this.innerElements().customer.reviewsMenuOption!.addEventListener(
         'click',
         () => {
-          this.renderContent(ReviewDashboard.init());
-          this.innerElements().customer.reviewsMenuOption!.classList.toggle(
-            'aside__menu-option--active',
+          this.renderContent(CustomerReviewDashboard.init());
+          this.setActiveMenuOption(
+            innerElems.customer,
+            innerElems.customer.reviewsMenuOption!,
           );
         },
       );
@@ -151,8 +215,9 @@ export default class DashboardLayout {
         'click',
         () => {
           this.renderContent(EditDetailsDashboard.init());
-          this.innerElements().customer.editDetailsOption!.classList.toggle(
-            'aside__menu-option--active',
+          this.setActiveMenuOption(
+            innerElems.customer,
+            innerElems.customer.editDetailsOption!,
           );
         },
       );
@@ -162,6 +227,7 @@ export default class DashboardLayout {
     const mainContainer = this.element.querySelector(
       '.main-container',
     ) as HTMLDivElement;
+    mainContainer.innerHTML = '';
     mainContainer.appendChild(element);
   }
   static renderCustomerSidebar() {

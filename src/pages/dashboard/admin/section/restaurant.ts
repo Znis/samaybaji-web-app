@@ -97,7 +97,7 @@ export default class AdminRestaurantsDashboard {
     ) as HTMLSpanElement;
     restaurantLocation.innerHTML = `${restaurant.location || ''}`;
     const restaurantDescription = accordionContent.querySelector(
-      '#restaurant-desc',
+      '#restaurant-description',
     ) as HTMLSpanElement;
     restaurantDescription.innerHTML = `${restaurant.description || ''}`;
     const panNumber = accordionContent.querySelector(
