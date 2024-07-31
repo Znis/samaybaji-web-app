@@ -30,6 +30,8 @@ header {
     &__dropdown-content {
       display: none;
       position: absolute;
+      gap: 1rem;
+      align-items: center;
       top: 2.6rem;
       background-color: #f9f9f9;
       min-width: 14rem;
@@ -45,7 +47,8 @@ header {
       font-size: 1rem;
       border-radius: 0.5rem;
       text-decoration: none;
-      display: block;
+      display: flex;
+      justify-content: flex-start;
 
       &:hover {
         background-color: #dfdcdc;

@@ -6,6 +6,9 @@ interface IUser {
   phoneNumber: string;
   passwordHash: string;
 }
+export interface IAuthenticatedUser extends IUser {
+  roleID: string;
+}
 export interface IAuthUser {
   email: string;
   password: string;

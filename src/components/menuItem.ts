@@ -1,7 +1,7 @@
 import { IMenuItem } from '../interfaces/menuItem';
 import Cart from '../pages/cart/cart';
 import { navigate } from '../router';
-import { StateManagement } from '../state-management/stateManagement';
+import { StateManager } from '../state-management/stateManager';
 
 export default class MenuItem {
   menuItemData: IMenuItem;
@@ -57,6 +57,10 @@ export default class MenuItem {
     this.button.classList.add('button');
     this.button.name = 'addtocartbutton';
     this.button.innerText = 'Add to Cart';
+    if (this.menuItemData.inStock) {
+      this.button.classList.add('button--clicked');
+      this.button.innerHTML = 'Out of Stock';
+    }
 
     if (this.isAddedToCart) {
       this.button.classList.add('button--clicked');
@@ -101,7 +105,7 @@ export default class MenuItem {
   }
 
   checkIfPresentInCart() {
-    const doesExist = StateManagement.state.cart.some(
+    const doesExist = StateManager.state.cart.some(
       (item) => item.menuItemData.id === this.menuItemData.id,
     );
     return doesExist;

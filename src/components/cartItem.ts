@@ -1,7 +1,7 @@
 import { editCartItem, makeApiCall } from '../apiCalls';
 import { IFormattedCartItemData } from '../interfaces/cartItem';
 import Cart from '../pages/cart/cart';
-import { StateManagement } from '../state-management/stateManagement';
+import { StateManager } from '../state-management/stateManager';
 
 export default class CartItem {
   url: string;
@@ -119,15 +119,15 @@ export default class CartItem {
     this.cartItemData.quantity = quantity;
     totalPriceElement.innerText = `Rs. ${totalPrice}`;
 
-    const cartItem = StateManagement.state.cart.find(
+    const cartItem = StateManager.state.cart.find(
       (item) => item.menuItemData.id === this.cartItemData.menuItemData.id,
     );
     cartItem!.quantity = quantity;
-    StateManagement.updateState('cart', StateManagement.state.cart);
+    StateManager.updateState('cart', StateManager.state.cart);
 
     Cart.updatePrices();
     Cart.render();
-    if (StateManagement.state.user) {
+    if (StateManager.state.user) {
       try {
         await makeApiCall(editCartItem, this.cartItemData.menuItemData.id, {
           quantity: quantity,
@@ -138,8 +138,8 @@ export default class CartItem {
     }
   }
 
-  deleteItem(): void {
-    Cart.removeItem(this.cartItemData.menuItemData);
+  async deleteItem() {
+    await Cart.removeItem(this.cartItemData.menuItemData);
     Cart.updatePrices();
     Cart.render();
   }

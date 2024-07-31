@@ -4,7 +4,7 @@ import intlTelInput from 'intl-tel-input';
 import Modal from './modal';
 import axios, { HttpStatusCode } from 'axios';
 import { IAuthUser, ICreateUser } from '../interfaces/users';
-import { StateManagement } from '../state-management/stateManagement';
+import { StateManager } from '../state-management/stateManager';
 import Toast from './toast';
 import { fetchAllUsers, login, makeApiCall, register } from '../apiCalls';
 import Cart from '../pages/cart/cart';
@@ -309,8 +309,8 @@ export default class AuthCard {
     return await login(formData)
       .then((data) => {
         Modal.toggle();
-        StateManagement.updateState('accessToken', data.accessToken);
-        StateManagement.updateState('user', data.user);
+        StateManager.updateState('accessToken', data.accessToken);
+        StateManager.updateState('user', data.user);
         Toast.show('User Logged In');
         Cart.fetchCartItems();
         return data;

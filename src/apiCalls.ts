@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { StateManagement } from './state-management/stateManagement';
+import { StateManager } from './state-management/stateManager';
 import { ICreateOrder } from './interfaces/order';
 import { IAuthUser, ICreateUser } from './interfaces/users';
 import ICartItem, {
@@ -57,7 +57,7 @@ export const fetchCartItems = async () => {
   return await axios
     .get(`${baseUrl}${cartUrl}`, {
       headers: {
-        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
     })
     .then((res) => {
@@ -68,7 +68,7 @@ export const fetchAllOrders = async () => {
   return await axios
     .get(`${baseUrl}${ordersUrl}`, {
       headers: {
-        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
     })
     .then((res) => {
@@ -79,7 +79,7 @@ export const fetchAllMenuItems = async () => {
   return await axios
     .get(`${baseUrl}${menuItemsUrl}`, {
       headers: {
-        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
     })
     .then((res) => {
@@ -90,7 +90,7 @@ export const addCartItem = async (cartItemData: ICreateCartItemData[]) => {
   return await axios
     .post(`${baseUrl}${addCartItemUrl}`, cartItemData, {
       headers: {
-        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
     })
     .then((res) => {
@@ -102,7 +102,7 @@ export const getUploadUrl = async () => {
   return await axios
     .get(`${baseUrl}${getUploadUrlRoute}`, {
       headers: {
-        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
     })
     .then((res) => {
@@ -126,7 +126,7 @@ export const removeCartItem = async (menuItemID: string) => {
     .delete(`${baseUrl}${removeCartItemUrl}`, {
       params: { menuItemID: menuItemID },
       headers: {
-        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
     })
     .then((res) => {
@@ -145,7 +145,7 @@ export const editCartItem = async (
         params: { menuItemID: menuItemID },
 
         headers: {
-          Authorization: `Bearer ${StateManagement.state.accessToken}`,
+          Authorization: `Bearer ${StateManager.state.accessToken}`,
         },
       },
     )
@@ -157,7 +157,7 @@ export const clearCart = async () => {
   return await axios
     .delete(`${baseUrl}${clearCartUrl}`, {
       headers: {
-        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
     })
     .then((res) => {
@@ -168,7 +168,7 @@ export const createOrder = async (orderData: ICreateOrder) => {
   return await axios
     .post(`${baseUrl}${createOrderUrl}`, orderData, {
       headers: {
-        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
     })
     .then((res) => {
@@ -179,7 +179,7 @@ export const createRestaurant = async (restaurantData: ICreateRestaurant) => {
   return await axios
     .post(`${baseUrl}${createRestaurantUrl}`, restaurantData, {
       headers: {
-        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
     })
     .then((res) => {
@@ -190,7 +190,7 @@ export const fetchAllUsers = async () => {
   return await axios
     .get(`${baseUrl}${usersUrl}`, {
       headers: {
-        Authorization: `Bearer ${StateManagement.state.accessToken}`,
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
     })
     .then((res) => {
@@ -228,7 +228,7 @@ export async function makeApiCall<T extends unknown[]>(
           logoutUser();
           throw new Error(`Failed to refresh access token: ${tokenResponse}`);
         }
-        StateManagement.updateState('accessToken', tokenResponse.accessToken);
+        StateManager.updateState('accessToken', tokenResponse.accessToken);
         try {
           return await callbackFn(...args);
         } catch (retryError) {
@@ -277,6 +277,6 @@ async function handleTokenExpiration(): Promise<{
 }
 
 function logoutUser(): void {
-  StateManagement.resetState();
+  StateManager.resetState();
   console.warn('User logged out due to token expiration');
 }

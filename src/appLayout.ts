@@ -6,6 +6,7 @@ export default class AppLayout {
   static init(): void {
     const appElement: HTMLElement | null = document.getElementById('app');
     if (appElement) {
+      appElement.innerHTML = '';
       const backgroundOverlay = document.createElement('div');
       backgroundOverlay.setAttribute('class', 'background-overlay');
       appElement.appendChild(backgroundOverlay);
@@ -13,10 +14,22 @@ export default class AppLayout {
       const modal = document.createElement('div');
       modal.setAttribute('class', 'modal');
       appElement.appendChild(modal);
-
       appElement.appendChild(Header.init());
       appElement.appendChild(Content.init());
       appElement.appendChild(Footer.init());
+    }
+  }
+  static initAdmin(element: HTMLElement): void {
+    const appElement: HTMLElement | null = document.getElementById('app');
+    if (appElement) {
+      appElement.innerHTML = '';
+      const backgroundOverlay = document.createElement('div');
+      backgroundOverlay.setAttribute('class', 'background-overlay');
+      appElement.appendChild(backgroundOverlay);
+
+      const modal = document.createElement('div');
+      modal.setAttribute('class', 'modal');
+      appElement.appendChild(element);
     }
   }
 }

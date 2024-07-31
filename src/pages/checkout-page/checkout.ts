@@ -2,7 +2,7 @@ import 'intl-tel-input/build/css/intlTelInput.css';
 import intlTelInput from 'intl-tel-input';
 import CartItem from '../../components/cartItem';
 import { LoaderSpinner } from '../../components/loaderSpinner';
-import { StateManagement } from '../../state-management/stateManagement';
+import { StateManager } from '../../state-management/stateManager';
 import CartItemCheckout from '../../components/cartItemCheckout';
 import Cart from '../cart/cart';
 import { navigate } from '../../router';
@@ -13,7 +13,7 @@ export default class Checkout {
     './assets/templates/pages/checkout-page/checkout-page.html';
   static element: HTMLElement = document.createElement('section');
   static deliveryAmount = 100;
-  static subTotalAmount = StateManagement.state.cart.reduce(
+  static subTotalAmount = StateManager.state.cart.reduce(
     (acc, item) => acc + item.menuItemData.price * item.quantity,
     0,
   );
@@ -107,7 +107,7 @@ export default class Checkout {
       '.checkout__cart-container',
     ) as HTMLDivElement;
     cartItemContainer.innerHTML = '';
-    StateManagement.state.cart.forEach((item) => {
+    StateManager.state.cart.forEach((item) => {
       cartItemContainer.append(new CartItemCheckout(item).element);
     });
   }
@@ -154,7 +154,7 @@ export default class Checkout {
       const formData = new FormData(checkoutForm);
       const data = Object.fromEntries(formData.entries());
 
-      const orderItems = StateManagement.state.cart.map((item) => {
+      const orderItems = StateManager.state.cart.map((item) => {
         return {
           menuItemID: item.menuItemData.id,
           quantity: item.quantity,
@@ -232,7 +232,7 @@ export default class Checkout {
         orderSummaryNote.innerHTML = `${order.notes || ''}`;
 
         trackOrderButton.addEventListener('click', () => {
-          StateManagement.updateState('cart', []);
+          StateManager.updateState('cart', []);
           history.pushState(null, '', '/');
           navigate('/');
         });

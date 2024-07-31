@@ -9,6 +9,7 @@ export default class About {
         .then((response) => response.text())
         .then((html) => {
           this.element.classList.add('about');
+          this.element.setAttribute('id', 'about');
           this.element.innerHTML = html;
         });
     }

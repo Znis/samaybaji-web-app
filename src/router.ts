@@ -1,4 +1,4 @@
-import { StateManagement } from './state-management/stateManagement';
+import { StateManager } from './state-management/stateManager';
 import UniversalRouter from 'universal-router';
 
 import Cart from './pages/cart/cart';
@@ -9,13 +9,20 @@ import Content from './app-section/content';
 import ErrorPage from './pages/error-page/errorPage';
 import Checkout from './pages/checkout-page/checkout';
 import DashboardLayout from './pages/dashboard/layout';
+import AppLayout from './appLayout';
+import AdminLogin from './pages/admin/adminLogin';
 
 export interface RouterContext {
   [propName: string]: {
     [propName: string]: string;
   };
 }
-
+const adminRoute = [
+  {
+    path: '/admin',
+    action: () => AdminLogin.init(),
+  },
+];
 const routes = [
   { path: '/', action: () => LandingPage.init() },
   { path: '/cart', action: () => Cart.init() },
@@ -26,17 +33,9 @@ const routes = [
     action: () => DashboardLayout.init('restaurant'),
   },
   {
-    path: '/admin/login',
-    action: () => DashboardLayout.init('restaurant'),
-  },
-  {
-    path: '/admin/dashboard',
-    action: () => DashboardLayout.init('restaurant'),
-  },
-  {
     path: '/checkout',
     action: () => {
-      if (StateManagement.state.user && StateManagement.state.cart.length) {
+      if (StateManager.state.user && StateManager.state.cart.length) {
         return Checkout.init();
       } else {
         ErrorPage.init();
@@ -44,13 +43,14 @@ const routes = [
     },
   },
   {
-    path: '/dishdetail/:id',
+    path: '/dish-detail/:id',
     action: (context: RouterContext) =>
       DishDetailLayout.init(context.params.id),
   },
   { path: '(.*)', action: () => ErrorPage.init() },
 ];
 
+const adminRouter = new UniversalRouter(adminRoute);
 const router = new UniversalRouter(routes);
 
 export const navigate = async (link: string) => {
@@ -59,11 +59,34 @@ export const navigate = async (link: string) => {
 };
 
 window.addEventListener('popstate', async () => {
+  try {
+    const adminRoute = await adminRouter.resolve({
+      pathname: window.location.pathname,
+    });
+    if (adminRoute) {
+      AppLayout.initAdmin(adminRoute);
+      return;
+    }
+  } catch {
+    console.log('admin route not found');
+  }
   const route = await router.resolve({ pathname: window.location.pathname });
   if (route) Content.render(route);
 });
 
 window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const adminRoute = await adminRouter.resolve({
+      pathname: window.location.pathname,
+    });
+    if (adminRoute) {
+      AppLayout.initAdmin(adminRoute);
+      return;
+    }
+  } catch {
+    console.log('admin route not found');
+  }
+
   const route = await router.resolve({ pathname: window.location.pathname });
   if (route) Content.render(route);
 });

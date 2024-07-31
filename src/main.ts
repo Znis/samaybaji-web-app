@@ -1,9 +1,9 @@
 import './style.css';
 import './router.ts';
 import AppLayout from './appLayout';
-import { StateManagement } from './state-management/stateManagement.ts';
+import { StateManager } from './state-management/stateManager.ts';
 
 document.addEventListener('DOMContentLoaded', () => {
-  StateManagement.loadStateFromSessionStorage();
+  StateManager.loadStateFromSessionStorage();
   AppLayout.init();
 });

@@ -7,10 +7,10 @@ import {
 } from '../../apiCalls';
 import CartItem from '../../components/cartItem';
 import { LoaderSpinner } from '../../components/loaderSpinner';
-import ICartItem, { IFormattedCartItemData } from '../../interfaces/cartItem';
+import { IFormattedCartItemData } from '../../interfaces/cartItem';
 import { IMenuItem } from '../../interfaces/menuItem';
 import { navigate } from '../../router';
-import { StateManagement } from '../../state-management/stateManagement';
+import { StateManager } from '../../state-management/stateManager';
 
 export default class Cart {
   static htmlTemplateUrl = './assets/templates/pages/cart/cart.html';
@@ -26,22 +26,36 @@ export default class Cart {
     this.loadHtmlTemplate().then((html) => {
       this.html = html;
       this.element.innerHTML = '';
-      if (StateManagement.state.user) {
+      if (StateManager.state.user) {
         this.fetchCartItems();
       } else {
-        this.initialiseCartItemArray();
         this.render();
         this.setEventListeners();
       }
     });
     return this.element;
   }
-  static initialiseCartItemArray() {
-    this.cartItemArray = [];
-    StateManagement.state.cart.forEach((item) => {
-      const cartItem = new CartItem(item);
-      this.cartItemArray.push(cartItem);
-    });
+  static get innerElements() {
+    return {
+      checkoutButton: this.element.querySelector(
+        '#checkout-button',
+      ) as HTMLButtonElement,
+      cartContainer: this.element.querySelector(
+        '.cart__container',
+      ) as HTMLDivElement,
+      totalAmountDisplay: this.element.querySelector(
+        '#total-amount',
+      ) as HTMLDivElement,
+      subTotalAmountDisplay: this.element.querySelector(
+        '#sub-total-amount',
+      ) as HTMLDivElement,
+      discountAmountDisplay: this.element.querySelector(
+        '#discount-amount',
+      ) as HTMLDivElement,
+      emptyCartImageWrapper: this.element.querySelector(
+        '.cart__image-wrapper',
+      ) as HTMLDivElement,
+    };
   }
   static async loadHtmlTemplate(): Promise<string> {
     try {
@@ -53,15 +67,12 @@ export default class Cart {
     }
   }
   static setEventListeners() {
-    const checkoutButton = this.element.querySelector(
-      '#checkout-button',
-    ) as HTMLButtonElement;
-    if (!StateManagement.state.user || !StateManagement.state.cart.length) {
-      checkoutButton.disabled = true;
+    if (!StateManager.state.user || !StateManager.state.cart.length) {
+      this.innerElements.checkoutButton.disabled = true;
       return;
     }
-    checkoutButton.disabled = false;
-    checkoutButton.addEventListener('click', () => {
+    this.innerElements.checkoutButton.disabled = false;
+    this.innerElements.checkoutButton.addEventListener('click', () => {
       history.pushState(null, '', '/checkout');
       navigate('/checkout');
     });
@@ -69,23 +80,23 @@ export default class Cart {
   static async fetchCartItems() {
     this.element.appendChild(this.spinner);
     try {
-      if (StateManagement.state.cart.length) {
+      if (StateManager.state.cart.length) {
         await makeApiCall(clearCart);
         await makeApiCall(
           addCartItem,
-          StateManagement.state.cart.map((item) => {
+          StateManager.state.cart.map((item) => {
             return {
               quantity: item.quantity,
               menuItemID: item.menuItemData.id,
             };
           }),
         );
-        StateManagement.updateState('cart', []);
+        StateManager.updateState('cart', []);
       }
       const cartItems = (await makeApiCall(
         fetchCartItems,
       )) as unknown as IFormattedCartItemData[];
-      StateManagement.updateState(
+      StateManager.updateState(
         'cart',
         cartItems.map((item) => {
           return {
@@ -94,7 +105,6 @@ export default class Cart {
           };
         }),
       );
-      this.initialiseCartItemArray();
       this.render();
       this.setEventListeners();
     } catch (error) {
@@ -105,34 +115,40 @@ export default class Cart {
   }
   static render(): void {
     this.element.innerHTML = this.html;
-
-    const emptyCartImageWrapper = this.element.querySelector(
-      '.cart__image-wrapper',
-    ) as HTMLDivElement;
     this.updatePrices();
-
-    if (!StateManagement.state.cart.length) {
-      emptyCartImageWrapper.style.display = 'flex';
+    if (!StateManager.state.user || !StateManager.state.cart.length) {
+      this.innerElements.checkoutButton.disabled = true;
+    } else {
+      this.innerElements.checkoutButton.disabled = false;
+    }
+    if (!StateManager.state.cart.length) {
+      this.innerElements.emptyCartImageWrapper.style.display = 'flex';
       return;
     }
-    emptyCartImageWrapper.style.display = 'none';
-    this.element.querySelector('.cart__container')!.innerHTML = '';
+
+    this.innerElements.emptyCartImageWrapper.style.display = 'none';
+    this.cartItemArray = [];
+    StateManager.state.cart.forEach((item) => {
+      const cartItem = new CartItem(item);
+      this.cartItemArray.push(cartItem);
+    });
+    this.innerElements.cartContainer.innerHTML = '';
     this.cartItemArray.forEach((item) => {
-      this.element.querySelector('.cart__container')!.appendChild(item.element);
+      this.innerElements.cartContainer.appendChild(item.element);
     });
     this.updatePriceDisplay();
   }
 
   static async addItem(menuItemData: IMenuItem) {
-    StateManagement.updateState('cart', [
-      ...StateManagement.state.cart,
+    StateManager.updateState('cart', [
+      ...StateManager.state.cart,
       {
         quantity: 1,
         menuItemData: menuItemData,
       },
     ]);
     this.updatePrices();
-    if (StateManagement.state.user) {
+    if (StateManager.state.user) {
       try {
         await makeApiCall(addCartItem, [
           {
@@ -141,9 +157,9 @@ export default class Cart {
           },
         ]);
       } catch (error) {
-        StateManagement.updateState(
+        StateManager.updateState(
           'cart',
-          StateManagement.state.cart.filter(
+          StateManager.state.cart.filter(
             (item) => item.menuItemData.id !== menuItemData.id,
           ),
         );
@@ -153,19 +169,12 @@ export default class Cart {
   }
 
   static async removeItem(menuItemData: IMenuItem) {
-    StateManagement.updateState(
-      'cart',
-      StateManagement.state.cart.filter(
-        (item) => item.menuItemData.id !== menuItemData.id,
-      ),
-    );
-    this.updatePrices();
-    if (StateManagement.state.user) {
+    if (StateManager.state.user) {
       try {
         await makeApiCall(removeCartItem, menuItemData.id);
       } catch (error) {
-        StateManagement.updateState('cart', [
-          ...StateManagement.state.cart,
+        StateManager.updateState('cart', [
+          ...StateManager.state.cart,
           {
             quantity: 1,
             menuItemData: menuItemData,
@@ -174,23 +183,27 @@ export default class Cart {
         this.updatePrices();
       }
     }
+    StateManager.updateState(
+      'cart',
+      StateManager.state.cart.filter(
+        (item) => item.menuItemData.id !== menuItemData.id,
+      ),
+    );
+    this.updatePrices();
   }
 
   static updatePrices(): void {
-    this.subTotalAmount = StateManagement.state.cart.reduce(
+    this.subTotalAmount = StateManager.state.cart.reduce(
       (sum, item) => sum + item.quantity * item.menuItemData.price,
       0,
     );
-    this.discountAmount = StateManagement.state.cart.length ? 50 : 0;
+    this.discountAmount = StateManager.state.cart.length ? 50 : 0;
     this.totalAmount = this.subTotalAmount - this.discountAmount;
   }
 
   static updatePriceDisplay(): void {
-    this.element.querySelector('#sub-total-amount')!.innerHTML =
-      `Rs. ${this.subTotalAmount}`;
-    this.element.querySelector('#discount-amount')!.innerHTML =
-      `Rs. ${this.discountAmount}`;
-    this.element.querySelector('#total-amount')!.innerHTML =
-      `Rs. ${this.totalAmount}`;
+    this.innerElements.subTotalAmountDisplay.innerHTML = `Rs. ${this.subTotalAmount}`;
+    this.innerElements.totalAmountDisplay.innerHTML = `Rs. ${this.totalAmount}`;
+    this.innerElements.discountAmountDisplay.innerHTML = `Rs. ${this.discountAmount}`;
   }
 }
