@@ -23,7 +23,6 @@ export async function seed(knex: Knex): Promise<void> {
       image_src: '/assets/images/dish/yomari.jpeg',
       is_popular: true,
       menu_id: menuIds[0],
-      type: 'Veg',
       status: 'In Stock',
     },
     {
@@ -34,7 +33,6 @@ export async function seed(knex: Knex): Promise<void> {
       image_src: '/assets/images/dish/chatamari.jpg',
       is_popular: true,
       menu_id: menuIds[0],
-      type: 'Veg',
       status: 'In Stock',
     },
     {
@@ -45,7 +43,6 @@ export async function seed(knex: Knex): Promise<void> {
       image_src: '/assets/images/dish/bara.png',
       is_popular: false,
       menu_id: menuIds[1],
-      type: 'Veg',
       status: 'In Stock',
     },
     {
@@ -56,7 +53,6 @@ export async function seed(knex: Knex): Promise<void> {
       image_src: '/assets/images/dish/sukuti.jpg',
       is_popular: true,
       menu_id: menuIds[1],
-      type: 'Non-Veg',
       status: 'In Stock',
     },
     {
@@ -67,7 +63,6 @@ export async function seed(knex: Knex): Promise<void> {
       image_src: '/assets/images/dish/wo.jpg',
       is_popular: false,
       menu_id: menuIds[0],
-      type: 'Veg',
       status: 'Out of Stock',
     },
   ]);

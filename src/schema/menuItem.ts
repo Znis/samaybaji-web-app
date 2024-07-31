@@ -22,18 +22,12 @@ export const createMenuItemBodySchema = joi.object({
     'string.base': 'Image source must be a string.',
     'any.required': 'Image source is required.',
   }),
-  isPopular: joi.boolean().required().messages({
-    'boolean.base': 'Is popular must be a boolean.',
-    'any.required': 'Is popular is required.',
-  }),
-  type: joi
-    .string()
-    .valid('Veg', 'Non-Veg', 'Liquor')
+  isPopular: joi
+    .boolean()
     .required()
     .messages({
-      'string.base': 'Type must be a string.',
-      'any.only': 'Type must be one of Veg, Non-Veg, or Liquor.',
-      'any.required': 'Type is required.',
+      'boolean.base': 'Is popular must be a boolean.',
+      'any.required': 'Is popular is required.',
     })
 
     .options({
@@ -66,11 +60,7 @@ export const editMenuItemBodySchema = joi.object({
     'boolean.base': 'Is popular must be a boolean.',
     'any.required': 'Is popular is required.',
   }),
-  type: joi.string().valid('Veg', 'Non-Veg', 'Liquor').optional().messages({
-    'string.base': 'Type must be a string.',
-    'any.only': 'Type must be one of Veg, Non-Veg, or Liquor.',
-    'any.required': 'Type is required.',
-  }),
+
   status: joi
     .string()
     .valid('In Stock', 'Out of Stock')

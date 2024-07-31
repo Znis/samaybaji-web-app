@@ -7,7 +7,6 @@ export interface IMenuItem {
   price: number;
   imageSrc: string;
   isPopular: boolean;
-  type: type;
   status: status;
   menuID: string;
 }
@@ -17,7 +16,6 @@ export interface ICreateMenuItem {
   price: number;
   imageSrc: string;
   isPopular: boolean;
-  type: type;
 }
 export interface IEditMenuItem {
   name?: string;
@@ -25,7 +23,6 @@ export interface IEditMenuItem {
   price?: number;
   imageSrc?: string;
   isPopular?: boolean;
-  type?: type;
   status?: status;
 }
 export default IMenuItem;
