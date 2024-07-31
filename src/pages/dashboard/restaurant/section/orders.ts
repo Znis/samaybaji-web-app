@@ -1,10 +1,10 @@
-import { fetchAllOrders, makeApiCall } from '../../../apiCalls';
-import { Accordion } from '../../../components/accordion';
-import { OrderStatus } from '../../../enums/order';
-import { IOrder } from '../../../interfaces/order';
-import { IOrderItem } from '../../../interfaces/orderItem';
+import { fetchAllOrders, makeApiCall } from '../../../../apiCalls';
+import { Accordion } from '../../../../components/accordion';
+import { OrderStatus } from '../../../../enums/order';
+import { IOrder } from '../../../../interfaces/order';
+import { IOrderItem } from '../../../../interfaces/orderItem';
 
-export default class OrdersDashboard {
+export default class RestaurantOrdersDashboard {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
     '/assets/templates/pages/customer-dashboard/section/order.html';
@@ -43,21 +43,12 @@ export default class OrdersDashboard {
 
     accordionHeader.appendChild(accordionTitleWrapper);
 
-    const cancelOrderIcon = document.createElement('i');
-    cancelOrderIcon.className =
-      'fa-solid fa-angle-down accordion-header-action-icon';
-
-    cancelOrderIcon.id = 'cancel-order';
-    accordionHeader.appendChild(cancelOrderIcon);
-
     const deleteOrderIcon = document.createElement('i');
     deleteOrderIcon.className =
       'fa-solid fa-check accordion-header-action-icon';
     deleteOrderIcon.id = 'delete-order';
     accordionHeader.appendChild(deleteOrderIcon);
-    if (status == OrderStatus.CANCELLED || status == OrderStatus.DELIVERED) {
-      cancelOrderIcon.style.display = 'none';
-    } else {
+    if (status === OrderStatus.CANCELLED || status === OrderStatus.DELIVERED) {
       deleteOrderIcon.style.display = 'none';
     }
     const angleDownIcon = document.createElement('i');
@@ -79,17 +70,14 @@ export default class OrdersDashboard {
       option.classList.add('accordion-status-select-option');
       option.value = optionData.value;
       option.textContent = optionData.text;
-    
 
       statusSelect.appendChild(option);
     });
-
 
     const iconWrapper = document.createElement('div');
     iconWrapper.classList.add('accordion-header-icon-wrapper');
     iconWrapper.appendChild(statusSelect);
     iconWrapper.appendChild(deleteOrderIcon);
-    iconWrapper.appendChild(cancelOrderIcon);
     iconWrapper.appendChild(angleDownIcon);
     accordionHeader.appendChild(iconWrapper);
     return accordionHeader;

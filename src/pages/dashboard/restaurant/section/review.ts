@@ -1,17 +1,7 @@
-import {
-  fetchAllMenuItems,
-  fetchAllOrders,
-  makeApiCall,
-} from '../../../apiCalls';
-import { Accordion } from '../../../components/accordion';
-import { OrderStatus } from '../../../enums/order';
-import { IMenu } from '../../../interfaces/menu';
-import { IMenuItem } from '../../../interfaces/menuItem';
-import { IOrder } from '../../../interfaces/order';
-import { IOrderItem } from '../../../interfaces/orderItem';
-import { IReview } from '../../../interfaces/review';
+import { Accordion } from '../../../../components/accordion';
+import { IReview } from '../../../../interfaces/review';
 
-export default class ReviewDashboard {
+export default class RestaurantReviewDashboard {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
     '/assets/templates/pages/customer-dashboard/section/review.html';
@@ -22,18 +12,18 @@ export default class ReviewDashboard {
         .then((html) => {
           this.element.classList.add('dashboard');
           this.element.innerHTML = html;
-        //   this.fetchRestaurantReview();
+          //   this.fetchRestaurantReview();
         });
     }
     return this.element;
   }
 
-//   static async fetchRestaurantReview() {
-//     const menuItems = await makeApiCall(fetchAllMenuItems);
-//     console.log(menuItems);
-//     this.render(menuItems as unknown as IMenuItem[]);
-//   }
-  static createAccordionHeader(status: string, heading: string) {
+  //   static async fetchRestaurantReview() {
+  //     const menuItems = await makeApiCall(fetchAllMenuItems);
+  //     console.log(menuItems);
+  //     this.render(menuItems as unknown as IMenuItem[]);
+  //   }
+  static createAccordionHeader(heading: string) {
     const accordionHeader = document.createElement('div');
     accordionHeader.className = 'accordion-header';
 
@@ -94,8 +84,6 @@ export default class ReviewDashboard {
 
     return accordionContent;
   }
-  static accordionContentEventListener(accordionHeader: HTMLDivElement) {}
-  static accordionHeaderEventListener(accordionHeader: HTMLDivElement) {}
   static async render(reviews: IReview[]) {
     reviews.forEach(async (review) => {
       const reviewSummary = {
@@ -107,15 +95,13 @@ export default class ReviewDashboard {
       const accordionContentElement =
         await this.renderAccordionContent(reviewSummary);
       const accordionHeaderElement = this.createAccordionHeader(heading);
-      const accordionHeaderEventListener = this.accordionHeaderEventListener;
-      const accordionContentEventListener = this.accordionContentEventListener;
       const accordionHeader = {
         element: accordionHeaderElement,
-        eventListeners: accordionHeaderEventListener,
+        eventListeners: () => null,
       };
       const accordionContent = {
         element: accordionContentElement,
-        eventListeners: accordionContentEventListener,
+        eventListeners: () => null,
       };
 
       const accordion = new Accordion(accordionContent, accordionHeader);

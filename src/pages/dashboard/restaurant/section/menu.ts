@@ -1,16 +1,10 @@
-import {
-  fetchAllMenuItems,
-  fetchAllOrders,
-  makeApiCall,
-} from '../../../apiCalls';
-import { Accordion } from '../../../components/accordion';
-import { OrderStatus } from '../../../enums/order';
-import { IMenu } from '../../../interfaces/menu';
-import { IMenuItem } from '../../../interfaces/menuItem';
-import { IOrder } from '../../../interfaces/order';
-import { IOrderItem } from '../../../interfaces/orderItem';
+import { fetchAllMenuItems, makeApiCall } from '../../../../apiCalls';
+import { Accordion } from '../../../../components/accordion';
+import { MenuItemForm } from '../../../../components/menuItemForm';
+import Modal from '../../../../components/modal';
+import { IMenuItem } from '../../../../interfaces/menuItem';
 
-export default class MenuDashboard {
+export default class RestaurantMenuDashboard {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
     '/assets/templates/pages/customer-dashboard/section/menu.html';
@@ -27,9 +21,19 @@ export default class MenuDashboard {
           } else {
             this.fetchAllMenuItems();
           }
+          this.setEventListeners();
         });
     }
     return this.element;
+  }
+  static setEventListeners() {
+    const addItemButtom = this.element.querySelector('#add-menu-item-button');
+    addItemButtom?.addEventListener('click', () => {
+      Modal.toggle();
+      const modal = document.querySelector('.modal') as HTMLDivElement;
+      modal.innerHTML = '';
+      modal.appendChild(MenuItemForm.init('create'));
+    });
   }
   static renderDashboard() {
     const createMenuContainer = this.element.querySelector(
@@ -56,7 +60,7 @@ export default class MenuDashboard {
     console.log(menuItems);
     this.render(menuItems as unknown as IMenuItem[]);
   }
-  static createAccordionHeader(status: string, heading: string) {
+  static createAccordionHeader(heading: string) {
     const accordionHeader = document.createElement('div');
     accordionHeader.className = 'accordion-header';
 
@@ -142,7 +146,6 @@ export default class MenuDashboard {
 
     return accordionContent;
   }
-  static accordionContentEventListener(accordionHeader: HTMLDivElement) {}
   static accordionHeaderEventListener(accordionHeader: HTMLDivElement) {
     const deleteButton = accordionHeader.querySelector('#delete-menu-item');
     const switchStatus = accordionHeader.querySelector(
@@ -160,7 +163,9 @@ export default class MenuDashboard {
     });
   }
   static async render(menuItems: IMenuItem[]) {
-    const createMenuContainer = this.element.querySelector('#create-menu-container') as HTMLDivElement;
+    const createMenuContainer = this.element.querySelector(
+      '#create-menu-container',
+    ) as HTMLDivElement;
     createMenuContainer.style.display = 'none';
     menuItems.forEach(async (item) => {
       const menuItemSummary = {
@@ -169,24 +174,19 @@ export default class MenuDashboard {
         portion: item.portion,
         price: item.price.toString(),
         isPopular: item.isPopular ? 'Yes' : 'No',
-        type: item.type,
       };
       const heading = item.name;
       const accordionContentElement =
         await this.renderAccordionContent(menuItemSummary);
-      const accordionHeaderElement = this.createAccordionHeader(
-        item.status,
-        heading,
-      );
+      const accordionHeaderElement = this.createAccordionHeader(heading);
       const accordionHeaderEventListener = this.accordionHeaderEventListener;
-      const accordionContentEventListener = this.accordionContentEventListener;
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: accordionHeaderEventListener,
       };
       const accordionContent = {
         element: accordionContentElement,
-        eventListeners: accordionContentEventListener,
+        eventListeners: () => null,
       };
 
       const accordion = new Accordion(accordionContent, accordionHeader);

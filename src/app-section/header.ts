@@ -4,7 +4,7 @@ import { navigate } from '../router.ts';
 import { StateManagement } from '../state-management/stateManagement.ts';
 import Toast from '../components/toast.ts';
 import { Roles } from '../enums/roles.ts';
-import { RegisterRestaurantCard } from '../components/registerRestaurantCard.ts';
+import { RestaurantForm } from '../components/restaurantForm.ts';
 
 export default class Header {
   static htmlTemplateURL = '/assets/templates/app-section/header.html';
@@ -65,7 +65,7 @@ export default class Header {
       '#user-dashboard-link',
     ) as HTMLButtonElement;
     dashboardLink.addEventListener('click', () => {
-      const href = '/';
+      const href = '/dashboard';
       history.pushState(null, '', href);
       navigate(href);
       window.scrollTo(0, 0);
@@ -87,7 +87,7 @@ export default class Header {
       Modal.toggle();
       const modal = document.querySelector('.modal') as HTMLDivElement;
       modal.innerHTML = '';
-      modal.appendChild(RegisterRestaurantCard.init());
+      modal.appendChild(RestaurantForm.init('create'));
     });
     if (StateManagement.state.user) {
       if (

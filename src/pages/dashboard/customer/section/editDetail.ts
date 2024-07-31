@@ -1,17 +1,4 @@
-import {
-  fetchAllMenuItems,
-  fetchAllOrders,
-  makeApiCall,
-} from '../../../apiCalls';
-import { Accordion } from '../../../components/accordion';
-import { OrderStatus } from '../../../enums/order';
-import { IMenu } from '../../../interfaces/menu';
-import { IMenuItem } from '../../../interfaces/menuItem';
-import { IOrder } from '../../../interfaces/order';
-import { IOrderItem } from '../../../interfaces/orderItem';
-import { IReview } from '../../../interfaces/review';
-
-export default class EditDetailsDashboard {
+export default class EditCustomerDetailsDashboard {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
     '/assets/templates/pages/customer-dashboard/section/edit-detail.html';
@@ -37,12 +24,6 @@ export default class EditDetailsDashboard {
       restaurantEditDetailsForm: this.element.querySelector(
         '#restaurant-edit-details',
       ) as HTMLFormElement,
-      restaurantName: this.element.querySelector(
-        '#restaurant-name',
-      ) as HTMLInputElement,
-      restaurantDescription: this.element.querySelector(
-        '#restaurant-description',
-      ) as HTMLTextAreaElement,
       userFullName: this.element.querySelector(
         '#user-fullname',
       ) as HTMLInputElement,
