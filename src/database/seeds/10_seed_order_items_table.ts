@@ -20,7 +20,6 @@ export async function seed(knex: Knex): Promise<void> {
       quantity: 2,
       unit_price: 300,
       status: OrderItemStatus.PENDING,
-      notes: 'test notes',
     },
     {
       id: uuidv4(),
@@ -29,7 +28,6 @@ export async function seed(knex: Knex): Promise<void> {
       quantity: 1,
       unit_price: 200,
       status: OrderItemStatus.PENDING,
-      notes: 'test notes',
     },
     {
       id: uuidv4(),
@@ -38,7 +36,6 @@ export async function seed(knex: Knex): Promise<void> {
       quantity: 3,
       unit_price: 300,
       status: OrderItemStatus.COOKING,
-      notes: 'test notes',
     },
     {
       id: uuidv4(),
@@ -47,7 +44,6 @@ export async function seed(knex: Knex): Promise<void> {
       quantity: 1,
       unit_price: 250,
       status: OrderItemStatus.READY,
-      notes: 'test notes',
     },
     {
       id: uuidv4(),
@@ -56,7 +52,6 @@ export async function seed(knex: Knex): Promise<void> {
       quantity: 2,
       unit_price: 500,
       status: OrderItemStatus.READY,
-      notes: 'test notes',
     },
     {
       id: uuidv4(),
@@ -65,7 +60,6 @@ export async function seed(knex: Knex): Promise<void> {
       quantity: 1,
       unit_price: 200,
       status: OrderItemStatus.COOKING,
-      notes: 'test notes',
     },
   ];
 

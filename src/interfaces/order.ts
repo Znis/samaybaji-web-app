@@ -13,6 +13,7 @@ export interface IOrder {
   status: OrderStatus;
   totalAmount: number;
   subTotalAmount: number;
+  discountAmount: number;
   deliveryAmount: number;
   paymentMethod: string;
   orderItems: IOrderItem[];
@@ -26,6 +27,7 @@ export interface ICreateOrder {
   orderTime: string;
   totalAmount: number;
   subTotalAmount: number;
+  discountAmount: number;
   deliveryAmount: number;
   paymentMethod: string;
   orderItems: ICreateOrderItem[];
@@ -41,6 +43,7 @@ export interface IEditOrder {
   totalAmount?: number;
   subTotalAmount?: number;
   deliveryAmount?: number;
+  discountAmount?: number;
   paymentMethod?: string;
   orderItems?: ICreateOrderItem[];
 }
@@ -54,6 +57,7 @@ export interface ICreateOrderDetails {
   totalAmount: number;
   subTotalAmount: number;
   deliveryAmount: number;
+  discountAmount: number;
   paymentMethod: string;
 }
 
@@ -68,5 +72,6 @@ export interface IEditOrderDetails {
   totalAmount?: number;
   subTotalAmount?: number;
   deliveryAmount?: number;
+  discountAmount?: number;
   paymentMethod?: string;
 }

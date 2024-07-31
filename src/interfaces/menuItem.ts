@@ -1,4 +1,4 @@
-import { status, type } from '../enums/menuItem';
+import { Status } from '../enums/menuItem';
 
 export interface IMenuItem {
   id: string;
@@ -7,7 +7,7 @@ export interface IMenuItem {
   price: number;
   imageSrc: string;
   isPopular: boolean;
-  status: status;
+  status: Status;
   menuID: string;
 }
 export interface ICreateMenuItem {
@@ -23,6 +23,6 @@ export interface IEditMenuItem {
   price?: number;
   imageSrc?: string;
   isPopular?: boolean;
-  status?: status;
+  status?: Status;
 }
 export default IMenuItem;

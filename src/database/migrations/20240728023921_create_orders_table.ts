@@ -26,6 +26,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('customer_name').notNullable();
     table.string('customer_phone').notNullable();
     table.integer('delivery_amount').notNullable();
+    table.integer('discount_amount').notNullable();
     table.integer('total_amount').notNullable();
     table.integer('sub_total_amount').notNullable();
     table.text('notes').nullable();

@@ -25,7 +25,6 @@ export async function up(knex: Knex): Promise<void> {
       .defaultTo(OrderItemStatus.PENDING);
     table.integer('quantity').notNullable();
     table.integer('unit_price').notNullable();
-    table.text('notes').nullable();
     table.unique(['order_id', 'menu_item_id']);
   });
 }

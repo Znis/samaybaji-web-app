@@ -13,17 +13,14 @@ export const createOrderItemSchema = joi.object({
     'number.min': 'Quantity must be at least 1.',
     'any.required': 'Quantity is required.',
   }),
-  unitPrice: joi.number().precision(2).positive().required().messages({
-    'number.base': 'Unit price must be a number.',
-    'number.positive': 'Unit price must be a positive number.',
-    'any.required': 'Unit price is required.',
-  }),
-  notes: joi
-    .string()
-    .optional()
-    .allow('')
+  unitPrice: joi
+    .number()
+    .positive()
+    .required()
     .messages({
-      'string.base': 'Notes must be a string.',
+      'number.base': 'Unit price must be a number.',
+      'number.positive': 'Unit price must be a positive number.',
+      'any.required': 'Unit price is required.',
     })
     .options({
       stripUnknown: true,
@@ -48,18 +45,14 @@ export const editOrderItemByCustomerSchema = joi.object({
     'number.min': 'Quantity must be at least 1.',
     'any.required': 'Quantity is required.',
   }),
-  unitPrice: joi.number().positive().optional().messages({
-    'number.base': 'Unit price must be a number.',
-    'number.positive': 'Unit price must be a positive number.',
-    'any.required': 'Unit price is required.',
-  }),
-
-  notes: joi
-    .string()
+  unitPrice: joi
+    .number()
+    .positive()
     .optional()
-    .allow('')
     .messages({
-      'string.base': 'Notes must be a string.',
+      'number.base': 'Unit price must be a number.',
+      'number.positive': 'Unit price must be a positive number.',
+      'any.required': 'Unit price is required.',
     })
     .options({
       stripUnknown: true,

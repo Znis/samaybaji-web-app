@@ -53,6 +53,11 @@ export const createOrderSchema = joi.object({
     'number.positive': 'Delivery amount must be a positive number.',
     'any.required': 'Delivery amount is required.',
   }),
+  discountAmount: joi.number().required().messages({
+    'number.base': 'Discount amount must be a number.',
+    'number.positive': 'Discount amount must be a positive number.',
+    'any.required': 'Discount amount is required.',
+  }),
   totalAmount: joi.number().required().messages({
     'number.base': 'Total amount must be a number.',
     'number.positive': 'Total amount must be a positive number.',
@@ -106,6 +111,11 @@ export const editOrderByCustomerSchema = joi.object({
     'number.base': 'Delivery amount must be a number.',
     'number.positive': 'Delivery amount must be a positive number.',
     'any.required': 'Delivery amount is required.',
+  }),
+  discountAmount: joi.number().optional().messages({
+    'number.base': 'Discount amount must be a number.',
+    'number.positive': 'Discount amount must be a positive number.',
+    'any.required': 'Discount amount is required.',
   }),
   totalAmount: joi.number().optional().messages({
     'number.base': 'Total amount must be a number.',

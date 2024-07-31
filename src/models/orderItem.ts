@@ -50,7 +50,6 @@ export default class OrderItemModel extends BaseModel {
             menuItemId: item.menuItemID,
             quantity: item.quantity,
             unitPrice: item.unitPrice,
-            notes: item.notes,
           };
         }),
       )

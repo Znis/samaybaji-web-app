@@ -1,4 +1,5 @@
 import type { Knex } from 'knex';
+import { Status } from '../../enums/menuItem';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('menu_items', (table) => {
@@ -9,7 +10,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('image_src').notNullable();
     table.boolean('is_popular').notNullable().defaultTo(false);
     table.uuid('menu_id').notNullable();
-    table.enu('status', ['In Stock', 'Out of Stock']).notNullable();
+    table.enu('status', [Status.IN_STOCK, Status.OUT_OF_STOCK]).notNullable();
     table
       .foreign('menu_id')
       .references('id')
