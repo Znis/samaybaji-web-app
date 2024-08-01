@@ -2,19 +2,23 @@ import { ReviewTargetType } from '../enums/review';
 
 export interface IReview {
   id: string;
-  targetID: string;
+  targetId: string;
   targetType: ReviewTargetType;
-  userID: string;
+  userId: string;
   comment: string;
-  postedDate: Date;
+  updatedAt: Date;
 }
 
 export interface ICreateReview {
-  targetID: string;
+  targetId: string;
   targetType: ReviewTargetType;
-  userID: string;
+  userId: string;
   comment: string;
 }
 export interface IEditReview {
   comment: string;
+}
+export interface IReviewResponse {
+  dishReviews: IReview[];
+  restaurantReviews: IReview[];
 }

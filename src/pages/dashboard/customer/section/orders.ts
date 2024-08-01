@@ -1,4 +1,4 @@
-import { fetchAllOrders } from '../../../../api-routes/order';
+import { fetchAllOrders, fetchUserOrders } from '../../../../api-routes/order';
 import { makeApiCall } from '../../../../apiCalls';
 import { Accordion } from '../../../../components/accordion';
 import { OrderStatus } from '../../../../enums/order';
@@ -22,8 +22,7 @@ export default class CustomerOrdersDashboard {
     return this.element;
   }
   static async fetchAllOrders() {
-    const orders = await makeApiCall(fetchAllOrders);
-    console.log(orders);
+    const orders = await makeApiCall(fetchUserOrders);
     this.render(orders as unknown as IOrder[]);
   }
   static createAccordionHeader(status: string, heading: string) {
@@ -150,6 +149,13 @@ export default class CustomerOrdersDashboard {
     });
   }
   static async render(orders: IOrder[]) {
+    const activeOrderContainer = this.element.querySelector('#active-orders');
+    const historyOrderContainer = this.element.querySelector('#history-orders');
+
+    if (!orders.length) {
+      activeOrderContainer!.innerHTML = `<h3>No active orders</h3>`;
+      historyOrderContainer!.innerHTML = `<h3>No history orders</h3>`;
+    }
     orders.forEach(async (order) => {
       const orderSummary = {
         customerName: order.customerName,

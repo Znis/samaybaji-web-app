@@ -16,8 +16,6 @@ export class StateManager {
     StateManager.state = StateManager.getInitialState();
     StateManager.saveStateToSessionStorage();
     StateManager.renderApp();
-    MenuPageLayout.init();
-    Cart.init();
   }
 
   static renderApp() {

@@ -89,7 +89,7 @@ export default class RestaurantReviewDashboard {
       const reviewSummary = {
         customerName: review.userID,
         comment: review.comment,
-        postedDate: review.postedDate.toDateString(),
+        postedDate: new Date(review.updatedAt).toDateString(),
       };
       const heading = `Review by ${review.id}`;
       const accordionContentElement =

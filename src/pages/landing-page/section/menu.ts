@@ -2,6 +2,7 @@ import { fetchPopularMenuItems } from '../../../api-routes/menuItem';
 import { LoaderSpinner } from '../../../components/loaderSpinner';
 import MenuItem from '../../../components/menuItem';
 import { IMenu } from '../../../interfaces/menu';
+import IMenuItem from '../../../interfaces/menuItem';
 
 export default class Menu {
   static htmlTemplateurl =
@@ -24,21 +25,20 @@ export default class Menu {
   }
   static async fetchMenus(spinner: HTMLElement) {
     try {
-      const menu = await fetchPopularMenuItems();
-      this.renderMenu(menu[0]);
-      console.log(menu);
+      const popularMenuItems = (await fetchPopularMenuItems()) as IMenuItem[];
+      this.renderMenu(popularMenuItems);
     } catch (error) {
       this.element.innerHTML = `<h3>${error}</h3>`;
     } finally {
       spinner.remove();
     }
   }
-  static renderMenu(menu: IMenu) {
+  static renderMenu(popularMenuItems: IMenuItem[]) {
     const menuListContainer = this.element.querySelector(
       '#menu-list',
     ) as HTMLDivElement;
     menuListContainer.innerHTML = '';
-    menu.menuItems.forEach((item) => {
+    popularMenuItems.forEach((item) => {
       const menuItem = new MenuItem(item, 'large');
       menuListContainer.appendChild(menuItem.element);
     });

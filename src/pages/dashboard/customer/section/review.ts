@@ -1,5 +1,9 @@
+import { fetchUserReviews } from './../../../../api-routes/review';
 import { Accordion } from '../../../../components/accordion';
-import { IReview } from '../../../../interfaces/review';
+import { IReview, IReviewResponse } from '../../../../interfaces/review';
+import { makeApiCall } from '../../../../apiCalls';
+import { fetchUser } from '../../../../api-routes/users';
+import IUser from '../../../../interfaces/users';
 
 export default class CustomerReviewDashboard {
   static element: HTMLElement = document.createElement('div');
@@ -12,17 +16,19 @@ export default class CustomerReviewDashboard {
         .then((html) => {
           this.element.classList.add('dashboard');
           this.element.innerHTML = html;
-          //   this.fetchRestaurantReview();
+          this.fetchUserReviews();
         });
     }
     return this.element;
   }
 
-  //   static async fetchRestaurantReview() {
-  //     const menuItems = await makeApiCall(fetchAllMenuItems);
-  //     console.log(menuItems);
-  //     this.render(menuItems as unknown as IMenuItem[]);
-  //   }
+  static async fetchUserReviews() {
+    const reviews = await makeApiCall(fetchUserReviews);
+    const dishReviews = (reviews as unknown as IReviewResponse).dishReviews;
+    const restaurantReviews = (reviews as unknown as IReviewResponse)
+      .restaurantReviews;
+    this.render(dishReviews, restaurantReviews);
+  }
   static createAccordionHeader(heading: string) {
     const accordionHeader = document.createElement('div');
     accordionHeader.className = 'accordion-header';
@@ -46,6 +52,7 @@ export default class CustomerReviewDashboard {
     iconWrapper.classList.add('accordion-header-icon-wrapper');
 
     iconWrapper.appendChild(angleDownIcon);
+    accordionHeader.appendChild(accordionTitleWrapper);
     accordionHeader.appendChild(iconWrapper);
     return accordionHeader;
   }
@@ -85,14 +92,31 @@ export default class CustomerReviewDashboard {
     return accordionContent;
   }
   static accordionHeaderEventListener(accordionHeader: HTMLDivElement) {}
-  static async render(reviews: IReview[]) {
-    reviews.forEach(async (review) => {
+  static async render(dishReviews: IReview[], restaurantReviews: IReview[]) {
+    const reviewDishContainer = this.element.querySelector(
+      '#review-dish',
+    ) as HTMLDivElement;
+    const reviewRestaurantContainer = this.element.querySelector(
+      '#review-restaurant',
+    ) as HTMLDivElement;
+    if (!dishReviews.length) {
+      reviewDishContainer.innerHTML = '<h3>No reviews</h3>';
+    }
+    if (!restaurantReviews.length) {
+      reviewRestaurantContainer.innerHTML = '<h3>No reviews</h3>';
+    }
+    dishReviews.forEach(async (review) => {
+      const customer = (await makeApiCall(
+        fetchUser,
+        review.userId,
+      )) as unknown as IUser;
+
       const reviewSummary = {
-        customerName: review.userID,
+        customerName: customer.name,
         comment: review.comment,
-        postedDate: review.postedDate.toDateString(),
+        postedDate: new Date(review.updatedAt).toDateString(),
       };
-      const heading = `Review by ${review.id}`;
+      const heading = `Review by ${customer.name}`;
       const accordionContentElement =
         await this.renderAccordionContent(reviewSummary);
       const accordionHeaderElement = this.createAccordionHeader(heading);
@@ -108,11 +132,37 @@ export default class CustomerReviewDashboard {
 
       const accordion = new Accordion(accordionContent, accordionHeader);
 
-      const reviewContainer = this.element.querySelector(
-        '#review-container',
-      ) as HTMLDivElement;
+      reviewDishContainer!.appendChild(accordion.element);
+    });
+    restaurantReviews.forEach(async (review) => {
+      console.log(review)
+      const customer = (await makeApiCall(
+        fetchUser,
+        review.userId,
+      )) as unknown as IUser;
 
-      reviewContainer!.appendChild(accordion.element);
+      const reviewSummary = {
+        customerName: customer.name,
+        comment: review.comment,
+        postedDate: new Date(review.updatedAt).toDateString(),
+      };
+      const heading = `Review by ${customer.name}`;
+      const accordionContentElement =
+        await this.renderAccordionContent(reviewSummary);
+      const accordionHeaderElement = this.createAccordionHeader(heading);
+      const accordionHeaderEventListener = this.accordionHeaderEventListener;
+      const accordionHeader = {
+        element: accordionHeaderElement,
+        eventListeners: accordionHeaderEventListener,
+      };
+      const accordionContent = {
+        element: accordionContentElement,
+        eventListeners: () => null,
+      };
+
+      const accordion = new Accordion(accordionContent, accordionHeader);
+
+      reviewRestaurantContainer!.appendChild(accordion.element);
     });
   }
 }

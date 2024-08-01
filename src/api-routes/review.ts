@@ -4,6 +4,7 @@ import { ICreateReview, IEditReview } from '../interfaces/review';
 import { ReviewTargetType } from '../enums/review';
 
 const baseUrl = 'http://localhost:8000';
+const allReviewsUrl = `/reviews/all`;
 const usersReviewsUrl = `/reviews/user`;
 const targetReviewsUrl = `/reviews/`;
 const specificReviewUrl = `/reviews/`;
@@ -39,6 +40,17 @@ export const fetchUserReviews = async (userID?: string) => {
       },
       params: {
         userID: userID,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+export const fetchAllReviews = async () => {
+  return await axios
+    .get(`${baseUrl}${allReviewsUrl}`, {
+      headers: {
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
     })
     .then((res) => {
