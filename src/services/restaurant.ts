@@ -18,61 +18,70 @@ export default class RestaurantService {
     logger.info('All Restaurants Found');
     return restaurants;
   }
-  static async getRestaurant(userID: string) {
-    const restaurant = await RestaurantModel.getRestaurant(userID);
+  static async getRestaurantInfo(restaurantId: string) {
+    const restaurant = await RestaurantModel.getRestaurantInfo(restaurantId);
     if (!restaurant) {
-      logger.error(`Restaurant with userID ${userID} not found`);
+      logger.error(`Restaurant with restaurantId ${restaurantId} not found`);
       return null;
     }
-    logger.info(`Restaurant with userID ${userID} found`);
+    logger.info(`Restaurant with restaurantId ${restaurantId} found`);
+    return restaurant;
+  }
+  static async getRestaurant(userId: string) {
+    const restaurant = await RestaurantModel.getRestaurant(userId);
+    if (!restaurant) {
+      logger.error(`Restaurant with userId ${userId} not found`);
+      return null;
+    }
+    logger.info(`Restaurant with userId ${userId} found`);
     return restaurant;
   }
 
-  static async createRestaurant(userID: string, restaurant: ICreateRestaurant) {
+  static async createRestaurant(userId: string, restaurant: ICreateRestaurant) {
     const queryResult = await RestaurantModel.createRestaurant(
-      userID,
+      userId,
       restaurant,
     )!;
     if (!queryResult) {
       logger.error('Could not create new restaurant');
       throw new ModelError('Could not create restaurant');
     }
-    await UserServices.updateRole(userID, Roles.CUSTOMER_WITH_RESTAURANT);
-    logger.info(`New restaurant for userID ${userID} created`);
+    await UserServices.updateRole(userId, Roles.CUSTOMER_WITH_RESTAURANT);
+    logger.info(`New restaurant for userId ${userId} created`);
     return { ...restaurant, id: queryResult.id } as IRestaurant;
   }
 
   static async editRestaurant(
-    restaurantID: string,
+    restaurantId: string,
     editRestaurantData: IEditRestaurant,
   ) {
     const queryResult = await RestaurantModel.editRestaurant(
-      restaurantID,
+      restaurantId,
       editRestaurantData,
     )!;
     if (!queryResult) {
       logger.error(
-        `Could not edit restaurant with restaurantID ${restaurantID}`,
+        `Could not edit restaurant with restaurantId ${restaurantId}`,
       );
       throw new ModelError('Could not edit Restaurant');
     }
-    logger.info(`Restaurant with restaurantID ${queryResult.id} updated`);
+    logger.info(`Restaurant with restaurantId ${queryResult.id} updated`);
 
     return {
       ...editRestaurantData,
-      id: restaurantID,
+      id: restaurantId,
     } as IRestaurant;
   }
 
-  static async deleteRestaurant(restaurantID: string) {
-    const queryResult = await RestaurantModel.deleteRestaurant(restaurantID)!;
+  static async deleteRestaurant(restaurantId: string) {
+    const queryResult = await RestaurantModel.deleteRestaurant(restaurantId)!;
     if (!queryResult) {
       logger.error(
-        `Could not delete restaurant with restaurantID ${restaurantID}`,
+        `Could not delete restaurant with restaurantId ${restaurantId}`,
       );
       throw new ModelError('Could not delete Restaurant');
     }
-    logger.info(`Restaurant with restaurantID ${restaurantID} deleted`);
+    logger.info(`Restaurant with restaurantId ${restaurantId} deleted`);
 
     return true;
   }

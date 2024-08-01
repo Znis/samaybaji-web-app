@@ -9,7 +9,7 @@ export interface IOrder {
   notes: string;
   orderDate: string;
   orderTime: string;
-  userID: string;
+  userId: string;
   status: OrderStatus;
   totalAmount: number;
   subTotalAmount: number;

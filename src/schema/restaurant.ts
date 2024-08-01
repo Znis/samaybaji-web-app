@@ -108,19 +108,19 @@ export const editRestaurantBodySchema = joi.object({
     }),
 });
 
-export const userIDQuerySchema = joi
+export const userIdQuerySchema = joi
   .object({
-    userID: joi.string().optional().messages({
-      'any.required': 'User ID is required',
+    userId: joi.string().optional().messages({
+      'any.required': 'User Id is required',
     }),
   })
   .options({
     stripUnknown: true,
   });
-export const restaurantIDQuerySchema = joi
+export const restaurantIdParamsSchema = joi
   .object({
-    restaurantID: joi.string().required().messages({
-      'any.required': 'Restaurant ID is required',
+    restaurantId: joi.string().required().messages({
+      'any.required': 'Restaurant Id is required',
     }),
   })
   .options({

@@ -13,47 +13,47 @@ export default class DishService {
     logger.info('All Dishes Found');
     return dishes;
   }
-  static async getDish(menuItemID: string) {
-    const dish = await DishModel.getDish(menuItemID);
+  static async getDish(menuItemId: string) {
+    const dish = await DishModel.getDish(menuItemId);
     if (!dish) {
-      logger.error(`Dish with menuItemID ${menuItemID} not found`);
+      logger.error(`Dish with menuItemId ${menuItemId} not found`);
       return null;
     }
-    logger.info(`Dish with menuItemID ${menuItemID} found`);
+    logger.info(`Dish with menuItemId ${menuItemId} found`);
     return dish;
   }
 
-  static async createDish(menuItemID: string, dishData: ICreateDish) {
-    const queryResult = await DishModel.createDish(menuItemID, dishData)!;
+  static async createDish(menuItemId: string, dishData: ICreateDish) {
+    const queryResult = await DishModel.createDish(menuItemId, dishData)!;
     if (!queryResult) {
       logger.error('Could not create new dish');
       throw new ModelError('Could not create dish');
     }
-    logger.info(`New dish for menuItemID ${menuItemID} created`);
+    logger.info(`New dish for menuItemId ${menuItemId} created`);
     return { ...dishData, id: queryResult.id } as IDish;
   }
 
-  static async editDish(dishID: string, editDishData: IEditDish) {
-    const queryResult = await DishModel.editDish(dishID, editDishData)!;
+  static async editDish(dishId: string, editDishData: IEditDish) {
+    const queryResult = await DishModel.editDish(dishId, editDishData)!;
     if (!queryResult) {
-      logger.error(`Could not edit dish with dishID ${dishID}`);
+      logger.error(`Could not edit dish with dishId ${dishId}`);
       throw new ModelError('Could not edit Dish');
     }
-    logger.info(`Dish with dishID ${queryResult.id} updated`);
+    logger.info(`Dish with dishId ${queryResult.id} updated`);
 
     return {
       ...editDishData,
-      id: dishID,
+      id: dishId,
     } as IDish;
   }
 
-  static async deleteDish(dishID: string) {
-    const queryResult = await DishModel.deleteDish(dishID)!;
+  static async deleteDish(dishId: string) {
+    const queryResult = await DishModel.deleteDish(dishId)!;
     if (!queryResult) {
-      logger.error(`Could not delete dish with dishID ${dishID}`);
+      logger.error(`Could not delete dish with dishId ${dishId}`);
       throw new ModelError('Could not delete Dish');
     }
-    logger.info(`Dish with dishID ${dishID} deleted`);
+    logger.info(`Dish with dishId ${dishId} deleted`);
 
     return true;
   }

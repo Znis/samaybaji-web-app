@@ -1,10 +1,10 @@
 import joi from 'joi';
 
 const cartItemSchema = joi.object({
-  menuItemID: joi.string().guid({ version: 'uuidv4' }).required().messages({
-    'string.base': 'Menu Item ID must be a string.',
-    'string.guid': 'Menu Item ID must be a valid UUID.',
-    'any.required': 'Menu Item ID is required.',
+  menuItemId: joi.string().guid({ version: 'uuidv4' }).required().messages({
+    'string.base': 'Menu Item Id must be a string.',
+    'string.guid': 'Menu Item Id must be a valid UUId.',
+    'any.required': 'Menu Item Id is required.',
   }),
   quantity: joi.number().integer().min(1).required().messages({
     'number.base': 'Quantity must be a number.',
@@ -27,20 +27,20 @@ export const editCartItemSchema = joi.object({
   }),
 });
 
-export const cartIDQuerySchema = joi
+export const cartIdQuerySchema = joi
   .object({
-    cartID: joi.string().optional().messages({
-      'any.required': 'Cart ID is required',
+    cartId: joi.string().optional().messages({
+      'any.required': 'Cart Id is required',
     }),
   })
   .options({
     stripUnknown: true,
   });
 
-export const cartItemIDQuerySchema = joi
+export const cartItemIdQuerySchema = joi
   .object({
-    cartItemID: joi.string().required().messages({
-      'any.required': 'Cart item ID is required',
+    cartItemId: joi.string().required().messages({
+      'any.required': 'Cart item Id is required',
     }),
   })
   .options({

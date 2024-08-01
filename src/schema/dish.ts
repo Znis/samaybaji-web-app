@@ -91,28 +91,28 @@ export const editDishBodySchema = joi.object({
     }),
 });
 export const getOrCreateDishQuerySchema = joi.object({
-  menuItemID: joi
+  menuItemId: joi
     .string()
     .guid({ version: 'uuidv4' })
     .required()
     .messages({
-      'string.base': 'Menu Item ID must be a string.',
-      'string.guid': 'Menu Item ID must be a valid UUID.',
-      'any.required': 'Menu Item ID is required.',
+      'string.base': 'Menu Item Id must be a string.',
+      'string.guid': 'Menu Item Id must be a valid UUId.',
+      'any.required': 'Menu Item Id is required.',
     })
     .options({
       stripUnknown: true,
     }),
 });
 export const editOrDeleteDishQuerySchema = joi.object({
-  dishID: joi
+  dishId: joi
     .string()
     .guid({ version: 'uuidv4' })
     .required()
     .messages({
-      'string.base': 'Dish ID must be a string.',
-      'string.guid': 'Dish ID must be a valid UUID.',
-      'any.required': 'Dish ID is required.',
+      'string.base': 'Dish Id must be a string.',
+      'string.guid': 'Dish Id must be a valid UUId.',
+      'any.required': 'Dish Id is required.',
     })
     .options({
       stripUnknown: true,

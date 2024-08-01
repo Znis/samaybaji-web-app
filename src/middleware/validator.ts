@@ -38,3 +38,17 @@ export function validateReqBody(schema: Schema) {
     next();
   };
 }
+export function validateReqParams(schema: Schema) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const { error, value } = schema.validate(req.params);
+    if (error) {
+      next(new SchemaError(error.message));
+
+      return;
+    }
+
+    req.params = value;
+
+    next();
+  };
+}

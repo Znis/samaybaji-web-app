@@ -117,10 +117,10 @@ export const editUserBodySchema = joi.object({
     }),
 });
 
-export const userIDQuerySchema = joi
+export const userIdQuerySchema = joi
   .object({
-    userID: joi.string().optional().messages({
-      'any.required': 'User ID is required',
+    userId: joi.string().optional().messages({
+      'any.required': 'User Id is required',
     }),
   })
   .options({

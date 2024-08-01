@@ -16,11 +16,11 @@ export default class ReviewModel extends BaseModel {
         return null;
       });
   }
-  static getReviewsByUserID(userID: string, targetType: ReviewTargetType) {
+  static getReviewsByUserId(userId: string, targetType: ReviewTargetType) {
     return this.queryBuilder()
       .select('*')
       .from('reviews')
-      .where('user_id', userID)
+      .where('user_id', userId)
       .andWhere('target_type', targetType)
       .then((data) => {
         return data;
@@ -30,17 +30,17 @@ export default class ReviewModel extends BaseModel {
         return null;
       });
   }
-  static getSpecificReviewByUserID(
-    userID: string,
-    targetID: string,
+  static getSpecificReviewByUserId(
+    userId: string,
+    targetId: string,
     targetType: ReviewTargetType,
   ) {
     return this.queryBuilder()
       .select('*')
       .from('reviews')
-      .where('user_id', userID)
+      .where('user_id', userId)
       .andWhere('target_type', targetType)
-      .andWhere('target_id', targetID)
+      .andWhere('target_id', targetId)
       .first()
       .then((data) => {
         return data;
@@ -50,12 +50,12 @@ export default class ReviewModel extends BaseModel {
         return null;
       });
   }
-  static getReviews(targetID: string, targetType: ReviewTargetType) {
+  static getReviews(targetId: string, targetType: ReviewTargetType) {
     return this.queryBuilder()
       .select('*')
       .from('reviews')
       .where('target_type', targetType)
-      .andWhere('target_id', targetID)
+      .andWhere('target_id', targetId)
       .then((data) => {
         return data;
       })
@@ -78,11 +78,11 @@ export default class ReviewModel extends BaseModel {
       });
   }
 
-  static editReview(reviewID: string, editReviewData: IEditReview) {
+  static editReview(reviewId: string, editReviewData: IEditReview) {
     return this.queryBuilder()
       .update(editReviewData)
       .from('reviews')
-      .where('id', reviewID)
+      .where('id', reviewId)
       .returning('*')
       .then((data) => {
         return data[0];
@@ -92,11 +92,11 @@ export default class ReviewModel extends BaseModel {
         return null;
       });
   }
-  static deleteReview(reviewID: string) {
+  static deleteReview(reviewId: string) {
     return this.queryBuilder()
       .del()
       .from('reviews')
-      .where('id', reviewID)
+      .where('id', reviewId)
       .then((data) => {
         return data;
       })

@@ -17,14 +17,14 @@ export default class CartService {
     logger.info('All Carts Found');
     return carts;
   }
-  static async getCartItems(userID: string) {
-    const cart = await CartModel.getCart(userID);
+  static async getCartItems(userId: string) {
+    const cart = await CartModel.getCart(userId);
     if (!cart) {
-      logger.error(`Cart of userID ${userID} not found`);
+      logger.error(`Cart of userId ${userId} not found`);
       return null;
     }
 
-    const cartItems = await CartItemServices.getCartItemsByCartID(cart.id);
+    const cartItems = await CartItemServices.getCartItemsByCartId(cart.id);
     const formattedCartItems = await Promise.all(
       cartItems!.map(async (cartItem) => {
         const menuItem = await MenuItemServices.getMenuItem(
@@ -36,34 +36,34 @@ export default class CartService {
         } as IFormattedCartItemData;
       }),
     );
-    logger.info(`Cart of userID ${userID} found`);
+    logger.info(`Cart of userId ${userId} found`);
     return formattedCartItems;
   }
-  static async getCart(userID: string) {
-    const cart = await CartModel.getCart(userID);
+  static async getCart(userId: string) {
+    const cart = await CartModel.getCart(userId);
     if (!cart) {
-      logger.error(`Cart of userID ${userID} not found`);
+      logger.error(`Cart of userId ${userId} not found`);
       return null;
     }
     return cart;
   }
-  static async createCart(userID: string) {
-    const queryResult = await CartModel.createCart(userID)!;
+  static async createCart(userId: string) {
+    const queryResult = await CartModel.createCart(userId)!;
     if (!queryResult) {
       logger.error('Could not create new cart');
       throw new ModelError('Could not create cart');
     }
 
-    return { userID: userID, id: queryResult.id } as ICart;
+    return { userId: userId, id: queryResult.id } as ICart;
   }
 
-  static async clearCart(cartID: string) {
-    const queryResult = await CartModel.clearCart(cartID)!;
+  static async clearCart(cartId: string) {
+    const queryResult = await CartModel.clearCart(cartId)!;
     if (!queryResult && queryResult != 0) {
-      logger.error(`Could not clear cart with cartID ${cartID}`);
+      logger.error(`Could not clear cart with cartId ${cartId}`);
       throw new ModelError('Could not clear cart');
     }
-    logger.info(`Cart with cartID ${cartID} cleared`);
+    logger.info(`Cart with cartId ${cartId} cleared`);
 
     return true;
   }

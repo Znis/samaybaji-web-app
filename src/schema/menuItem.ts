@@ -76,20 +76,20 @@ export const editMenuItemBodySchema = joi.object({
     }),
 });
 
-export const menuIDQuerySchema = joi
+export const menuIdQuerySchema = joi
   .object({
-    menuID: joi.string().optional().messages({
-      'any.required': 'Menu ID is required',
+    menuId: joi.string().optional().messages({
+      'any.required': 'Menu Id is required',
     }),
   })
   .options({
     stripUnknown: true,
   });
 
-export const menuItemIDQuerySchema = joi
+export const menuItemIdQuerySchema = joi
   .object({
-    menuItemID: joi.string().required().messages({
-      'any.required': 'Menu Item ID is required',
+    menuItemId: joi.string().required().messages({
+      'any.required': 'Menu Item Id is required',
     }),
   })
   .options({

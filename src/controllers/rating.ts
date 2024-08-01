@@ -26,15 +26,15 @@ export async function getAllRatings(
     next(error);
   }
 }
-export async function getRatingsByUserID(
+export async function getRatingsByUserId(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const userID = req.query.userID as string;
+    const userId = req.query.userId as string;
 
-    const ratings = await RatingService.getRatingsByUserID(userID);
+    const ratings = await RatingService.getRatingsByUserId(userId);
     if (!ratings) {
       next(new BaseError('No Any Ratings Found'));
       return;
@@ -46,20 +46,20 @@ export async function getRatingsByUserID(
     next(error);
   }
 }
-export async function getSpecificRatingByUserID(
+export async function getSpecificRatingByUserId(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const userID = req.query.userID as string;
-    const targetID = req.query.targetID as string;
+    const userId = req.query.userId as string;
+    const targetId = req.query.targetId as string;
     const targetType = req.query.targetType as ReviewTargetType;
 
-    const rating = await RatingService.getSpecificRatingByUserID(
-      userID,
+    const rating = await RatingService.getSpecificRatingByUserId(
+      userId,
       targetType,
-      targetID,
+      targetId,
     );
     if (!rating) {
       next(new BaseError('No Any Rating Found'));
@@ -79,14 +79,14 @@ export async function getRatings(
 ) {
   try {
     const targetType = req.query.targetType as ReviewTargetType;
-    const targetID = req.query.targetID as string;
-    const rating = await RatingService.getRatings(targetType, targetID);
+    const targetId = req.query.targetId as string;
+    const rating = await RatingService.getRatings(targetType, targetId);
     if (!rating) {
-      logger.error(`No Rating found for ${targetType} with ID ${targetID}`);
+      logger.error(`No Rating found for ${targetType} with Id ${targetId}`);
       next(new BaseError('No Rating Found'));
       return;
     }
-    logger.info(`Rating for ${targetType} with ID ${targetID} found`);
+    logger.info(`Rating for ${targetType} with Id ${targetId} found`);
     return res.status(HttpStatusCode.OK).json(rating);
   } catch (error) {
     logger.error('Rating fetch failed');
@@ -118,10 +118,10 @@ export async function editRating(
   next: NextFunction,
 ) {
   try {
-    const ratingID = req.query.ratingID as string;
+    const ratingId = req.query.ratingId as string;
     const ratingData = req.body;
-    const response = await RatingService.editRating(ratingID, ratingData);
-    logger.info(`Rating of ratingID ${ratingID} edited`);
+    const response = await RatingService.editRating(ratingId, ratingData);
+    logger.info(`Rating of ratingId ${ratingId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Rating edit failed');
@@ -135,9 +135,9 @@ export async function deleteRating(
   next: NextFunction,
 ) {
   try {
-    const ratingID = req.query.RatingID as string;
-    await RatingService.deleteRating(ratingID);
-    logger.info(`Rating of ratingID ${ratingID} deleted`);
+    const ratingId = req.query.RatingId as string;
+    await RatingService.deleteRating(ratingId);
+    logger.info(`Rating of ratingId ${ratingId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Rating deletion failed');

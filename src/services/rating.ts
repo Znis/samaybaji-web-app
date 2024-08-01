@@ -14,39 +14,39 @@ export default class RatingService {
     logger.info('All Ratings Found');
     return ratings;
   }
-  static async getRatingsByUserID(userID: string) {
-    const dishRatings = await RatingModel.getRatingsByUserID(
-      userID,
+  static async getRatingsByUserId(userId: string) {
+    const dishRatings = await RatingModel.getRatingsByUserId(
+      userId,
       ReviewTargetType.DISH,
     );
-    const restaurantRatings = await RatingModel.getRatingsByUserID(
-      userID,
+    const restaurantRatings = await RatingModel.getRatingsByUserId(
+      userId,
       ReviewTargetType.RESTAURANT,
     );
     if (!dishRatings || !restaurantRatings) {
       return null;
     }
-    logger.info(`All Ratings of userID ${userID} Found`);
+    logger.info(`All Ratings of userId ${userId} Found`);
     return { dishRatings: dishRatings, restaurantRatings: restaurantRatings };
   }
-  static async getRatings(targetType: ReviewTargetType, targetID: string) {
-    const rating = await RatingModel.getRatings(targetType, targetID);
+  static async getRatings(targetType: ReviewTargetType, targetId: string) {
+    const rating = await RatingModel.getRatings(targetType, targetId);
     if (!rating) {
-      logger.error(`Rating for ${targetType} with ID ${targetID} not found`);
+      logger.error(`Rating for ${targetType} with Id ${targetId} not found`);
       return null;
     }
-    logger.info(`Rating for ${targetType} with ID ${targetID} found`);
+    logger.info(`Rating for ${targetType} with Id ${targetId} found`);
     return rating;
   }
 
-  static async getSpecificRatingByUserID(
-    userID: string,
+  static async getSpecificRatingByUserId(
+    userId: string,
     targetType: ReviewTargetType,
-    targetID: string,
+    targetId: string,
   ) {
-    const rating = await RatingModel.getSpecificRatingByUserID(
-      userID,
-      targetID,
+    const rating = await RatingModel.getSpecificRatingByUserId(
+      userId,
+      targetId,
       targetType,
     );
     if (!rating) {
@@ -55,7 +55,7 @@ export default class RatingService {
     }
 
     logger.info(
-      `Review found for userID ${userID}, targetID ${targetID}, targetType ${targetType}`,
+      `Review found for userId ${userId}, targetId ${targetId}, targetType ${targetType}`,
     );
     return rating;
   }
@@ -69,27 +69,27 @@ export default class RatingService {
     return { ...ratingData, id: queryResult.id } as IRating;
   }
 
-  static async editRating(ratingID: string, editRatingData: IEditRating) {
-    const queryResult = await RatingModel.editRating(ratingID, editRatingData)!;
+  static async editRating(ratingId: string, editRatingData: IEditRating) {
+    const queryResult = await RatingModel.editRating(ratingId, editRatingData)!;
     if (!queryResult) {
-      logger.error(`Could not edit rating with ratingID ${ratingID}`);
+      logger.error(`Could not edit rating with ratingId ${ratingId}`);
       throw new ModelError('Could not edit Rating');
     }
-    logger.info(`Rating with ratingID ${queryResult.id} updated`);
+    logger.info(`Rating with ratingId ${queryResult.id} updated`);
 
     return {
       ...editRatingData,
-      id: ratingID,
+      id: ratingId,
     } as IRating;
   }
 
-  static async deleteRating(ratingID: string) {
-    const queryResult = await RatingModel.deleteRating(ratingID)!;
+  static async deleteRating(ratingId: string) {
+    const queryResult = await RatingModel.deleteRating(ratingId)!;
     if (!queryResult) {
-      logger.error(`Could not delete rating with ratingID ${ratingID}`);
+      logger.error(`Could not delete rating with ratingId ${ratingId}`);
       throw new ModelError('Could not delete Rating');
     }
-    logger.info(`Rating with ratingID ${ratingID} deleted`);
+    logger.info(`Rating with ratingId ${ratingId} deleted`);
 
     return true;
   }

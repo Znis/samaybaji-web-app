@@ -2,16 +2,16 @@ import { ReviewTargetType } from '../enums/review';
 
 export interface IRating {
   id: string;
-  targetID: string;
+  targetId: string;
   targetType: ReviewTargetType;
-  userID: string;
+  userId: string;
   rating: number;
 }
 
 export interface ICreateRating {
-  targetID: string;
+  targetId: string;
   targetType: ReviewTargetType;
-  userID: string;
+  userId: string;
   rating: number;
 }
 export interface IEditRating {

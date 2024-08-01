@@ -16,65 +16,71 @@ export default class OrderService {
     }
     const orderWithOrderItems = await Promise.all(
       orders.map(async (order: IOrder) => {
-        const orderItems = (await OrderItemServices.getOrderItemsByOrderID(
+        const orderItems = (await OrderItemServices.getOrderItemsByOrderId(
           order.id,
         )) as IOrderItem[];
-        order.status = this.determineOrderStatus(orderItems);
+        order.status =
+          order.status == OrderStatus.CANCELLED
+            ? order.status
+            : this.determineOrderStatus(orderItems);
         return { ...order, orderItems: orderItems };
       }),
     );
     logger.info(`All Orders Found`);
     return orderWithOrderItems;
   }
-  static async getOrder(orderID: string) {
-    const order = await OrderModel.getOrder(orderID);
+  static async getOrder(orderId: string) {
+    const order = await OrderModel.getOrder(orderId);
     if (!order) {
-      logger.error(`Order of orderID ${orderID} not found`);
+      logger.error(`Order of orderId ${orderId} not found`);
       return null;
     }
-    const orderItems = await OrderItemServices.getOrderItemsByOrderID(order.id);
+    const orderItems = await OrderItemServices.getOrderItemsByOrderId(order.id);
 
-    logger.info(`Order of orderID ${orderID} found`);
+    logger.info(`Order of orderId ${orderId} found`);
     return orderItems;
   }
-  static async getOrdersByUserID(userID: string) {
-    const orders = await OrderModel.getOrdersByUserID(userID);
+  static async getOrdersByUserId(userId: string) {
+    const orders = await OrderModel.getOrdersByUserId(userId);
     if (!orders) {
-      logger.error(`Order of userID ${userID} not found`);
+      logger.error(`Order of userId ${userId} not found`);
       return null;
     }
     const orderWithOrderItems = await Promise.all(
       orders.map(async (order: IOrder) => {
-        const orderItems = (await OrderItemServices.getOrderItemsByOrderID(
+        const orderItems = (await OrderItemServices.getOrderItemsByOrderId(
           order.id,
         )) as IOrderItem[];
-        order.status = this.determineOrderStatus(orderItems);
+        order.status =
+          order.status == OrderStatus.CANCELLED
+            ? order.status
+            : this.determineOrderStatus(orderItems);
         return { ...order, orderItems: orderItems };
       }),
     );
-    logger.info(`Orders of userID ${userID} Found`);
+    logger.info(`Orders of userId ${userId} Found`);
     return orderWithOrderItems;
   }
-  static async getOrdersByRestaurantID(restaurantID: string) {
-    const orders = await OrderModel.getOrdersByRestaurantID(restaurantID);
+  static async getOrdersByRestaurantId(restaurantId: string) {
+    const orders = await OrderModel.getOrdersByRestaurantId(restaurantId);
     if (!orders) {
-      logger.error(`Order of restaurantID ${restaurantID} not found`);
+      logger.error(`Order of restaurantId ${restaurantId} not found`);
       return null;
     }
     const orderWithOrderItems = await Promise.all(
       orders.map(async (order: IOrder) => {
-        const orderItems = (await OrderItemServices.getOrderItemsByOrderID(
+        const orderItems = (await OrderItemServices.getOwnOrderItems(
           order.id,
+          restaurantId,
         )) as IOrderItem[];
-        order.status = this.determineOrderStatus(orderItems);
         return { ...order, orderItems: orderItems };
       }),
     );
-    logger.info(`Orders of restaurantID ${restaurantID} Found`);
+    logger.info(`Orders of restaurantId ${restaurantId} Found`);
     return orderWithOrderItems;
   }
 
-  static async createOrder(userID: string, orderData: ICreateOrder) {
+  static async createOrder(userId: string, orderData: ICreateOrder) {
     const { orderItems, ...orderDetails } = orderData;
     orderDetails.subTotalAmount = orderItems.reduce(
       (acc, item) => acc + item.unitPrice * item.quantity,
@@ -82,7 +88,7 @@ export default class OrderService {
     );
     orderDetails.totalAmount =
       orderDetails.subTotalAmount + orderDetails.deliveryAmount;
-    const queryResult = await OrderModel.createOrder(userID, orderDetails)!;
+    const queryResult = await OrderModel.createOrder(userId, orderDetails)!;
     const createOrderItems = await OrderItemServices.createOrderItem(
       queryResult.id,
       orderItems,
@@ -91,40 +97,40 @@ export default class OrderService {
       logger.error('Could not create new order');
       throw new ModelError('Could not create order');
     }
-    logger.info(`Order with orderID ${queryResult.id} created`);
+    logger.info(`Order with orderId ${queryResult.id} created`);
 
     return {
       ...orderData,
       id: queryResult.id,
-      userID: userID,
+      userId: userId,
       status: OrderStatus.PENDING,
     } as IOrder;
   }
 
-  static async editOrder(orderID: string, editOrderData: IEditOrder) {
+  static async editOrder(orderId: string, editOrderData: IEditOrder) {
     const { orderItems, ...orderDetails } = editOrderData;
 
-    const queryResult = await OrderModel.editOrder(orderID, orderDetails)!;
+    const queryResult = await OrderModel.editOrder(orderId, orderDetails)!;
     if (!queryResult) {
       logger.error('Could not create new order');
       throw new ModelError('Could not create order');
     }
 
-    logger.info(`Order with orderID ${orderID} updated`);
+    logger.info(`Order with orderId ${orderId} updated`);
 
     return {
       ...editOrderData,
-      id: orderID,
+      id: orderId,
     } as IOrder;
   }
 
-  static async deleteOrder(orderID: string) {
-    const queryResult = await OrderModel.deleteOrder(orderID)!;
+  static async deleteOrder(orderId: string) {
+    const queryResult = await OrderModel.deleteOrder(orderId)!;
     if (!queryResult) {
-      logger.error(`Could not delete order with orderID ${orderID}`);
+      logger.error(`Could not delete order with orderId ${orderId}`);
       throw new ModelError('Could not delete order');
     }
-    logger.info(`Order with orderID ${orderID} deleted`);
+    logger.info(`Order with orderId ${orderId} deleted`);
 
     return true;
   }

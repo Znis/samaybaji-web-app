@@ -14,11 +14,11 @@ export default class MenuModel extends BaseModel {
         return null;
       });
   }
-  static getMenu(restaurantID: string) {
+  static getMenu(restaurantId: string) {
     return this.queryBuilder()
       .select('*')
       .from('menus')
-      .where('restaurant_id', restaurantID)
+      .where('restaurant_id', restaurantId)
       .first()
       .then((data) => {
         return data;
@@ -28,9 +28,9 @@ export default class MenuModel extends BaseModel {
         return null;
       });
   }
-  static createMenu(restaurantID: string, menuData: ICreateMenu) {
+  static createMenu(restaurantId: string, menuData: ICreateMenu) {
     return this.queryBuilder()
-      .insert({ ...menuData, restaurantId: restaurantID })
+      .insert({ ...menuData, restaurantId: restaurantId })
       .into('menus')
       .returning('id')
       .then((data) => {
@@ -42,11 +42,11 @@ export default class MenuModel extends BaseModel {
       });
   }
 
-  static editMenu(menuID: string, editMenuData: IEditMenu) {
+  static editMenu(menuId: string, editMenuData: IEditMenu) {
     return this.queryBuilder()
       .update(editMenuData)
       .from('menus')
-      .where('id', menuID)
+      .where('id', menuId)
       .returning('*')
       .then((data) => {
         return data[0];
@@ -56,11 +56,11 @@ export default class MenuModel extends BaseModel {
         return null;
       });
   }
-  static deleteMenu(menuID: string) {
+  static deleteMenu(menuId: string) {
     return this.queryBuilder()
       .del()
       .from('menus')
-      .where('id', menuID)
+      .where('id', menuId)
       .then((data) => {
         return data;
       })

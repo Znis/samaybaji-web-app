@@ -1,11 +1,11 @@
 import joi from 'joi';
 import { ReviewTargetType } from '../enums/review';
 
-export const getReviewByTargetIDQuerySchema = joi.object({
-  targetID: joi.string().guid({ version: 'uuidv4' }).required().messages({
-    'string.base': 'Target ID must be a string.',
-    'string.guid': 'Target ID must be a valid UUID.',
-    'any.required': 'Target ID is required.',
+export const getReviewByTargetIdQuerySchema = joi.object({
+  targetId: joi.string().guid({ version: 'uuidv4' }).required().messages({
+    'string.base': 'Target Id must be a string.',
+    'string.guid': 'Target Id must be a valid UUId.',
+    'any.required': 'Target Id is required.',
   }),
   targetType: joi
     .string()
@@ -46,14 +46,14 @@ export const createOrEditReviewBodySchema = joi.object({
 });
 
 export const createOrEditOrDeleteReviewQuerySchema = joi.object({
-  targetID: joi
+  targetId: joi
     .string()
     .guid({ version: 'uuidv4' })
     .required()
     .messages({
-      'string.base': 'Target ID must be a string.',
-      'string.guid': 'Target ID must be a valid UUID.',
-      'any.required': 'Target ID is required.',
+      'string.base': 'Target Id must be a string.',
+      'string.guid': 'Target Id must be a valid UUId.',
+      'any.required': 'Target Id is required.',
     })
     .options({
       stripUnknown: true,

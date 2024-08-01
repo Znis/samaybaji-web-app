@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 export async function seed(knex: Knex): Promise<void> {
   await knex('menu_items').del(); // Deletes ALL existing entries
 
-  // Retrieve the IDs of the menus
+  // Retrieve the Ids of the menus
   const menus = await knex('menus').select('id');
 
   if (menus.length < 2) {

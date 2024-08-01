@@ -13,11 +13,11 @@ export default class MenuModel extends BaseModel {
         return null;
       });
   }
-  static getCart(userID: string) {
+  static getCart(userId: string) {
     return this.queryBuilder()
       .select('*')
       .from('carts')
-      .where('user_id', userID)
+      .where('user_id', userId)
       .first()
       .then((data) => {
         return data;
@@ -27,9 +27,9 @@ export default class MenuModel extends BaseModel {
         return null;
       });
   }
-  static createCart(userID: string) {
+  static createCart(userId: string) {
     return this.queryBuilder()
-      .insert({ userId: userID })
+      .insert({ userId: userId })
       .into('carts')
       .returning('id')
       .then((data) => {
@@ -41,11 +41,11 @@ export default class MenuModel extends BaseModel {
       });
   }
 
-  static clearCart(cartID: string) {
+  static clearCart(cartId: string) {
     return this.queryBuilder()
       .del()
       .from('cart_items')
-      .where('cart_id', cartID)
+      .where('cart_id', cartId)
       .then((data) => {
         return data;
       })

@@ -28,11 +28,11 @@ export default class MenuItemModel extends BaseModel {
         return null;
       });
   }
-  static getMenuItem(menuItemID: string) {
+  static getMenuItem(menuItemId: string) {
     return this.queryBuilder()
       .select('*')
       .from('menu_items')
-      .where('id', menuItemID)
+      .where('id', menuItemId)
       .first()
       .then((data) => {
         return data;
@@ -42,11 +42,11 @@ export default class MenuItemModel extends BaseModel {
         return null;
       });
   }
-  static getMenuItemsByMenuID(menuID: string) {
+  static getMenuItemsByMenuId(menuId: string) {
     return this.queryBuilder()
       .select('*')
       .from('menu_items')
-      .where('menu_id', menuID)
+      .where('menu_id', menuId)
       .then((data) => {
         return data;
       })
@@ -55,9 +55,9 @@ export default class MenuItemModel extends BaseModel {
         return null;
       });
   }
-  static createMenuItem(menuID: string, menuItemData: ICreateMenuItem) {
+  static createMenuItem(menuId: string, menuItemData: ICreateMenuItem) {
     return this.queryBuilder()
-      .insert({ ...menuItemData, menuId: menuID })
+      .insert({ ...menuItemData, menuId: menuId })
       .into('menu_items')
       .returning('id')
       .then((data) => {
@@ -69,11 +69,11 @@ export default class MenuItemModel extends BaseModel {
       });
   }
 
-  static editMenuItem(menuItemID: string, editMenuItemData: IEditMenuItem) {
+  static editMenuItem(menuItemId: string, editMenuItemData: IEditMenuItem) {
     return this.queryBuilder()
       .update(editMenuItemData)
       .from('menu_items')
-      .where('id', menuItemID)
+      .where('id', menuItemId)
       .returning('*')
       .then((data) => {
         return data[0];
@@ -83,11 +83,11 @@ export default class MenuItemModel extends BaseModel {
         return null;
       });
   }
-  static deleteMenuItem(menuItemID: string) {
+  static deleteMenuItem(menuItemId: string) {
     return this.queryBuilder()
       .del()
       .from('menu_items')
-      .where('id', menuItemID)
+      .where('id', menuItemId)
       .then((data) => {
         return data;
       })

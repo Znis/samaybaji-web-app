@@ -14,11 +14,11 @@ export default class DishModel extends BaseModel {
         return null;
       });
   }
-  static getDish(menuItemID: string) {
+  static getDish(menuItemId: string) {
     return this.queryBuilder()
       .select('*')
       .from('dishes')
-      .where('menu_item_id', menuItemID)
+      .where('menu_item_id', menuItemId)
       .first()
       .then((data) => {
         return data;
@@ -28,9 +28,9 @@ export default class DishModel extends BaseModel {
         return null;
       });
   }
-  static createDish(menuItemID: string, dishData: ICreateDish) {
+  static createDish(menuItemId: string, dishData: ICreateDish) {
     return this.queryBuilder()
-      .insert({ ...dishData, menuItemId: menuItemID })
+      .insert({ ...dishData, menuItemId: menuItemId })
       .into('dishes')
       .returning('id')
       .then((data) => {
@@ -42,11 +42,11 @@ export default class DishModel extends BaseModel {
       });
   }
 
-  static editDish(dishID: string, editDishData: IEditDish) {
+  static editDish(dishId: string, editDishData: IEditDish) {
     return this.queryBuilder()
       .update(editDishData)
       .from('dishes')
-      .where('id', dishID)
+      .where('id', dishId)
       .returning('*')
       .then((data) => {
         return data[0];
@@ -56,11 +56,11 @@ export default class DishModel extends BaseModel {
         return null;
       });
   }
-  static deleteDish(dishID: string) {
+  static deleteDish(dishId: string) {
     return this.queryBuilder()
       .del()
       .from('dishes')
-      .where('id', dishID)
+      .where('id', dishId)
       .then((data) => {
         return data;
       })

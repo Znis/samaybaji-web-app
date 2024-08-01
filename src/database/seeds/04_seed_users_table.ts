@@ -10,7 +10,7 @@ async function hashPassword(password: string): Promise<string> {
 export async function seed(knex: Knex): Promise<void> {
   await knex('users').del();
 
-  // Retrieve role IDs
+  // Retrieve role Ids
   const roles = await knex('roles').select('id', 'name');
   const roleMap = new Map(roles.map((role) => [role.name, role.id]));
 
@@ -18,7 +18,7 @@ export async function seed(knex: Knex): Promise<void> {
   const customerRoleId = roleMap.get('customer');
 
   if (!superadminRoleId || !customerRoleId) {
-    throw new Error('Role IDs not found in the roles table');
+    throw new Error('Role Ids not found in the roles table');
   }
 
   // Hash passwords

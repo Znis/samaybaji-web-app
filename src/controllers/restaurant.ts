@@ -25,21 +25,42 @@ export async function getAllRestaurants(
     next(error);
   }
 }
+export async function getRestaurantInfo(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const restaurantId = req.params.restaurantId as string;
+    const restaurant = await RestaurantService.getRestaurantInfo(restaurantId);
+    if (!restaurant) {
+      logger.error(`No restaurant found for restaurantId ${restaurantId}`);
+      next(new BaseError('No Restaurant Found'));
+      return;
+    }
+    logger.info(`Restaurant for restaurantId ${restaurantId} found`);
+    return res.status(HttpStatusCode.OK).json(restaurant);
+  } catch (error) {
+    logger.error('Restaurant fetch failed');
+    logger.error(`Error: `, error);
 
+    next(error);
+  }
+}
 export async function getRestaurant(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const userID = req.query.userID as string;
-    const restaurant = await RestaurantService.getRestaurant(userID);
+    const userId = req.query.userId as string;
+    const restaurant = await RestaurantService.getRestaurant(userId);
     if (!restaurant) {
-      logger.error(`No restaurant found for userID ${userID}`);
+      logger.error(`No restaurant found for userId ${userId}`);
       next(new BaseError('No Restaurant Found'));
       return;
     }
-    logger.info(`Restaurant for userID ${userID} found`);
+    logger.info(`Restaurant for userId ${userId} found`);
     return res.status(HttpStatusCode.OK).json(restaurant);
   } catch (error) {
     logger.error('Restaurant fetch failed');
@@ -56,12 +77,12 @@ export async function createRestaurant(
 ) {
   try {
     const restaurantData = req.body;
-    const userID = req.query.userID as string;
+    const userId = req.query.userId as string;
     const response = await RestaurantService.createRestaurant(
-      userID,
+      userId,
       restaurantData,
     );
-    logger.info(`New restaurant for userID ${userID} created`);
+    logger.info(`New restaurant for userId ${userId} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {
     logger.error('Restaurant creation failed');
@@ -75,13 +96,13 @@ export async function editRestaurant(
   next: NextFunction,
 ) {
   try {
-    const restaurantID = req.query.restaurantID as string;
+    const restaurantId = req.query.restaurantId as string;
     const restaurantData = req.body;
     const response = await RestaurantService.editRestaurant(
-      restaurantID,
+      restaurantId,
       restaurantData,
     );
-    logger.info(`Restaurant of restaurantID ${restaurantID} edited`);
+    logger.info(`Restaurant of restaurantId ${restaurantId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Restaurant edit failed');
@@ -95,9 +116,9 @@ export async function deleteRestaurant(
   next: NextFunction,
 ) {
   try {
-    const restaurantID = req.query.restaurantID as string;
-    await RestaurantService.deleteRestaurant(restaurantID);
-    logger.info(`Restaurant of restaurantID ${restaurantID} deleted`);
+    const restaurantId = req.query.restaurantId as string;
+    await RestaurantService.deleteRestaurant(restaurantId);
+    logger.info(`Restaurant of restaurantId ${restaurantId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Restaurant deletion failed');

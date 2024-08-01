@@ -1,19 +1,19 @@
 import joi from 'joi';
 
-export const userIDQuerySchema = joi
+export const userIdQuerySchema = joi
   .object({
-    userID: joi.string().optional().messages({
-      'any.required': 'User ID is required',
+    userId: joi.string().optional().messages({
+      'any.required': 'User Id is required',
     }),
   })
   .options({
     stripUnknown: true,
   });
 
-export const cartIDQuerySchema = joi
+export const cartIdQuerySchema = joi
   .object({
-    cartID: joi.string().required().messages({
-      'any.required': 'Cart ID is required',
+    cartId: joi.string().required().messages({
+      'any.required': 'Cart Id is required',
     }),
   })
   .options({

@@ -23,7 +23,7 @@ const dishRouter = express();
 dishRouter.get('/all', getAllDishes);
 
 dishRouter.get(
-  '/:menuItemID',
+  '/:menuItemId',
   validateReqQuery(getOrCreateDishQuerySchema),
   getDish,
 );

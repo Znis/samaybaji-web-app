@@ -16,30 +16,30 @@ export default class ReviewService {
     logger.info('All Reviews Found');
     return { dishReviews: dishReviews, restaurantReviews: restaurantReviews };
   }
-  static async getReviewsByUserID(userID: string) {
-    const dishReviews = await ReviewModel.getReviewsByUserID(
-      userID,
+  static async getReviewsByUserId(userId: string) {
+    const dishReviews = await ReviewModel.getReviewsByUserId(
+      userId,
       ReviewTargetType.DISH,
     );
-    const restaurantReviews = await ReviewModel.getReviewsByUserID(
-      userID,
+    const restaurantReviews = await ReviewModel.getReviewsByUserId(
+      userId,
       ReviewTargetType.RESTAURANT,
     );
     if (!restaurantReviews || !dishReviews) {
       logger.error('No any review found');
       return null;
     }
-    logger.info(`All Reviews of userID ${userID} Found`);
+    logger.info(`All Reviews of userId ${userId} Found`);
     return { dishReviews: dishReviews, restaurantReviews: restaurantReviews };
   }
-  static async getSpecificReviewByUserID(
-    userID: string,
+  static async getSpecificReviewByUserId(
+    userId: string,
     targetType: ReviewTargetType,
-    targetID: string,
+    targetId: string,
   ) {
-    const review = await ReviewModel.getSpecificReviewByUserID(
-      userID,
-      targetID,
+    const review = await ReviewModel.getSpecificReviewByUserId(
+      userId,
+      targetId,
       targetType,
     );
     if (!review) {
@@ -48,18 +48,18 @@ export default class ReviewService {
     }
 
     logger.info(
-      `Review found for userID ${userID}, targetID ${targetID}, targetType ${targetType}`,
+      `Review found for userId ${userId}, targetId ${targetId}, targetType ${targetType}`,
     );
     return review;
   }
 
-  static async getReviews(targetType: ReviewTargetType, targetID: string) {
-    const reviews = await ReviewModel.getReviews(targetID, targetType);
+  static async getReviews(targetType: ReviewTargetType, targetId: string) {
+    const reviews = await ReviewModel.getReviews(targetId, targetType);
     if (!reviews) {
-      logger.error(`Reviews for ${targetType} with ID ${targetID} not found`);
+      logger.error(`Reviews for ${targetType} with Id ${targetId} not found`);
       return null;
     }
-    logger.info(`Reviews for ${targetType} with ID ${targetID} found`);
+    logger.info(`Reviews for ${targetType} with Id ${targetId} found`);
     return reviews;
   }
 
@@ -73,27 +73,27 @@ export default class ReviewService {
     return { ...reviewData, id: queryResult.id } as IReview;
   }
 
-  static async editReview(reviewID: string, editReviewData: IEditReview) {
-    const queryResult = await ReviewModel.editReview(reviewID, editReviewData)!;
+  static async editReview(reviewId: string, editReviewData: IEditReview) {
+    const queryResult = await ReviewModel.editReview(reviewId, editReviewData)!;
     if (!queryResult) {
-      logger.error(`Could not edit Review with reviewID ${reviewID}`);
+      logger.error(`Could not edit Review with reviewId ${reviewId}`);
       throw new ModelError('Could not edit Review');
     }
-    logger.info(`Review with reviewID ${queryResult.id} updated`);
+    logger.info(`Review with reviewId ${queryResult.id} updated`);
 
     return {
       ...editReviewData,
-      id: reviewID,
+      id: reviewId,
     } as IReview;
   }
 
-  static async deleteReview(reviewID: string) {
-    const queryResult = await ReviewModel.deleteReview(reviewID)!;
+  static async deleteReview(reviewId: string) {
+    const queryResult = await ReviewModel.deleteReview(reviewId)!;
     if (!queryResult) {
-      logger.error(`Could not delete Review with reviewID ${reviewID}`);
+      logger.error(`Could not delete Review with reviewId ${reviewId}`);
       throw new ModelError('Could not delete Review');
     }
-    logger.info(`Review with reviewID ${reviewID} deleted`);
+    logger.info(`Review with reviewId ${reviewId} deleted`);
 
     return true;
   }

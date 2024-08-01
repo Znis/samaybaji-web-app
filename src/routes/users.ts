@@ -1,7 +1,7 @@
 import {
   createUserBodySchema,
   editUserBodySchema,
-  userIDQuerySchema,
+  userIdQuerySchema,
 } from './../schema/users';
 import { Permissions } from './../enums/permissions';
 import express from 'express';
@@ -30,7 +30,7 @@ usersRouter.get(
 usersRouter.get(
   '/',
   authenticate,
-  validateReqQuery(userIDQuerySchema),
+  validateReqQuery(userIdQuerySchema),
   authorize(Permissions.VIEW_USER),
   authorizeCRUD,
   getUser,

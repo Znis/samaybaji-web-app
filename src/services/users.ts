@@ -18,13 +18,13 @@ export default class UserService {
     const users = data.map(({ passwordHash, ...user }) => user);
     return users;
   }
-  static async getUser(userID: string) {
-    const data = await UserModel.getUser(userID);
+  static async getUser(userId: string) {
+    const data = await UserModel.getUser(userId);
     if (!data) {
-      logger.error(`User with id ${userID} not found`);
+      logger.error(`User with id ${userId} not found`);
       return null;
     }
-    logger.info(`User with id ${userID} found`);
+    logger.info(`User with id ${userId} found`);
     const { passwordHash, ...user } = data;
     return user;
   }
@@ -87,14 +87,14 @@ export default class UserService {
     }
     return queryResult;
   }
-  static async updateRole(userID: string, role: string) {
-    const queryResult = await UserModel.updateRole(userID, role)!;
+  static async updateRole(userId: string, role: string) {
+    const queryResult = await UserModel.updateRole(userId, role)!;
     if (!queryResult) {
       logger.error('Cannot update the data in the database');
-      logger.error(`Could not update role to the userID ${userID}`);
+      logger.error(`Could not update role to the userId ${userId}`);
       throw new ModelError('Could not update Role');
     }
-    logger.info(`Updated role of the userID ${userID}`);
+    logger.info(`Updated role of the userId ${userId}`);
     return queryResult;
   }
 }

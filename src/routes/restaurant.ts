@@ -1,7 +1,7 @@
 import { Permissions } from './../enums/permissions';
 import express from 'express';
 import { authenticate } from '../middleware/authenticate';
-import { validateReqBody } from '../middleware/validator';
+import { validateReqBody, validateReqParams } from '../middleware/validator';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 import {
   createRestaurant,
@@ -9,18 +9,25 @@ import {
   editRestaurant,
   getAllRestaurants,
   getRestaurant,
+  getRestaurantInfo,
 } from '../controllers/restaurant';
 import {
   createRestaurantBodySchema,
   editRestaurantBodySchema,
+  restaurantIdParamsSchema,
 } from '../schema/restaurant';
 
 const restaurantRouter = express();
 
 //for everyone
 restaurantRouter.get('/all', getAllRestaurants);
+restaurantRouter.get(
+  '/:restaurantId',
+  validateReqParams(restaurantIdParamsSchema),
+  getRestaurantInfo,
+);
 
-restaurantRouter.post(
+restaurantRouter.get(
   '/',
   authenticate,
   authorize(Permissions.VIEW_RESTAURANT),

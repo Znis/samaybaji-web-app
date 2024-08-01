@@ -7,11 +7,19 @@ import {
   deleteOrder,
   editOrder,
   getAllOrders,
-  getOrdersByRestaurantID,
-  getOrdersByUserID,
+  getOrdersByRestaurantId,
+  getOrdersByUserId,
 } from '../controllers/order';
-import { validateReqBody } from '../middleware/validator';
-import { createOrderSchema, editOrderByCustomerSchema } from '../schema/order';
+import {
+  validateReqBody,
+  validateReqParams,
+  validateReqQuery,
+} from '../middleware/validator';
+import {
+  createOrderSchema,
+  editOrderByCustomerSchema,
+  orderIdParamsSchema,
+} from '../schema/order';
 
 const orderRouter = express();
 
@@ -29,17 +37,17 @@ orderRouter.get(
   authenticate,
   authorize(Permissions.VIEW_ORDER),
   authorizeCRUD,
-  getOrdersByUserID,
+  getOrdersByUserId,
 );
 orderRouter.get(
   '/restaurant',
   authenticate,
   authorize(Permissions.VIEW_ORDER),
   authorizeCRUD,
-  getOrdersByRestaurantID,
+  getOrdersByRestaurantId,
 );
 orderRouter.post(
-  '/create',
+  '/',
   validateReqBody(createOrderSchema),
   authenticate,
   authorize(Permissions.CREATE_ORDER),
@@ -48,7 +56,8 @@ orderRouter.post(
 );
 
 orderRouter.patch(
-  '/edit',
+  '/:orderId',
+  validateReqParams(orderIdParamsSchema),
   validateReqBody(editOrderByCustomerSchema),
   authenticate,
   authorize(Permissions.EDIT_ORDER),
@@ -57,7 +66,8 @@ orderRouter.patch(
 );
 
 orderRouter.delete(
-  '/delete',
+  '/:orderId',
+  validateReqParams(orderIdParamsSchema),
   authenticate,
   authorize(Permissions.CLEAR_CART),
   authorizeCRUD,

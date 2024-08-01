@@ -17,12 +17,12 @@ export default class RestaurantModel extends BaseModel {
         return null;
       });
   }
-  static getRestaurant(userID: string) {
+  static getRestaurant(userId: string) {
     return this.queryBuilder()
       .select('restaurants.*')
       .from('restaurants')
       .join('users', 'restaurants.user_id', 'users.id')
-      .where('users.id', userID)
+      .where('users.id', userId)
       .first()
       .then((data) => {
         return data;
@@ -32,9 +32,23 @@ export default class RestaurantModel extends BaseModel {
         return null;
       });
   }
-  static createRestaurant(userID: string, restaurant: ICreateRestaurant) {
+  static getRestaurantInfo(restaurantId: string) {
     return this.queryBuilder()
-      .insert({ ...restaurant, userId: userID })
+      .select('*')
+      .from('restaurants')
+      .where('id', restaurantId)
+      .first()
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+  }
+  static createRestaurant(userId: string, restaurant: ICreateRestaurant) {
+    return this.queryBuilder()
+      .insert({ ...restaurant, userId: userId })
       .into('restaurants')
       .returning('id')
       .then((data) => {
@@ -47,13 +61,13 @@ export default class RestaurantModel extends BaseModel {
   }
 
   static editRestaurant(
-    restaurantID: string,
+    restaurantId: string,
     editRestaurantData: IEditRestaurant,
   ) {
     return this.queryBuilder()
       .update(editRestaurantData)
       .from('restaurants')
-      .where('id', restaurantID)
+      .where('id', restaurantId)
       .returning('*')
       .then((data) => {
         return data[0];
@@ -63,11 +77,11 @@ export default class RestaurantModel extends BaseModel {
         return null;
       });
   }
-  static deleteRestaurant(restaurantID: string) {
+  static deleteRestaurant(restaurantId: string) {
     return this.queryBuilder()
       .del()
       .from('restaurants')
-      .where('id', restaurantID)
+      .where('id', restaurantId)
       .then((data) => {
         return data;
       })

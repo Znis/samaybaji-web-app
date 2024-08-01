@@ -32,14 +32,14 @@ export async function getMenuItems(
   next: NextFunction,
 ) {
   try {
-    const restaurantID = req.query.restaurantID as string;
-    const menuItems = await MenuService.getMenuItems(restaurantID);
+    const restaurantId = req.query.restaurantId as string;
+    const menuItems = await MenuService.getMenuItems(restaurantId);
     if (!menuItems) {
-      logger.error(`No menu items found of restaurantID ${restaurantID}`);
+      logger.error(`No menu items found of restaurantId ${restaurantId}`);
       next(new BaseError('No menu Found'));
       return;
     }
-    logger.info(`Menu items of restaurantID ${restaurantID} found`);
+    logger.info(`Menu items of restaurantId ${restaurantId} found`);
     return res.status(HttpStatusCode.OK).json(menuItems);
   } catch (error) {
     logger.error('Menu fetch failed');
@@ -56,9 +56,9 @@ export async function createMenu(
 ) {
   try {
     const menuData = req.body;
-    const restaurantID = req.query.restaurantID as string;
-    const response = await MenuService.createMenu(restaurantID, menuData);
-    logger.info(`New menu for restaurantID ${restaurantID} created`);
+    const restaurantId = req.query.restaurantId as string;
+    const response = await MenuService.createMenu(restaurantId, menuData);
+    logger.info(`New menu for restaurantId ${restaurantId} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {
     logger.error('Menu creation failed');
@@ -72,10 +72,10 @@ export async function editMenu(
   next: NextFunction,
 ) {
   try {
-    const menuID = req.query.menuID as string;
+    const menuId = req.query.menuId as string;
     const menuData = req.body;
-    const response = await MenuService.editMenu(menuID, menuData);
-    logger.info(`Menu with menuID ${menuID} edited`);
+    const response = await MenuService.editMenu(menuId, menuData);
+    logger.info(`Menu with menuId ${menuId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Menu edit failed');
@@ -89,9 +89,9 @@ export async function deleteMenu(
   next: NextFunction,
 ) {
   try {
-    const menuID = req.query.menuID as string;
-    await MenuService.deleteMenu(menuID);
-    logger.info(`Menu with menuID ${menuID} deleted`);
+    const menuId = req.query.menuId as string;
+    await MenuService.deleteMenu(menuId);
+    logger.info(`Menu with menuId ${menuId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Menu deletion failed');

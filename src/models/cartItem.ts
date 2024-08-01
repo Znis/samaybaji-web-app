@@ -2,11 +2,11 @@ import { ICreateCartItemData, IEditCartItemData } from '../interfaces/cartItem';
 import { BaseModel } from './base';
 
 export default class CartItemModel extends BaseModel {
-  static getCartItemsByCartID(cartID: string) {
+  static getCartItemsByCartId(cartId: string) {
     return this.queryBuilder()
       .select('*')
       .from('cart_items')
-      .where('cart_id', cartID)
+      .where('cart_id', cartId)
       .then((data) => {
         return data;
       })
@@ -16,14 +16,14 @@ export default class CartItemModel extends BaseModel {
       });
   }
 
-  static createCartItem(cartID: string, cartItemData: ICreateCartItemData[]) {
+  static createCartItem(cartId: string, cartItemData: ICreateCartItemData[]) {
     return this.queryBuilder()
       .insert(
         cartItemData.map((item) => {
           return {
-            menuItemId: item.menuItemID,
+            menuItemId: item.menuItemId,
             quantity: item.quantity,
-            cartId: cartID,
+            cartId: cartId,
           };
         }),
       )
@@ -39,15 +39,15 @@ export default class CartItemModel extends BaseModel {
   }
 
   static editCartItem(
-    menuItemID: string,
-    cartID: string,
+    menuItemId: string,
+    cartId: string,
     editCartItemData: IEditCartItemData,
   ) {
     return this.queryBuilder()
       .update(editCartItemData)
       .from('cart_items')
-      .where('menu_item_id', menuItemID)
-      .andWhere('cart_id', cartID)
+      .where('menu_item_id', menuItemId)
+      .andWhere('cart_id', cartId)
       .returning('*')
       .then((data) => {
         return data[0];
@@ -57,12 +57,12 @@ export default class CartItemModel extends BaseModel {
         return null;
       });
   }
-  static deleteCartItem(menuItemID: string, cartID: string) {
+  static deleteCartItem(menuItemId: string, cartId: string) {
     return this.queryBuilder()
       .del()
       .from('cart_items')
-      .where('menu_item_id', menuItemID)
-      .andWhere('cart_id', cartID)
+      .where('menu_item_id', menuItemId)
+      .andWhere('cart_id', cartId)
       .then((data) => {
         return data;
       })

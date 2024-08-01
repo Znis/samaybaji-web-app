@@ -48,10 +48,10 @@ export default class AuthenticationService {
       refreshToken,
       expiryTime,
     );
-    const roleID = (await AuthorizationService.getRoleId(
+    const roleId = (await AuthorizationService.getRoleId(
       userInfoPayload.id,
     )) as string;
-    const authenticatedUser = { ...userInfoPayload, roleID: roleID };
+    const authenticatedUser = { ...userInfoPayload, roleId: roleId };
 
     logger.info('Generated Access Token and Refresh Token');
     return {

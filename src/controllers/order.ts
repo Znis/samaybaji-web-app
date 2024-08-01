@@ -25,14 +25,14 @@ export async function getAllOrders(
     next(error);
   }
 }
-export async function getOrdersByUserID(
+export async function getOrdersByUserId(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const userID = req.query.userID as string;
-    const orders = await OrderService.getOrdersByUserID(userID);
+    const userId = req.query.userId as string;
+    const orders = await OrderService.getOrdersByUserId(userId);
     if (!orders) {
       next(new BaseError('No Any Orders Found'));
       return;
@@ -44,14 +44,14 @@ export async function getOrdersByUserID(
     next(error);
   }
 }
-export async function getOrdersByRestaurantID(
+export async function getOrdersByRestaurantId(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const restaurantID = req.query.restaurantID as string;
-    const orders = await OrderService.getOrdersByRestaurantID(restaurantID);
+    const restaurantId = req.query.restaurantId as string;
+    const orders = await OrderService.getOrdersByRestaurantId(restaurantId);
     if (!orders) {
       next(new BaseError('No Any Orders Found'));
       return;
@@ -70,14 +70,14 @@ export async function getOrder(
   next: NextFunction,
 ) {
   try {
-    const orderID = req.query.orderID as string;
-    const orderItems = await OrderService.getOrder(orderID);
+    const orderId = req.query.orderId as string;
+    const orderItems = await OrderService.getOrder(orderId);
     if (!orderItems) {
-      logger.error(`No order found of orderID ${orderID}`);
+      logger.error(`No order found of orderId ${orderId}`);
       next(new BaseError('No order Found'));
       return;
     }
-    logger.info(`Menu items of orderID ${orderID} found`);
+    logger.info(`Menu items of orderId ${orderId} found`);
     return res.status(HttpStatusCode.OK).json(orderItems);
   } catch (error) {
     logger.error('Order fetch failed');
@@ -94,9 +94,9 @@ export async function createOrder(
 ) {
   try {
     const orderData = req.body;
-    const userID = req.query.userID as string;
-    const response = await OrderService.createOrder(userID, orderData);
-    logger.info(`New order for userID ${userID} created`);
+    const userId = req.query.userId as string;
+    const response = await OrderService.createOrder(userId, orderData);
+    logger.info(`New order for userId ${userId} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {
     logger.error('Order creation failed');
@@ -110,10 +110,10 @@ export async function editOrder(
   next: NextFunction,
 ) {
   try {
-    const orderID = req.query.orderID as string;
+    const orderId = req.params.orderId as string;
     const orderData = req.body;
-    const response = await OrderService.editOrder(orderID, orderData);
-    logger.info(`Order with orderID ${orderID} edited`);
+    const response = await OrderService.editOrder(orderId, orderData);
+    logger.info(`Order with orderId ${orderId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Order edit failed');
@@ -127,9 +127,9 @@ export async function deleteOrder(
   next: NextFunction,
 ) {
   try {
-    const orderID = req.query.orderID as string;
-    await OrderService.deleteOrder(orderID);
-    logger.info(`Order with orderID ${orderID} deleted`);
+    const orderId = req.params.orderId as string;
+    await OrderService.deleteOrder(orderId);
+    logger.info(`Order with orderId ${orderId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Order deletion failed');

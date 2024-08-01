@@ -13,12 +13,12 @@ export async function addOrderItem(
 ) {
   try {
     const orderItemData = req.body;
-    const orderID = req.query.orderID as string;
+    const orderId = req.query.orderId as string;
     const response = await OrderItemService.createOrderItem(
-      orderID,
+      orderId,
       orderItemData,
     );
-    logger.info(`New order item for orderID ${orderID} created`);
+    logger.info(`New order item for orderId ${orderId} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {
     logger.error('Order item creation failed');
@@ -32,13 +32,13 @@ export async function editOrderItem(
   next: NextFunction,
 ) {
   try {
-    const orderItemID = req.query.orderItemID as string;
+    const orderItemId = req.params.orderItemId as string;
     const orderItemData = req.body;
     const response = await OrderItemService.editOrderItem(
-      orderItemID,
+      orderItemId,
       orderItemData,
     );
-    logger.info(`Order Item with orderItemID ${orderItemID} edited`);
+    logger.info(`Order Item with orderItemId ${orderItemId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Order item edit failed');
@@ -52,9 +52,9 @@ export async function deleteOrderItem(
   next: NextFunction,
 ) {
   try {
-    const orderItemID = req.query.orderItemID as string;
-    await OrderItemService.deleteOrderItem(orderItemID);
-    logger.info(`Order item with orderItemID ${orderItemID} deleted`);
+    const orderItemId = req.params.orderItemId as string;
+    await OrderItemService.deleteOrderItem(orderItemId);
+    logger.info(`Order item with orderItemId ${orderItemId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Order item deletion failed');

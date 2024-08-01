@@ -19,23 +19,23 @@ export default class MenuItemService {
     return menuItems;
   }
 
-  static async getMenuItem(menuItemID: string) {
-    const menuItem = await MenuItemModel.getMenuItem(menuItemID);
+  static async getMenuItem(menuItemId: string) {
+    const menuItem = await MenuItemModel.getMenuItem(menuItemId);
     if (!menuItem) {
-      logger.error(`Menu item with menuItemID ${menuItemID} not found`);
+      logger.error(`Menu item with menuItemId ${menuItemId} not found`);
       return null;
     }
-    logger.info(`Menu item with menuItemID ${menuItemID} found`);
+    logger.info(`Menu item with menuItemId ${menuItemId} found`);
     return menuItem;
   }
 
-  static async getMenuItemsByMenuID(menuID: string) {
-    const menuItems = await MenuItemModel.getMenuItemsByMenuID(menuID);
+  static async getMenuItemsByMenuId(menuId: string) {
+    const menuItems = await MenuItemModel.getMenuItemsByMenuId(menuId);
     if (!menuItems) {
-      logger.error(`Menu items of menuID ${menuID} not found`);
+      logger.error(`Menu items of menuId ${menuId} not found`);
       return null;
     }
-    logger.info(`Menu items of menuID ${menuID} found`);
+    logger.info(`Menu items of menuId ${menuId} found`);
     return menuItems;
   }
 
@@ -48,9 +48,9 @@ export default class MenuItemService {
     logger.info(`Popular menu items found`);
     return popularMenuItems;
   }
-  static async createMenuItem(menuID: string, menuItemData: ICreateMenuItem) {
+  static async createMenuItem(menuId: string, menuItemData: ICreateMenuItem) {
     const queryResult = await MenuItemModel.createMenuItem(
-      menuID,
+      menuId,
       menuItemData,
     )!;
     if (!queryResult) {
@@ -62,42 +62,42 @@ export default class MenuItemService {
   }
 
   static async editMenuItem(
-    menuItemID: string,
+    menuItemId: string,
     editMenuItemData: IEditMenuItem,
   ) {
     const queryResult = await MenuItemModel.editMenuItem(
-      menuItemID,
+      menuItemId,
       editMenuItemData,
     )!;
     if (!queryResult) {
-      logger.error(`Could not edit menu item with menuItemID ${menuItemID}`);
+      logger.error(`Could not edit menu item with menuItemId ${menuItemId}`);
       throw new ModelError('Could not edit Menu item');
     }
-    logger.info(`Menu item with menuItemID ${menuItemID} updated`);
+    logger.info(`Menu item with menuItemId ${menuItemId} updated`);
 
     return {
       ...editMenuItemData,
-      id: menuItemID,
+      id: menuItemId,
     } as IMenuItem;
   }
 
-  static async deleteMenuItem(menuItemID: string) {
+  static async deleteMenuItem(menuItemId: string) {
     const activeOrderItems =
-      await OrderItemService.getActiveOrderItemsByMenuItemID(menuItemID);
+      await OrderItemService.getActiveOrderItemsByMenuItemId(menuItemId);
     if (activeOrderItems!.length) {
       logger.error(
-        `Could not delete menu item with menuItemID ${menuItemID} because it has active order items`,
+        `Could not delete menu item with menuItemId ${menuItemId} because it has active order items`,
       );
       throw new ModelError(
         'Could not delete Menu item due to active order items',
       );
     }
-    const queryResult = await MenuItemModel.deleteMenuItem(menuItemID)!;
+    const queryResult = await MenuItemModel.deleteMenuItem(menuItemId)!;
     if (!queryResult) {
-      logger.error(`Could not delete menu item with menuItemID ${menuItemID}`);
+      logger.error(`Could not delete menu item with menuItemId ${menuItemId}`);
       throw new ModelError('Could not delete Menu item');
     }
-    logger.info(`Menu item with menuItemID ${menuItemID} deleted`);
+    logger.info(`Menu item with menuItemId ${menuItemId} deleted`);
 
     return true;
   }

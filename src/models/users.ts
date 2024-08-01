@@ -14,11 +14,11 @@ export default class UserModel extends BaseModel {
         return null;
       });
   }
-  static getUser(userID: string) {
+  static getUser(userId: string) {
     return this.queryBuilder()
       .select('*')
       .from('users')
-      .where('id', userID)
+      .where('id', userId)
       .first()
       .then((data) => {
         return data;
@@ -76,13 +76,13 @@ export default class UserModel extends BaseModel {
         return null;
       });
   }
-  static updateRole(userID: string, role: string) {
+  static updateRole(userId: string, role: string) {
     return this.queryBuilder()
       .update({
         roleId: role,
       })
       .into('users_roles')
-      .where('user_id', userID)
+      .where('user_id', userId)
       .then((data) => {
         return data;
       })

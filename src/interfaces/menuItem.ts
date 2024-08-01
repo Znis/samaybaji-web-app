@@ -8,7 +8,7 @@ export interface IMenuItem {
   imageSrc: string;
   isPopular: boolean;
   status: Status;
-  menuID: string;
+  menuId: string;
 }
 export interface ICreateMenuItem {
   name: string;

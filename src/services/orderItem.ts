@@ -6,33 +6,63 @@ import {
   IEditOrderItem,
   IOrderItem,
 } from '../interfaces/orderItem';
+import MenuItemService from './menuItem';
+import IMenuItem from '../interfaces/menuItem';
 
 const logger = loggerWithNameSpace('Order Item Service');
 
 export default class OrderItemService {
-  static async getOrderItemsByOrderID(orderID: string) {
-    const orderItems = await OrderItemModel.getOrderItemsByOrderID(orderID);
+  static async getOrderItemsByOrderId(orderId: string) {
+    const orderItems = await OrderItemModel.getOrderItemsByOrderId(orderId);
     if (!orderItems) {
-      logger.error(`Order items of orderID ${orderID} not found`);
+      logger.error(`Order items of orderId ${orderId} not found`);
       return null;
     }
-    logger.info(`Order items of ${orderID} found`);
-    return orderItems;
+    const orderItemsWithMenuItemData = await Promise.all(
+      orderItems.map(async (item) => {
+        const menuItemData = (await MenuItemService.getMenuItem(
+          item.menuItemId,
+        )) as IMenuItem;
+        return { ...item, menuItemData: menuItemData } as IOrderItem;
+      }),
+    );
+    logger.info(`Order items of ${orderId} found`);
+    return orderItemsWithMenuItemData;
   }
-  static async getActiveOrderItemsByMenuItemID(menuItemID: string) {
+  static async getActiveOrderItemsByMenuItemId(menuItemId: string) {
     const activeOrderItems =
-      await OrderItemModel.getActiveOrderItemsByMenuItemID(menuItemID);
+      await OrderItemModel.getActiveOrderItemsByMenuItemId(menuItemId);
     if (!activeOrderItems) {
-      logger.error(`Active order items of menuItemID ${menuItemID} not found`);
+      logger.error(`Active order items of menuItemId ${menuItemId} not found`);
       return null;
     }
-    logger.info(`Active order items of ${menuItemID} found`);
+    logger.info(`Active order items of ${menuItemId} found`);
     return activeOrderItems;
   }
+  static async getOwnOrderItems(orderId: string, restaurantId: string) {
+    const orderItems = await OrderItemModel.getOwnOrderItems(
+      orderId,
+      restaurantId,
+    );
+    if (!orderItems) {
+      logger.error('Could not get the order items');
+      throw new ModelError('Could not get the order items');
+    }
+    const orderItemsWithMenuItemData = await Promise.all(
+      orderItems.map(async (item) => {
+        const menuItemData = (await MenuItemService.getMenuItem(
+          item.menuItemId,
+        )) as IMenuItem;
+        return { ...item, menuItemData: menuItemData } as IOrderItem;
+      }),
+    );
+    logger.info(`Order items of ${orderId} found`);
+    return orderItemsWithMenuItemData;
+  }
 
-  static async createOrderItem(orderID: string, orderData: ICreateOrderItem[]) {
+  static async createOrderItem(orderId: string, orderData: ICreateOrderItem[]) {
     const queryResult = await OrderItemModel.createOrderItem(
-      orderID,
+      orderId,
       orderData,
     )!;
     if (!queryResult) {
@@ -45,18 +75,18 @@ export default class OrderItemService {
   }
 
   static async editOrderItem(
-    orderItemID: string,
+    orderItemId: string,
     editOrderData: IEditOrderItem,
   ) {
     const queryResult = await OrderItemModel.editOrderItem(
-      orderItemID,
+      orderItemId,
       editOrderData,
     )!;
     if (!queryResult) {
-      logger.error(`Could not edit order item with orderItemID ${orderItemID}`);
+      logger.error(`Could not edit order item with orderItemId ${orderItemId}`);
       throw new ModelError('Could not edit order item');
     }
-    logger.info(`Cart item with orderItemID ${orderItemID} updated`);
+    logger.info(`Cart item with orderItemId ${orderItemId} updated`);
 
     return {
       ...editOrderData,
@@ -64,15 +94,15 @@ export default class OrderItemService {
     } as IOrderItem;
   }
 
-  static async deleteOrderItem(orderItemID: string) {
-    const queryResult = await OrderItemModel.deleteOrderItem(orderItemID)!;
+  static async deleteOrderItem(orderItemId: string) {
+    const queryResult = await OrderItemModel.deleteOrderItem(orderItemId)!;
     if (!queryResult) {
       logger.error(
-        `Could not delete order item with orderItemID ${orderItemID}`,
+        `Could not delete order item with orderItemId ${orderItemId}`,
       );
       throw new ModelError('Could not delete order item');
     }
-    logger.info(`Cart order with orderItemID ${orderItemID} deleted`);
+    logger.info(`Cart order with orderItemId ${orderItemId} deleted`);
 
     return true;
   }

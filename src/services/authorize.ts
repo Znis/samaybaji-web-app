@@ -41,17 +41,17 @@ export default class AuthorizationService {
     return permissions!;
   }
 
-  static async getRestaurantID(userID: string) {
-    const restaurant = await RestaurantServices.getRestaurant(userID);
+  static async getRestaurantId(userId: string) {
+    const restaurant = await RestaurantServices.getRestaurant(userId);
     return restaurant.id;
   }
-  static async getMenuID(restaurantID: string) {
-    const menu = await MenuServices.getMenu(restaurantID);
+  static async getMenuId(restaurantId: string) {
+    const menu = await MenuServices.getMenu(restaurantId);
     return menu.id;
   }
 
-  static async getCartID(userID: string) {
-    const cart = await CartServices.getCart(userID);
+  static async getCartId(userId: string) {
+    const cart = await CartServices.getCart(userId);
     return cart.id;
   }
 }

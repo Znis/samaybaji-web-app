@@ -28,14 +28,14 @@ export async function getAllDishes(
 
 export async function getDish(req: Request, res: Response, next: NextFunction) {
   try {
-    const menuItemID = req.query.menuItemID as string;
-    const dish = await DishService.getDish(menuItemID);
+    const menuItemId = req.query.menuItemId as string;
+    const dish = await DishService.getDish(menuItemId);
     if (!dish) {
-      logger.error(`No dish found for menuItemID ${menuItemID}`);
+      logger.error(`No dish found for menuItemId ${menuItemId}`);
       next(new BaseError('No dish Found'));
       return;
     }
-    logger.info(`Dish for menuItemID ${menuItemID} found`);
+    logger.info(`Dish for menuItemId ${menuItemId} found`);
     return res.status(HttpStatusCode.OK).json(dish);
   } catch (error) {
     logger.error('Dish fetch failed');
@@ -52,9 +52,9 @@ export async function createDish(
 ) {
   try {
     const dishData = req.body;
-    const menuItemID = req.query.menuItemID as string;
-    const response = await DishService.createDish(menuItemID, dishData);
-    logger.info(`New dish for menuItemID ${menuItemID} created`);
+    const menuItemId = req.query.menuItemId as string;
+    const response = await DishService.createDish(menuItemId, dishData);
+    logger.info(`New dish for menuItemId ${menuItemId} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {
     logger.error('Dish creation failed');
@@ -68,10 +68,10 @@ export async function editDish(
   next: NextFunction,
 ) {
   try {
-    const dishID = req.query.dishID as string;
+    const dishId = req.query.dishId as string;
     const dishData = req.body;
-    const response = await DishService.editDish(dishID, dishData);
-    logger.info(`Dish of dishID ${dishID} edited`);
+    const response = await DishService.editDish(dishId, dishData);
+    logger.info(`Dish of dishId ${dishId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Dish edit failed');
@@ -85,9 +85,9 @@ export async function deleteDish(
   next: NextFunction,
 ) {
   try {
-    const dishID = req.query.dishID as string;
-    await DishService.deleteDish(dishID);
-    logger.info(`dish of dishID ${dishID} deleted`);
+    const dishId = req.query.dishId as string;
+    await DishService.deleteDish(dishId);
+    logger.info(`dish of dishId ${dishId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('dish deletion failed');

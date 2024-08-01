@@ -41,19 +41,19 @@ export async function authorizeCRUD(
       return next();
     }
     if (userRole == Roles.CUSTOMER_WITH_RESTAURANT) {
-      const restaurantID = (await AuthorizationService.getRestaurantID(
+      const restaurantId = (await AuthorizationService.getRestaurantId(
         currentUser.id,
       )) as string;
-      req.query.restaurantID = restaurantID;
-      const menuID = await AuthorizationService.getMenuID(restaurantID);
-      if (menuID) {
-        req.query.menuID = menuID;
+      req.query.restaurantId = restaurantId;
+      const menuId = await AuthorizationService.getMenuId(restaurantId);
+      if (menuId) {
+        req.query.menuId = menuId;
       }
     }
-    const cartID = await AuthorizationService.getCartID(currentUser.id);
+    const cartId = await AuthorizationService.getCartId(currentUser.id);
 
-    req.query.cartID = cartID;
-    if (!req.query.userID) req.query.userID = currentUser.id;
+    req.query.cartId = cartId;
+    if (!req.query.userId) req.query.userId = currentUser.id;
 
     next();
   } catch (error) {

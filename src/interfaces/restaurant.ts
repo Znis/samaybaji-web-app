@@ -9,7 +9,7 @@ interface IRestaurant {
   profilePic: string;
   coverPic: string;
   panNumber: string;
-  userID: string;
+  userId: string;
 }
 export interface ICreateRestaurant {
   name: string;

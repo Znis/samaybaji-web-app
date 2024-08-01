@@ -32,14 +32,14 @@ export async function getCartItems(
   next: NextFunction,
 ) {
   try {
-    const userID = req.query.userID as string;
-    const cart = await CartService.getCartItems(userID);
+    const userId = req.query.userId as string;
+    const cart = await CartService.getCartItems(userId);
     if (!cart) {
-      logger.error(`No cart found of userID ${userID}`);
+      logger.error(`No cart found of userId ${userId}`);
       next(new BaseError('No cart Found'));
       return;
     }
-    logger.info(`Cart of userID ${userID} found`);
+    logger.info(`Cart of userId ${userId} found`);
     return res.status(HttpStatusCode.OK).json(cart);
   } catch (error) {
     logger.error('Cart fetch failed');
@@ -55,9 +55,9 @@ export async function clearCart(
   next: NextFunction,
 ) {
   try {
-    const cartID = req.query.cartID as string;
-    await CartService.clearCart(cartID);
-    logger.info(`Cart with cartID ${cartID} cleared`);
+    const cartId = req.query.cartId as string;
+    await CartService.clearCart(cartId);
+    logger.info(`Cart with cartId ${cartId} cleared`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Cleared Successfully');
   } catch (error) {
     logger.error('Cart clear failed');

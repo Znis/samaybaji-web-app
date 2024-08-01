@@ -1,6 +1,6 @@
 interface ICart {
   id: string;
-  userID: string;
+  userId: string;
 }
 
 export default ICart;

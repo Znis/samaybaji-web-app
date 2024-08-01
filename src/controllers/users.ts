@@ -26,14 +26,14 @@ export async function getAllUsers(
 
 export async function getUser(req: Request, res: Response, next: NextFunction) {
   try {
-    const userID = req.query.userID as string;
-    const data = await UserService.getUser(userID);
+    const userId = req.query.userId as string;
+    const data = await UserService.getUser(userId);
     if (!data) {
-      logger.error(`No user found with userID ${userID}`);
+      logger.error(`No user found with userId ${userId}`);
       next(new BaseError('No User Found'));
       return;
     }
-    logger.info(`User with userID ${userID} found`);
+    logger.info(`User with userId ${userId} found`);
     return res.status(HttpStatusCode.OK).json(data);
   } catch (error) {
     logger.error('User fetch failed');
@@ -62,10 +62,10 @@ export async function editUser(
   next: NextFunction,
 ) {
   try {
-    const { userID } = req.query;
+    const { userId } = req.query;
     const data = req.body;
-    const response = await UserService.editUser(userID as string, data);
-    logger.info(`User with id ${userID} edited`);
+    const response = await UserService.editUser(userId as string, data);
+    logger.info(`User with id ${userId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('User update failed');
@@ -78,9 +78,9 @@ export async function deleteUser(
   next: NextFunction,
 ) {
   try {
-    const { userID } = req.query;
-    await UserService.deleteUser(userID as string);
-    logger.info(`User with id ${userID} deleted`);
+    const { userId } = req.query;
+    await UserService.deleteUser(userId as string);
+    logger.info(`User with id ${userId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('User deletion failed');

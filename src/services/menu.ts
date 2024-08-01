@@ -14,35 +14,35 @@ export default class MenuService {
     }
     const menuWithmenuItems = await Promise.all(
       menus.map(async (menu) => {
-        const menuItems = await MenuItemServices.getMenuItemsByMenuID(menu.id);
+        const menuItems = await MenuItemServices.getMenuItemsByMenuId(menu.id);
         return { ...menu, menuItems: menuItems };
       }),
     );
     logger.info('All Menus Found');
     return menuWithmenuItems;
   }
-  static async getMenu(restaurantID: string) {
-    const menu = await MenuModel.getMenu(restaurantID);
+  static async getMenu(restaurantId: string) {
+    const menu = await MenuModel.getMenu(restaurantId);
     if (!menu) {
-      logger.error(`Menu of restaurantID ${restaurantID} not found`);
+      logger.error(`Menu of restaurantId ${restaurantId} not found`);
       return null;
     }
-    logger.info(`Menu of restaurantID ${restaurantID} found`);
+    logger.info(`Menu of restaurantId ${restaurantId} found`);
     return menu;
   }
-  static async getMenuItems(restaurantID: string) {
-    const menu = await MenuModel.getMenu(restaurantID);
+  static async getMenuItems(restaurantId: string) {
+    const menu = await MenuModel.getMenu(restaurantId);
     if (!menu) {
-      logger.error(`Menu of restaurantID ${restaurantID} not found`);
+      logger.error(`Menu of restaurantId ${restaurantId} not found`);
       return null;
     }
-    const menuItems = await MenuItemServices.getMenuItemsByMenuID(menu.id);
-    logger.info(`Menu of restaurantID ${restaurantID} found`);
+    const menuItems = await MenuItemServices.getMenuItemsByMenuId(menu.id);
+    logger.info(`Menu of restaurantId ${restaurantId} found`);
     return menuItems;
   }
 
-  static async createMenu(restaurantID: string, menuData: ICreateMenu) {
-    const queryResult = await MenuModel.createMenu(restaurantID, menuData)!;
+  static async createMenu(restaurantId: string, menuData: ICreateMenu) {
+    const queryResult = await MenuModel.createMenu(restaurantId, menuData)!;
     if (!queryResult) {
       logger.error('Could not create new menu');
       throw new ModelError('Could not create menu');
@@ -51,27 +51,27 @@ export default class MenuService {
     return { ...menuData, id: queryResult.id } as IMenu;
   }
 
-  static async editMenu(menuID: string, editMenuData: IEditMenu) {
-    const queryResult = await MenuModel.editMenu(menuID, editMenuData)!;
+  static async editMenu(menuId: string, editMenuData: IEditMenu) {
+    const queryResult = await MenuModel.editMenu(menuId, editMenuData)!;
     if (!queryResult) {
-      logger.error(`Could not edit menu with menuID ${menuID}`);
+      logger.error(`Could not edit menu with menuId ${menuId}`);
       throw new ModelError('Could not edit Menu');
     }
-    logger.info(`Menu with menuID ${menuID} updated`);
+    logger.info(`Menu with menuId ${menuId} updated`);
 
     return {
       ...editMenuData,
-      id: menuID,
+      id: menuId,
     } as IMenu;
   }
 
-  static async deleteMenu(menuID: string) {
-    const queryResult = await MenuModel.deleteMenu(menuID)!;
+  static async deleteMenu(menuId: string) {
+    const queryResult = await MenuModel.deleteMenu(menuId)!;
     if (!queryResult) {
-      logger.error(`Could not delete menu with menuID ${menuID}`);
+      logger.error(`Could not delete menu with menuId ${menuId}`);
       throw new ModelError('Could not delete Menu');
     }
-    logger.info(`Menu with menuID ${menuID} deleted`);
+    logger.info(`Menu with menuId ${menuId} deleted`);
 
     return true;
   }

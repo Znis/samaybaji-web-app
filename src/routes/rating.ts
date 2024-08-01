@@ -9,13 +9,13 @@ import {
   editRating,
   getAllRatings,
   getRatings,
-  getRatingsByUserID,
-  getSpecificRatingByUserID,
+  getRatingsByUserId,
+  getSpecificRatingByUserId,
 } from '../controllers/rating';
 import {
   createOrEditOrDeleteRatingQuerySchema,
   createOrEditRatingBodySchema,
-  getRatingByTargetIDQuerySchema,
+  getRatingByTargetIdQuerySchema,
   getRatingQuerySchema,
 } from '../schema/rating';
 
@@ -36,21 +36,21 @@ ratingRouter.get(
   authorize(Permissions.VIEW_REVIEW),
   validateReqQuery(getRatingQuerySchema),
   authorizeCRUD,
-  getRatingsByUserID,
+  getRatingsByUserId,
 );
 ratingRouter.get(
-  '/:targetID',
+  '/:targetId',
   authenticate,
   authorize(Permissions.VIEW_REVIEW),
-  validateReqQuery(getRatingByTargetIDQuerySchema),
+  validateReqQuery(getRatingByTargetIdQuerySchema),
   authorizeCRUD,
-  getSpecificRatingByUserID,
+  getSpecificRatingByUserId,
 );
 ratingRouter.get(
   '/',
   authenticate,
   authorize(Permissions.VIEW_REVIEW),
-  validateReqQuery(getRatingByTargetIDQuerySchema),
+  validateReqQuery(getRatingByTargetIdQuerySchema),
   authorizeCRUD,
   getRatings,
 );

@@ -26,15 +26,15 @@ export async function getAllReviews(
     next(error);
   }
 }
-export async function getReviewsByUserID(
+export async function getReviewsByUserId(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const userID = req.query.userID as string;
+    const userId = req.query.userId as string;
 
-    const reviews = await ReviewService.getReviewsByUserID(userID);
+    const reviews = await ReviewService.getReviewsByUserId(userId);
     if (!reviews) {
       next(new BaseError('No Any Reviews Found'));
       return;
@@ -46,20 +46,20 @@ export async function getReviewsByUserID(
     next(error);
   }
 }
-export async function getSpecificReviewByUserID(
+export async function getSpecificReviewByUserId(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const userID = req.query.userID as string;
-    const targetID = req.query.targetID as string;
+    const userId = req.query.userId as string;
+    const targetId = req.query.targetId as string;
     const targetType = req.query.targetType as ReviewTargetType;
 
-    const review = await ReviewService.getSpecificReviewByUserID(
-      userID,
+    const review = await ReviewService.getSpecificReviewByUserId(
+      userId,
       targetType,
-      targetID,
+      targetId,
     );
     if (!review) {
       next(new BaseError('No Any Reviews Found'));
@@ -79,14 +79,14 @@ export async function getReviews(
 ) {
   try {
     const targetType = req.query.targetType as ReviewTargetType;
-    const targetID = req.query.targetID as string;
-    const review = await ReviewService.getReviews(targetType, targetID);
+    const targetId = req.query.targetId as string;
+    const review = await ReviewService.getReviews(targetType, targetId);
     if (!review) {
-      logger.error(`No Review found for ${targetType} with ID ${targetID}`);
+      logger.error(`No Review found for ${targetType} with Id ${targetId}`);
       next(new BaseError('No Review Found'));
       return;
     }
-    logger.info(`Reviews for ${targetType} with ID ${targetID} found`);
+    logger.info(`Reviews for ${targetType} with Id ${targetId} found`);
     return res.status(HttpStatusCode.OK).json(review);
   } catch (error) {
     logger.error('Review fetch failed');
@@ -118,10 +118,10 @@ export async function editReview(
   next: NextFunction,
 ) {
   try {
-    const reviewID = req.query.reviewID as string;
+    const reviewId = req.query.reviewId as string;
     const reviewData = req.body;
-    const response = await ReviewService.editReview(reviewID, reviewData);
-    logger.info(`Review of reviewID ${reviewID} edited`);
+    const response = await ReviewService.editReview(reviewId, reviewData);
+    logger.info(`Review of reviewId ${reviewId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Review edit failed');
@@ -135,9 +135,9 @@ export async function deleteReview(
   next: NextFunction,
 ) {
   try {
-    const reviewID = req.query.reviewID as string;
-    await ReviewService.deleteReview(reviewID);
-    logger.info(`Review of reviewID ${reviewID} deleted`);
+    const reviewId = req.query.reviewId as string;
+    await ReviewService.deleteReview(reviewId);
+    logger.info(`Review of reviewId ${reviewId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Review deletion failed');

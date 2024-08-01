@@ -14,11 +14,11 @@ export default class OrderModel extends BaseModel {
         return null;
       });
   }
-  static getOrder(orderID: string) {
+  static getOrder(orderId: string) {
     return this.queryBuilder()
       .select('*')
       .from('orders')
-      .where('id', orderID)
+      .where('id', orderId)
       .first()
       .then((data) => {
         return data;
@@ -29,11 +29,11 @@ export default class OrderModel extends BaseModel {
       });
   }
 
-  static getOrdersByUserID(userID: string) {
+  static getOrdersByUserId(userId: string) {
     return this.queryBuilder()
       .select('*')
       .from('orders')
-      .where('user_id', userID)
+      .where('user_id', userId)
       .then((data) => {
         return data;
       })
@@ -43,7 +43,7 @@ export default class OrderModel extends BaseModel {
       });
   }
 
-  static getOrdersByRestaurantID(restaurantID: string) {
+  static getOrdersByRestaurantId(restaurantId: string) {
     return this.queryBuilder()
       .select('orders.*')
       .from('orders')
@@ -51,7 +51,7 @@ export default class OrderModel extends BaseModel {
       .join('menu_items', 'order_items.menu_item_id', 'menu_items.id')
       .join('menus', 'menu_items.menu_id', 'menus.id')
       .join('restaurants', 'menus.restaurant_id', 'restaurants.id')
-      .where('restaurants.id', restaurantID)
+      .where('restaurants.id', restaurantId)
       .then((data) => {
         return data;
       })
@@ -60,9 +60,9 @@ export default class OrderModel extends BaseModel {
         return null;
       });
   }
-  static createOrder(userID: string, orderData: ICreateOrderDetails) {
+  static createOrder(userId: string, orderData: ICreateOrderDetails) {
     return this.queryBuilder()
-      .insert({ ...orderData, userId: userID })
+      .insert({ ...orderData, userId: userId })
       .into('orders')
       .returning('id')
       .then((data) => {
@@ -73,11 +73,11 @@ export default class OrderModel extends BaseModel {
         return null;
       });
   }
-  static editOrder(orderID: string, editOrderData: IEditOrderDetails) {
+  static editOrder(orderId: string, editOrderData: IEditOrderDetails) {
     return this.queryBuilder()
       .update(editOrderData)
       .into('orders')
-      .where('id', orderID)
+      .where('id', orderId)
       .returning('*')
       .then((data) => {
         return data[0];
@@ -88,11 +88,11 @@ export default class OrderModel extends BaseModel {
       });
   }
 
-  static deleteOrder(orderID: string) {
+  static deleteOrder(orderId: string) {
     return this.queryBuilder()
       .del()
       .from('orders')
-      .where('id', orderID)
+      .where('id', orderId)
       .then((data) => {
         return data;
       })

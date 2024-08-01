@@ -14,7 +14,7 @@ export async function seed(knex: Knex): Promise<void> {
   const customerRoleId = roleMap.get('customer');
 
   if (!superadminRoleId || !customerRoleId) {
-    throw new Error('Role IDs not found in the roles table');
+    throw new Error('Role Ids not found in the roles table');
   }
 
   const adminId = userMap.get('Admin');
@@ -26,7 +26,7 @@ export async function seed(knex: Knex): Promise<void> {
   ];
 
   if (!adminId || customerIds.some((id) => id === undefined)) {
-    throw new Error('User IDs not found in the users table');
+    throw new Error('User Ids not found in the users table');
   }
 
   await knex('users_roles').insert([

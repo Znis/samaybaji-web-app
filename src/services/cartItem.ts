@@ -9,22 +9,22 @@ import ICartItem, {
 const logger = loggerWithNameSpace('Cart Item Service');
 
 export default class CartItemService {
-  static async getCartItemsByCartID(cartID: string) {
-    const cartItems = await CartItemModel.getCartItemsByCartID(cartID);
+  static async getCartItemsByCartId(cartId: string) {
+    const cartItems = await CartItemModel.getCartItemsByCartId(cartId);
     if (!cartItems) {
-      logger.error(`Cart items of cartID ${cartID} not found`);
+      logger.error(`Cart items of cartId ${cartId} not found`);
       return null;
     }
-    logger.info(`Cart items of ${cartID} found`);
+    logger.info(`Cart items of ${cartId} found`);
     return cartItems;
   }
 
   static async createCartItem(
-    cartID: string,
+    cartId: string,
     cartItemData: ICreateCartItemData[],
   ) {
     const queryResult = await CartItemModel.createCartItem(
-      cartID,
+      cartId,
       cartItemData,
     )!;
     if (!queryResult) {
@@ -37,20 +37,20 @@ export default class CartItemService {
   }
 
   static async editCartItem(
-    menuItemID: string,
-    cartID: string,
+    menuItemId: string,
+    cartId: string,
     editCartItemData: IEditCartItemData,
   ) {
     const queryResult = await CartItemModel.editCartItem(
-      menuItemID,
-      cartID,
+      menuItemId,
+      cartId,
       editCartItemData,
     )!;
     if (!queryResult) {
-      logger.error(`Could not edit cart item with menuItemID ${menuItemID}`);
+      logger.error(`Could not edit cart item with menuItemId ${menuItemId}`);
       throw new ModelError('Could not edit Menu');
     }
-    logger.info(`Cart item with menuItemID ${menuItemID} updated`);
+    logger.info(`Cart item with menuItemId ${menuItemId} updated`);
 
     return {
       ...editCartItemData,
@@ -58,13 +58,13 @@ export default class CartItemService {
     } as ICartItem;
   }
 
-  static async deleteCartItem(menuItemID: string, cartID: string) {
-    const queryResult = await CartItemModel.deleteCartItem(menuItemID, cartID)!;
+  static async deleteCartItem(menuItemId: string, cartId: string) {
+    const queryResult = await CartItemModel.deleteCartItem(menuItemId, cartId)!;
     if (!queryResult) {
-      logger.error(`Could not delete cart item with menuItemID ${menuItemID}`);
+      logger.error(`Could not delete cart item with menuItemId ${menuItemId}`);
       throw new ModelError('Could not delete cart item');
     }
-    logger.info(`Cart item with menuItemID ${menuItemID} deleted`);
+    logger.info(`Cart item with menuItemId ${menuItemId} deleted`);
 
     return true;
   }

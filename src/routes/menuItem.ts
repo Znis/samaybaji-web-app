@@ -14,7 +14,7 @@ import {
 import {
   createMenuItemBodySchema,
   editMenuItemBodySchema,
-  menuItemIDQuerySchema,
+  menuItemIdQuerySchema,
 } from '../schema/menuItem';
 
 const menuItemRouter = express();
@@ -23,7 +23,7 @@ const menuItemRouter = express();
 menuItemRouter.get('/', getAllMenuItems);
 menuItemRouter.get('/popular', getPopularMenuItems);
 
-menuItemRouter.post('/', validateReqQuery(menuItemIDQuerySchema), getMenuItem);
+menuItemRouter.post('/', validateReqQuery(menuItemIdQuerySchema), getMenuItem);
 menuItemRouter.post(
   '/create',
   validateReqBody(createMenuItemBodySchema),

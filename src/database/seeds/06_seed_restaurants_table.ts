@@ -3,7 +3,7 @@ import type { Knex } from 'knex';
 export async function seed(knex: Knex): Promise<void> {
   await knex('restaurants').del(); // Deletes ALL existing entries
 
-  // Retrieve user IDs
+  // Retrieve user Ids
   const users = await knex('users')
     .select('id')
     .orderBy('id')
@@ -16,7 +16,7 @@ export async function seed(knex: Knex): Promise<void> {
     throw new Error('Not enough users to seed restaurants.');
   }
 
-  // Retrieve role ID of customer_with_restaurant
+  // Retrieve role Id of customer_with_restaurant
   const roles = await knex('roles').select('id', 'name');
 
   const roleMap = new Map(roles.map((role) => [role.name, role.id]));
@@ -24,7 +24,7 @@ export async function seed(knex: Knex): Promise<void> {
   const customerWithRestaurantRoleId = roleMap.get('customer_with_restaurant');
 
   if (!customerWithRestaurantRoleId) {
-    throw new Error('Role ID not found in the roles table');
+    throw new Error('Role Id not found in the roles table');
   }
 
   // Update user roles

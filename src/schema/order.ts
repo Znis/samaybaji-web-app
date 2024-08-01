@@ -190,3 +190,12 @@ export const editOrderByAdminSchema = joi.object({
       stripUnknown: true,
     }),
 });
+export const orderIdParamsSchema = joi
+  .object({
+    orderId: joi.string().optional().messages({
+      'any.required': 'Order Id is required',
+    }),
+  })
+  .options({
+    stripUnknown: true,
+  });

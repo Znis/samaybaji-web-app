@@ -2,7 +2,7 @@ import { Permissions } from './../enums/permissions';
 import express from 'express';
 import { authenticate } from '../middleware/authenticate';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
-import { validateReqBody } from '../middleware/validator';
+import { validateReqBody, validateReqParams } from '../middleware/validator';
 import {
   addOrderItem,
   deleteOrderItem,
@@ -11,11 +11,12 @@ import {
 import {
   createOrderItemArraySchema,
   editOrderItemByRestaurantSchema,
+  orderItemIdParamsSchema,
 } from '../schema/orderItem';
 
 const orderItemRouter = express();
 orderItemRouter.post(
-  '/add',
+  '/',
   validateReqBody(createOrderItemArraySchema),
   authenticate,
   authorize(Permissions.CREATE_ORDER),
@@ -24,7 +25,8 @@ orderItemRouter.post(
 );
 
 orderItemRouter.patch(
-  '/edit',
+  '/:orderItemId',
+  validateReqParams(orderItemIdParamsSchema),
   validateReqBody(editOrderItemByRestaurantSchema),
   authenticate,
   authorize(Permissions.EDIT_ORDER),
@@ -33,7 +35,8 @@ orderItemRouter.patch(
 );
 
 orderItemRouter.delete(
-  '/delete',
+  '/:orderItemId',
+  validateReqParams(orderItemIdParamsSchema),
   authenticate,
   authorize(Permissions.CANCEL_ORDER),
   authorizeCRUD,

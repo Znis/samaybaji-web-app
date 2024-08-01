@@ -13,9 +13,9 @@ export async function addCartItem(
 ) {
   try {
     const cartItemData = req.body;
-    const cartID = req.query.cartID as string;
-    const response = await CartItemService.createCartItem(cartID, cartItemData);
-    logger.info(`New cart item for cartID ${cartID} created`);
+    const cartId = req.query.cartId as string;
+    const response = await CartItemService.createCartItem(cartId, cartItemData);
+    logger.info(`New cart item for cartId ${cartId} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {
     logger.error('Cart item creation failed');
@@ -29,15 +29,15 @@ export async function editCartItem(
   next: NextFunction,
 ) {
   try {
-    const menuItemID = req.query.menuItemID as string;
-    const cartID = req.query.cartID as string;
+    const menuItemId = req.query.menuItemId as string;
+    const cartId = req.query.cartId as string;
     const cartItemData = req.body;
     const response = await CartItemService.editCartItem(
-      menuItemID,
-      cartID,
+      menuItemId,
+      cartId,
       cartItemData,
     );
-    logger.info(`Cart Item with menuItemID ${menuItemID} edited`);
+    logger.info(`Cart Item with menuItemId ${menuItemId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Cart item edit failed');
@@ -51,10 +51,10 @@ export async function deleteCartItem(
   next: NextFunction,
 ) {
   try {
-    const menuItemID = req.query.menuItemID as string;
-    const cartID = req.query.cartID as string;
-    await CartItemService.deleteCartItem(menuItemID, cartID);
-    logger.info(`Cart item with menuItemID ${menuItemID} deleted`);
+    const menuItemId = req.query.menuItemId as string;
+    const cartId = req.query.cartId as string;
+    await CartItemService.deleteCartItem(menuItemId, cartId);
+    logger.info(`Cart item with menuItemId ${menuItemId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Cart item deletion failed');
