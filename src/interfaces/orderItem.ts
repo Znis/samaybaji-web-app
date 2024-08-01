@@ -7,19 +7,16 @@ export interface IOrderItem {
   quantity: number;
   unitPrice: number;
   status: OrderItemStatus;
-  notes: string;
 }
 
 export interface ICreateOrderItem {
   menuItemID: string;
   quantity: number;
   unitPrice: number;
-  notes: string;
 }
 
 export interface IEditOrderItem {
   quantity?: number;
   unitPrice?: number;
   status?: OrderItemStatus;
-  notes?: string;
 }

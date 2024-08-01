@@ -1,4 +1,4 @@
-import { fetchAllMenus } from '../../../apiCalls';
+import { fetchPopularMenuItems } from '../../../api-routes/menuItem';
 import { LoaderSpinner } from '../../../components/loaderSpinner';
 import MenuItem from '../../../components/menuItem';
 import { IMenu } from '../../../interfaces/menu';
@@ -24,7 +24,7 @@ export default class Menu {
   }
   static async fetchMenus(spinner: HTMLElement) {
     try {
-      const menu = await fetchAllMenus();
+      const menu = await fetchPopularMenuItems();
       this.renderMenu(menu[0]);
       console.log(menu);
     } catch (error) {

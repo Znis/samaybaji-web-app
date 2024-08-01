@@ -1,7 +1,7 @@
 export default class ErrorPage {
-  static htmlTemplateurl =
-    './assets/templates/pages/error-page/error-page.html';
+  static htmlTemplateurl = '/assets/templates/pages/error-page/error-page.html';
   static element: HTMLElement = document.createElement('section');
+  static html = '';
 
   static init(): HTMLElement {
     if (this.element) {
@@ -9,7 +9,7 @@ export default class ErrorPage {
         .then((response) => response.text())
         .then((html) => {
           this.element.classList.add('error-page');
-          this.element.innerHTML = html;
+          this.html = html;
           this.render();
         });
     }
@@ -17,10 +17,11 @@ export default class ErrorPage {
     return this.element;
   }
   static render() {
+    this.element.innerHTML = this.html;
     const errorImageWrapper = this.element.querySelector(
       '.error-page__image',
     ) as HTMLImageElement;
-    errorImageWrapper.setAttribute('src', './assets/images/error-image.png');
+    errorImageWrapper.setAttribute('src', '/assets/images/error-image.png');
     errorImageWrapper.setAttribute('alt', 'An image of 404 not found error');
   }
 }

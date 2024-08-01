@@ -1,4 +1,5 @@
-import { fetchAllOrders, makeApiCall } from '../../../../apiCalls';
+import { fetchAllOrders } from '../../../../api-routes/order';
+import { makeApiCall } from '../../../../apiCalls';
 import { Accordion } from '../../../../components/accordion';
 import { OrderStatus } from '../../../../enums/order';
 import { IOrder } from '../../../../interfaces/order';

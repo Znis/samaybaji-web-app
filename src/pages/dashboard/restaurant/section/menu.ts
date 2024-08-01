@@ -1,4 +1,5 @@
-import { fetchAllMenuItems, makeApiCall } from '../../../../apiCalls';
+import { fetchAllMenuItems } from '../../../../api-routes/menuItem';
+import { makeApiCall } from '../../../../apiCalls';
 import { Accordion } from '../../../../components/accordion';
 import { MenuItemForm } from '../../../../components/menuItemForm';
 import Modal from '../../../../components/modal';
@@ -139,10 +140,6 @@ export default class RestaurantMenuDashboard {
       '#menu-item-price',
     ) as HTMLSpanElement;
     menuItemPrice.innerHTML = `${menuItem.price || ''}`;
-    const menuItemType = accordionContent.querySelector(
-      '#menu-item-type',
-    ) as HTMLSpanElement;
-    menuItemType.innerHTML = `${menuItem.type || ''}`;
 
     return accordionContent;
   }
@@ -175,6 +172,7 @@ export default class RestaurantMenuDashboard {
         price: item.price.toString(),
         isPopular: item.isPopular ? 'Yes' : 'No',
       };
+      console.log(menuItemSummary);
       const heading = item.name;
       const accordionContentElement =
         await this.renderAccordionContent(menuItemSummary);

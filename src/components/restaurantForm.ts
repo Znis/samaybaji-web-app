@@ -1,14 +1,10 @@
-import {
-  createRestaurant,
-  getUploadUrl,
-  makeApiCall,
-  uploadImage,
-} from '../apiCalls';
+import { getUploadUrl, makeApiCall, uploadImage } from '../apiCalls';
 import { ICreateRestaurant } from '../interfaces/restaurant';
 import Modal from './modal';
 import { HttpStatusCode } from 'axios';
 import { LoaderSpinner } from './loaderSpinner';
 import Toast from './toast';
+import { createRestaurant } from '../api-routes/restaurant';
 
 export class RestaurantForm {
   static htmlTemplateURL = '/assets/templates/components/restaurant-form.html';

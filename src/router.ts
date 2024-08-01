@@ -11,6 +11,7 @@ import Checkout from './pages/checkout-page/checkout';
 import DashboardLayout from './pages/dashboard/layout';
 import AppLayout from './appLayout';
 import AdminLogin from './pages/admin/adminLogin';
+import { Roles } from './enums/roles';
 
 export interface RouterContext {
   [propName: string]: {
@@ -27,10 +28,27 @@ const routes = [
   { path: '/', action: () => LandingPage.init() },
   { path: '/cart', action: () => Cart.init() },
   { path: '/menu', action: () => MenuPageLayout.init() },
-  { path: '/dashboard', action: () => DashboardLayout.init('customer') },
+  {
+    path: '/dashboard',
+    action: () => {
+      if (StateManager.state.user) {
+        return DashboardLayout.init('customer');
+      } else {
+        return ErrorPage.init();
+      }
+    },
+  },
   {
     path: '/restaurant/dashboard',
-    action: () => DashboardLayout.init('restaurant'),
+    action: () => {
+      console.log(StateManager.state.user!.roleID);
+
+      if (StateManager.state.user!.roleID == Roles.CUSTOMER_WITH_RESTAURANT) {
+        return DashboardLayout.init('restaurant');
+      } else {
+        return ErrorPage.init();
+      }
+    },
   },
   {
     path: '/checkout',

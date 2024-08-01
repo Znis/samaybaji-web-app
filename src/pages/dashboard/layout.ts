@@ -12,6 +12,8 @@ import RestaurantOrdersDashboard from './restaurant/section/orders';
 import RestaurantReviewDashboard from './restaurant/section/review';
 import CustomerOrdersDashboard from './customer/section/orders';
 import CustomerReviewDashboard from './customer/section/review';
+import EditCustomerDetailsDashboard from './customer/section/editDetail';
+import EditRestaurantDetailsDashboard from './restaurant/section/editDetail';
 
 export default class DashboardLayout {
   static element: HTMLElement = document.createElement('div');
@@ -151,7 +153,7 @@ export default class DashboardLayout {
       this.innerElements().restaurant.editDetailsOption!.addEventListener(
         'click',
         () => {
-          this.renderContent(EditDetailsDashboard.init());
+          this.renderContent(EditRestaurantDetailsDashboard.init());
           this.setActiveMenuOption(
             innerElems.restaurant,
             innerElems.restaurant.editDetailsOption!,
@@ -214,7 +216,7 @@ export default class DashboardLayout {
       this.innerElements().customer.editDetailsOption!.addEventListener(
         'click',
         () => {
-          this.renderContent(EditDetailsDashboard.init());
+          this.renderContent(EditCustomerDetailsDashboard.init());
           this.setActiveMenuOption(
             innerElems.customer,
             innerElems.customer.editDetailsOption!,
@@ -238,6 +240,7 @@ export default class DashboardLayout {
     const menuContainer = this.element.querySelector(
       '.aside__menu',
     ) as HTMLDivElement;
+    menuContainer.innerHTML = '';
     const ordersMenuOption = document.createElement('div');
     ordersMenuOption.classList.add(
       'aside__menu-option',
@@ -265,6 +268,7 @@ export default class DashboardLayout {
     const menuContainer = this.element.querySelector(
       '.aside__menu',
     ) as HTMLDivElement;
+    menuContainer.innerHTML = '';
     const menuOption = document.createElement('div');
     menuOption.classList.add(
       'aside__menu-option',
@@ -297,6 +301,7 @@ export default class DashboardLayout {
     const menuContainer = this.element.querySelector(
       '.aside__menu',
     ) as HTMLDivElement;
+    menuContainer.innerHTML = '';
     const menuOption = document.createElement('div');
     menuOption.classList.add(
       'aside__menu-option',

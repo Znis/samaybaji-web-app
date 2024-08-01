@@ -1,3 +1,4 @@
+import { Status } from '../enums/menuItem';
 import { IMenuItem } from '../interfaces/menuItem';
 import Cart from '../pages/cart/cart';
 import { navigate } from '../router';
@@ -57,7 +58,7 @@ export default class MenuItem {
     this.button.classList.add('button');
     this.button.name = 'addtocartbutton';
     this.button.innerText = 'Add to Cart';
-    if (this.menuItemData.inStock) {
+    if (this.menuItemData.status === Status.OUT_OF_STOCK) {
       this.button.classList.add('button--clicked');
       this.button.innerHTML = 'Out of Stock';
     }

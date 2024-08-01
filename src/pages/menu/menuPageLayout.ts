@@ -1,4 +1,4 @@
-import { fetchAllMenus } from '../../apiCalls';
+import { fetchAllMenus } from '../../api-routes/menu';
 import { LoaderSpinner } from '../../components/loaderSpinner';
 import RestaurantSectionLayout from './restaurant/restaurantSectionLayout';
 

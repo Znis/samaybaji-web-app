@@ -1,4 +1,5 @@
-import { editCartItem, makeApiCall } from '../apiCalls';
+import { editCartItem } from '../api-routes/cartItem';
+import { makeApiCall } from '../apiCalls';
 import { IFormattedCartItemData } from '../interfaces/cartItem';
 import Cart from '../pages/cart/cart';
 import { StateManager } from '../state-management/stateManager';

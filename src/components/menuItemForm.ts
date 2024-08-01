@@ -1,15 +1,13 @@
-import {
-  createRestaurant,
-  getUploadUrl,
-  makeApiCall,
-  uploadImage,
-} from '../apiCalls';
 import Modal from './modal';
 import { HttpStatusCode } from 'axios';
 import { LoaderSpinner } from './loaderSpinner';
 import Toast from './toast';
-import { ICreateMenuItem } from '../interfaces/menuItem';
+import IMenuItem, { ICreateMenuItem } from '../interfaces/menuItem';
 import { ICreateDish } from '../interfaces/dish';
+import { getUploadUrl, makeApiCall, uploadImage } from '../apiCalls';
+import { createRestaurant } from '../api-routes/restaurant';
+import { createMenuItem } from '../api-routes/menuItem';
+import { createDish } from '../api-routes/dish';
 
 export class MenuItemForm {
   static htmlTemplateURL = '/assets/templates/components/menu-item-form.html';
@@ -131,20 +129,28 @@ export class MenuItemForm {
     try {
       this.innerElements().submitButton.append(spinner);
       const menuItemCreationResponse = await makeApiCall(
-        createRestaurant,
+        createMenuItem,
         menuItemData,
       );
-      const dishCreationResponse = await makeApiCall(
-        createRestaurant,
-        dishData,
-      );
-      if (
-        menuItemCreationResponse!.status === HttpStatusCode.Accepted &&
-        dishCreationResponse!.status === HttpStatusCode.Accepted
-      ) {
-        Toast.show('Menu Item Creation Successful');
+      if (menuItemCreationResponse!.status !== HttpStatusCode.Accepted) {
+        Toast.show('Menu Item Creation Failed');
         Modal.toggle();
+        return;
       }
+      const menuItemID = (menuItemCreationResponse! as unknown as IMenuItem).id;
+      const dishCreationResponse = await makeApiCall(
+        createDish,
+        dishData,
+        menuItemID,
+      );
+
+      if (dishCreationResponse!.status !== HttpStatusCode.Accepted) {
+        Toast.show('Dish Creation Failed');
+        Modal.toggle();
+        return;
+      }
+      Toast.show('Menu Item and Dish Creation Successsful');
+      Modal.toggle();
     } catch (error) {
       console.log(error);
       Toast.show('Menu Item Creation Failed');

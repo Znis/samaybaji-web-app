@@ -1,4 +1,5 @@
-import { fetchAllMenuItems, makeApiCall } from '../../../../apiCalls';
+import { fetchAllMenuItems } from '../../../../api-routes/menuItem';
+import { makeApiCall } from '../../../../apiCalls';
 import { Accordion } from '../../../../components/accordion';
 import { IMenuItem } from '../../../../interfaces/menuItem';
 

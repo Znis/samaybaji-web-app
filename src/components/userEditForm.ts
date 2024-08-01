@@ -1,15 +1,11 @@
-import {
-  createRestaurant,
-  getUploadUrl,
-  makeApiCall,
-  uploadImage,
-} from '../apiCalls';
+import { getUploadUrl, makeApiCall, uploadImage } from '../apiCalls';
 import { ICreateRestaurant } from '../interfaces/restaurant';
 import Modal from './modal';
 import { HttpStatusCode } from 'axios';
 import { LoaderSpinner } from './loaderSpinner';
 import Toast from './toast';
 import { IUpdateUser } from '../interfaces/users';
+import { editUser } from '../api-routes/users';
 
 export class UserEditForm {
   static htmlTemplateURL = '/assets/templates/components/restaurant-form.html';
@@ -100,7 +96,7 @@ export class UserEditForm {
     const spinner = LoaderSpinner.render();
     try {
       this.innerElements().submitButton.append(spinner);
-      const formSubmissionResponse = await makeApiCall(createRestaurant, data);
+      const formSubmissionResponse = await makeApiCall(editUser, data);
       if (formSubmissionResponse!.status === HttpStatusCode.Accepted) {
         Toast.show('Restaurant Registration Submitted');
         Modal.toggle();

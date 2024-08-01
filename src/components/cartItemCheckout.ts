@@ -42,7 +42,7 @@ export default class CartItemCheckout {
     const totalPriceElement = this.element.querySelector(
       '#cart-item-total-price',
     );
-    totalPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItemData.price}`;
+    totalPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItemData.price * this.cartItemData.quantity}`;
     const quantityElement = this.element.querySelector(
       '.cart-item__item-count',
     ) as HTMLElement;

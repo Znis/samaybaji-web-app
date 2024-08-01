@@ -4,20 +4,23 @@ import CartItem from '../../components/cartItem';
 import { LoaderSpinner } from '../../components/loaderSpinner';
 import { StateManager } from '../../state-management/stateManager';
 import CartItemCheckout from '../../components/cartItemCheckout';
-import Cart from '../cart/cart';
 import { navigate } from '../../router';
-import { clearCart, createOrder, makeApiCall } from '../../apiCalls';
+import { makeApiCall } from '../../apiCalls';
+import { createOrder } from '../../api-routes/order';
+import { clearCart } from '../../api-routes/cart';
 
 export default class Checkout {
   static htmlTemplateUrl =
     './assets/templates/pages/checkout-page/checkout-page.html';
   static element: HTMLElement = document.createElement('section');
   static deliveryAmount = 100;
+  static discountAmount = 0;
   static subTotalAmount = StateManager.state.cart.reduce(
     (acc, item) => acc + item.menuItemData.price * item.quantity,
     0,
   );
-  static totalAmount = this.subTotalAmount + this.deliveryAmount;
+  static totalAmount =
+    this.subTotalAmount + this.deliveryAmount - this.discountAmount;
   static spinner = LoaderSpinner.render(50);
   static html = '';
   static cartItemArray: CartItem[] = [];
@@ -108,7 +111,8 @@ export default class Checkout {
     ) as HTMLDivElement;
     cartItemContainer.innerHTML = '';
     StateManager.state.cart.forEach((item) => {
-      cartItemContainer.append(new CartItemCheckout(item).element);
+      const cartItem = new CartItemCheckout(item);
+      cartItemContainer.append(cartItem.element);
     });
   }
   static renderOrderBilling(): void {
@@ -173,6 +177,7 @@ export default class Checkout {
         subTotalAmount: this.subTotalAmount,
         totalAmount: this.totalAmount,
         deliveryAmount: this.deliveryAmount,
+        discountAmount: this.discountAmount,
         orderItems: orderItems,
       };
 

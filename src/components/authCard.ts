@@ -6,8 +6,9 @@ import axios, { HttpStatusCode } from 'axios';
 import { IAuthUser, ICreateUser } from '../interfaces/users';
 import { StateManager } from '../state-management/stateManager';
 import Toast from './toast';
-import { fetchAllUsers, login, makeApiCall, register } from '../apiCalls';
 import Cart from '../pages/cart/cart';
+import { login } from '../api-routes/auth';
+import { register } from '../api-routes/users';
 export default class AuthCard {
   static element = document.createElement('div');
   static htmlTemplateURL = './assets/templates/components/auth-card.html';

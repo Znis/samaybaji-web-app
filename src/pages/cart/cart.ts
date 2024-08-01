@@ -1,10 +1,10 @@
+import { clearCart } from '../../api-routes/cart';
 import {
   addCartItem,
-  clearCart,
   fetchCartItems,
-  makeApiCall,
   removeCartItem,
-} from '../../apiCalls';
+} from '../../api-routes/cartItem';
+import { makeApiCall } from '../../apiCalls';
 import CartItem from '../../components/cartItem';
 import { LoaderSpinner } from '../../components/loaderSpinner';
 import { IFormattedCartItemData } from '../../interfaces/cartItem';
@@ -16,7 +16,7 @@ export default class Cart {
   static htmlTemplateUrl = './assets/templates/pages/cart/cart.html';
   static element: HTMLElement = document.createElement('section');
   static totalAmount = 0;
-  static discountAmount = 50;
+  static discountAmount = 0;
   static subTotalAmount = 0;
   static spinner = LoaderSpinner.render(50);
   static html = '';
@@ -30,7 +30,6 @@ export default class Cart {
         this.fetchCartItems();
       } else {
         this.render();
-        this.setEventListeners();
       }
     });
     return this.element;
@@ -106,7 +105,6 @@ export default class Cart {
         }),
       );
       this.render();
-      this.setEventListeners();
     } catch (error) {
       this.element.innerHTML = `<h3>${error}</h3>`;
     } finally {
@@ -115,6 +113,7 @@ export default class Cart {
   }
   static render(): void {
     this.element.innerHTML = this.html;
+    this.setEventListeners();
     this.updatePrices();
     if (!StateManager.state.user || !StateManager.state.cart.length) {
       this.innerElements.checkoutButton.disabled = true;
@@ -197,7 +196,7 @@ export default class Cart {
       (sum, item) => sum + item.quantity * item.menuItemData.price,
       0,
     );
-    this.discountAmount = StateManager.state.cart.length ? 50 : 0;
+    this.discountAmount = 0;
     this.totalAmount = this.subTotalAmount - this.discountAmount;
   }
 
