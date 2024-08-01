@@ -9,10 +9,10 @@ const addCartItemUrl = `${cartItemsUrl}/add`;
 const removeCartItemUrl = `${cartItemsUrl}/delete`;
 const editCartItemUrl = `${cartItemsUrl}/edit`;
 
-export const removeCartItem = async (menuItemID: string) => {
+export const removeCartItem = async (menuItemId: string) => {
   return await axios
     .delete(`${baseUrl}${removeCartItemUrl}`, {
-      params: { menuItemID: menuItemID },
+      params: { menuItemId: menuItemId },
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
@@ -22,7 +22,7 @@ export const removeCartItem = async (menuItemID: string) => {
     });
 };
 export const editCartItem = async (
-  menuItemID: string,
+  menuItemId: string,
   editCartItemData: IEditCartItemData,
 ) => {
   return await axios
@@ -30,7 +30,7 @@ export const editCartItem = async (
       `${baseUrl}${editCartItemUrl}`,
       { quantity: editCartItemData.quantity },
       {
-        params: { menuItemID: menuItemID },
+        params: { menuItemId: menuItemId },
 
         headers: {
           Authorization: `Bearer ${StateManager.state.accessToken}`,

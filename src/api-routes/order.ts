@@ -3,21 +3,18 @@ import { ICreateOrder, IEditOrder } from '../interfaces/order';
 import { StateManager } from '../state-management/stateManager';
 
 const baseUrl = 'http://localhost:8000';
-const ordersUrl = `/orders/all`;
-const restaurantOrdersUrl = `/orders/`;
-const userOrdersUrl = `/orders/`;
-const createOrderUrl = `/orders/create`;
-const editOrderUrl = `/orders/edit`;
-const deleteOrderUrl = `/orders/delete`;
+const ordersUrl = `/orders`;
+const allOrdersUrl = `/orders/all`;
+const restaurantOrdersUrl = `/orders/restaurant`;
 
 export const fetchAllOrders = async () => {
-  return await axios.get(`${baseUrl}${ordersUrl}`).then((res) => {
+  return await axios.get(`${baseUrl}${allOrdersUrl}`).then((res) => {
     return res.data;
   });
 };
 export const fetchUserOrders = async (userID?: string) => {
   return await axios
-    .get(`${baseUrl}${userOrdersUrl}`, {
+    .get(`${baseUrl}${ordersUrl}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
@@ -45,7 +42,7 @@ export const fetchRestaurantOrders = async (userID?: string) => {
 };
 export const createOrder = async (orderData: ICreateOrder) => {
   return await axios
-    .post(`${baseUrl}${createOrderUrl}`, orderData, {
+    .post(`${baseUrl}${ordersUrl}`, orderData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
@@ -54,28 +51,22 @@ export const createOrder = async (orderData: ICreateOrder) => {
       return res.data;
     });
 };
-export const editOrder = async (orderData: IEditOrder, orderID?: string) => {
+export const editOrder = async (orderData: IEditOrder, orderId: string) => {
   return await axios
-    .post(`${baseUrl}${editOrderUrl}`, orderData, {
+    .patch(`${baseUrl}${ordersUrl}/${orderId}`, orderData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        orderID: orderID,
       },
     })
     .then((res) => {
       return res.data;
     });
 };
-export const deleteOrder = async (orderID?: string) => {
+export const deleteOrder = async (orderId: string) => {
   return await axios
-    .post(`${baseUrl}${deleteOrderUrl}`, {
+    .delete(`${baseUrl}${ordersUrl}/${orderId}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        orderID: orderID,
       },
     })
     .then((res) => {

@@ -1,8 +1,8 @@
 export interface IDish {
   id: string;
-  menuItemID: string;
-  restaurantID: string;
-  menuID: string;
+  menuItemId: string;
+  restaurantId: string;
+  menuId: string;
   name: string;
   description: string;
   attributes: string[];
@@ -13,9 +13,9 @@ export interface IDish {
 }
 
 export interface ICreateDish {
-  menuItemID: string;
-  restaurantID: string;
-  menuID: string;
+  menuItemId: string;
+  restaurantId: string;
+  menuId: string;
   name: string;
   description: string;
   attributes: string[];

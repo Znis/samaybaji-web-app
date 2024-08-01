@@ -121,9 +121,9 @@ export class MenuItemForm {
       description: this.innerElements().dishDescription.value,
       attributes: attributesList,
       items: itemsList,
-      menuItemID: '',
-      restaurantID: '',
-      menuID: '',
+      menuItemId: '',
+      restaurantId: '',
+      menuId: '',
     };
     const spinner = LoaderSpinner.render();
     try {
@@ -137,11 +137,11 @@ export class MenuItemForm {
         Modal.toggle();
         return;
       }
-      const menuItemID = (menuItemCreationResponse! as unknown as IMenuItem).id;
+      const menuItemId = (menuItemCreationResponse! as unknown as IMenuItem).id;
       const dishCreationResponse = await makeApiCall(
         createDish,
         dishData,
-        menuItemID,
+        menuItemId,
       );
 
       if (dishCreationResponse!.status !== HttpStatusCode.Accepted) {

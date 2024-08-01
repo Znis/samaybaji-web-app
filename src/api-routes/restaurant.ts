@@ -14,14 +14,18 @@ export const fetchAllRestaurants = async () => {
     return res.data;
   });
 };
-export const fetchUserRestaurant = async (userID?: string) => {
+export const fetchRestaurantInfo = async (restaurantId: string) => {
+  return await axios
+    .get(`${baseUrl}${userRestaurantUrl}/${restaurantId}`)
+    .then((res) => {
+      return res.data;
+    });
+};
+export const fetchUserRestaurant = async () => {
   return await axios
     .get(`${baseUrl}${userRestaurantUrl}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        userID: userID,
       },
     })
     .then((res) => {
@@ -42,7 +46,7 @@ export const createRestaurant = async (restaurantData: ICreateRestaurant) => {
 
 export const editRestaurant = async (
   restaurantData: IEditRestaurant,
-  restaurantID?: string,
+  restaurantId?: string,
 ) => {
   return await axios
     .post(`${baseUrl}${editRestaurantUrl}`, restaurantData, {
@@ -50,7 +54,7 @@ export const editRestaurant = async (
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
       params: {
-        restaurantID: restaurantID,
+        restaurantId: restaurantId,
       },
     })
     .then((res) => {
@@ -58,7 +62,7 @@ export const editRestaurant = async (
     });
 };
 
-export const deleteRestaurant = async (restaurantID?: string) => {
+export const deleteRestaurant = async (restaurantId?: string) => {
   return await axios
     .post(
       `${baseUrl}${deleteRestaurantUrl}`,
@@ -69,7 +73,7 @@ export const deleteRestaurant = async (restaurantID?: string) => {
       },
       {
         params: {
-          restaurantID: restaurantID,
+          restaurantId: restaurantId,
         },
       },
     )

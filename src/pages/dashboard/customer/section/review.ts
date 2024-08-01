@@ -4,6 +4,10 @@ import { IReview, IReviewResponse } from '../../../../interfaces/review';
 import { makeApiCall } from '../../../../apiCalls';
 import { fetchUser } from '../../../../api-routes/users';
 import IUser from '../../../../interfaces/users';
+import { fetchRestaurantInfo } from '../../../../api-routes/restaurant';
+import { IRestaurant } from '../../../../interfaces/restaurant';
+import { fetchDish } from '../../../../api-routes/dish';
+import { IDish } from '../../../../interfaces/dish';
 
 export default class CustomerReviewDashboard {
   static element: HTMLElement = document.createElement('div');
@@ -91,7 +95,10 @@ export default class CustomerReviewDashboard {
 
     return accordionContent;
   }
-  static accordionHeaderEventListener(accordionHeader: HTMLDivElement) {}
+  static accordionHeaderEventListener(
+    accordionHeader: HTMLDivElement,
+    reviewId: string,
+  ) {}
   static async render(dishReviews: IReview[], restaurantReviews: IReview[]) {
     const reviewDishContainer = this.element.querySelector(
       '#review-dish',
@@ -116,7 +123,8 @@ export default class CustomerReviewDashboard {
         comment: review.comment,
         postedDate: new Date(review.updatedAt).toDateString(),
       };
-      const heading = `Review by ${customer.name}`;
+      const dish = (await fetchDish(review.targetId)) as IDish;
+      const heading = `Review by you for ${dish.name}`;
       const accordionContentElement =
         await this.renderAccordionContent(reviewSummary);
       const accordionHeaderElement = this.createAccordionHeader(heading);
@@ -124,6 +132,7 @@ export default class CustomerReviewDashboard {
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: accordionHeaderEventListener,
+        id: review.id,
       };
       const accordionContent = {
         element: accordionContentElement,
@@ -135,7 +144,6 @@ export default class CustomerReviewDashboard {
       reviewDishContainer!.appendChild(accordion.element);
     });
     restaurantReviews.forEach(async (review) => {
-      console.log(review)
       const customer = (await makeApiCall(
         fetchUser,
         review.userId,
@@ -146,7 +154,10 @@ export default class CustomerReviewDashboard {
         comment: review.comment,
         postedDate: new Date(review.updatedAt).toDateString(),
       };
-      const heading = `Review by ${customer.name}`;
+      const restaurant = (await fetchRestaurantInfo(
+        review.targetId,
+      )) as IRestaurant;
+      const heading = `Review by you for ${restaurant.name}`;
       const accordionContentElement =
         await this.renderAccordionContent(reviewSummary);
       const accordionHeaderElement = this.createAccordionHeader(heading);
@@ -154,6 +165,7 @@ export default class CustomerReviewDashboard {
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: accordionHeaderEventListener,
+        id: review.id,
       };
       const accordionContent = {
         element: accordionContentElement,

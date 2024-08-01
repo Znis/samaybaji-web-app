@@ -2,11 +2,11 @@ import { IMenuItem } from './menuItem';
 
 interface ICartItem {
   id: string;
-  menuItemID: string;
+  menuItemId: string;
   quantity: number;
 }
 export interface ICreateCartItemData {
-  menuItemID: string;
+  menuItemId: string;
   quantity: number;
 }
 export interface IEditCartItemData {

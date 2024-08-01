@@ -72,7 +72,7 @@ export default class Header {
     hasRestaurant: boolean;
     verified: boolean;
   }> {
-    // if (StateManager.state.user?.roleID !== Roles.CUSTOMER_WITH_RESTAURANT)
+    // if (StateManager.state.user?.roleId !== Roles.CUSTOMER_WITH_RESTAURANT)
     //   return { hasRestaurant: false, verified: false };
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -145,7 +145,7 @@ export default class Header {
     if (!StateManager.state.user) return;
 
     const { registerRestaurant, restaurantProfile } = this.innerElements;
-    if (StateManager.state.user.roleID !== Roles.CUSTOMER_WITH_RESTAURANT) {
+    if (StateManager.state.user.roleId !== Roles.CUSTOMER_WITH_RESTAURANT) {
       restaurantProfile.style.display = 'none';
       registerRestaurant.disabled = true;
       const spinner = LoaderSpinner.render(20);

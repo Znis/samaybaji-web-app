@@ -86,7 +86,7 @@ export default class Cart {
           StateManager.state.cart.map((item) => {
             return {
               quantity: item.quantity,
-              menuItemID: item.menuItemData.id,
+              menuItemId: item.menuItemData.id,
             };
           }),
         );
@@ -152,7 +152,7 @@ export default class Cart {
         await makeApiCall(addCartItem, [
           {
             quantity: 1,
-            menuItemID: menuItemData.id,
+            menuItemId: menuItemData.id,
           },
         ]);
       } catch (error) {

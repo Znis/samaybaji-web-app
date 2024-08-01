@@ -929,7 +929,20 @@ body.open .modal {
   align-items: center;
   gap: 4rem; }
 
-.accordion-header-icon, .accordion-header-action-icon, .accordion-header-trailing-icon {
+.accordion-header-status {
+  color: #444; }
+
+.accordion-header-danger-action-icon {
+  color: red; }
+  .accordion-header-danger-action-icon:hover {
+    scale: 1.2; }
+
+.accordion-header-normal-action-icon {
+  color: green; }
+  .accordion-header-normal-action-icon:hover {
+    scale: 1.2; }
+
+.accordion-header-icon, .accordion-header-trailing-icon {
   color: var(--brown); }
 
 .accordion-header.active .accordion-header-trailing-icon {

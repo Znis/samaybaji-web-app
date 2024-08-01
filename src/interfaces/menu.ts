@@ -4,7 +4,7 @@ export interface IMenu {
   id: string;
   name: string;
   description: string;
-  restaurantID: string;
+  restaurantId: string;
   menuItems: IMenuItem[];
 }
 export interface ICreateMenu {

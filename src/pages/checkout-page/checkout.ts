@@ -160,7 +160,7 @@ export default class Checkout {
 
       const orderItems = StateManager.state.cart.map((item) => {
         return {
-          menuItemID: item.menuItemData.id,
+          menuItemId: item.menuItemData.id,
           quantity: item.quantity,
           unitPrice: item.menuItemData.price,
           notes: '',

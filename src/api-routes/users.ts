@@ -20,9 +20,9 @@ export const fetchAllUsers = async () => {
       return res.data;
     });
 };
-export const fetchUser = async (userID: string) => {
-  const designatedUrl = userID
-    ? `${baseUrl}${usersUrl}/?userID=${userID}`
+export const fetchUser = async (userId: string) => {
+  const designatedUrl = userId
+    ? `${baseUrl}${usersUrl}/?userId=${userId}`
     : `${baseUrl}${usersUrl}`;
   return await axios
     .get(designatedUrl, {
@@ -39,22 +39,22 @@ export const register = async (formData: ICreateUser) => {
     return res.data;
   });
 };
-export const editUser = async (formData: IUpdateUser, userID?: string) => {
+export const editUser = async (formData: IUpdateUser, userId?: string) => {
   return await axios
     .post(`${baseUrl}${editUrl}`, formData, {
       params: {
-        userID: userID,
+        userId: userId,
       },
     })
     .then((res) => {
       return res.data;
     });
 };
-export const deleteUser = async (userID?: string) => {
+export const deleteUser = async (userId?: string) => {
   return await axios
     .post(`${baseUrl}${deleteUrl}`, {
       params: {
-        userID: userID,
+        userId: userId,
       },
     })
     .then((res) => {

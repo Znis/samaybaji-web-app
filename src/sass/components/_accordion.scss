@@ -45,8 +45,22 @@
         gap: 4rem;
 
       }
+      &-header-status{
+        color: #444;
+      }
+      &-header-danger-action-icon{
+        color: red;
+        &:hover{
+          scale: 1.2;
+        }
+      }
+      &-header-normal-action-icon{
+        color: green;
+        &:hover{
+          scale: 1.2;
+        }
+      }
       &-header-icon,
-      &-header-action-icon,
       &-header-trailing-icon {
         color: var(--brown);
       }

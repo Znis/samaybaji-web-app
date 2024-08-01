@@ -41,9 +41,9 @@ const routes = [
   {
     path: '/restaurant/dashboard',
     action: () => {
-      console.log(StateManager.state.user!.roleID);
+      console.log(StateManager.state.user!.roleId);
 
-      if (StateManager.state.user!.roleID == Roles.CUSTOMER_WITH_RESTAURANT) {
+      if (StateManager.state.user!.roleId == Roles.CUSTOMER_WITH_RESTAURANT) {
         return DashboardLayout.init('restaurant');
       } else {
         return ErrorPage.init();

@@ -14,14 +14,14 @@ export const fetchAllMenus = async () => {
     return res.data;
   });
 };
-export const fetchRestaurantMenu = async (restaurantID?: string) => {
+export const fetchRestaurantMenu = async (restaurantId?: string) => {
   return await axios
     .get(`${baseUrl}${restaurantMenu}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
       params: {
-        restaurantID: restaurantID,
+        restaurantId: restaurantId,
       },
     })
     .then((res) => {
@@ -30,7 +30,7 @@ export const fetchRestaurantMenu = async (restaurantID?: string) => {
 };
 export const createMenu = async (
   menuData: ICreateMenu,
-  restaurantID?: string,
+  restaurantId?: string,
 ) => {
   return await axios
     .post(`${baseUrl}${createMenuUrl}`, menuData, {
@@ -38,35 +38,35 @@ export const createMenu = async (
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
       params: {
-        restaurantID: restaurantID,
+        restaurantId: restaurantId,
       },
     })
     .then((res) => {
       return res.data;
     });
 };
-export const editMenu = async (editMenuData: IEditMenu, menuID?: string) => {
+export const editMenu = async (editMenuData: IEditMenu, menuId?: string) => {
   return await axios
     .post(`${baseUrl}${editMenuUrl}`, editMenuData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
       params: {
-        menuID: menuID,
+        menuId: menuId,
       },
     })
     .then((res) => {
       return res.data;
     });
 };
-export const deleteMenu = async (menuID?: string) => {
+export const deleteMenu = async (menuId?: string) => {
   return await axios
     .post(`${baseUrl}${deleteMenuUrl}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
       params: {
-        menuID: menuID,
+        menuId: menuId,
       },
     })
     .then((res) => {

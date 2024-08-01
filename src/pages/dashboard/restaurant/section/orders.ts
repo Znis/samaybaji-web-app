@@ -1,7 +1,8 @@
-import { fetchAllOrders } from '../../../../api-routes/order';
+import { fetchRestaurantOrders } from '../../../../api-routes/order';
+import { editOrderItem } from '../../../../api-routes/orderItem';
 import { makeApiCall } from '../../../../apiCalls';
 import { Accordion } from '../../../../components/accordion';
-import { OrderStatus } from '../../../../enums/order';
+import { OrderItemStatus, OrderStatus } from '../../../../enums/order';
 import { IOrder } from '../../../../interfaces/order';
 import { IOrderItem } from '../../../../interfaces/orderItem';
 
@@ -22,7 +23,7 @@ export default class RestaurantOrdersDashboard {
     return this.element;
   }
   static async fetchAllOrders() {
-    const orders = await makeApiCall(fetchAllOrders);
+    const orders = await makeApiCall(fetchRestaurantOrders);
     console.log(orders);
     this.render(orders as unknown as IOrder[]);
   }
@@ -44,26 +45,17 @@ export default class RestaurantOrdersDashboard {
 
     accordionHeader.appendChild(accordionTitleWrapper);
 
-    const deleteOrderIcon = document.createElement('i');
-    deleteOrderIcon.className =
-      'fa-solid fa-check accordion-header-action-icon';
-    deleteOrderIcon.id = 'delete-order';
-    accordionHeader.appendChild(deleteOrderIcon);
-    if (status === OrderStatus.CANCELLED || status === OrderStatus.DELIVERED) {
-      deleteOrderIcon.style.display = 'none';
-    }
     const angleDownIcon = document.createElement('i');
     angleDownIcon.className =
       'fa-solid fa-angle-down accordion-header-trailing-icon';
     const statusSelect = document.createElement('select');
     statusSelect.classList.add('accordion-header-status-select');
+    statusSelect.id = 'order-status-select';
 
     const options = [
-      { value: OrderStatus.PENDING, text: OrderStatus.PENDING },
-      { value: OrderStatus.COOKING, text: OrderStatus.COOKING },
-      { value: OrderStatus.EN_ROUTE, text: OrderStatus.EN_ROUTE },
-      { value: OrderStatus.READY, text: OrderStatus.READY },
-      { value: OrderStatus.DELIVERED, text: OrderStatus.DELIVERED },
+      { value: OrderItemStatus.PENDING, text: OrderItemStatus.PENDING },
+      { value: OrderItemStatus.COOKING, text: OrderItemStatus.COOKING },
+      { value: OrderItemStatus.READY, text: OrderItemStatus.READY },
     ];
 
     options.forEach((optionData) => {
@@ -74,11 +66,10 @@ export default class RestaurantOrdersDashboard {
 
       statusSelect.appendChild(option);
     });
-
+    statusSelect.value = status;
     const iconWrapper = document.createElement('div');
     iconWrapper.classList.add('accordion-header-icon-wrapper');
     iconWrapper.appendChild(statusSelect);
-    iconWrapper.appendChild(deleteOrderIcon);
     iconWrapper.appendChild(angleDownIcon);
     accordionHeader.appendChild(iconWrapper);
     return accordionHeader;
@@ -88,7 +79,7 @@ export default class RestaurantOrdersDashboard {
     const accordionContent = document.createElement('div');
     accordionContent.className = 'accordion-content';
     const templateUrl =
-      '/assets/templates/components/order-accordion-content.html';
+      '/assets/templates/components/order-item-accordion-content.html';
 
     await fetch(templateUrl)
       .then((response) => response.text())
@@ -97,109 +88,112 @@ export default class RestaurantOrdersDashboard {
       });
     return accordionContent;
   }
-  static async renderAccordionContent(orderSummary: { [key: string]: string }) {
+  static async renderAccordionContent(orderItemSummary: {
+    [key: string]: string;
+  }) {
     const accordionContent = await this.initialiseAccordionContent();
-    const orderSummaryName = accordionContent.querySelector(
+    const orderItemCustomerName = accordionContent.querySelector(
+      '#order-summary-customer-name',
+    ) as HTMLSpanElement;
+    orderItemCustomerName.innerHTML = `${orderItemSummary.customerName || ''}`;
+    const orderItemName = accordionContent.querySelector(
       '#order-summary-name',
     ) as HTMLSpanElement;
-    orderSummaryName.innerHTML = `${orderSummary.customerName || ''}`;
-    const orderSummaryPhone = accordionContent.querySelector(
-      '#order-summary-phone',
+    orderItemName.innerHTML = `${orderItemSummary.name || ''}`;
+    const orderItemQuantity = accordionContent.querySelector(
+      '#order-summary-quantity',
     ) as HTMLSpanElement;
-    orderSummaryPhone.innerHTML = `${orderSummary.customerPhone || ''}`;
-    const orderSummaryDate = accordionContent.querySelector(
-      '#order-summary-date',
+    orderItemQuantity.innerHTML = `${orderItemSummary.quantity || ''}`;
+    const orderItemPrice = accordionContent.querySelector(
+      '#order-summary-price',
     ) as HTMLSpanElement;
-    orderSummaryDate.innerHTML = `${orderSummary.orderDate || ''}`;
-    const orderSummaryTime = accordionContent.querySelector(
-      '#order-summary-time',
-    ) as HTMLSpanElement;
-    orderSummaryTime.innerHTML = `${orderSummary.orderTime || ''}`;
-    const orderSummaryAddress = accordionContent.querySelector(
-      '#order-summary-address',
-    ) as HTMLSpanElement;
-    orderSummaryAddress.innerHTML = `${orderSummary.deliveryAddress || ''}`;
-    const orderSummaryPaymentMethod = accordionContent.querySelector(
-      '#order-summary-payment-method',
-    ) as HTMLSpanElement;
-    orderSummaryPaymentMethod.innerHTML = `${orderSummary.paymentMethod || ''}`;
-    const orderSummaryNote = accordionContent.querySelector(
-      '#order-summary-note',
-    ) as HTMLSpanElement;
-    orderSummaryNote.innerHTML = `${orderSummary.notes || ''}`;
-    const deliveryAmount = accordionContent.querySelector(
-      '#order-summary-delivery-amount',
-    ) as HTMLSpanElement;
-    deliveryAmount.innerHTML = `${orderSummary.notes || ''}`;
-    const subTotalAmount = accordionContent.querySelector(
-      '#order-summary-sub-total-amount',
-    ) as HTMLSpanElement;
-    subTotalAmount.innerHTML = `${orderSummary.notes || ''}`;
-    const totalAmount = accordionContent.querySelector(
-      '#order-summary-total-amount',
-    ) as HTMLSpanElement;
-    totalAmount.innerHTML = `${orderSummary.notes || ''}`;
+    orderItemPrice.innerHTML = `${orderItemSummary.price || ''}`;
+
     return accordionContent;
   }
-  static accordionContentEventListener(accordionHeader: HTMLDivElement) {
-    const totalAmount = accordionHeader.querySelector(
-      '#order-summary-total-amount',
-    ) as HTMLSpanElement;
-    totalAmount.addEventListener('click', () => {
-      console.log('clicked');
-    });
-  }
-  static accordionHeaderEventListener(accordionHeader: HTMLDivElement) {
-    const deleteButton = accordionHeader.querySelector('#delete-order');
-    const cancelButton = accordionHeader.querySelector('#cancel-order');
-    deleteButton!.addEventListener('click', () => {
-      console.log('delete-order');
-    });
-    cancelButton!.addEventListener('click', () => {
-      console.log('cancel-order');
+  static accordionContentEventListener(accordionHeader: HTMLDivElement) {}
+  static accordionHeaderEventListener(
+    accordionHeader: HTMLDivElement,
+    orderItemId: string,
+  ) {
+    const selectStatus = this.element.querySelector(
+      '#order-status-select',
+    ) as HTMLSelectElement;
+    selectStatus.addEventListener('change', async (event) => {
+      event?.stopPropagation();
+      let editStatus;
+      console.log(selectStatus.value)
+      if (selectStatus.value == 'cooking') {
+        editStatus = { status: OrderItemStatus.COOKING };
+      } else if (selectStatus.value == 'ready') {
+        editStatus = { status: OrderItemStatus.READY };
+      } else if (selectStatus.value == 'cancelled') {
+        editStatus = { status: OrderItemStatus.CANCELLED };
+      } else {
+        editStatus = { status: OrderItemStatus.PENDING };
+      }
+      const updateStatusResponse = await makeApiCall(
+        editOrderItem,
+        editStatus,
+        orderItemId,
+      );
+      RestaurantOrdersDashboard.fetchAllOrders();
     });
   }
   static async render(orders: IOrder[]) {
+    const activeOrderContainer = this.element.querySelector(
+      '#active-orders',
+    ) as HTMLDivElement;
+    const historyOrderContainer = this.element.querySelector(
+      '#history-orders',
+    ) as HTMLDivElement;
+    activeOrderContainer.innerHTML = '';
+    historyOrderContainer.innerHTML = '';
+    if (!orders.length) {
+      activeOrderContainer!.innerHTML = `<h3>No active orders</h3>`;
+      historyOrderContainer!.innerHTML = `<h3>No history orders</h3>`;
+    }
     orders.forEach(async (order) => {
-      const orderSummary = {
-        customerName: order.customerName,
-        customerPhone: order.customerPhone,
-        orderDate: order.orderDate,
-        orderTime: order.orderTime,
-        description: order.notes,
-        location: order.deliveryAddress,
-        totalAmount: '3',
-        subTotalAmount: '2',
-        deliveryAmount: '1',
-        paymentMethod: order.paymentMethod,
-      };
-      let heading = '';
-      order.orderItems.forEach((item: IOrderItem) => {
-        heading += `${item.menuItemID} x${item.quantity} `;
-      });
-      const accordionContentElement =
-        await this.renderAccordionContent(orderSummary);
-      const accordionHeaderElement = this.createAccordionHeader(
-        order.status,
-        heading,
-      );
-      const accordionHeaderEventListener = this.accordionHeaderEventListener;
-      const accordionContentEventListener = this.accordionContentEventListener;
-      const accordionHeader = {
-        element: accordionHeaderElement,
-        eventListeners: accordionHeaderEventListener,
-      };
-      const accordionContent = {
-        element: accordionContentElement,
-        eventListeners: accordionContentEventListener,
-      };
+      order.orderItems.forEach(async (item) => {
+        const orderItemSummary = {
+          customerName: order.customerName,
+          name: item.menuItemData.name,
+          quantity: item.quantity.toString(),
+          price: (item.unitPrice * item.quantity).toString(),
+        };
+        const heading = `${item.menuItemData.name} x${item.quantity}`;
 
-      const accordion = new Accordion(accordionContent, accordionHeader);
-      const activeOrderContainer = this.element.querySelector('#active-orders');
-      const historyOrderContainer =
-        this.element.querySelector('#history-orders');
-      activeOrderContainer!.appendChild(accordion.element);
-      historyOrderContainer!.appendChild(accordion.element);
+        const accordionContentElement =
+          await this.renderAccordionContent(orderItemSummary);
+        const accordionHeaderElement = this.createAccordionHeader(
+          item.status,
+          heading,
+        );
+        const accordionHeaderEventListener = this.accordionHeaderEventListener;
+        const accordionContentEventListener =
+          this.accordionContentEventListener;
+        const accordionHeader = {
+          element: accordionHeaderElement,
+          eventListeners: accordionHeaderEventListener,
+          id: item.id,
+        };
+        const accordionContent = {
+          element: accordionContentElement,
+          eventListeners: accordionContentEventListener,
+        };
+
+        const accordion = new Accordion(accordionContent, accordionHeader);
+        const activeOrderContainer =
+          this.element.querySelector('#active-orders');
+        const historyOrderContainer =
+          this.element.querySelector('#history-orders');
+        console.log(item.status);
+        if (item.status == OrderItemStatus.READY) {
+          historyOrderContainer!.appendChild(accordion.element);
+        } else {
+          activeOrderContainer!.appendChild(accordion.element);
+        }
+      });
     });
   }
 }

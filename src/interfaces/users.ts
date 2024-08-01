@@ -7,7 +7,7 @@ interface IUser {
   passwordHash: string;
 }
 export interface IAuthenticatedUser extends IUser {
-  roleID: string;
+  roleId: string;
 }
 export interface IAuthUser {
   email: string;

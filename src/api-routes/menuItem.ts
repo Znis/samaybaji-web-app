@@ -21,7 +21,7 @@ export const fetchPopularMenuItems = async () => {
 };
 export const createMenuItem = async (
   createMenuItemData: ICreateMenuItem,
-  menuID?: string,
+  menuId?: string,
 ) => {
   return await axios
     .post(`${baseUrl}${createMenuItemUrl}`, createMenuItemData, {
@@ -29,7 +29,7 @@ export const createMenuItem = async (
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
       params: {
-        menuID: menuID,
+        menuId: menuId,
       },
     })
     .then((res) => {
@@ -38,7 +38,7 @@ export const createMenuItem = async (
 };
 export const editMenuItem = async (
   editMenuItemData: IEditMenuItem,
-  menuItemID: string,
+  menuItemId: string,
 ) => {
   return await axios
     .patch(`${baseUrl}${editMenuItemUrl}`, editMenuItemData, {
@@ -46,21 +46,21 @@ export const editMenuItem = async (
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
       params: {
-        menuItemID: menuItemID,
+        menuItemId: menuItemId,
       },
     })
     .then((res) => {
       return res.data;
     });
 };
-export const deleteMenuItem = async (menuItemID: string) => {
+export const deleteMenuItem = async (menuItemId: string) => {
   return await axios
     .delete(`${baseUrl}${deleteMenuItemUrl}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
       params: {
-        menuItemID: menuItemID,
+        menuItemId: menuItemId,
       },
     })
     .then((res) => {

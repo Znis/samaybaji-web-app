@@ -165,7 +165,7 @@ export default class AdminOrdersDashboard {
       };
       let heading = '';
       order.orderItems.forEach((item: IOrderItem) => {
-        heading += `${item.menuItemID} x${item.quantity} `;
+        heading += `${item.menuItemId} x${item.quantity} `;
       });
       const accordionContentElement =
         await this.renderAccordionContent(orderSummary);

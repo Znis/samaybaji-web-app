@@ -3,21 +3,19 @@ import { ICreateOrderItem, IEditOrderItem } from '../interfaces/orderItem';
 import { StateManager } from '../state-management/stateManager';
 
 const baseUrl = 'http://localhost:8000';
-const createOrderItemUrl = `/order-item/add`;
-const editOrderItemUrl = `/order-item/edit`;
-const deleteOrderItemUrl = `/order-item/delete`;
+const orderItemUrl = '/order-items';
 
 export const createOrderItem = async (
   orderItemData: ICreateOrderItem,
-  userID: string,
+  userId: string,
 ) => {
   return await axios
-    .post(`${baseUrl}${createOrderItemUrl}`, orderItemData, {
+    .post(`${baseUrl}${orderItemUrl}`, orderItemData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
       params: {
-        userID: userID,
+        userId: userId,
       },
     })
     .then((res) => {
@@ -26,29 +24,23 @@ export const createOrderItem = async (
 };
 export const editOrderItem = async (
   orderItemData: IEditOrderItem,
-  orderItemID?: string,
+  orderItemId: string,
 ) => {
   return await axios
-    .patch(`${baseUrl}${editOrderItemUrl}`, orderItemData, {
+    .patch(`${baseUrl}${orderItemUrl}/${orderItemId}`, orderItemData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        orderItemID: orderItemID,
       },
     })
     .then((res) => {
       return res.data;
     });
 };
-export const deleteOrderitem = async (orderItemID?: string) => {
+export const deleteOrderitem = async (orderItemId: string) => {
   return await axios
-    .delete(`${baseUrl}${deleteOrderItemUrl}`, {
+    .delete(`${baseUrl}${orderItemUrl}/${orderItemId}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        orderItemID: orderItemID,
       },
     })
     .then((res) => {
