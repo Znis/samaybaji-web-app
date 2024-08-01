@@ -41,6 +41,21 @@ export default class OrderItemModel extends BaseModel {
         return null;
       });
   }
+  static getActiveOrderItemsByMenuItemID(menuItemID: string) {
+    return this.queryBuilder()
+      .select('*')
+      .from('order_items')
+      .where('menu_item_id', menuItemID)
+      .andWhere('status', 'pending')
+      .orWhere('status', 'cooking')
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+  }
   static createOrderItem(orderID: string, orderItemData: ICreateOrderItem[]) {
     return this.queryBuilder()
       .insert(

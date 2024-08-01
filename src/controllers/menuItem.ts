@@ -25,6 +25,24 @@ export async function getAllMenuItems(
     next(error);
   }
 }
+export async function getPopularMenuItems(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const popularMenuItems = await MenuItemService.getPopularMenuItems();
+    if (!popularMenuItems) {
+      next(new BaseError('Popular Menu Item not Found'));
+      return;
+    }
+    return res.status(HttpStatusCode.OK).json(popularMenuItems);
+  } catch (error) {
+    logger.error('Popular menu Item fetch failed');
+    logger.error(`Error: `, error);
+    next(error);
+  }
+}
 
 export async function getMenuItem(
   req: Request,

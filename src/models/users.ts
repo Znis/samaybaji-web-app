@@ -49,6 +49,7 @@ export default class UserModel extends BaseModel {
         email: user.email,
         passwordHash: user.password,
         phoneNumber: user.phoneNumber,
+        imageSrc: user.imageSrc,
       })
       .into('users')
       .returning('*')

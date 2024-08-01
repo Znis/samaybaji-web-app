@@ -33,9 +33,8 @@ export async function getRatingsByUserID(
 ) {
   try {
     const userID = req.query.userID as string;
-    const targetType = req.query.targetType as ReviewTargetType;
 
-    const ratings = await RatingService.getRatingsByUserID(userID, targetType);
+    const ratings = await RatingService.getRatingsByUserID(userID);
     if (!ratings) {
       next(new BaseError('No Any Ratings Found'));
       return;
@@ -47,17 +46,41 @@ export async function getRatingsByUserID(
     next(error);
   }
 }
-
-export async function getRating(
+export async function getSpecificRatingByUserID(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
     const userID = req.query.userID as string;
+    const targetID = req.query.targetID as string;
+    const targetType = req.query.targetType as ReviewTargetType;
+
+    const rating = await RatingService.getSpecificRatingByUserID(
+      userID,
+      targetType,
+      targetID,
+    );
+    if (!rating) {
+      next(new BaseError('No Any Rating Found'));
+      return;
+    }
+    return res.status(HttpStatusCode.OK).json(rating);
+  } catch (error) {
+    logger.error('Review fetch failed');
+    logger.error(`Error: `, error);
+    next(error);
+  }
+}
+export async function getRatings(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
     const targetType = req.query.targetType as ReviewTargetType;
     const targetID = req.query.targetID as string;
-    const rating = await RatingService.getRating(userID, targetType, targetID);
+    const rating = await RatingService.getRatings(targetType, targetID);
     if (!rating) {
       logger.error(`No Rating found for ${targetType} with ID ${targetID}`);
       next(new BaseError('No Rating Found'));

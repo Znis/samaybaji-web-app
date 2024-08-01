@@ -33,9 +33,8 @@ export async function getReviewsByUserID(
 ) {
   try {
     const userID = req.query.userID as string;
-    const targetType = req.query.targetType as ReviewTargetType;
 
-    const reviews = await ReviewService.getReviewsByUserID(userID, targetType);
+    const reviews = await ReviewService.getReviewsByUserID(userID);
     if (!reviews) {
       next(new BaseError('No Any Reviews Found'));
       return;
@@ -47,23 +46,47 @@ export async function getReviewsByUserID(
     next(error);
   }
 }
-
-export async function getReview(
+export async function getSpecificReviewByUserID(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
     const userID = req.query.userID as string;
+    const targetID = req.query.targetID as string;
+    const targetType = req.query.targetType as ReviewTargetType;
+
+    const review = await ReviewService.getSpecificReviewByUserID(
+      userID,
+      targetType,
+      targetID,
+    );
+    if (!review) {
+      next(new BaseError('No Any Reviews Found'));
+      return;
+    }
+    return res.status(HttpStatusCode.OK).json(review);
+  } catch (error) {
+    logger.error('Review fetch failed');
+    logger.error(`Error: `, error);
+    next(error);
+  }
+}
+export async function getReviews(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
     const targetType = req.query.targetType as ReviewTargetType;
     const targetID = req.query.targetID as string;
-    const review = await ReviewService.getReview(userID, targetType, targetID);
+    const review = await ReviewService.getReviews(targetType, targetID);
     if (!review) {
       logger.error(`No Review found for ${targetType} with ID ${targetID}`);
       next(new BaseError('No Review Found'));
       return;
     }
-    logger.info(`Review for ${targetType} with ID ${targetID} found`);
+    logger.info(`Reviews for ${targetType} with ID ${targetID} found`);
     return res.status(HttpStatusCode.OK).json(review);
   } catch (error) {
     logger.error('Review fetch failed');

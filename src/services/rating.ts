@@ -14,23 +14,23 @@ export default class RatingService {
     logger.info('All Ratings Found');
     return ratings;
   }
-  static async getRatingsByUserID(
-    userID: string,
-    targetType: ReviewTargetType,
-  ) {
-    const ratings = await RatingModel.getRatingsByUserID(userID, targetType);
-    if (!ratings) {
+  static async getRatingsByUserID(userID: string) {
+    const dishRatings = await RatingModel.getRatingsByUserID(
+      userID,
+      ReviewTargetType.DISH,
+    );
+    const restaurantRatings = await RatingModel.getRatingsByUserID(
+      userID,
+      ReviewTargetType.RESTAURANT,
+    );
+    if (!dishRatings || !restaurantRatings) {
       return null;
     }
-    logger.info(`All Ratings of userID ${userID} for ${targetType} Found`);
-    return ratings;
+    logger.info(`All Ratings of userID ${userID} Found`);
+    return { dishRatings: dishRatings, restaurantRatings: restaurantRatings };
   }
-  static async getRating(
-    userID: string,
-    targetType: ReviewTargetType,
-    targetID: string,
-  ) {
-    const rating = await RatingModel.getRating(userID, targetType, targetID);
+  static async getRatings(targetType: ReviewTargetType, targetID: string) {
+    const rating = await RatingModel.getRatings(targetType, targetID);
     if (!rating) {
       logger.error(`Rating for ${targetType} with ID ${targetID} not found`);
       return null;
@@ -39,6 +39,26 @@ export default class RatingService {
     return rating;
   }
 
+  static async getSpecificRatingByUserID(
+    userID: string,
+    targetType: ReviewTargetType,
+    targetID: string,
+  ) {
+    const rating = await RatingModel.getSpecificRatingByUserID(
+      userID,
+      targetID,
+      targetType,
+    );
+    if (!rating) {
+      logger.error('No any specific rating found');
+      return null;
+    }
+
+    logger.info(
+      `Review found for userID ${userID}, targetID ${targetID}, targetType ${targetType}`,
+    );
+    return rating;
+  }
   static async createRating(ratingData: ICreateRating) {
     const queryResult = await RatingModel.createRating(ratingData)!;
     if (!queryResult) {

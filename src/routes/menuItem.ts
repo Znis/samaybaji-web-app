@@ -9,6 +9,7 @@ import {
   editMenuItem,
   getAllMenuItems,
   getMenuItem,
+  getPopularMenuItems,
 } from '../controllers/menuItem';
 import {
   createMenuItemBodySchema,
@@ -20,6 +21,7 @@ const menuItemRouter = express();
 
 //for everyone
 menuItemRouter.get('/', getAllMenuItems);
+menuItemRouter.get('/popular', getPopularMenuItems);
 
 menuItemRouter.post('/', validateReqQuery(menuItemIDQuerySchema), getMenuItem);
 menuItemRouter.post(

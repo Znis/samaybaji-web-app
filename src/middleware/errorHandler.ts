@@ -24,39 +24,39 @@ export function genericErrorHandler(
   next: NextFunction,
 ) {
   if (error instanceof UnauthenticatedError) {
-    logger.error('User Unauthenticated');
+    logger.error(`User Unauthenticated: ${error.message}`);
     return res
       .status(HttpStatusCode.UNAUTHORIZED)
       .json({ message: error.message });
   }
 
   if (error instanceof BadRequestError) {
-    logger.error('Bad request error');
+    logger.error(`Bad request error: ${error.message}`);
     return res
       .status(HttpStatusCode.BAD_REQUEST)
       .json({ message: error.message });
   }
   if (error instanceof SchemaError) {
-    logger.error('Input data schema error');
+    logger.error(`Input data schema error: ${error.message}`);
     return res
       .status(HttpStatusCode.BAD_REQUEST)
       .json({ message: error.message });
   }
 
   if (error instanceof ModelError) {
-    logger.error('Model response error');
+    logger.error(`Model response error: ${error.message}`);
     return res
       .status(HttpStatusCode.BAD_REQUEST)
       .json({ message: error.message });
   }
   if (error instanceof ForbiddenError) {
-    logger.error('Forbidden resource error');
+    logger.error(`Forbidden resource error: ${error.message}`);
     return res
       .status(HttpStatusCode.FORBIDDEN)
       .json({ message: error.message });
   }
   if (error instanceof BaseError) {
-    logger.error('Base error');
+    logger.error(`Base error: ${error.message}`);
     return res
       .status(HttpStatusCode.FORBIDDEN)
       .json({ message: error.message });

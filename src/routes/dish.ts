@@ -20,7 +20,7 @@ import {
 const dishRouter = express();
 
 //for everyone
-dishRouter.get('/', getAllDishes);
+dishRouter.get('/all', getAllDishes);
 
 dishRouter.get(
   '/:menuItemID',

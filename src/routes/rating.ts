@@ -8,8 +8,9 @@ import {
   deleteRating,
   editRating,
   getAllRatings,
-  getRating,
+  getRatings,
   getRatingsByUserID,
+  getSpecificRatingByUserID,
 } from '../controllers/rating';
 import {
   createOrEditOrDeleteRatingQuerySchema,
@@ -37,14 +38,21 @@ ratingRouter.get(
   authorizeCRUD,
   getRatingsByUserID,
 );
-
+ratingRouter.get(
+  '/:targetID',
+  authenticate,
+  authorize(Permissions.VIEW_REVIEW),
+  validateReqQuery(getRatingByTargetIDQuerySchema),
+  authorizeCRUD,
+  getSpecificRatingByUserID,
+);
 ratingRouter.get(
   '/',
   authenticate,
   authorize(Permissions.VIEW_REVIEW),
   validateReqQuery(getRatingByTargetIDQuerySchema),
   authorizeCRUD,
-  getRating,
+  getRatings,
 );
 
 ratingRouter.post(

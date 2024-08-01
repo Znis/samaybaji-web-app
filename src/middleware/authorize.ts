@@ -53,7 +53,8 @@ export async function authorizeCRUD(
     const cartID = await AuthorizationService.getCartID(currentUser.id);
 
     req.query.cartID = cartID;
-    req.query.userID = currentUser.id;
+    if (!req.query.userID) req.query.userID = currentUser.id;
+
     next();
   } catch (error) {
     next(error);

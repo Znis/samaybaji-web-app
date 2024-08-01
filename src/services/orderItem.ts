@@ -19,6 +19,16 @@ export default class OrderItemService {
     logger.info(`Order items of ${orderID} found`);
     return orderItems;
   }
+  static async getActiveOrderItemsByMenuItemID(menuItemID: string) {
+    const activeOrderItems =
+      await OrderItemModel.getActiveOrderItemsByMenuItemID(menuItemID);
+    if (!activeOrderItems) {
+      logger.error(`Active order items of menuItemID ${menuItemID} not found`);
+      return null;
+    }
+    logger.info(`Active order items of ${menuItemID} found`);
+    return activeOrderItems;
+  }
 
   static async createOrderItem(orderID: string, orderData: ICreateOrderItem[]) {
     const queryResult = await OrderItemModel.createOrderItem(

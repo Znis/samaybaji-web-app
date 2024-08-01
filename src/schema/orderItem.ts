@@ -71,12 +71,12 @@ export const editOrderItemByRestaurantSchema = joi.object({
       OrderItemStatus.PENDING,
       OrderItemStatus.COOKING,
       OrderItemStatus.READY,
-      OrderItemStatus.CANCELLED,
+      OrderItemStatus.DELIVERED,
     )
     .optional()
     .messages({
       'string.base': 'Status must be a string.',
-      'any.only': 'Status must be one of [pending, cooking, ready, cancelled].',
+      'any.only': 'Status must be one of [pending, cooking, ready, delivered].',
       'any.required': 'Status is required.',
     })
     .options({

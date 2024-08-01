@@ -17,8 +17,7 @@ export async function getAllUsers(
       next(new BaseError('No Any User Found'));
       return;
     }
-    const users = data.map(({ passwordHash, ...user }) => user);
-    return res.status(HttpStatusCode.OK).json(users);
+    return res.status(HttpStatusCode.OK).json(data);
   } catch (error) {
     logger.error('User fetch failed');
     next(error);
@@ -35,8 +34,7 @@ export async function getUser(req: Request, res: Response, next: NextFunction) {
       return;
     }
     logger.info(`User with userID ${userID} found`);
-    const { passwordHash, ...user } = data;
-    return res.status(HttpStatusCode.OK).json(user);
+    return res.status(HttpStatusCode.OK).json(data);
   } catch (error) {
     logger.error('User fetch failed');
     next(error);

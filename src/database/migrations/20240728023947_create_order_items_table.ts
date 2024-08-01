@@ -20,7 +20,7 @@ export async function up(knex: Knex): Promise<void> {
         OrderItemStatus.PENDING,
         OrderItemStatus.COOKING,
         OrderItemStatus.READY,
-        OrderItemStatus.CANCELLED,
+        OrderItemStatus.DELIVERED,
       ])
       .defaultTo(OrderItemStatus.PENDING);
     table.integer('quantity').notNullable();

@@ -14,6 +14,20 @@ export default class MenuItemModel extends BaseModel {
         return null;
       });
   }
+
+  static getPopularMenuItems() {
+    return this.queryBuilder()
+      .select('*')
+      .from('menu_items')
+      .where('is_popular', true)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+  }
   static getMenuItem(menuItemID: string) {
     return this.queryBuilder()
       .select('*')

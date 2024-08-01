@@ -1,20 +1,6 @@
 import joi from 'joi';
 import { ReviewTargetType } from '../enums/review';
 
-export const getReviewQuerySchema = joi.object({
-  targetType: joi
-    .string()
-    .valid(ReviewTargetType.DISH, ReviewTargetType.RESTAURANT)
-    .required()
-    .messages({
-      'string.base': 'Target type must be a string.',
-      'string.empty': 'Target type cannot be empty.',
-      'any.required': 'Target type is required.',
-    })
-    .options({
-      stripUnknown: true,
-    }),
-});
 export const getReviewByTargetIDQuerySchema = joi.object({
   targetID: joi.string().guid({ version: 'uuidv4' }).required().messages({
     'string.base': 'Target ID must be a string.',

@@ -3,10 +3,11 @@ import { ICreateReview, IEditReview } from '../interfaces/review';
 import { BaseModel } from './base';
 
 export default class ReviewModel extends BaseModel {
-  static getAllReviews() {
+  static getAllReviews(targetType: ReviewTargetType) {
     return this.queryBuilder()
       .select('*')
       .from('reviews')
+      .where('target_type', targetType)
       .then((data) => {
         return data;
       })
@@ -29,10 +30,10 @@ export default class ReviewModel extends BaseModel {
         return null;
       });
   }
-  static getReview(
+  static getSpecificReviewByUserID(
     userID: string,
-    targetType: ReviewTargetType,
     targetID: string,
+    targetType: ReviewTargetType,
   ) {
     return this.queryBuilder()
       .select('*')
@@ -41,6 +42,20 @@ export default class ReviewModel extends BaseModel {
       .andWhere('target_type', targetType)
       .andWhere('target_id', targetID)
       .first()
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+  }
+  static getReviews(targetID: string, targetType: ReviewTargetType) {
+    return this.queryBuilder()
+      .select('*')
+      .from('reviews')
+      .where('target_type', targetType)
+      .andWhere('target_id', targetID)
       .then((data) => {
         return data;
       })

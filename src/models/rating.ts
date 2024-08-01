@@ -29,10 +29,10 @@ export default class RatingModel extends BaseModel {
         return null;
       });
   }
-  static getRating(
+  static getSpecificRatingByUserID(
     userID: string,
-    targetType: ReviewTargetType,
     targetID: string,
+    targetType: ReviewTargetType,
   ) {
     return this.queryBuilder()
       .select('*')
@@ -41,6 +41,20 @@ export default class RatingModel extends BaseModel {
       .andWhere('target_type', targetType)
       .andWhere('target_id', targetID)
       .first()
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+  }
+  static getRatings(targetType: ReviewTargetType, targetID: string) {
+    return this.queryBuilder()
+      .select('*')
+      .from('ratings')
+      .andWhere('target_type', targetType)
+      .andWhere('target_id', targetID)
       .then((data) => {
         return data;
       })

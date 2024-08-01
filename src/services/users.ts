@@ -15,7 +15,8 @@ export default class UserService {
       return null;
     }
     logger.info('All Users Found');
-    return data;
+    const users = data.map(({ passwordHash, ...user }) => user);
+    return users;
   }
   static async getUser(userID: string) {
     const data = await UserModel.getUser(userID);
@@ -24,7 +25,8 @@ export default class UserService {
       return null;
     }
     logger.info(`User with id ${userID} found`);
-    return data;
+    const { passwordHash, ...user } = data;
+    return user;
   }
 
   static async getUserByEmail(email: string) {

@@ -1,4 +1,8 @@
-import { createUserBodySchema, editUserBodySchema } from './../schema/users';
+import {
+  createUserBodySchema,
+  editUserBodySchema,
+  userIDQuerySchema,
+} from './../schema/users';
 import { Permissions } from './../enums/permissions';
 import express from 'express';
 import {
@@ -9,23 +13,24 @@ import {
   getUser,
 } from '../controllers/users';
 import { authenticate } from '../middleware/authenticate';
-import { validateReqBody } from '../middleware/validator';
+import { validateReqBody, validateReqQuery } from '../middleware/validator';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 
 const usersRouter = express();
 
 //for admin only
 usersRouter.get(
-  '/',
+  '/all',
   authenticate,
   authorize(Permissions.VIEW_ALL_USER),
   authorizeCRUD,
   getAllUsers,
 );
 
-usersRouter.post(
+usersRouter.get(
   '/',
   authenticate,
+  validateReqQuery(userIDQuerySchema),
   authorize(Permissions.VIEW_USER),
   authorizeCRUD,
   getUser,

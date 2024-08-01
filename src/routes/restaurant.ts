@@ -18,7 +18,7 @@ import {
 const restaurantRouter = express();
 
 //for everyone
-restaurantRouter.get('/', getAllRestaurants);
+restaurantRouter.get('/all', getAllRestaurants);
 
 restaurantRouter.post(
   '/',

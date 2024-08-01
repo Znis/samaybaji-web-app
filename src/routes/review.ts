@@ -8,13 +8,13 @@ import {
   deleteReview,
   editReview,
   getAllReviews,
-  getReview,
+  getReviews,
   getReviewsByUserID,
+  getSpecificReviewByUserID,
 } from '../controllers/review';
 import {
   createOrEditReviewBodySchema,
   getReviewByTargetIDQuerySchema,
-  getReviewQuerySchema,
 } from '../schema/review';
 import { createOrEditOrDeleteReviewQuerySchema } from '../schema/review';
 
@@ -33,18 +33,24 @@ reviewRouter.get(
   '/user',
   authenticate,
   authorize(Permissions.VIEW_REVIEW),
-  validateReqQuery(getReviewQuerySchema),
   authorizeCRUD,
   getReviewsByUserID,
 );
-
+reviewRouter.get(
+  '/:targetID',
+  authenticate,
+  authorize(Permissions.VIEW_REVIEW),
+  validateReqQuery(getReviewByTargetIDQuerySchema),
+  authorizeCRUD,
+  getSpecificReviewByUserID,
+);
 reviewRouter.get(
   '/',
   authenticate,
   authorize(Permissions.VIEW_REVIEW),
   validateReqQuery(getReviewByTargetIDQuerySchema),
   authorizeCRUD,
-  getReview,
+  getReviews,
 );
 
 reviewRouter.post(

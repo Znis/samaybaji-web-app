@@ -131,6 +131,7 @@ export const editOrderByCustomerSchema = joi.object({
     'string.base': 'Customer name must be a string.',
     'any.required': 'Customer name is required.',
   }),
+  status: joi.string().optional().valid(OrderStatus.CANCELLED),
   customerPhone: joi
     .string()
     .min(minPhoneNumberLength)
@@ -166,7 +167,6 @@ export const editOrderByAdminSchema = joi.object({
     .valid(
       OrderStatus.PENDING,
       OrderStatus.COOKING,
-      OrderStatus.READY,
       OrderStatus.EN_ROUTE,
       OrderStatus.DELIVERED,
       OrderStatus.CANCELLED,
@@ -175,7 +175,7 @@ export const editOrderByAdminSchema = joi.object({
     .messages({
       'string.base': 'Status must be a string.',
       'any.only':
-        'Status must be one of [pending, cooking, ready, en_route, delivered, cancelled].',
+        'Status must be one of [pending, cooking, en_route, delivered, cancelled].',
       'any.required': 'Status is required.',
     }),
   orderItems: joi

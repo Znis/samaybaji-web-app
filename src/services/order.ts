@@ -3,7 +3,8 @@ import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
 import OrderItemServices from './orderItem';
 import { ICreateOrder, IEditOrder, IOrder } from '../interfaces/order';
-import { OrderStatus } from '../enums/order';
+import { OrderItemStatus, OrderStatus } from '../enums/order';
+import { IOrderItem } from '../interfaces/orderItem';
 
 const logger = loggerWithNameSpace('Order Service');
 
@@ -14,14 +15,15 @@ export default class OrderService {
       return null;
     }
     const orderWithOrderItems = await Promise.all(
-      orders.map(async (order) => {
-        const orderItems = await OrderItemServices.getOrderItemsByOrderID(
+      orders.map(async (order: IOrder) => {
+        const orderItems = (await OrderItemServices.getOrderItemsByOrderID(
           order.id,
-        );
+        )) as IOrderItem[];
+        order.status = this.determineOrderStatus(orderItems);
         return { ...order, orderItems: orderItems };
       }),
     );
-    logger.info('All Orders Found');
+    logger.info(`All Orders Found`);
     return orderWithOrderItems;
   }
   static async getOrder(orderID: string) {
@@ -42,10 +44,11 @@ export default class OrderService {
       return null;
     }
     const orderWithOrderItems = await Promise.all(
-      orders.map(async (order) => {
-        const orderItems = await OrderItemServices.getOrderItemsByOrderID(
+      orders.map(async (order: IOrder) => {
+        const orderItems = (await OrderItemServices.getOrderItemsByOrderID(
           order.id,
-        );
+        )) as IOrderItem[];
+        order.status = this.determineOrderStatus(orderItems);
         return { ...order, orderItems: orderItems };
       }),
     );
@@ -59,10 +62,11 @@ export default class OrderService {
       return null;
     }
     const orderWithOrderItems = await Promise.all(
-      orders.map(async (order) => {
-        const orderItems = await OrderItemServices.getOrderItemsByOrderID(
+      orders.map(async (order: IOrder) => {
+        const orderItems = (await OrderItemServices.getOrderItemsByOrderID(
           order.id,
-        );
+        )) as IOrderItem[];
+        order.status = this.determineOrderStatus(orderItems);
         return { ...order, orderItems: orderItems };
       }),
     );
@@ -123,5 +127,46 @@ export default class OrderService {
     logger.info(`Order with orderID ${orderID} deleted`);
 
     return true;
+  }
+  static determineOrderStatus(orderItems: IOrderItem[]): OrderStatus {
+    let hasPending = false;
+    let hasCooking = false;
+    let hasReady = false;
+
+    for (const item of orderItems) {
+      switch (item.status) {
+        case OrderItemStatus.PENDING:
+          hasPending = true;
+          break;
+        case OrderItemStatus.COOKING:
+          hasCooking = true;
+          break;
+        case OrderItemStatus.READY:
+          hasReady = true;
+          break;
+      }
+    }
+
+    if (orderItems.length === 0) {
+      return OrderStatus.PENDING;
+    }
+
+    if (hasPending) {
+      return OrderStatus.PENDING;
+    }
+
+    if (hasCooking) {
+      return OrderStatus.COOKING;
+    }
+
+    if (hasReady && !hasCooking && !hasPending) {
+      return OrderStatus.EN_ROUTE;
+    }
+
+    if (!hasPending && !hasCooking && !hasReady) {
+      return OrderStatus.DELIVERED;
+    }
+
+    return OrderStatus.CANCELLED;
   }
 }

@@ -5,6 +5,7 @@ import IMenuItem, {
   ICreateMenuItem,
   IEditMenuItem,
 } from '../interfaces/menuItem';
+import OrderItemService from './orderItem';
 
 const logger = loggerWithNameSpace('Menu Item Service');
 
@@ -38,6 +39,15 @@ export default class MenuItemService {
     return menuItems;
   }
 
+  static async getPopularMenuItems() {
+    const popularMenuItems = await MenuItemModel.getPopularMenuItems();
+    if (!popularMenuItems) {
+      logger.error(`No any popular menu items found`);
+      return null;
+    }
+    logger.info(`Popular menu items found`);
+    return popularMenuItems;
+  }
   static async createMenuItem(menuID: string, menuItemData: ICreateMenuItem) {
     const queryResult = await MenuItemModel.createMenuItem(
       menuID,
@@ -72,6 +82,16 @@ export default class MenuItemService {
   }
 
   static async deleteMenuItem(menuItemID: string) {
+    const activeOrderItems =
+      await OrderItemService.getActiveOrderItemsByMenuItemID(menuItemID);
+    if (activeOrderItems!.length) {
+      logger.error(
+        `Could not delete menu item with menuItemID ${menuItemID} because it has active order items`,
+      );
+      throw new ModelError(
+        'Could not delete Menu item due to active order items',
+      );
+    }
     const queryResult = await MenuItemModel.deleteMenuItem(menuItemID)!;
     if (!queryResult) {
       logger.error(`Could not delete menu item with menuItemID ${menuItemID}`);

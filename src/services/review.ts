@@ -7,36 +7,60 @@ import { ICreateReview, IEditReview, IReview } from '../interfaces/review';
 const logger = loggerWithNameSpace('Review Service');
 export default class ReviewService {
   static async getAllReviews() {
-    const reviews = await ReviewModel.getAllReviews();
-    if (!reviews) {
+    const dishReviews = await ReviewModel.getAllReviews(ReviewTargetType.DISH);
+    const restaurantReviews = await ReviewModel.getAllReviews(ReviewTargetType.RESTAURANT);
+    if (!restaurantReviews || !dishReviews) {
+      logger.error('No any review found');
       return null;
     }
     logger.info('All Reviews Found');
-    return reviews;
+    return { dishReviews: dishReviews, restaurantReviews: restaurantReviews };
   }
-  static async getReviewsByUserID(
-    userID: string,
-    targetType: ReviewTargetType,
-  ) {
-    const reviews = await ReviewModel.getReviewsByUserID(userID, targetType);
-    if (!reviews) {
+  static async getReviewsByUserID(userID: string) {
+    const dishReviews = await ReviewModel.getReviewsByUserID(
+      userID,
+      ReviewTargetType.DISH,
+    );
+    const restaurantReviews = await ReviewModel.getReviewsByUserID(
+      userID,
+      ReviewTargetType.RESTAURANT,
+    );
+    if (!restaurantReviews || !dishReviews) {
+      logger.error('No any review found');
       return null;
     }
-    logger.info(`All Reviews of userID ${userID} for ${targetType} Found`);
-    return reviews;
+    logger.info(`All Reviews of userID ${userID} Found`);
+    return { dishReviews: dishReviews, restaurantReviews: restaurantReviews };
   }
-  static async getReview(
+  static async getSpecificReviewByUserID(
     userID: string,
     targetType: ReviewTargetType,
     targetID: string,
   ) {
-    const review = await ReviewModel.getReview(userID, targetType, targetID);
+    const review = await ReviewModel.getSpecificReviewByUserID(
+      userID,
+      targetID,
+      targetType,
+    );
     if (!review) {
-      logger.error(`Review for ${targetType} with ID ${targetID} not found`);
+      logger.error('No any specific review found');
       return null;
     }
-    logger.info(`Review for ${targetType} with ID ${targetID} found`);
+
+    logger.info(
+      `Review found for userID ${userID}, targetID ${targetID}, targetType ${targetType}`,
+    );
     return review;
+  }
+
+  static async getReviews(targetType: ReviewTargetType, targetID: string) {
+    const reviews = await ReviewModel.getReviews(targetID, targetType);
+    if (!reviews) {
+      logger.error(`Reviews for ${targetType} with ID ${targetID} not found`);
+      return null;
+    }
+    logger.info(`Reviews for ${targetType} with ID ${targetID} found`);
+    return reviews;
   }
 
   static async createReview(reviewData: ICreateReview) {
