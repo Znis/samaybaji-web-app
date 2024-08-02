@@ -1,66 +1,44 @@
 import RatingModel from '../models/rating';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
-import { ReviewTargetType } from '../enums/review';
 import { ICreateRating, IEditRating, IRating } from '../interfaces/rating';
 
 const logger = loggerWithNameSpace('Rating Service');
 export default class RatingService {
-  static async getAllRatings() {
-    const ratings = await RatingModel.getAllRatings();
+  static async getTargetRatings(targetId: string) {
+    const ratings = await RatingModel.getTargetRatings(targetId);
     if (!ratings) {
+      logger.error(`Ratings for Id ${targetId} not found`);
       return null;
     }
-    logger.info('All Ratings Found');
-    return ratings;
-  }
-  static async getRatingsByUserId(userId: string) {
-    const dishRatings = await RatingModel.getRatingsByUserId(
-      userId,
-      ReviewTargetType.DISH,
+    logger.info(`Ratings for Id ${targetId} found`);
+    const count = ratings.length;
+    const rating = Math.floor(
+      ratings.reduce((sum, rating) => sum + rating, 0) / count,
     );
-    const restaurantRatings = await RatingModel.getRatingsByUserId(
-      userId,
-      ReviewTargetType.RESTAURANT,
-    );
-    if (!dishRatings || !restaurantRatings) {
-      return null;
-    }
-    logger.info(`All Ratings of userId ${userId} Found`);
-    return { dishRatings: dishRatings, restaurantRatings: restaurantRatings };
-  }
-  static async getRatings(targetType: ReviewTargetType, targetId: string) {
-    const rating = await RatingModel.getRatings(targetType, targetId);
-    if (!rating) {
-      logger.error(`Rating for ${targetType} with Id ${targetId} not found`);
-      return null;
-    }
-    logger.info(`Rating for ${targetType} with Id ${targetId} found`);
-    return rating;
+    return { count: count, rating: rating };
   }
 
-  static async getSpecificRatingByUserId(
-    userId: string,
-    targetType: ReviewTargetType,
-    targetId: string,
-  ) {
-    const rating = await RatingModel.getSpecificRatingByUserId(
-      userId,
-      targetId,
-      targetType,
-    );
+  static async getSpecificRating(targetId: string, userId: string) {
+    const rating = await RatingModel.getSpecificRating(targetId, userId);
     if (!rating) {
       logger.error('No any specific rating found');
       return null;
     }
 
-    logger.info(
-      `Review found for userId ${userId}, targetId ${targetId}, targetType ${targetType}`,
-    );
+    logger.info(`Review found for userId ${userId}, targetId ${targetId}`);
     return rating;
   }
-  static async createRating(ratingData: ICreateRating) {
-    const queryResult = await RatingModel.createRating(ratingData)!;
+  static async createRating(
+    ratingData: ICreateRating,
+    targetId: string,
+    userId: string,
+  ) {
+    const queryResult = await RatingModel.createRating(
+      ratingData,
+      targetId,
+      userId,
+    )!;
     if (!queryResult) {
       logger.error('Could not create new rating');
       throw new ModelError('Could not create rating');

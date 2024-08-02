@@ -9,9 +9,7 @@ export interface IRating {
 }
 
 export interface ICreateRating {
-  targetId: string;
   targetType: ReviewTargetType;
-  userId: string;
   rating: number;
 }
 export interface IEditRating {

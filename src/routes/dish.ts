@@ -1,7 +1,11 @@
 import { Permissions } from './../enums/permissions';
 import express from 'express';
 import { authenticate } from '../middleware/authenticate';
-import { validateReqBody, validateReqQuery } from '../middleware/validator';
+import {
+  validateReqBody,
+  validateReqParams,
+  validateReqQuery,
+} from '../middleware/validator';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 import {
   createDish,
@@ -9,12 +13,13 @@ import {
   editDish,
   getAllDishes,
   getDish,
+  getDishByMenuItemId,
 } from '../controllers/dish';
 import {
   createDishBodySchema,
+  dishIdParamsSchema,
   editDishBodySchema,
-  editOrDeleteDishQuerySchema,
-  getOrCreateDishQuerySchema,
+  menuItemIdParamsSchema,
 } from '../schema/dish';
 
 const dishRouter = express();
@@ -22,15 +27,17 @@ const dishRouter = express();
 //for everyone
 dishRouter.get('/all', getAllDishes);
 
+dishRouter.get('/:dishId', validateReqParams(dishIdParamsSchema), getDish);
+
 dishRouter.get(
-  '/:menuItemId',
-  validateReqQuery(getOrCreateDishQuerySchema),
-  getDish,
+  '/menu-item-id/:menuItemId',
+  validateReqParams(menuItemIdParamsSchema),
+  getDishByMenuItemId,
 );
 
 dishRouter.post(
-  '/create',
-  validateReqQuery(getOrCreateDishQuerySchema),
+  '/:menuItemId',
+  validateReqParams(menuItemIdParamsSchema),
   validateReqBody(createDishBodySchema),
   authenticate,
   authorize(Permissions.CREATE_MENU_ITEM),
@@ -39,8 +46,8 @@ dishRouter.post(
 );
 
 dishRouter.patch(
-  '/edit/',
-  validateReqQuery(editOrDeleteDishQuerySchema),
+  '/:dishId',
+  validateReqParams(dishIdParamsSchema),
   validateReqBody(editDishBodySchema),
   authenticate,
   authorize(Permissions.EDIT_MENU_ITEM),
@@ -49,8 +56,8 @@ dishRouter.patch(
 );
 
 dishRouter.delete(
-  '/delete',
-  validateReqQuery(editOrDeleteDishQuerySchema),
+  '/:dishId',
+  validateReqParams(dishIdParamsSchema),
   authenticate,
   authorize(Permissions.DELETE_MENU_ITEM),
   authorizeCRUD,

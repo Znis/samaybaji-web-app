@@ -8,6 +8,7 @@ import UserServices from './users';
 import AuthenticateModel from '../models/authenticate';
 import { ModelError } from '../error/modelError';
 import AuthorizationService from './authorize';
+import { Roles } from '../enums/roles';
 
 const logger = loggerWithNameSpace('Authentication Service');
 
@@ -51,7 +52,18 @@ export default class AuthenticationService {
     const roleId = (await AuthorizationService.getRoleId(
       userInfoPayload.id,
     )) as string;
-    const authenticatedUser = { ...userInfoPayload, roleId: roleId };
+
+    const authenticatedUser = {
+      ...userInfoPayload,
+      roleId: roleId,
+      restaurantId: '',
+    };
+    if (roleId == Roles.CUSTOMER_WITH_RESTAURANT) {
+      const restaurantId = (await AuthorizationService.getRestaurantId(
+        userInfoPayload.id,
+      )) as string;
+      authenticatedUser.restaurantId = restaurantId;
+    }
 
     logger.info('Generated Access Token and Refresh Token');
     return {

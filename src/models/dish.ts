@@ -14,11 +14,25 @@ export default class DishModel extends BaseModel {
         return null;
       });
   }
-  static getDish(menuItemId: string) {
+  static getDishByMenuItemId(menuItemId: string) {
     return this.queryBuilder()
       .select('*')
       .from('dishes')
       .where('menu_item_id', menuItemId)
+      .first()
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+  }
+  static getDish(dishId: string) {
+    return this.queryBuilder()
+      .select('*')
+      .from('dishes')
+      .where('id', dishId)
       .first()
       .then((data) => {
         return data;

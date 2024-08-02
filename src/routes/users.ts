@@ -27,23 +27,12 @@ usersRouter.get(
   getAllUsers,
 );
 
-usersRouter.get(
-  '/',
-  authenticate,
-  validateReqQuery(userIdQuerySchema),
-  authorize(Permissions.VIEW_USER),
-  authorizeCRUD,
-  getUser,
-);
+usersRouter.get('/', validateReqQuery(userIdQuerySchema), getUser);
 
-usersRouter.post(
-  '/register',
-  validateReqBody(createUserBodySchema),
-  createUser,
-);
+usersRouter.post('/', validateReqBody(createUserBodySchema), createUser);
 
 usersRouter.patch(
-  '/edit/',
+  '/',
   validateReqBody(editUserBodySchema),
   authenticate,
   authorize(Permissions.EDIT_USER),
@@ -52,7 +41,7 @@ usersRouter.patch(
 );
 
 usersRouter.delete(
-  '/delete/',
+  '/',
   authenticate,
   authorize(Permissions.DELETE_USER),
   authorizeCRUD,

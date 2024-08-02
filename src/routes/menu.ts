@@ -26,7 +26,7 @@ menuRouter.get(
 );
 
 menuRouter.post(
-  '/create',
+  '/',
   validateReqBody(createMenuBodySchema),
   authenticate,
   authorize(Permissions.CREATE_MENU),
@@ -35,7 +35,7 @@ menuRouter.post(
 );
 
 menuRouter.patch(
-  '/edit/',
+  '/',
   validateReqBody(editMenuBodySchema),
   authenticate,
   authorize(Permissions.EDIT_MENU),
@@ -44,7 +44,7 @@ menuRouter.patch(
 );
 
 menuRouter.delete(
-  '/delete/',
+  '/',
   authenticate,
   authorize(Permissions.DELETE_MENU),
   authorizeCRUD,

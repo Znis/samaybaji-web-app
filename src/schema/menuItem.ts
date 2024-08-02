@@ -95,3 +95,12 @@ export const menuItemIdQuerySchema = joi
   .options({
     stripUnknown: true,
   });
+export const menuItemIdParamsSchema = joi
+  .object({
+    menuItemId: joi.string().required().messages({
+      'any.required': 'Menu Item Id is required',
+    }),
+  })
+  .options({
+    stripUnknown: true,
+  });

@@ -56,7 +56,8 @@ export default class UserService {
   static async editUser(id: string, updateUserData: IUpdateUser) {
     if (updateUserData.password) {
       const hashedPassword = await bcrypt.hash(updateUserData.password, salt);
-      updateUserData.password = hashedPassword;
+      updateUserData.passwordHash = hashedPassword;
+      delete updateUserData.password;
     }
     const queryResult = await UserModel.editUserById(id, updateUserData)!;
     if (!queryResult) {

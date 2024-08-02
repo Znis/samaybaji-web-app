@@ -1,64 +1,43 @@
+import {
+  createRatingBodySchema,
+  editRatingBodySchema,
+  ratingCRParamsSchema,
+  ratingUDParamsSchema,
+} from './../schema/rating';
 import { Permissions } from './../enums/permissions';
 import express from 'express';
 import { authenticate } from '../middleware/authenticate';
-import { validateReqBody, validateReqQuery } from '../middleware/validator';
+import { validateReqBody, validateReqParams } from '../middleware/validator';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 import {
   createRating,
   deleteRating,
   editRating,
-  getAllRatings,
-  getRatings,
-  getRatingsByUserId,
-  getSpecificRatingByUserId,
+  getSpecificRating,
+  getTargetRatings,
 } from '../controllers/rating';
-import {
-  createOrEditOrDeleteRatingQuerySchema,
-  createOrEditRatingBodySchema,
-  getRatingByTargetIdQuerySchema,
-  getRatingQuerySchema,
-} from '../schema/rating';
 
 const ratingRouter = express();
 
-//for admin only
 ratingRouter.get(
-  '/all',
+  '/specific-rating/:targetId',
   authenticate,
-  authorize(Permissions.VIEW_All_REVIEW),
+  authorize(Permissions.VIEW_REVIEW),
+  validateReqParams(ratingCRParamsSchema),
   authorizeCRUD,
-  getAllRatings,
+  getSpecificRating,
 );
 
 ratingRouter.get(
-  '/user',
-  authenticate,
-  authorize(Permissions.VIEW_REVIEW),
-  validateReqQuery(getRatingQuerySchema),
-  authorizeCRUD,
-  getRatingsByUserId,
-);
-ratingRouter.get(
   '/:targetId',
-  authenticate,
-  authorize(Permissions.VIEW_REVIEW),
-  validateReqQuery(getRatingByTargetIdQuerySchema),
-  authorizeCRUD,
-  getSpecificRatingByUserId,
-);
-ratingRouter.get(
-  '/',
-  authenticate,
-  authorize(Permissions.VIEW_REVIEW),
-  validateReqQuery(getRatingByTargetIdQuerySchema),
-  authorizeCRUD,
-  getRatings,
+  validateReqParams(ratingCRParamsSchema),
+  getTargetRatings,
 );
 
 ratingRouter.post(
-  '/create',
-  validateReqQuery(createOrEditOrDeleteRatingQuerySchema),
-  validateReqBody(createOrEditRatingBodySchema),
+  '/',
+  validateReqParams(ratingCRParamsSchema),
+  validateReqBody(createRatingBodySchema),
   authenticate,
   authorize(Permissions.ADD_REVIEW),
   authorizeCRUD,
@@ -66,9 +45,9 @@ ratingRouter.post(
 );
 
 ratingRouter.patch(
-  '/edit/',
-  validateReqQuery(createOrEditOrDeleteRatingQuerySchema),
-  validateReqBody(createOrEditRatingBodySchema),
+  '/',
+  validateReqParams(ratingUDParamsSchema),
+  validateReqBody(editRatingBodySchema),
   authenticate,
   authorize(Permissions.EDIT_REVIEW),
   authorizeCRUD,
@@ -76,8 +55,8 @@ ratingRouter.patch(
 );
 
 ratingRouter.delete(
-  '/delete',
-  validateReqQuery(createOrEditOrDeleteRatingQuerySchema),
+  '/',
+  validateReqParams(ratingUDParamsSchema),
   authenticate,
   authorize(Permissions.DELETE_MENU_ITEM),
   authorizeCRUD,

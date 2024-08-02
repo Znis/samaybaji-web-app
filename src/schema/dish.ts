@@ -23,10 +23,9 @@ export const createDishBodySchema = joi.object({
     'any.required': 'Items list is required.',
     'string.base': 'Each item must be a string.',
   }),
-  imgSrc: joi.string().uri().required().allow('').messages({
+  imgSrc: joi.string().required().allow('').messages({
     'string.base': 'Image source must be a string.',
-    'any.required': 'Image URI is required.',
-    'string.uri': 'Image source must be a valid URI.',
+    'any.required': 'Image name is required.',
   }),
   price: joi.number().positive().required().messages({
     'number.base': 'Price must be a number.',
@@ -68,10 +67,9 @@ export const editDishBodySchema = joi.object({
     'any.required': 'Items list is required.',
     'string.base': 'Each item must be a string.',
   }),
-  imgSrc: joi.string().uri().optional().allow('').messages({
+  imgSrc: joi.string().optional().allow('').messages({
     'string.base': 'Image source must be a string.',
-    'any.required': 'Image URI is required.',
-    'string.uri': 'Image source must be a valid URI.',
+    'any.required': 'Image name is required.',
   }),
   price: joi.number().positive().optional().messages({
     'number.base': 'Price must be a number.',
@@ -90,7 +88,7 @@ export const editDishBodySchema = joi.object({
       stripUnknown: true,
     }),
 });
-export const getOrCreateDishQuerySchema = joi.object({
+export const menuItemIdParamsSchema = joi.object({
   menuItemId: joi
     .string()
     .guid({ version: 'uuidv4' })
@@ -104,7 +102,7 @@ export const getOrCreateDishQuerySchema = joi.object({
       stripUnknown: true,
     }),
 });
-export const editOrDeleteDishQuerySchema = joi.object({
+export const dishIdParamsSchema = joi.object({
   dishId: joi
     .string()
     .guid({ version: 'uuidv4' })

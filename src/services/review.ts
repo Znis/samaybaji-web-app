@@ -8,7 +8,9 @@ const logger = loggerWithNameSpace('Review Service');
 export default class ReviewService {
   static async getAllReviews() {
     const dishReviews = await ReviewModel.getAllReviews(ReviewTargetType.DISH);
-    const restaurantReviews = await ReviewModel.getAllReviews(ReviewTargetType.RESTAURANT);
+    const restaurantReviews = await ReviewModel.getAllReviews(
+      ReviewTargetType.RESTAURANT,
+    );
     if (!restaurantReviews || !dishReviews) {
       logger.error('No any review found');
       return null;
@@ -32,39 +34,27 @@ export default class ReviewService {
     logger.info(`All Reviews of userId ${userId} Found`);
     return { dishReviews: dishReviews, restaurantReviews: restaurantReviews };
   }
-  static async getSpecificReviewByUserId(
-    userId: string,
-    targetType: ReviewTargetType,
-    targetId: string,
-  ) {
-    const review = await ReviewModel.getSpecificReviewByUserId(
-      userId,
-      targetId,
-      targetType,
-    );
-    if (!review) {
-      logger.error('No any specific review found');
-      return null;
-    }
 
-    logger.info(
-      `Review found for userId ${userId}, targetId ${targetId}, targetType ${targetType}`,
-    );
-    return review;
-  }
-
-  static async getReviews(targetType: ReviewTargetType, targetId: string) {
-    const reviews = await ReviewModel.getReviews(targetId, targetType);
+  static async getReviewsByTargetId(targetId: string) {
+    const reviews = await ReviewModel.getReviewsByTargetId(targetId);
     if (!reviews) {
-      logger.error(`Reviews for ${targetType} with Id ${targetId} not found`);
+      logger.error(`Reviews for Id ${targetId} not found`);
       return null;
     }
-    logger.info(`Reviews for ${targetType} with Id ${targetId} found`);
+    logger.info(`Reviews for Id ${targetId} found`);
     return reviews;
   }
 
-  static async createReview(reviewData: ICreateReview) {
-    const queryResult = await ReviewModel.createReview(reviewData)!;
+  static async createReview(
+    reviewData: ICreateReview,
+    targetId: string,
+    userId: string,
+  ) {
+    const queryResult = await ReviewModel.createReview(
+      reviewData,
+      targetId,
+      userId,
+    )!;
     if (!queryResult) {
       logger.error('Could not create new Review');
       throw new ModelError('Could not create Review');

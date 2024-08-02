@@ -30,43 +30,26 @@ export default class ReviewModel extends BaseModel {
         return null;
       });
   }
-  static getSpecificReviewByUserId(
-    userId: string,
+  static getReviewsByTargetId(targetId: string) {
+    return this.queryBuilder()
+      .select('*')
+      .from('reviews')
+      .where('target_id', targetId)
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.log(error);
+        return null;
+      });
+  }
+  static createReview(
+    reviewData: ICreateReview,
     targetId: string,
-    targetType: ReviewTargetType,
+    userId: string,
   ) {
     return this.queryBuilder()
-      .select('*')
-      .from('reviews')
-      .where('user_id', userId)
-      .andWhere('target_type', targetType)
-      .andWhere('target_id', targetId)
-      .first()
-      .then((data) => {
-        return data;
-      })
-      .catch((error) => {
-        console.log(error);
-        return null;
-      });
-  }
-  static getReviews(targetId: string, targetType: ReviewTargetType) {
-    return this.queryBuilder()
-      .select('*')
-      .from('reviews')
-      .where('target_type', targetType)
-      .andWhere('target_id', targetId)
-      .then((data) => {
-        return data;
-      })
-      .catch((error) => {
-        console.log(error);
-        return null;
-      });
-  }
-  static createReview(reviewData: ICreateReview) {
-    return this.queryBuilder()
-      .insert(reviewData)
+      .insert({ ...reviewData, targetId: targetId, userId: userId })
       .into('reviews')
       .returning('id')
       .then((data) => {

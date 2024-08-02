@@ -23,6 +23,8 @@ export interface IUpdateUser {
   imageSrc?: string;
   phoneNumber?: string;
   password?: string;
+  passwordHash?: string;
+
 }
 
 export default IUser;

@@ -112,7 +112,7 @@ export async function editMenuItem(
   next: NextFunction,
 ) {
   try {
-    const menuItemId = req.query.menuItemId as string;
+    const menuItemId = req.params.menuItemId as string;
     const menuItemData = req.body;
     const response = await MenuItemService.editMenuItem(
       menuItemId,
@@ -132,7 +132,7 @@ export async function deleteMenuItem(
   next: NextFunction,
 ) {
   try {
-    const menuItemId = req.query.menuItemD as string;
+    const menuItemId = req.params.menuItemD as string;
     await MenuItemService.deleteMenuItem(menuItemId);
     logger.info(`Menu item with menuItemId ${menuItemId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');

@@ -3,42 +3,11 @@ import { ICreateRating, IEditRating } from '../interfaces/rating';
 import { BaseModel } from './base';
 
 export default class RatingModel extends BaseModel {
-  static getAllRatings() {
-    return this.queryBuilder()
-      .select('*')
-      .from('ratings')
-      .then((data) => {
-        return data;
-      })
-      .catch((error) => {
-        console.log(error);
-        return null;
-      });
-  }
-  static getRatingsByUserId(userId: string, targetType: ReviewTargetType) {
+  static getSpecificRating(targetId: string, userId: string) {
     return this.queryBuilder()
       .select('*')
       .from('ratings')
       .where('user_id', userId)
-      .andWhere('target_type', targetType)
-      .then((data) => {
-        return data;
-      })
-      .catch((error) => {
-        console.log(error);
-        return null;
-      });
-  }
-  static getSpecificRatingByUserId(
-    userId: string,
-    targetId: string,
-    targetType: ReviewTargetType,
-  ) {
-    return this.queryBuilder()
-      .select('*')
-      .from('ratings')
-      .where('user_id', userId)
-      .andWhere('target_type', targetType)
       .andWhere('target_id', targetId)
       .first()
       .then((data) => {
@@ -49,11 +18,10 @@ export default class RatingModel extends BaseModel {
         return null;
       });
   }
-  static getRatings(targetType: ReviewTargetType, targetId: string) {
+  static getTargetRatings(targetId: string) {
     return this.queryBuilder()
       .select('*')
       .from('ratings')
-      .andWhere('target_type', targetType)
       .andWhere('target_id', targetId)
       .then((data) => {
         return data;
@@ -63,9 +31,13 @@ export default class RatingModel extends BaseModel {
         return null;
       });
   }
-  static createRating(ratingData: ICreateRating) {
+  static createRating(
+    ratingData: ICreateRating,
+    targetId: string,
+    userId: string,
+  ) {
     return this.queryBuilder()
-      .insert(ratingData)
+      .insert({ ...ratingData, targetId: targetId, userId: userId })
       .into('ratings')
       .returning('id')
       .then((data) => {

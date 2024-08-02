@@ -1,7 +1,11 @@
 import { Permissions } from './../enums/permissions';
 import express from 'express';
 import { authenticate } from '../middleware/authenticate';
-import { validateReqBody, validateReqQuery } from '../middleware/validator';
+import {
+  validateReqBody,
+  validateReqParams,
+  validateReqQuery,
+} from '../middleware/validator';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 import {
   createMenuItem,
@@ -14,6 +18,7 @@ import {
 import {
   createMenuItemBodySchema,
   editMenuItemBodySchema,
+  menuItemIdParamsSchema,
   menuItemIdQuerySchema,
 } from '../schema/menuItem';
 
@@ -25,7 +30,7 @@ menuItemRouter.get('/popular', getPopularMenuItems);
 
 menuItemRouter.post('/', validateReqQuery(menuItemIdQuerySchema), getMenuItem);
 menuItemRouter.post(
-  '/create',
+  '/',
   validateReqBody(createMenuItemBodySchema),
   authenticate,
   authorize(Permissions.CREATE_MENU_ITEM),
@@ -34,7 +39,8 @@ menuItemRouter.post(
 );
 
 menuItemRouter.patch(
-  '/edit/',
+  '/:menuItemId',
+  validateReqParams(menuItemIdParamsSchema),
   validateReqBody(editMenuItemBodySchema),
   authenticate,
   authorize(Permissions.EDIT_MENU_ITEM),
@@ -43,7 +49,8 @@ menuItemRouter.patch(
 );
 
 menuItemRouter.delete(
-  '/delete/',
+  '/:menuItemId',
+  validateReqParams(menuItemIdParamsSchema),
   authenticate,
   authorize(Permissions.DELETE_MENU_ITEM),
   authorizeCRUD,

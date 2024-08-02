@@ -1,22 +1,22 @@
 import { Permissions } from './../enums/permissions';
 import express from 'express';
 import { authenticate } from '../middleware/authenticate';
-import { validateReqBody, validateReqQuery } from '../middleware/validator';
+import { validateReqBody, validateReqParams } from '../middleware/validator';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 import {
   createReview,
   deleteReview,
   editReview,
   getAllReviews,
-  getReviews,
+  getReviewsByTargetId,
   getReviewsByUserId,
-  getSpecificReviewByUserId,
 } from '../controllers/review';
 import {
-  createOrEditReviewBodySchema,
-  getReviewByTargetIdQuerySchema,
+  createReviewBodySchema,
+  editReviewBodySchema,
+  reviewCRParamsSchema,
+  reviewUDParamsSchema,
 } from '../schema/review';
-import { createOrEditOrDeleteReviewQuerySchema } from '../schema/review';
 
 const reviewRouter = express();
 
@@ -29,6 +29,7 @@ reviewRouter.get(
   getAllReviews,
 );
 
+//user dashboard
 reviewRouter.get(
   '/user',
   authenticate,
@@ -36,27 +37,18 @@ reviewRouter.get(
   authorizeCRUD,
   getReviewsByUserId,
 );
+
+//either restaurant or dish review
 reviewRouter.get(
   '/:targetId',
-  validateReqQuery(getReviewByTargetIdQuerySchema),
-  authenticate,
-  authorize(Permissions.VIEW_REVIEW),
-  authorizeCRUD,
-  getSpecificReviewByUserId,
-);
-reviewRouter.get(
-  '/',
-  authenticate,
-  authorize(Permissions.VIEW_REVIEW),
-  validateReqQuery(getReviewByTargetIdQuerySchema),
-  authorizeCRUD,
-  getReviews,
+  validateReqParams(reviewCRParamsSchema),
+  getReviewsByTargetId,
 );
 
 reviewRouter.post(
-  '/create',
-  validateReqQuery(createOrEditOrDeleteReviewQuerySchema),
-  validateReqBody(createOrEditReviewBodySchema),
+  '/:targetId',
+  validateReqParams(reviewCRParamsSchema),
+  validateReqBody(createReviewBodySchema),
   authenticate,
   authorize(Permissions.ADD_REVIEW),
   authorizeCRUD,
@@ -64,9 +56,9 @@ reviewRouter.post(
 );
 
 reviewRouter.patch(
-  '/edit/',
-  validateReqQuery(createOrEditOrDeleteReviewQuerySchema),
-  validateReqBody(createOrEditReviewBodySchema),
+  '/:reviewId',
+  validateReqParams(reviewUDParamsSchema),
+  validateReqBody(editReviewBodySchema),
   authenticate,
   authorize(Permissions.EDIT_REVIEW),
   authorizeCRUD,
@@ -74,8 +66,8 @@ reviewRouter.patch(
 );
 
 reviewRouter.delete(
-  '/delete',
-  validateReqQuery(createOrEditOrDeleteReviewQuerySchema),
+  '/:reviewId',
+  validateReqParams(reviewUDParamsSchema),
   authenticate,
   authorize(Permissions.DELETE_MENU_ITEM),
   authorizeCRUD,
