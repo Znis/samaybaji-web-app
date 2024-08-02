@@ -8,6 +8,8 @@ import { navigate } from '../../router';
 import { makeApiCall } from '../../apiCalls';
 import { createOrder } from '../../api-routes/order';
 import { clearCart } from '../../api-routes/cart';
+import Toast from '../../components/toast';
+import axios from 'axios';
 
 export default class Checkout {
   static htmlTemplateUrl =
@@ -149,6 +151,12 @@ export default class Checkout {
     const checkoutForm = this.element.querySelector(
       '#checkout-form',
     ) as HTMLFormElement;
+    const confirmCheckoutButton = this.element.querySelector(
+      '#confirm-order-button',
+    ) as HTMLButtonElement;
+    const errorMessage = this.element.querySelector(
+      '.form__error-message',
+    ) as HTMLParagraphElement;
     checkoutForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (!checkoutForm.checkValidity()) {
@@ -180,8 +188,10 @@ export default class Checkout {
         discountAmount: this.discountAmount,
         orderItems: orderItems,
       };
-
+      const spinner = LoaderSpinner.render(20);
       try {
+        confirmCheckoutButton.appendChild(spinner);
+        confirmCheckoutButton.disabled = true;
         const response = await makeApiCall(createOrder, order);
         await makeApiCall(clearCart);
         const trackOrderButton = this.element.querySelector(
@@ -235,14 +245,24 @@ export default class Checkout {
           '#order-summary-note',
         ) as HTMLSpanElement;
         orderSummaryNote.innerHTML = `${order.notes || ''}`;
+        errorMessage.innerHTML = '';
 
         trackOrderButton.addEventListener('click', () => {
           StateManager.updateState('cart', []);
-          history.pushState(null, '', '/');
-          navigate('/');
+          history.pushState(null, '', '/dashboard');
+          navigate('/dashboard');
         });
       } catch (error) {
-        console.log(error);
+        if (axios.isAxiosError(error)) {
+          errorMessage.innerHTML = error.message;
+          Toast.show('Checkout Failed');
+        } else {
+          errorMessage.innerHTML = 'An unexpected error occurred';
+          Toast.show('An unexpected error occurred');
+        }
+      } finally {
+        confirmCheckoutButton.removeChild(spinner);
+        confirmCheckoutButton.disabled = false;
       }
     });
   }

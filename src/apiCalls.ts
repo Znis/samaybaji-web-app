@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { StateManager } from './state-management/stateManager';
 import { fetchAccessToken } from './api-routes/auth';
 
@@ -37,7 +37,7 @@ export async function makeApiCall<T extends unknown[]>(
     return await callbackFn(...args);
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      if (error.message === 'Token Expired') {
+      if (error.response?.data.message === 'Token Expired') {
         const tokenResponse = await handleTokenExpiration();
         if (!tokenResponse.accessToken) {
           logoutUser();
@@ -53,17 +53,13 @@ export async function makeApiCall<T extends unknown[]>(
               retryError.response!.status,
               retryError.response!.statusText,
             );
-            throw new Error(
-              `API Error:
-              ${retryError.response!.status} 
-              ${retryError.response!.statusText}`,
-            );
+            throw new AxiosError(retryError.response?.data.message);
           }
-          console.error('API Error:', retryError);
+          throw new Error(`API Error: ${retryError}`);
         }
       } else {
         console.error('API Error:', error);
-        throw new Error(`${error}`);
+        throw new AxiosError(error.response?.data.message);
       }
     } else {
       console.error('Unexpected error:', error);

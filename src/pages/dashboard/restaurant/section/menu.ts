@@ -1,5 +1,6 @@
+import axios from 'axios';
 import { fetchDish, fetchDishByMenuItemId } from '../../../../api-routes/dish';
-import { fetchAllMenus } from '../../../../api-routes/menu';
+import { createMenu, fetchAllMenus } from '../../../../api-routes/menu';
 import {
   deleteMenuItem,
   editMenuItem,
@@ -7,11 +8,14 @@ import {
 } from '../../../../api-routes/menuItem';
 import { makeApiCall } from '../../../../apiCalls';
 import { Accordion } from '../../../../components/accordion';
+import { LoaderSpinner } from '../../../../components/loaderSpinner';
 import { MenuItemForm } from '../../../../components/menuItemForm';
 import Modal from '../../../../components/modal';
 import Toast from '../../../../components/toast';
 import { Status } from '../../../../enums/menuItem';
+import { IMenu } from '../../../../interfaces/menu';
 import { IMenuItem } from '../../../../interfaces/menuItem';
+import { StateManager } from '../../../../state-management/stateManager';
 
 export default class RestaurantMenuDashboard {
   static element: HTMLElement = document.createElement('div');
@@ -21,11 +25,12 @@ export default class RestaurantMenuDashboard {
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
-        .then((html) => {
+        .then(async (html) => {
           this.element.classList.add('dashboard');
           this.element.innerHTML = html;
-          const check = true;
-          if (!check) {
+          const checkMenu = await this.checkIfMenuIsPresent();
+
+          if (!checkMenu) {
             this.renderDashboard();
           } else {
             this.fetchAllMenuItems();
@@ -35,8 +40,71 @@ export default class RestaurantMenuDashboard {
     }
     return this.element;
   }
+
+  static async checkIfMenuIsPresent() {
+    const menus = (await fetchAllMenus()) as unknown as IMenu[];
+    const ownMenu = menus.find(
+      (menu) => menu.restaurantId == StateManager.state.user?.restaurantId,
+    );
+    if (ownMenu) {
+      return true;
+    }
+    return false;
+  }
+  static async fetchAllMenuItems() {
+    const menus = (await fetchAllMenus()) as unknown as IMenu[];
+    const ownMenu = menus.find(
+      (menu) => menu.restaurantId == StateManager.state.user?.restaurantId,
+    );
+    this.render(ownMenu?.menuItems as unknown as IMenuItem[]);
+  }
   static setEventListeners() {
-    const addItemButtom = this.element.querySelector('#add-menu-item-button');
+    const addItemButtom = this.element.querySelector(
+      '#add-menu-item-button',
+    ) as HTMLButtonElement;
+    const createMenuForm = this.element.querySelector(
+      '#create-menu-form',
+    ) as HTMLFormElement;
+    const menuNameField = this.element.querySelector(
+      '#menu-title',
+    ) as HTMLInputElement;
+    const descriptionField = this.element.querySelector(
+      '#menu-description',
+    ) as HTMLInputElement;
+    const submitButton = this.element.querySelector(
+      '#create-menu-button',
+    ) as HTMLButtonElement;
+    const errorMessage = this.element.querySelector(
+      '.form__error-message',
+    ) as HTMLParagraphElement;
+
+    createMenuForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!createMenuForm.checkValidity()) {
+        createMenuForm.reportValidity();
+      }
+      const spinner = LoaderSpinner.render(20);
+      try {
+        submitButton.appendChild(spinner);
+        submitButton.disabled = true;
+        await makeApiCall(createMenu, {
+          name: menuNameField.value,
+          description: descriptionField.value,
+        });
+        Toast.show('Menu Registration Successful');
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          errorMessage.innerHTML = error.message;
+          Toast.show('Menu Registration Failed');
+        } else {
+          errorMessage.innerHTML = 'An unexpected error occurred';
+          Toast.show('An unexpected error occurred');
+        }
+      } finally {
+        spinner.remove();
+        submitButton.disabled = false;
+      }
+    });
     addItemButtom?.addEventListener('click', () => {
       Modal.toggle();
       const modal = document.querySelector('.modal') as HTMLDivElement;
@@ -64,11 +132,7 @@ export default class RestaurantMenuDashboard {
     ) as HTMLDivElement;
     outOfStockMenuContainer.style.display = 'none';
   }
-  static async fetchAllMenuItems() {
-    const menuItems = await makeApiCall(fetchAllMenuItems);
-    console.log(menuItems);
-    this.render(menuItems as unknown as IMenuItem[]);
-  }
+
   static createAccordionHeader(status: Status, heading: string) {
     const accordionHeader = document.createElement('div');
     accordionHeader.className = 'accordion-header';

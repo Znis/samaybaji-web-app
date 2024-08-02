@@ -16,17 +16,11 @@ export const fetchPopularMenuItems = async () => {
     return res.data;
   });
 };
-export const createMenuItem = async (
-  createMenuItemData: ICreateMenuItem,
-  menuId?: string,
-) => {
+export const createMenuItem = async (createMenuItemData: ICreateMenuItem) => {
   return await axios
     .post(`${baseUrl}${menuItemsUrl}`, createMenuItemData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        menuId: menuId,
       },
     })
     .then((res) => {

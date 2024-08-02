@@ -1,7 +1,9 @@
+import axios from 'axios';
 import { createReview, editReview } from '../../../api-routes/review';
 import { fetchUser } from '../../../api-routes/users';
 import { makeApiCall } from '../../../apiCalls';
 import CustomerReview from '../../../components/customerReview';
+import { LoaderSpinner } from '../../../components/loaderSpinner';
 import Toast from '../../../components/toast';
 import { ReviewTargetType } from '../../../enums/review';
 import {
@@ -10,7 +12,6 @@ import {
   IReview,
 } from '../../../interfaces/review';
 import { StateManager } from '../../../state-management/stateManager';
-import DishDetailLayout from '../dishDetailLayout';
 
 export default class DishReview {
   static htmlTemplateURL =
@@ -72,7 +73,9 @@ export default class DishReview {
     const toggleButton = this.element.querySelector(
       '#add-review-toggle-button',
     );
-    const postButton = this.element.querySelector('#post-review-button');
+    const postButton = this.element.querySelector(
+      '#post-review-button',
+    ) as HTMLButtonElement;
     const reviewContainer = this.element.querySelector(
       '.dish-review__review-input-wrapper',
     );
@@ -82,6 +85,9 @@ export default class DishReview {
     const reviewForm = this.element.querySelector(
       '.dish-review__form',
     ) as HTMLFormElement;
+    const errorMessage = this.element.querySelector(
+      '.form__error-message',
+    ) as HTMLParagraphElement;
     reviewForm?.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (!reviewForm.checkValidity()) {
@@ -92,7 +98,10 @@ export default class DishReview {
         return review.userId == StateManager.state.user!.id;
       });
       if (ownReview && StateManager.state.user) {
+        const spinner = LoaderSpinner.render(20);
         try {
+          postButton.appendChild(spinner);
+          postButton.disabled = true;
           await makeApiCall(
             editReview,
             {
@@ -103,8 +112,16 @@ export default class DishReview {
           location.reload();
           Toast.show('Successfully edited review');
         } catch (error) {
-          console.log(error);
-          Toast.show('Failed to edit review');
+          if (axios.isAxiosError(error)) {
+            errorMessage.innerHTML = error.message;
+            Toast.show('Review Edit Failed');
+          } else {
+            errorMessage.innerHTML = 'An unexpected error occurred';
+            Toast.show('An unexpected error occurred');
+          }
+        } finally {
+          postButton.removeChild(spinner);
+          postButton.disabled = false;
         }
       } else {
         try {

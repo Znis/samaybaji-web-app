@@ -5,6 +5,8 @@ import { StateManager } from '../../../../state-management/stateManager';
 import Toast from '../../../../components/toast';
 import { deleteMenu, editMenu } from '../../../../api-routes/menu';
 import { IEditMenu } from '../../../../interfaces/menu';
+import axios from 'axios';
+import { LoaderSpinner } from '../../../../components/loaderSpinner';
 
 export default class EditCustomerDetailsDashboard {
   static element: HTMLElement = document.createElement('div');
@@ -45,6 +47,9 @@ export default class EditCustomerDetailsDashboard {
       errorMessage: this.element.querySelector(
         '.form__error-message',
       ) as HTMLParagraphElement,
+      editMenuButton: this.element.querySelector(
+        '#edit-menu-button',
+      ) as HTMLButtonElement,
     };
   }
 
@@ -90,7 +95,10 @@ export default class EditCustomerDetailsDashboard {
   }
 
   static async submitEditForm(formData: FormData) {
+    const spinner = LoaderSpinner.render(20);
     try {
+      this.innerElements.editMenuButton.appendChild(spinner);
+      this.innerElements.editMenuButton.disabled = true;
       const editMenuData: IEditMenu = {
         name: formData.get('menu-title') as string,
         description: formData.get('menu-description') as string,
@@ -102,21 +110,38 @@ export default class EditCustomerDetailsDashboard {
         Toast.show('Menu updated successfully');
       }
     } catch (error) {
-      Toast.show('An error occurred while submitting the form');
-      console.error('Failed to submit edit form:', error);
-      this.showErrorMessage('An error occurred while submitting the form.');
+      if (axios.isAxiosError(error)) {
+        this.showErrorMessage(error.message);
+        Toast.show('Restaurant Registration Failed');
+      } else {
+        Toast.show('An error occurred while submitting the form');
+        this.showErrorMessage('An error occurred while submitting the form.');
+      }
+    } finally {
+      this.innerElements.editMenuButton.removeChild(spinner);
+      this.innerElements.editMenuButton.disabled = false;
     }
   }
   static async deleteProfile() {
+    const spinner = LoaderSpinner.render(20);
     try {
+      this.innerElements.deleteProfileButton.appendChild(spinner);
+      this.innerElements.deleteProfileButton.disabled = true;
       await makeApiCall(deleteMenu);
       history.pushState(null, '', '/');
       navigate('/');
       Toast.show('Menu deleted successfully');
     } catch (error) {
-      Toast.show('An error occurred while trying to delete the Menu');
-      console.error('Failed to submit form:', error);
-      this.showErrorMessage('An error occurred while submitting the form.');
+      if (axios.isAxiosError(error)) {
+        this.showErrorMessage(error.message);
+        Toast.show('Restaurant Registration Failed');
+      } else {
+        this.showErrorMessage('An error occurred while deleting the menu.');
+        Toast.show('An unexpected error occurred');
+      }
+    } finally {
+      this.innerElements.deleteProfileButton.removeChild(spinner);
+      this.innerElements.deleteProfileButton.disabled = false;
     }
   }
 }

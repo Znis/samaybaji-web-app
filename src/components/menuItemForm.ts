@@ -1,5 +1,5 @@
 import Modal from './modal';
-import { HttpStatusCode } from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 import { LoaderSpinner } from './loaderSpinner';
 import Toast from './toast';
 import IMenuItem, { ICreateMenuItem } from '../interfaces/menuItem';
@@ -89,6 +89,9 @@ export class MenuItemForm {
       dishDescription: this.element.querySelector(
         '#dish-description',
       ) as HTMLTextAreaElement,
+      errorMessage: this.element.querySelector(
+        '.form__error-message',
+      ) as HTMLParagraphElement,
     };
   }
   static prefillForm(dishDetail: IDish) {
@@ -140,6 +143,7 @@ export class MenuItemForm {
     const spinner = LoaderSpinner.render();
     try {
       this.innerElements().submitButton.append(spinner);
+      this.innerElements().submitButton.disabled = true;
 
       let menuItemApiResponse;
       let dishData;
@@ -178,15 +182,21 @@ export class MenuItemForm {
         };
         await makeApiCall(editDish, dishData, this.dishId);
       }
-
       Modal.toggle();
-      Toast.show('Menu Item and Dish Creation Successsful');
+      Toast.show('Menu Item and Dish Update Successsful');
     } catch (error) {
-      console.log(error);
-      Modal.toggle();
-      Toast.show('Menu Item Creation Failed');
+      console.log('yo');
+      if (axios.isAxiosError(error)) {
+        this.innerElements().errorMessage.innerHTML = error.message;
+        Toast.show('Menu Item Addition Failed');
+      } else {
+        this.innerElements().errorMessage.innerHTML =
+          'An unexpected error occurred';
+        Toast.show('An unexpected error occurred');
+      }
     } finally {
-      spinner.remove();
+      this.innerElements().submitButton.removeChild(spinner);
+      this.innerElements().submitButton.disabled = false;
     }
   }
 

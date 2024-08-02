@@ -45,6 +45,7 @@ const routes = [
         return ErrorPage.init();
       }
       if (StateManager.state.user!.roleId == Roles.CUSTOMER_WITH_RESTAURANT) {
+        StateManager.updateState('cart', []);
         return DashboardLayout.init('restaurant');
       } else {
         return ErrorPage.init();

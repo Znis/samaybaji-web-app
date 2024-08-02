@@ -68,18 +68,6 @@ export default class Header {
     authenticatedUserElement.style.display = 'inline-block';
     authenticatedUserName.innerText = StateManager.state.user.name;
   }
-  static async checkRestaurantStatus(): Promise<{
-    hasRestaurant: boolean;
-    verified: boolean;
-  }> {
-    // if (StateManager.state.user?.roleId !== Roles.CUSTOMER_WITH_RESTAURANT)
-    //   return { hasRestaurant: false, verified: false };
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ hasRestaurant: true, verified: true });
-      }, 5000);
-    });
-  }
   static setupEventListeners() {
     const {
       authButton,
@@ -145,24 +133,8 @@ export default class Header {
     if (!StateManager.state.user) return;
 
     const { registerRestaurant, restaurantProfile } = this.innerElements;
-    if (StateManager.state.user.roleId !== Roles.CUSTOMER_WITH_RESTAURANT) {
+    if (StateManager.state.user.roleId != Roles.CUSTOMER_WITH_RESTAURANT) {
       restaurantProfile.style.display = 'none';
-      registerRestaurant.disabled = true;
-      const spinner = LoaderSpinner.render(20);
-      if (registerRestaurant.firstChild) {
-        registerRestaurant.insertBefore(spinner, registerRestaurant.firstChild);
-      } else {
-        registerRestaurant.appendChild(spinner);
-      }
-      const { hasRestaurant, verified } = await this.checkRestaurantStatus();
-      registerRestaurant.disabled = false;
-      spinner.remove();
-      if (hasRestaurant && !verified) {
-        registerRestaurant.innerHTML = 'Waiting for verification';
-        registerRestaurant.disabled = true;
-      } else {
-        registerRestaurant.disabled = false;
-      }
     } else {
       registerRestaurant.style.display = 'none';
     }

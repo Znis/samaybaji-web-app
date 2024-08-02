@@ -1,3 +1,5 @@
+import { navigate } from '../../../router';
+
 export default class Hero {
   static htmlTemplateurl =
     './assets/templates/pages/landing-page/section/hero.html';
@@ -10,8 +12,18 @@ export default class Hero {
         .then((html) => {
           this.element.classList.add('hero');
           this.element.innerHTML = html;
+          this.setEventListeners();
         });
     }
     return this.element;
+  }
+  static setEventListeners() {
+    const orderButton = this.element.querySelector(
+      '#hero-order-button',
+    ) as HTMLButtonElement;
+    orderButton.addEventListener('click', () => {
+      history.pushState(null, '', '/menu');
+      navigate('/menu');
+    });
   }
 }

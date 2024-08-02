@@ -1,10 +1,13 @@
 import { getUploadUrl, makeApiCall, uploadImage } from '../apiCalls';
-import { ICreateRestaurant } from '../interfaces/restaurant';
+import { ICreateRestaurant, IRestaurant } from '../interfaces/restaurant';
 import Modal from './modal';
-import { HttpStatusCode } from 'axios';
+import axios, { Axios, AxiosError, HttpStatusCode } from 'axios';
 import { LoaderSpinner } from './loaderSpinner';
 import Toast from './toast';
 import { createRestaurant } from '../api-routes/restaurant';
+import { fetchRoleId } from '../api-routes/users';
+import { StateManager } from '../state-management/stateManager';
+import { Roles } from '../enums/roles';
 
 export class RestaurantForm {
   static htmlTemplateURL = '/assets/templates/components/restaurant-form.html';
@@ -68,6 +71,9 @@ export class RestaurantForm {
       crossButton: this.element.querySelector(
         '#modal-cross-button',
       ) as HTMLElement,
+      errorMessage: this.element.querySelector(
+        '.form__error-message',
+      ) as HTMLParagraphElement,
     };
   }
   static setupEventListeners() {
@@ -119,19 +125,35 @@ export class RestaurantForm {
       coverPic: coverImageUploadUrl.url.fileName,
       description: this.innerElements().description.value,
     };
-    const spinner = LoaderSpinner.render();
+    const spinner = LoaderSpinner.render(20);
     try {
       this.innerElements().submitButton.append(spinner);
-      const formSubmissionResponse = await makeApiCall(createRestaurant, data);
-      if (formSubmissionResponse!.status === HttpStatusCode.Accepted) {
-        Toast.show('Restaurant Registration Submitted');
-        Modal.toggle();
-      }
+      this.innerElements().submitButton.disabled = true;
+      const formSubmissionResponse = (await makeApiCall(
+        createRestaurant,
+        data,
+      )) as unknown as { created: IRestaurant };
+
+      StateManager.updateState('user', {
+        ...StateManager.state.user!,
+        roleId: Roles.CUSTOMER_WITH_RESTAURANT,
+        restaurantId: formSubmissionResponse.created.id,
+      });
+
+      Toast.show('Restaurant Registration Successful');
+      Modal.toggle();
     } catch (error) {
-      console.log(error);
-      Toast.show('Restaurant Registration Failed');
+      if (axios.isAxiosError(error)) {
+        this.innerElements().errorMessage.innerHTML = error.message;
+        Toast.show('Restaurant Registration Failed');
+      } else {
+        this.innerElements().errorMessage.innerHTML =
+          'An unexpected error occurred';
+        Toast.show('An unexpected error occurred');
+      }
     } finally {
       spinner.remove();
+      this.innerElements().submitButton.disabled = false;
     }
   }
 

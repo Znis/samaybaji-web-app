@@ -683,7 +683,7 @@ body.open .modal {
       color: #111; }
   .auth-card__error-message {
     height: 0.7rem;
-    width: 100%;
+    width: 90%;
     text-wrap: wrap;
     color: orangered;
     font-size: 0.7rem; }
@@ -1027,7 +1027,7 @@ body.open .modal {
   .modal-form__form {
     width: 80%;
     padding: 2rem;
-    padding-top: 20rem;
+    padding-top: 22rem;
     display: flex;
     flex-direction: column;
     justify-content: center;

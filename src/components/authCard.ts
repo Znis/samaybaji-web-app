@@ -171,17 +171,17 @@ export default class AuthCard {
       if (!this.validatePassword(registerPasswordInput.value)) {
         this.showError(
           registerPasswordError,
-          'Must be at least 4 characters long.',
+          'Must be 4 char long, 1 ucase and 1 special character',
         );
         isValid = false;
       }
       if (
         !this.validateConfirmPassword(
-          passwordInput.value,
+          registerPasswordInput.value,
           confirmPasswordInput.value,
         )
       ) {
-        this.showError(confirmPasswordError, 'Must be at same as the password');
+        this.showError(confirmPasswordError, 'Must be same as the password');
         isValid = false;
       }
       if (!this.validatePhoneNumber(phoneNumberInput.value)) {
@@ -192,8 +192,8 @@ export default class AuthCard {
       if (isValid) {
         const formData = {
           name: fullNameInput.value,
-          email: emailInput.value,
-          password: passwordInput.value,
+          email: registerEmailInput.value,
+          password: registerPasswordInput.value,
           phoneNumber: phoneNumberInput.value,
         };
         const response = await this.register(registerButton, formData);
@@ -233,9 +233,16 @@ export default class AuthCard {
           password: passwordInput.value,
         };
         const response = await this.login(loginButton, formData);
-
-        if (response.status != HttpStatusCode.Accepted) {
-          this.showError(loginResponseMessage, response.message);
+        if (!response.response) {
+          this.showError(loginResponseMessage, 'Network Error');
+          return;
+        }
+        if (response.response.status != HttpStatusCode.Accepted) {
+          if (response.response.status == HttpStatusCode.Unauthorized) {
+            this.showError(loginResponseMessage, 'Invalid Credentials');
+          } else {
+            this.showError(loginResponseMessage, response.message);
+          }
         }
       }
     });
@@ -273,18 +280,23 @@ export default class AuthCard {
   }
 
   static validatePassword(password: string): boolean {
-    return password.length >= 4;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{4,}$/;
+    return passwordRegex.test(password);
   }
+
   static validateFullName(fullName: string): boolean {
-    const nameRegex = /^[a-zA-Z]{4,}$/;
+    const nameRegex = /^[a-zA-Z ]{4,}$/;
     return nameRegex.test(fullName);
   }
+
   static validateConfirmPassword(
     password: string,
     confirmPassword: string,
   ): boolean {
-    return confirmPassword === password;
+    console.log(password, confirmPassword);
+    return confirmPassword == password;
   }
+
   static validatePhoneNumber(phoneNumber: string): boolean {
     const phoneRegex = /^\+?\d{10,14}$/;
     return phoneRegex.test(phoneNumber);
@@ -334,7 +346,7 @@ export default class AuthCard {
     formSubmissionButton: HTMLButtonElement,
     formData: ICreateUser,
   ) {
-    const spinner = LoaderSpinner.render();
+    const spinner = LoaderSpinner.render(20);
 
     formSubmissionButton.innerText = 'Signing Up';
 
@@ -346,7 +358,7 @@ export default class AuthCard {
     return await register(formData)
       .then((data) => {
         Modal.toggle();
-        Toast.show('User Logged In');
+        Toast.show('User Signed Up');
         return data;
       })
       .catch((err) => {

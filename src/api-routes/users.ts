@@ -5,9 +5,7 @@ import { StateManager } from '../state-management/stateManager';
 const baseUrl = 'http://localhost:8000';
 const usersUrl = '/users';
 const allUsersUrl = '/users/all';
-const registerUrl = `${usersUrl}`;
-const editUrl = `${usersUrl}`;
-const deleteUrl = `${usersUrl}`;
+const userRoleUrl = '/users/role';
 
 export const fetchAllUsers = async () => {
   return await axios
@@ -34,14 +32,25 @@ export const fetchUser = async (userId: string) => {
       return res.data;
     });
 };
+export const fetchRoleId = async (userId: string) => {
+  return await axios
+    .get(`${baseUrl}${userRoleUrl}/?userId=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
 export const register = async (formData: ICreateUser) => {
-  return await axios.post(`${baseUrl}${registerUrl}`, formData).then((res) => {
+  return await axios.post(`${baseUrl}${usersUrl}`, formData).then((res) => {
     return res.data;
   });
 };
 export const editUser = async (formData: IUpdateUser, userId?: string) => {
   return await axios
-    .patch(`${baseUrl}${editUrl}`, formData, {
+    .patch(`${baseUrl}${usersUrl}`, formData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
@@ -55,7 +64,7 @@ export const editUser = async (formData: IUpdateUser, userId?: string) => {
 };
 export const deleteUser = async (userId?: string) => {
   return await axios
-    .delete(`${baseUrl}${deleteUrl}`, {
+    .delete(`${baseUrl}${usersUrl}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },

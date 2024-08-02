@@ -38,6 +38,7 @@
         name="price"
         placeholder="Price"
         type="number"
+        required
       />
     </div>
 
@@ -83,6 +84,7 @@
         name="attributes"
         placeholder="Attributes"
         type="text"
+        required
       />
     </div>
     <div class="form__group">
@@ -93,8 +95,10 @@
         name="items"
         placeholder="Items"
         type="text"
+        required
       />
     </div>
   </div>
+  <p class="form__error-message"></p>
   <button type="submit" class="button" id="form-submit-button"></button>
 </form>

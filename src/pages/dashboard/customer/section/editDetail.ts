@@ -1,9 +1,10 @@
-import { HttpStatusCode } from 'axios';
 import { deleteUser, editUser } from '../../../../api-routes/users';
 import { makeApiCall } from '../../../../apiCalls';
 import { navigate } from '../../../../router';
 import { StateManager } from '../../../../state-management/stateManager';
 import Toast from '../../../../components/toast';
+import axios from 'axios';
+import { LoaderSpinner } from '../../../../components/loaderSpinner';
 
 export default class EditCustomerDetailsDashboard {
   static element: HTMLElement = document.createElement('div');
@@ -47,6 +48,9 @@ export default class EditCustomerDetailsDashboard {
       errorMessage: this.element.querySelector(
         '.form__error-message',
       ) as HTMLParagraphElement,
+      editProfileButton: this.element.querySelector(
+        '#edit-profile-button',
+      ) as HTMLButtonElement,
     };
   }
 
@@ -113,7 +117,10 @@ export default class EditCustomerDetailsDashboard {
   }
 
   static async submitEditForm(formData: FormData) {
+    const spinner = LoaderSpinner.render(20);
     try {
+      this.innerElements.editProfileButton.appendChild(spinner);
+      this.innerElements.editProfileButton.disabled = true;
       const editUserData = {
         name: formData.get('user-fullname') as string,
         password: formData.get('user-password') as string,
@@ -127,13 +134,23 @@ export default class EditCustomerDetailsDashboard {
         Toast.show('Logged out');
       }
     } catch (error) {
-      Toast.show('An error occurred while submitting the form');
-      console.error('Failed to submit edit form:', error);
-      this.showErrorMessage('An error occurred while submitting the form.');
+      if (axios.isAxiosError(error)) {
+        this.showErrorMessage(error.message);
+        Toast.show('User Edit Failed');
+      } else {
+        this.showErrorMessage('An error occurred while deleting the profile');
+        Toast.show('An unexpected error occurred');
+      }
+    } finally {
+      this.innerElements.editProfileButton.removeChild(spinner);
+      this.innerElements.editProfileButton.disabled = false;
     }
   }
   static async deleteProfile() {
+    const spinner = LoaderSpinner.render(20);
     try {
+      this.innerElements.deleteProfileButton.appendChild(spinner);
+      this.innerElements.deleteProfileButton.disabled = true;
       await makeApiCall(deleteUser);
       history.pushState(null, '', '/');
       navigate('/');
@@ -141,9 +158,16 @@ export default class EditCustomerDetailsDashboard {
       Toast.show('Profile deleted successfully');
       Toast.show('Logged out');
     } catch (error) {
-      Toast.show('An error occurred while trying to delete the profile');
-      console.error('Failed to submit edit form:', error);
-      this.showErrorMessage('An error occurred while submitting the form.');
+      if (axios.isAxiosError(error)) {
+        this.showErrorMessage(error.message);
+        Toast.show('User Deletion Failed');
+      } else {
+        this.showErrorMessage('An error occurred while deleting the profile');
+        Toast.show('An unexpected error occurred');
+      }
+    } finally {
+      this.innerElements.deleteProfileButton.removeChild(spinner);
+      this.innerElements.deleteProfileButton.disabled = false;
     }
   }
 }
