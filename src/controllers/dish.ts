@@ -75,7 +75,14 @@ export async function createDish(
   try {
     const dishData = req.body;
     const menuItemId = req.params.menuItemId as string;
-    const response = await DishService.createDish(menuItemId, dishData);
+    const restaurantId = req.query.restaurantId as string;
+    const menuId = req.query.menuId as string;
+    const response = await DishService.createDish(
+      menuItemId,
+      restaurantId,
+      menuId,
+      dishData,
+    );
     logger.info(`New dish for menuItemId ${menuItemId} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {

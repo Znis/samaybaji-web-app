@@ -109,7 +109,17 @@ export default class OrderService {
 
   static async editOrder(orderId: string, editOrderData: IEditOrder) {
     const { orderItems, ...orderDetails } = editOrderData;
-
+    if (orderDetails.status == OrderStatus.CANCELLED) {
+      const orderItemsOfOrder = (await OrderItemServices.getOrderItemsByOrderId(
+        orderId,
+      )) as unknown as IOrderItem[];
+      orderItemsOfOrder.forEach(
+        async (item) =>
+          await OrderItemServices.editOrderItem(item.id, {
+            status: OrderItemStatus.CANCELLED,
+          }),
+      );
+    }
     const queryResult = await OrderModel.editOrder(orderId, orderDetails)!;
     if (!queryResult) {
       logger.error('Could not create new order');

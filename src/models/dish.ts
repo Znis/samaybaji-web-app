@@ -42,9 +42,19 @@ export default class DishModel extends BaseModel {
         return null;
       });
   }
-  static createDish(menuItemId: string, dishData: ICreateDish) {
+  static createDish(
+    menuItemId: string,
+    restaurantId: string,
+    menuId: string,
+    dishData: ICreateDish,
+  ) {
     return this.queryBuilder()
-      .insert({ ...dishData, menuItemId: menuItemId })
+      .insert({
+        ...dishData,
+        menuItemId: menuItemId,
+        restaurantId: restaurantId,
+        menuId: menuId,
+      })
       .into('dishes')
       .returning('id')
       .then((data) => {

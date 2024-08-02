@@ -73,7 +73,6 @@ export default class OrderItemService {
       return { ...orderData[idx], id: item.id };
     }) as IOrderItem[];
   }
-
   static async editOrderItem(
     orderItemId: string,
     editOrderData: IEditOrderItem,

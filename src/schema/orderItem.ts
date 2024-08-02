@@ -62,6 +62,7 @@ export const editOrderItemByRestaurantSchema = joi.object({
       OrderItemStatus.COOKING,
       OrderItemStatus.READY,
       OrderItemStatus.DELIVERED,
+      OrderItemStatus.CANCELLED,
     )
     .optional()
     .messages({

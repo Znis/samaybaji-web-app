@@ -32,13 +32,23 @@ export default class DishService {
     return dish;
   }
 
-  static async createDish(dishId: string, dishData: ICreateDish) {
-    const queryResult = await DishModel.createDish(dishId, dishData)!;
+  static async createDish(
+    menuItemId: string,
+    restaurantId: string,
+    menuId: string,
+    dishData: ICreateDish,
+  ) {
+    const queryResult = await DishModel.createDish(
+      menuItemId,
+      restaurantId,
+      menuId,
+      dishData,
+    )!;
     if (!queryResult) {
       logger.error('Could not create new dish');
       throw new ModelError('Could not create dish');
     }
-    logger.info(`New dish for dishId ${dishId} created`);
+    logger.info(`New dish for menuItemId ${menuItemId} created`);
     return { ...dishData, id: queryResult.id } as IDish;
   }
 
