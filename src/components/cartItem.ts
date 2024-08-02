@@ -53,7 +53,7 @@ export default class CartItem {
     const totalPriceElement = this.element.querySelector(
       '#cart-item-total-price',
     );
-    totalPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItemData.price}`;
+    totalPriceElement!.innerHTML = `Rs. ${this.cartItemData.menuItemData.price * this.cartItemData.quantity}`;
     this.decrementButton = this.element.querySelector(
       '.cart-item__quantity-semi-rounded-left',
     ) as HTMLButtonElement;

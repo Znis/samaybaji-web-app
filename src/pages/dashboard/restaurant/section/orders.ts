@@ -56,6 +56,8 @@ export default class RestaurantOrdersDashboard {
       { value: OrderItemStatus.PENDING, text: OrderItemStatus.PENDING },
       { value: OrderItemStatus.COOKING, text: OrderItemStatus.COOKING },
       { value: OrderItemStatus.READY, text: OrderItemStatus.READY },
+      { value: OrderItemStatus.DELIVERED, text: OrderItemStatus.DELIVERED },
+      { value: OrderItemStatus.CANCELLED, text: OrderItemStatus.CANCELLED },
     ];
 
     options.forEach((optionData) => {
@@ -67,6 +69,13 @@ export default class RestaurantOrdersDashboard {
       statusSelect.appendChild(option);
     });
     statusSelect.value = status;
+    if (
+      status == OrderItemStatus.DELIVERED ||
+      status == OrderItemStatus.CANCELLED ||
+      status == OrderItemStatus.READY
+    ) {
+      statusSelect.disabled = true;
+    }
     const iconWrapper = document.createElement('div');
     iconWrapper.classList.add('accordion-header-icon-wrapper');
     iconWrapper.appendChild(statusSelect);
@@ -128,6 +137,8 @@ export default class RestaurantOrdersDashboard {
         editStatus = { status: OrderItemStatus.READY };
       } else if (selectStatus.value == 'cancelled') {
         editStatus = { status: OrderItemStatus.CANCELLED };
+      } else if (selectStatus.value == 'delivered') {
+        editStatus = { status: OrderItemStatus.DELIVERED };
       } else {
         editStatus = { status: OrderItemStatus.PENDING };
       }
@@ -187,7 +198,11 @@ export default class RestaurantOrdersDashboard {
         const historyOrderContainer =
           this.element.querySelector('#history-orders');
         console.log(item.status);
-        if (item.status == OrderItemStatus.READY) {
+        if (
+          item.status == OrderItemStatus.READY ||
+          item.status == OrderItemStatus.DELIVERED ||
+          item.status == OrderItemStatus.CANCELLED
+        ) {
           historyOrderContainer!.appendChild(accordion.element);
         } else {
           activeOrderContainer!.appendChild(accordion.element);

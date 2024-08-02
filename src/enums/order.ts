@@ -10,5 +10,6 @@ export enum OrderItemStatus {
   PENDING = 'pending',
   COOKING = 'cooking',
   READY = 'ready',
+  DELIVERED = 'delivered',
   CANCELLED = 'cancelled',
 }

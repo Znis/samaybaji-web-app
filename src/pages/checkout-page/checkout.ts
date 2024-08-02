@@ -17,12 +17,8 @@ export default class Checkout {
   static element: HTMLElement = document.createElement('section');
   static deliveryAmount = 100;
   static discountAmount = 0;
-  static subTotalAmount = StateManager.state.cart.reduce(
-    (acc, item) => acc + item.menuItemData.price * item.quantity,
-    0,
-  );
-  static totalAmount =
-    this.subTotalAmount + this.deliveryAmount - this.discountAmount;
+  static subTotalAmount = 0;
+  static totalAmount = 0;
   static spinner = LoaderSpinner.render(50);
   static html = '';
   static cartItemArray: CartItem[] = [];
@@ -85,6 +81,13 @@ export default class Checkout {
     timeInput.setAttribute('min', minTime);
     timeInput.setAttribute('max', maxTime);
     timeInput.setAttribute('value', time);
+
+    this.subTotalAmount = StateManager.state.cart.reduce(
+      (acc, item) => acc + item.menuItemData.price * item.quantity,
+      0,
+    );
+    this.totalAmount =
+      this.subTotalAmount + this.deliveryAmount - this.discountAmount;
   }
 
   static renderAccordion(): void {
@@ -174,6 +177,7 @@ export default class Checkout {
           notes: '',
         };
       });
+  
       const order = {
         customerPhone: data['customer_phone'] as string,
         deliveryAddress: data['delivery_address'] as string,
