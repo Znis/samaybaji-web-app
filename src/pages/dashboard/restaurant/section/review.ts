@@ -135,7 +135,7 @@ export default class RestaurantReviewDashboard {
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: accordionHeaderEventListener,
-        id: review.id,
+        params: review.id,
       };
       const accordionContent = {
         element: accordionContentElement,

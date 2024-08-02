@@ -5,9 +5,9 @@ import { StateManager } from '../state-management/stateManager';
 const baseUrl = 'http://localhost:8000';
 const usersUrl = '/users';
 const allUsersUrl = '/users/all';
-const registerUrl = `${usersUrl}/register`;
-const editUrl = `${usersUrl}/edit`;
-const deleteUrl = `${usersUrl}/delete`;
+const registerUrl = `${usersUrl}`;
+const editUrl = `${usersUrl}`;
+const deleteUrl = `${usersUrl}`;
 
 export const fetchAllUsers = async () => {
   return await axios
@@ -41,7 +41,10 @@ export const register = async (formData: ICreateUser) => {
 };
 export const editUser = async (formData: IUpdateUser, userId?: string) => {
   return await axios
-    .post(`${baseUrl}${editUrl}`, formData, {
+    .patch(`${baseUrl}${editUrl}`, formData, {
+      headers: {
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
+      },
       params: {
         userId: userId,
       },
@@ -52,7 +55,10 @@ export const editUser = async (formData: IUpdateUser, userId?: string) => {
 };
 export const deleteUser = async (userId?: string) => {
   return await axios
-    .post(`${baseUrl}${deleteUrl}`, {
+    .delete(`${baseUrl}${deleteUrl}`, {
+      headers: {
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
+      },
       params: {
         userId: userId,
       },

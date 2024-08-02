@@ -132,7 +132,7 @@ export default class CustomerReviewDashboard {
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: accordionHeaderEventListener,
-        id: review.id,
+        params: review.id,
       };
       const accordionContent = {
         element: accordionContentElement,
@@ -165,7 +165,7 @@ export default class CustomerReviewDashboard {
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: accordionHeaderEventListener,
-        id: review.id,
+        params: review.id,
       };
       const accordionContent = {
         element: accordionContentElement,

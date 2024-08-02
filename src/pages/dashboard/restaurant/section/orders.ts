@@ -122,7 +122,6 @@ export default class RestaurantOrdersDashboard {
     selectStatus.addEventListener('change', async (event) => {
       event?.stopPropagation();
       let editStatus;
-      console.log(selectStatus.value)
       if (selectStatus.value == 'cooking') {
         editStatus = { status: OrderItemStatus.COOKING };
       } else if (selectStatus.value == 'ready') {
@@ -175,7 +174,7 @@ export default class RestaurantOrdersDashboard {
         const accordionHeader = {
           element: accordionHeaderElement,
           eventListeners: accordionHeaderEventListener,
-          id: item.id,
+          params: item.id,
         };
         const accordionContent = {
           element: accordionContentElement,

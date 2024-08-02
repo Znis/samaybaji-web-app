@@ -1,86 +1,79 @@
 <h3 class="dashboard__heading">Edit Details</h3>
 <div class="dashboard__container" id="edit-details-container">
-    <h3 class="dashboard__container-heading">Details</h3>
-    <form class="dashboard__form" autocomplete="false" id="restaurant-edit-details">
-        <div class="form__group">
-          <label for="menu-title" class="form__label">Menu Title:</label>
-          <input
-            id="menu-title"
-            name="menu-title"
-            class="form__inputbox"
-            placeholder="Title"
-            required
-          />
-        </div>
-        <div class="form__group">
-            <label for="menu-description" class="form__label">Description:</label>
-            <textarea
-              id="description"
-              name="menu-description"
-              class="form__inputbox"
-              placeholder="Description"
-              required
-            ></textarea>
-          </div>
-          <button type="submit" class="button" id="edit-profile-button">Edit</button>
+  <h3 class="dashboard__container-heading">Details</h3>
+  <form
+    class="dashboard__form"
+    autocomplete="false"
+    id="restaurant-edit-details"
+  >
+    <div class="form__group">
+      <label for="menu-title" class="form__label">Menu Title:</label>
+      <input
+        id="menu-title"
+        name="menu-title"
+        class="form__inputbox"
+        placeholder="Title"
+        type="text"
+        required
+      />
+    </div>
+    <div class="form__group">
+      <label for="menu-description" class="form__label">Description:</label>
+      <textarea
+        id="description"
+        name="menu-description"
+        class="form__inputbox"
+        placeholder="Description"
+        type="text"
+        required
+      ></textarea>
+    </div>
+    <button type="submit" class="button" id="edit-menu-button">Edit</button>
+  </form>
+  <form class="dashboard__form" autocomplete="false" id="user-edit-details">
+    <div class="form__group">
+      <label for="user-fullname" class="form__label">Full Name:</label>
+      <input
+        id="user-fullname"
+        name="user-fullname"
+        class="form__inputbox"
+        placeholder="FullName"
+        type="text"
+        required
+      />
+    </div>
+    <div class="form__group">
+      <label for="user-password" class="form__label">Password:</label>
+      <input
+        id="user-password"
+        name="user-password"
+        class="form__inputbox"
+        placeholder="Password"
+        type="password"
+        required
+      />
+    </div>
+    <div class="form__group">
+      <label for="user-confirm-password" class="form__label"
+        >Confirm Password:</label
+      >
+      <input
+        id="user-confirm-password"
+        name="user-confirm-password"
+        class="form__inputbox"
+        placeholder="Password"
+        type="password"
+        required
+      />
+    </div>
+    <p class="form__error-message"></p>
+    <button type="submit" class="button" id="edit-profile-button">Edit</button>
+  </form>
+</div>
+<div class="dashboard__container" id="delete-profile-container">
+  <h3 class="dashboard__container-heading">Delete Profile</h3>
 
-      </form>
-      <form class="dashboard__form" autocomplete="false" id="user-edit-details">
-        <div class="form__group">
-          <label for="user-fullname" class="form__label">Full Name:</label>
-          <input
-            id="user-fullname"
-            name="user-fullname"
-            class="form__inputbox"
-            placeholder="FullName"
-            required
-          />
-        </div>
-        <div class="form__group">
-            <label for="user-email" class="form__label">Email:</label>
-            <input
-              id="user-email"
-              name="user-email"
-              class="form__inputbox"
-              placeholder="Email"
-              required
-            />
-          </div><div class="form__group">
-            <label for="user-password" class="form__label">Password:</label>
-            <input
-              id="user-password"
-              name="user-password"
-              class="form__inputbox"
-              placeholder="Password"
-              required
-            />
-          </div>
-          <div class="form__group">
-            <label for="user-confirm-password" class="form__label">Confirm Password:</label>
-            <input
-              id="user-confirm-password"
-              name="user-confirm-password"
-              class="form__inputbox"
-              placeholder="Password"
-              required
-            />
-          </div>
-          <div class="form__group">
-            <label for="user-phone-number" class="form__label">Phone Number:</label>
-            <input
-              id="user-phone-number"
-              name="user-phone-number"
-              class="form__inputbox"
-              placeholder="Phone Number"
-              required
-            />
-          </div>
-          <button type="submit" class="button" id="edit-profile-button">Edit</button>
-
-      </form>
-  </div>
-  <div class="dashboard__container" id="delete-profile-container">
-    <h3 class="dashboard__container-heading">Delete Profile</h3>
-  
-    <button class="button" id="delete-profile-button">Delete</button>
-  </div>
+  <button class="button" type="button" id="delete-profile-button">
+    Delete
+  </button>
+</div>

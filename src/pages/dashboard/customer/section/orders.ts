@@ -214,7 +214,7 @@ export default class CustomerOrdersDashboard {
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: accordionHeaderEventListener,
-        id: order.id,
+        params: order.id,
       };
       const accordionContent = {
         element: accordionContentElement,

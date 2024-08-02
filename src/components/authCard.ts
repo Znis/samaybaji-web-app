@@ -9,9 +9,10 @@ import Toast from './toast';
 import Cart from '../pages/cart/cart';
 import { login } from '../api-routes/auth';
 import { register } from '../api-routes/users';
+import { navigate } from '../router';
 export default class AuthCard {
   static element = document.createElement('div');
-  static htmlTemplateURL = './assets/templates/components/auth-card.html';
+  static htmlTemplateURL = '/assets/templates/components/auth-card.html';
   static init(): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateURL)
@@ -314,6 +315,8 @@ export default class AuthCard {
         StateManager.updateState('user', data.user);
         Toast.show('User Logged In');
         Cart.fetchCartItems();
+        history.pushState(null, '', '/');
+        navigate('/');
         return data;
       })
       .catch((err) => {

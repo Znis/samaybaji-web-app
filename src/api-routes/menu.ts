@@ -5,9 +5,6 @@ import { ICreateMenu, IEditMenu } from '../interfaces/menu';
 const baseUrl = 'http://localhost:8000';
 const menuUrl = '/menus/all';
 const restaurantMenu = '/menus';
-const createMenuUrl = '/menus/create';
-const editMenuUrl = '/menus/edit';
-const deleteMenuUrl = '/menus/delete';
 
 export const fetchAllMenus = async () => {
   return await axios.get(`${baseUrl}${menuUrl}`).then((res) => {
@@ -33,7 +30,7 @@ export const createMenu = async (
   restaurantId?: string,
 ) => {
   return await axios
-    .post(`${baseUrl}${createMenuUrl}`, menuData, {
+    .post(`${baseUrl}${restaurantMenu}`, menuData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
@@ -47,7 +44,7 @@ export const createMenu = async (
 };
 export const editMenu = async (editMenuData: IEditMenu, menuId?: string) => {
   return await axios
-    .post(`${baseUrl}${editMenuUrl}`, editMenuData, {
+    .patch(`${baseUrl}${restaurantMenu}`, editMenuData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
@@ -61,7 +58,7 @@ export const editMenu = async (editMenuData: IEditMenu, menuId?: string) => {
 };
 export const deleteMenu = async (menuId?: string) => {
   return await axios
-    .post(`${baseUrl}${deleteMenuUrl}`, {
+    .delete(`${baseUrl}${restaurantMenu}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },

@@ -933,12 +933,12 @@ body.open .modal {
   color: #444; }
 
 .accordion-header-danger-action-icon {
-  color: red; }
+  color: #e05e5e; }
   .accordion-header-danger-action-icon:hover {
     scale: 1.2; }
 
 .accordion-header-normal-action-icon {
-  color: green; }
+  color: #6e6ed4; }
   .accordion-header-normal-action-icon:hover {
     scale: 1.2; }
 
@@ -1129,6 +1129,10 @@ body.open .modal {
   gap: 2rem;
   justify-content: space-evenly;
   align-items: center; }
+
+.form__error-message {
+  color: red;
+  font-size: 0.8rem; }
 
 .hero {
   display: flex;

@@ -3,10 +3,7 @@ import { StateManager } from '../state-management/stateManager';
 import { ICreateMenuItem, IEditMenuItem } from '../interfaces/menuItem';
 
 const baseUrl = 'http://localhost:8000';
-const menuItemsUrl = `/menu-items/`;
-const createMenuItemUrl = `/menu-items/create`;
-const editMenuItemUrl = `/menu-items/edit`;
-const deleteMenuItemUrl = `/menu-items/delete`;
+const menuItemsUrl = `/menu-items`;
 const popularMenuItemsUrl = '/menu-items/popular';
 
 export const fetchAllMenuItems = async () => {
@@ -24,7 +21,7 @@ export const createMenuItem = async (
   menuId?: string,
 ) => {
   return await axios
-    .post(`${baseUrl}${createMenuItemUrl}`, createMenuItemData, {
+    .post(`${baseUrl}${menuItemsUrl}`, createMenuItemData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
@@ -41,12 +38,9 @@ export const editMenuItem = async (
   menuItemId: string,
 ) => {
   return await axios
-    .patch(`${baseUrl}${editMenuItemUrl}`, editMenuItemData, {
+    .patch(`${baseUrl}${menuItemsUrl}/${menuItemId}`, editMenuItemData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        menuItemId: menuItemId,
       },
     })
     .then((res) => {
@@ -55,12 +49,9 @@ export const editMenuItem = async (
 };
 export const deleteMenuItem = async (menuItemId: string) => {
   return await axios
-    .delete(`${baseUrl}${deleteMenuItemUrl}`, {
+    .delete(`${baseUrl}${menuItemsUrl}/${menuItemId}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        menuItemId: menuItemId,
       },
     })
     .then((res) => {

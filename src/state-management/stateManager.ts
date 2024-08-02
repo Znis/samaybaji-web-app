@@ -1,7 +1,5 @@
 import Header from '../app-section/header';
 import { AppState } from '../interfaces/appState';
-import Cart from '../pages/cart/cart';
-import MenuPageLayout from '../pages/menu/menuPageLayout';
 
 export class StateManager {
   static state: AppState = StateManager.loadStateFromSessionStorage();

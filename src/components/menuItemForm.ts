@@ -3,17 +3,25 @@ import { HttpStatusCode } from 'axios';
 import { LoaderSpinner } from './loaderSpinner';
 import Toast from './toast';
 import IMenuItem, { ICreateMenuItem } from '../interfaces/menuItem';
-import { ICreateDish } from '../interfaces/dish';
+import { ICreateDish, IDish } from '../interfaces/dish';
 import { getUploadUrl, makeApiCall, uploadImage } from '../apiCalls';
 import { createRestaurant } from '../api-routes/restaurant';
-import { createMenuItem } from '../api-routes/menuItem';
-import { createDish } from '../api-routes/dish';
+import { createMenuItem, editMenuItem } from '../api-routes/menuItem';
+import { createDish, editDish } from '../api-routes/dish';
+import { StateManager } from '../state-management/stateManager';
 
 export class MenuItemForm {
   static htmlTemplateURL = '/assets/templates/components/menu-item-form.html';
   static element = document.createElement('div');
+  static type: string;
+  static menuItemId: string;
+  static dishId: string;
 
-  static init(type: string): HTMLElement {
+  static init(
+    type: string,
+    dishDetail?: IDish,
+    menuItemId?: string,
+  ): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateURL)
         .then((response) => response.text())
@@ -21,14 +29,20 @@ export class MenuItemForm {
           this.element.classList.add('modal-form');
           this.element.innerHTML = html;
           this.innerElements();
+          this.type = type;
+          if (dishDetail) {
+            this.prefillForm(dishDetail);
+            this.dishId = dishDetail.id;
+          }
+          if (menuItemId) this.menuItemId = menuItemId;
           this.setupEventListeners();
-          this.render(type);
+          this.render();
         });
     }
     return this.element;
   }
-  static render(type: string) {
-    if (type === 'create') {
+  static render() {
+    if (this.type === 'create') {
       this.innerElements().submitButton.innerHTML = 'Register';
       this.innerElements().menuItemHeading.innerHTML = 'Register Menu Item';
       this.innerElements().dishHeading.innerHTML = 'Dish Details';
@@ -77,6 +91,15 @@ export class MenuItemForm {
       ) as HTMLTextAreaElement,
     };
   }
+  static prefillForm(dishDetail: IDish) {
+    this.innerElements().menuItemName.value = dishDetail.name;
+    this.innerElements().menuItemPortion.value = dishDetail.portion;
+    this.innerElements().menuItemPrice.value = dishDetail.price.toString();
+    this.innerElements().dishDescription.value = dishDetail.description;
+    this.innerElements().dishAttributes.value =
+      dishDetail.attributes.toString();
+    this.innerElements().dishItems.value = dishDetail.items.toString();
+  }
   static setupEventListeners() {
     this.innerElements().crossButton.addEventListener('click', () =>
       Modal.toggle(),
@@ -99,60 +122,68 @@ export class MenuItemForm {
       imageUploadUrl!.url.url,
       this.innerElements().menuItemImage.files![0],
     );
-
-    const menuItemData: ICreateMenuItem = {
+    const menuItemData = {
       name: this.innerElements().menuItemName.value,
       portion: this.innerElements().menuItemPortion.value,
       price: parseInt(this.innerElements().menuItemPrice.value),
       imageSrc: imageUploadUrl!.url.fileName,
       isPopular: this.innerElements().isPopular.checked,
     };
+
     const itemsList = this.innerElements()
       .dishItems.value.split(',')
       .map((item) => item.trim());
     const attributesList = this.innerElements()
       .dishAttributes.value.split(',')
       .map((item) => item.trim());
-    const dishData: ICreateDish = {
-      name: this.innerElements().menuItemName.value,
-      portion: this.innerElements().menuItemPortion.value,
-      price: parseInt(this.innerElements().menuItemPrice.value),
-      imgSrc: imageUploadUrl!.url.fileName,
-      description: this.innerElements().dishDescription.value,
-      attributes: attributesList,
-      items: itemsList,
-      menuItemId: '',
-      restaurantId: '',
-      menuId: '',
-    };
+
     const spinner = LoaderSpinner.render();
     try {
       this.innerElements().submitButton.append(spinner);
-      const menuItemCreationResponse = await makeApiCall(
-        createMenuItem,
-        menuItemData,
-      );
-      if (menuItemCreationResponse!.status !== HttpStatusCode.Accepted) {
-        Toast.show('Menu Item Creation Failed');
-        Modal.toggle();
-        return;
-      }
-      const menuItemId = (menuItemCreationResponse! as unknown as IMenuItem).id;
-      const dishCreationResponse = await makeApiCall(
-        createDish,
-        dishData,
-        menuItemId,
-      );
 
-      if (dishCreationResponse!.status !== HttpStatusCode.Accepted) {
-        Toast.show('Dish Creation Failed');
-        Modal.toggle();
-        return;
+      let menuItemApiResponse;
+      let dishData;
+      if (this.type === 'create') {
+        menuItemApiResponse = (await makeApiCall(
+          createMenuItem,
+          menuItemData,
+        )) as unknown as { created: IMenuItem };
+        dishData = {
+          name: this.innerElements().menuItemName.value,
+          portion: this.innerElements().menuItemPortion.value,
+          price: parseInt(this.innerElements().menuItemPrice.value),
+          imgSrc: imageUploadUrl!.url.fileName,
+          description: this.innerElements().dishDescription.value,
+          attributes: attributesList,
+          items: itemsList,
+          menuItemId: menuItemApiResponse.created.id,
+          restaurantId: StateManager.state.user?.restaurantId as string,
+          menuId: menuItemApiResponse.created.menuId,
+        };
+        await makeApiCall(createDish, dishData, menuItemApiResponse.created.id);
+      } else {
+        menuItemApiResponse = await makeApiCall(
+          editMenuItem,
+          menuItemData,
+          this.menuItemId,
+        );
+        dishData = {
+          name: this.innerElements().menuItemName.value,
+          portion: this.innerElements().menuItemPortion.value,
+          price: parseInt(this.innerElements().menuItemPrice.value),
+          imgSrc: imageUploadUrl!.url.fileName,
+          description: this.innerElements().dishDescription.value,
+          attributes: attributesList,
+          items: itemsList,
+        };
+        await makeApiCall(editDish, dishData, this.dishId);
       }
-      Toast.show('Menu Item and Dish Creation Successsful');
+
       Modal.toggle();
+      Toast.show('Menu Item and Dish Creation Successsful');
     } catch (error) {
       console.log(error);
+      Modal.toggle();
       Toast.show('Menu Item Creation Failed');
     } finally {
       spinner.remove();

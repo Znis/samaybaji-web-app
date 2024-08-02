@@ -8,6 +8,7 @@ interface IUser {
 }
 export interface IAuthenticatedUser extends IUser {
   roleId: string;
+  restaurantId: string;
 }
 export interface IAuthUser {
   email: string;
@@ -26,6 +27,7 @@ export interface IUpdateUser {
   imageSrc?: string;
   phoneNumber?: string;
   password?: string;
+  passwordHash?: string;
 }
 
 export default IUser;

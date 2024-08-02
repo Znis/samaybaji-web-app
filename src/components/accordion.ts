@@ -6,8 +6,8 @@ export class Accordion {
   };
   heading: {
     element: HTMLDivElement;
-    eventListeners: (element: HTMLDivElement, id: string) => void;
-    id: string;
+    eventListeners: (element: HTMLDivElement, params: string) => void;
+    params: string;
   };
   constructor(
     content: {
@@ -16,8 +16,8 @@ export class Accordion {
     },
     heading: {
       element: HTMLDivElement;
-      eventListeners: (element: HTMLDivElement, id: string) => void;
-      id: string;
+      eventListeners: (element: HTMLDivElement, params: string) => void;
+      params: string;
     },
   ) {
     this.element = document.createElement('div');
@@ -49,7 +49,7 @@ export class Accordion {
     });
   }
   setEventListeners() {
-    this.heading.eventListeners(this.heading.element, this.heading.id);
+    this.heading.eventListeners(this.heading.element, this.heading.params);
     this.content.eventListeners(this.content.element);
   }
 }

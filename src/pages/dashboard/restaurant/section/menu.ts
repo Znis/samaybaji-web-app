@@ -1,8 +1,16 @@
-import { fetchAllMenuItems } from '../../../../api-routes/menuItem';
+import { fetchDish, fetchDishByMenuItemId } from '../../../../api-routes/dish';
+import { fetchAllMenus } from '../../../../api-routes/menu';
+import {
+  deleteMenuItem,
+  editMenuItem,
+  fetchAllMenuItems,
+} from '../../../../api-routes/menuItem';
 import { makeApiCall } from '../../../../apiCalls';
 import { Accordion } from '../../../../components/accordion';
 import { MenuItemForm } from '../../../../components/menuItemForm';
 import Modal from '../../../../components/modal';
+import Toast from '../../../../components/toast';
+import { Status } from '../../../../enums/menuItem';
 import { IMenuItem } from '../../../../interfaces/menuItem';
 
 export default class RestaurantMenuDashboard {
@@ -61,7 +69,7 @@ export default class RestaurantMenuDashboard {
     console.log(menuItems);
     this.render(menuItems as unknown as IMenuItem[]);
   }
-  static createAccordionHeader(heading: string) {
+  static createAccordionHeader(status: Status, heading: string) {
     const accordionHeader = document.createElement('div');
     accordionHeader.className = 'accordion-header';
 
@@ -79,20 +87,26 @@ export default class RestaurantMenuDashboard {
 
     accordionHeader.appendChild(accordionTitleWrapper);
     const editMenu = document.createElement('i');
-    editMenu.className = 'fa-solid fa-angle-down accordion-header-action-icon';
+    editMenu.className =
+      'fa-solid fa-pen-to-square accordion-header-normal-action-icon';
 
     editMenu.id = 'edit-menu-item';
     accordionHeader.appendChild(editMenu);
     const switchMenuStatus = document.createElement('i');
-    switchMenuStatus.className =
-      'fa-solid fa-angle-down accordion-header-action-icon';
+    if (status == Status.IN_STOCK) {
+      switchMenuStatus.className =
+        'fa-solid fa-toggle-on accordion-header-normal-action-icon';
+    } else {
+      switchMenuStatus.className =
+        'fa-solid fa-toggle-off accordion-header-normal-action-icon';
+    }
 
     switchMenuStatus.id = 'switch-menu-item-status';
     accordionHeader.appendChild(switchMenuStatus);
 
     const deleteMenuItemIcon = document.createElement('i');
     deleteMenuItemIcon.className =
-      'fa-solid fa-check accordion-header-action-icon';
+      'fa-solid fa-trash accordion-header-danger-action-icon';
     deleteMenuItemIcon.id = 'delete-menu-item';
     accordionHeader.appendChild(deleteMenuItemIcon);
 
@@ -143,23 +157,44 @@ export default class RestaurantMenuDashboard {
 
     return accordionContent;
   }
-  static accordionHeaderEventListener(accordionHeader: HTMLDivElement) {
+  static accordionHeaderEventListener(
+    accordionHeader: HTMLDivElement,
+    menuItemId: string,
+  ) {
     const deleteButton = accordionHeader.querySelector('#delete-menu-item');
     const switchStatus = accordionHeader.querySelector(
       '#switch-menu-item-status',
     );
     const editButton = accordionHeader.querySelector('#edit-menu-item');
-    deleteButton!.addEventListener('click', () => {
-      console.log('delete-menu-item');
+    deleteButton!.addEventListener('click', async (event) => {
+      event.stopPropagation();
+      await RestaurantMenuDashboard.deleteMenuItem(menuItemId);
+      RestaurantMenuDashboard.fetchAllMenuItems();
     });
-    switchStatus!.addEventListener('click', () => {
-      console.log('switch-menu-item-status');
+    switchStatus!.addEventListener('click', async (event) => {
+      event.stopPropagation();
+      await RestaurantMenuDashboard.switchMenuItemStatus(menuItemId);
+      RestaurantMenuDashboard.fetchAllMenuItems();
     });
-    editButton!.addEventListener('click', () => {
-      console.log('edit-menu-item');
+    editButton!.addEventListener('click', async (event) => {
+      event.stopPropagation();
+      await RestaurantMenuDashboard.editMenuItem(menuItemId);
+      RestaurantMenuDashboard.fetchAllMenuItems();
     });
   }
   static async render(menuItems: IMenuItem[]) {
+    const inStockMenuItemContainer = this.element.querySelector(
+      '#in-stock-menu',
+    ) as HTMLElement;
+    const outOfStockMenuItemContainer = this.element.querySelector(
+      '#out-of-stock-menu',
+    ) as HTMLElement;
+    inStockMenuItemContainer.innerHTML = '';
+    outOfStockMenuItemContainer.innerHTML = '';
+    if (!menuItems.length) {
+      inStockMenuItemContainer!.innerHTML = `<h3>No active orders</h3>`;
+      outOfStockMenuItemContainer!.innerHTML = `<h3>No history orders</h3>`;
+    }
     const createMenuContainer = this.element.querySelector(
       '#create-menu-container',
     ) as HTMLDivElement;
@@ -172,15 +207,18 @@ export default class RestaurantMenuDashboard {
         price: item.price.toString(),
         isPopular: item.isPopular ? 'Yes' : 'No',
       };
-      console.log(menuItemSummary);
       const heading = item.name;
       const accordionContentElement =
         await this.renderAccordionContent(menuItemSummary);
-      const accordionHeaderElement = this.createAccordionHeader(heading);
+      const accordionHeaderElement = this.createAccordionHeader(
+        item.status,
+        heading,
+      );
       const accordionHeaderEventListener = this.accordionHeaderEventListener;
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: accordionHeaderEventListener,
+        params: item.id,
       };
       const accordionContent = {
         element: accordionContentElement,
@@ -188,13 +226,50 @@ export default class RestaurantMenuDashboard {
       };
 
       const accordion = new Accordion(accordionContent, accordionHeader);
-
-      const inStockMenuItemContainer =
-        this.element.querySelector('#in-stock-menu');
-      const outOfStockMenuItemContainer =
-        this.element.querySelector('#out-of-stock-menu');
-      inStockMenuItemContainer!.appendChild(accordion.element);
-      outOfStockMenuItemContainer!.appendChild(accordion.element);
+      if (item.status == Status.IN_STOCK) {
+        inStockMenuItemContainer!.appendChild(accordion.element);
+      } else {
+        outOfStockMenuItemContainer!.appendChild(accordion.element);
+      }
     });
+  }
+  static async editMenuItem(menuItemId: string) {
+    const dish = await fetchDishByMenuItemId(menuItemId);
+    Modal.toggle();
+    document
+      .querySelector('.modal')!
+      .appendChild(MenuItemForm.init('edit', dish, menuItemId));
+  }
+  static async switchMenuItemStatus(menuItemId: string) {
+    try {
+      const menuItems = (await fetchAllMenuItems()) as unknown as IMenuItem[];
+      const menuItem = menuItems.find((item) => item.id == menuItemId);
+      if (!menuItem) {
+        throw new Error('Menu item not found');
+      }
+      await makeApiCall(
+        editMenuItem,
+        {
+          status:
+            menuItem.status == Status.IN_STOCK
+              ? Status.OUT_OF_STOCK
+              : Status.IN_STOCK,
+        },
+        menuItemId,
+      );
+      Toast.show('Status updated successfully');
+    } catch (error) {
+      console.log(error);
+      Toast.show('An error occurred while switching the status');
+    }
+  }
+  static async deleteMenuItem(menuItemId: string) {
+    try {
+      await makeApiCall(deleteMenuItem, menuItemId);
+      Toast.show('Menu item deleted successfully');
+    } catch (error) {
+      console.log(error);
+      Toast.show('An error occurred while deleteing the menu item');
+    }
   }
 }

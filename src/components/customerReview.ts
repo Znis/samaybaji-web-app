@@ -11,7 +11,6 @@ export default class CustomerReview {
     this.element = document.createElement('div');
     this.customer = customer;
     this.customerReview = customerReview;
-
     this.init();
   }
 
@@ -29,7 +28,10 @@ export default class CustomerReview {
 
   render(): void {
     const customerImage = this.element.querySelector('.customer-review__image');
-    // customerImage!.setAttribute('src', this.customer.profileImage);
+    customerImage!.setAttribute(
+      'src',
+      this.customer.imageSrc || '/assets/images/user.jpg',
+    );
     customerImage!.setAttribute(
       'alt',
       `Profile picture of ${this.customer.name}`,
@@ -38,16 +40,18 @@ export default class CustomerReview {
     const customerName = this.element.querySelector(
       '.customer-review__customer-name',
     );
-    customerName!.textContent = this.customer.name;
+    customerName!.innerHTML = this.customer.name;
 
     const reviewDescription = this.element.querySelector(
       '.customer-review__comment',
     );
-    reviewDescription!.textContent = this.customerReview.comment;
+    reviewDescription!.innerHTML = this.customerReview.comment;
 
     const postedDate = this.element.querySelector(
       '.customer-review__posted-date',
     );
-    postedDate!.textContent = this.customerReview.postedDate.toString();
+    postedDate!.innerHTML = new Date(
+      this.customerReview.updatedAt,
+    ).toDateString();
   }
 }

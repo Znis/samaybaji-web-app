@@ -61,6 +61,9 @@ export default class MenuItem {
     if (this.menuItemData.status === Status.OUT_OF_STOCK) {
       this.button.classList.add('button--clicked');
       this.button.innerHTML = 'Out of Stock';
+      this.button.disabled = true;
+    } else {
+      this.button.disabled = false;
     }
 
     if (this.isAddedToCart) {
@@ -89,8 +92,8 @@ export default class MenuItem {
     this.element.appendChild(this.button);
 
     this.element.addEventListener('click', () => {
-      history.pushState(null, '', '/dishdetail/1');
-      navigate('/dishdetail/1');
+      history.pushState(null, '', `/dish-detail/${this.menuItemData.id}`);
+      navigate(`/dish-detail/${this.menuItemData.id}`);
       window.scrollTo(0, 0);
     });
   }

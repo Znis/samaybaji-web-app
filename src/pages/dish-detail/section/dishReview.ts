@@ -1,3 +1,4 @@
+import { fetchUser } from '../../../api-routes/users';
 import CustomerReview from '../../../components/customerReview';
 import { IReview } from '../../../interfaces/review';
 import IUser from '../../../interfaces/users';
@@ -20,9 +21,10 @@ export default class DishReview {
     }
     return this.element;
   }
-  static render(dishReviews: IReview[]) {
-    dishReviews.forEach((dishReview) => {
-      const customerReview = new CustomerReview(dishReview, {} as IUser);
+  static async render(dishReviews: IReview[]) {
+    dishReviews.forEach(async (dishReview) => {
+      const customer = await fetchUser(dishReview.userId);
+      const customerReview = new CustomerReview(dishReview, customer);
       this.element
         .querySelector('.dish-review__customer-reviews')!
         .appendChild(customerReview.element);
