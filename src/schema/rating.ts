@@ -53,7 +53,7 @@ export const ratingCRParamsSchema = joi.object({
     }),
 });
 export const ratingUDParamsSchema = joi.object({
-  reviewId: joi
+  ratingId: joi
     .string()
     .guid({ version: 'uuidv4' })
     .required()

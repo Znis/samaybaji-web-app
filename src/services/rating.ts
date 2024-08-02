@@ -14,7 +14,7 @@ export default class RatingService {
     logger.info(`Ratings for Id ${targetId} found`);
     const count = ratings.length;
     const rating = Math.floor(
-      ratings.reduce((sum, rating) => sum + rating, 0) / count,
+      ratings.reduce((sum, rating) => sum + rating.rating, 0) / count,
     );
     return { count: count, rating: rating };
   }

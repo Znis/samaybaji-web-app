@@ -22,7 +22,6 @@ const ratingRouter = express();
 ratingRouter.get(
   '/specific-rating/:targetId',
   authenticate,
-  authorize(Permissions.VIEW_REVIEW),
   validateReqParams(ratingCRParamsSchema),
   authorizeCRUD,
   getSpecificRating,
@@ -35,7 +34,7 @@ ratingRouter.get(
 );
 
 ratingRouter.post(
-  '/',
+  '/:targetId',
   validateReqParams(ratingCRParamsSchema),
   validateReqBody(createRatingBodySchema),
   authenticate,
@@ -45,7 +44,7 @@ ratingRouter.post(
 );
 
 ratingRouter.patch(
-  '/',
+  '/:ratingId',
   validateReqParams(ratingUDParamsSchema),
   validateReqBody(editRatingBodySchema),
   authenticate,
@@ -55,7 +54,7 @@ ratingRouter.patch(
 );
 
 ratingRouter.delete(
-  '/',
+  '/:ratingId',
   validateReqParams(ratingUDParamsSchema),
   authenticate,
   authorize(Permissions.DELETE_MENU_ITEM),

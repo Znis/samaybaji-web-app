@@ -13,6 +13,7 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('target_id').notNullable();
     table
       .enu('target_type', [ReviewTargetType.DISH, ReviewTargetType.RESTAURANT])
+      .defaultTo(ReviewTargetType.DISH)
       .notNullable();
     table.text('comment').notNullable();
     table.timestamp('created_at').defaultTo(knex.fn.now());

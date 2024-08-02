@@ -10,6 +10,7 @@ import {
   deleteUser,
   editUser,
   getAllUsers,
+  getRoleId,
   getUser,
 } from '../controllers/users';
 import { authenticate } from '../middleware/authenticate';
@@ -28,6 +29,12 @@ usersRouter.get(
 );
 
 usersRouter.get('/', validateReqQuery(userIdQuerySchema), getUser);
+usersRouter.get(
+  '/role',
+  validateReqQuery(userIdQuerySchema),
+  authenticate,
+  getRoleId,
+);
 
 usersRouter.post('/', validateReqBody(createUserBodySchema), createUser);
 

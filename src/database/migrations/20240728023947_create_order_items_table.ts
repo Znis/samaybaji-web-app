@@ -14,7 +14,8 @@ export async function up(knex: Knex): Promise<void> {
       .uuid('menu_item_id')
       .notNullable()
       .references('id')
-      .inTable('menu_items');
+      .inTable('menu_items')
+      .onDelete('CASCADE');
     table
       .enu('status', [
         OrderItemStatus.PENDING,

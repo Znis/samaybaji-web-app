@@ -5,6 +5,7 @@ import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
 import IUser, { ICreateUser, IUpdateUser } from '../interfaces/user';
 import CartServices from './cart';
+import AuthorizationService from './authorize';
 
 const logger = loggerWithNameSpace('Users Service');
 const salt = 10;
@@ -67,6 +68,15 @@ export default class UserService {
     }
 
     return queryResult as IUser;
+  }
+  static async getRoleId(userId: string) {
+    const role = await AuthorizationService.getRoleId(userId);
+    if (!role) {
+      logger.error(`Role of user with id ${userId} not found`);
+      return null;
+    }
+    logger.info(`Role of user with id ${userId} found`);
+    return role;
   }
 
   static async deleteUser(id: string) {

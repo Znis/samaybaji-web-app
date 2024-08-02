@@ -72,6 +72,27 @@ export async function editUser(
     next(error);
   }
 }
+export async function getRoleId(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { userId } = req.query;
+    const role = await UserService.getRoleId(userId as string);
+    if (!role) {
+      logger.error(`No role found with userId ${userId}`);
+      next(new BaseError('No Role Found'));
+      return;
+    }
+    logger.info(`Role of user with userId ${userId} found`);
+    return res.status(HttpStatusCode.OK).json(role);
+  } catch (error) {
+    logger.error('Role retrieval error');
+    next(error);
+  }
+}
+
 export async function deleteUser(
   req: Request,
   res: Response,

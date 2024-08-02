@@ -9,7 +9,6 @@ export default class RatingModel extends BaseModel {
       .from('ratings')
       .where('user_id', userId)
       .andWhere('target_id', targetId)
-      .first()
       .then((data) => {
         return data;
       })

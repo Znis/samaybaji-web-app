@@ -28,7 +28,11 @@ const menuItemRouter = express();
 menuItemRouter.get('/', getAllMenuItems);
 menuItemRouter.get('/popular', getPopularMenuItems);
 
-menuItemRouter.post('/', validateReqQuery(menuItemIdQuerySchema), getMenuItem);
+menuItemRouter.post(
+  '/:menuItemId',
+  validateReqParams(menuItemIdParamsSchema),
+  getMenuItem,
+);
 menuItemRouter.post(
   '/',
   validateReqBody(createMenuItemBodySchema),
