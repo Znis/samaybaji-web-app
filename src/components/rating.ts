@@ -1,5 +1,14 @@
-import { fetchTargetRatings } from '../api-routes/rating';
+import {
+  createRating,
+  editRating,
+  fetchSpecificRating,
+  fetchTargetRatings,
+} from '../api-routes/rating';
+import { makeApiCall } from '../apiCalls';
+import { ReviewTargetType } from '../enums/review';
+import { ICreateRating, IEditRating, IRating } from '../interfaces/rating';
 import { StateManager } from './../state-management/stateManager';
+import Toast from './toast';
 export default class Rating {
   static htmlTemplateURL: string = '/assets/templates/components/rating.html';
   static element: HTMLElement = document.createElement('div');
@@ -15,6 +24,7 @@ export default class Rating {
   static ratingCount = -1;
   static selectedIndex: number = -1;
   static html = '';
+  static dishId = '';
   static init(dishId: string): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateURL)
@@ -22,18 +32,28 @@ export default class Rating {
         .then((html) => {
           this.element.classList.add('rating');
           this.html = html;
-          this.fetchRating(dishId);
+          this.dishId = dishId;
+          this.fetchRating();
         });
     }
     return this.element;
   }
-  static async fetchRating(dishId: string) {
+  static async fetchRating() {
     this.element.innerHTML = this.html;
-    const rating = (await fetchTargetRatings(dishId)) as unknown as {
-      count: number;
+    const rating = (await fetchTargetRatings(this.dishId)) as unknown as {
       rating: number;
+      count: number;
     };
-    this.rating = rating.rating || 0;
+    if (StateManager.state.user) {
+      const ownRating = (await makeApiCall(
+        fetchSpecificRating,
+        this.dishId,
+      )) as unknown as IRating[];
+
+      if (ownRating.length) rating.rating = ownRating[0].rating;
+    }
+    this.rating = rating.rating || -1;
+    this.rating -= 1;
     this.ratingCount = rating.count;
     this.appendStars();
     this.render();
@@ -49,7 +69,7 @@ export default class Rating {
     const ratingsCount = this.element.querySelector(
       '.rating__reviews-count',
     ) as HTMLParagraphElement;
-    ratingsCount.innerHTML = `${this.ratingCount} reviews`
+    ratingsCount.innerHTML = `${this.ratingCount} reviews`;
     if (!StateManager.state.user) {
       ratingText.textContent = 'Please login to rate this dish.';
     }
@@ -95,10 +115,48 @@ export default class Rating {
         this.updateStars(index);
         this.updateText(index);
         this.updateScore(index);
+        if (StateManager.state.user) this.updateRatings(index);
       });
     });
   }
-
+  static async updateRatings(index: number) {
+    const ownRating = (await makeApiCall(
+      fetchSpecificRating,
+      this.dishId,
+    )) as unknown as IRating[];
+    if (ownRating.length) {
+      try {
+        await makeApiCall(
+          editRating,
+          {
+            rating: index + 1,
+          } as IEditRating,
+          ownRating[0].id,
+        );
+        this.fetchRating();
+        Toast.show('Rating edited');
+      } catch (error) {
+        console.log(error);
+        Toast.show('Rating edit failed');
+      }
+    } else {
+      try {
+        await makeApiCall(
+          createRating,
+          {
+            rating: index + 1,
+            targetType: ReviewTargetType.DISH,
+          } as ICreateRating,
+          this.dishId,
+        );
+        this.fetchRating();
+        Toast.show('Rating done successfully');
+      } catch (error) {
+        console.log(error);
+        Toast.show('Rating failed');
+      }
+    }
+  }
   static updateStars(index: number): void {
     const stars = this.element.querySelectorAll('.rating__star');
     stars.forEach((star, i) => {
@@ -144,7 +202,7 @@ export default class Rating {
   static resetScore(): void {
     const ratingText = this.element.querySelector('.rating__score');
     if (ratingText && StateManager.state.user) {
-      ratingText.textContent = `${this.rating}/${this.numOfStars}`;
+      ratingText.textContent = `${this.rating + 1}/${this.numOfStars}`;
     }
   }
 }

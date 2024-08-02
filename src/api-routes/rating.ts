@@ -1,24 +1,16 @@
 import axios from 'axios';
 import { StateManager } from '../state-management/stateManager';
-import { ReviewTargetType } from '../enums/review';
 import { ICreateRating, IEditRating } from '../interfaces/rating';
 
 const baseUrl = 'http://localhost:8000';
 const ratingUrl = '/ratings';
-const specificRatingUrl = '/ratings/specific-rating/';
+const specificRatingUrl = '/ratings/specific-rating';
 
-export const fetchSpecificRating = async (
-  targetId: string,
-  userId?: string,
-) => {
+export const fetchSpecificRating = async (targetId: string) => {
   return await axios
-    .get(`${baseUrl}${specificRatingUrl}`, {
+    .get(`${baseUrl}${specificRatingUrl}/${targetId}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        targetId: targetId,
-        userId: userId,
       },
     })
     .then((res) => {
@@ -49,10 +41,10 @@ export const createRating = async (
 };
 export const editRating = async (
   editRatingData: IEditRating,
-  targetId: string,
+  reviewId: string,
 ) => {
   return await axios
-    .patch(`${baseUrl}${ratingUrl}/${targetId}`, editRatingData, {
+    .patch(`${baseUrl}${ratingUrl}/${reviewId}`, editRatingData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
