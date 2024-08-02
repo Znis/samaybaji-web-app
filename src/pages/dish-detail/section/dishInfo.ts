@@ -1,10 +1,16 @@
+import { fetchAllMenuItems } from '../../../api-routes/menuItem';
 import Rating from '../../../components/rating';
+import { Status } from '../../../enums/menuItem';
 import { IDish } from '../../../interfaces/dish';
+import IMenuItem from '../../../interfaces/menuItem';
+import { StateManager } from '../../../state-management/stateManager';
+import Cart from '../../cart/cart';
 
 export default class DishInfo {
   static htmlTemplateURL =
     '/assets/templates/pages/dish-detail/section/dish-info.html';
   static element = document.createElement('section');
+  static html = '';
 
   static init(dishDetailData: IDish): HTMLElement {
     if (this.element) {
@@ -12,7 +18,7 @@ export default class DishInfo {
         .then((response) => response.text())
         .then((html) => {
           this.element.classList.add('dish-info');
-          this.element.innerHTML = html;
+          this.html = html;
           this.render(dishDetailData);
         });
     }
@@ -20,9 +26,11 @@ export default class DishInfo {
   }
 
   static render(dishDetailData: IDish): void {
-    this.renderRating(1);
+    this.element.innerHTML = this.html;
+    this.renderRating(4);
     this.renderDishInfoAttribute(dishDetailData.attributes);
     this.renderDishInfoItem(dishDetailData.items);
+    this.renderAddToCartButton(dishDetailData.menuItemId);
 
     const dishImage = this.element.querySelector('.dish-info__image');
     dishImage!.setAttribute('src', dishDetailData.imgSrc);
@@ -91,5 +99,57 @@ export default class DishInfo {
 
       itemsListWrapper!.appendChild(itemDiv);
     });
+  }
+  static async renderAddToCartButton(menuItemId: string) {
+    const menuItems = (await fetchAllMenuItems()) as IMenuItem[];
+    const menuItemData = menuItems.find(
+      (item) => item.id === menuItemId,
+    ) as IMenuItem;
+    let isAddedToCart = this.checkIfPresentInCart(menuItemData);
+    const addToCartButton = this.element.querySelector(
+      '#dish-add-to-cart-button',
+    ) as HTMLButtonElement;
+    addToCartButton.innerText = 'Add to Cart';
+    if (menuItemData.status === Status.OUT_OF_STOCK) {
+      addToCartButton.classList.add('button--clicked');
+      addToCartButton.innerHTML = 'Out of Stock';
+      addToCartButton.disabled = true;
+    } else {
+      addToCartButton.disabled = false;
+    }
+
+    if (isAddedToCart) {
+      addToCartButton.classList.add('button--clicked');
+      addToCartButton.innerHTML =
+        'Remove from cart <i class="fas fa-shopping-cart"></i>';
+    }
+    addToCartButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (!isAddedToCart) {
+        Cart.addItem(menuItemData);
+        this.toggleButton(addToCartButton, isAddedToCart);
+        isAddedToCart = true;
+      } else {
+        Cart.removeItem(menuItemData);
+        this.toggleButton(addToCartButton, isAddedToCart);
+        isAddedToCart = false;
+      }
+    });
+  }
+  static checkIfPresentInCart(menuItemData: IMenuItem) {
+    const doesExist = StateManager.state.cart.some(
+      (item) => item.menuItemData.id === menuItemData.id,
+    );
+    return doesExist;
+  }
+
+  static toggleButton(button: HTMLButtonElement, isAddedToCart: boolean) {
+    button.classList.toggle('button--clicked');
+    if (!isAddedToCart) {
+      button.innerHTML =
+        'Remove from cart <i class="fas fa-shopping-cart"></i>';
+    } else {
+      button.innerHTML = 'Add to Cart';
+    }
   }
 }

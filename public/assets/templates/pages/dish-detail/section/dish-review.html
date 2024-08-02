@@ -9,18 +9,22 @@
 </div>
 <div class="dish-review__customer-reviews"></div>
 <div class="dish-review__review-input-wrapper">
-  <textarea
+  <form class="dish-review__form" autocomplete="off">
+    <textarea
     name="review-text"
     id="review-text"
     cols="30"
     rows="7"
     class="dish-review__review-inputbox"
     placeholder="Review"
+    type="text"
     maxlength="400"
     required
   ></textarea>
   <div class="dish-review__button-wrapper">
-    <button class="button" id="add-review-toggle-button">Add Review</button>
-    <button class="button post-review" id="post-review-button">Post</button>
+    <button class="button" type="" id="add-review-toggle-button">Add Review</button>
+    <button class="button post-review" type="submit" id="post-review-button">Post</button>
   </div>
+  </form>
+
 </div>

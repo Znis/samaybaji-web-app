@@ -29,11 +29,7 @@ export default class RestaurantReviewDashboard {
     const restaurant = (await makeApiCall(
       fetchUserRestaurant,
     )) as unknown as IRestaurant;
-    const reviews = await makeApiCall(
-      fetchTargetReviews,
-      ReviewTargetType.RESTAURANT,
-      restaurant.id,
-    );
+    const reviews = await makeApiCall(fetchTargetReviews, restaurant.id);
     const restaurantReviews = reviews as unknown as IReview[];
     console.log(restaurantReviews);
     this.render(restaurantReviews);

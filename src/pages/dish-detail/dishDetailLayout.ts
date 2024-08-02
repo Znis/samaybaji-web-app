@@ -20,10 +20,7 @@ export default class DishDetailLayout {
   static async fetchData(menuItemId: string) {
     try {
       const dishDetail = (await fetchDishByMenuItemId(menuItemId)) as IDish;
-      const reviews = await fetchTargetReviews(
-        ReviewTargetType.DISH,
-        dishDetail.id,
-      );
+      const reviews = await fetchTargetReviews(dishDetail.id);
       this.render(dishDetail, reviews);
     } catch (error) {
       console.log(error);
@@ -34,6 +31,6 @@ export default class DishDetailLayout {
   }
   static render(dishDetail: IDish, reviews: IReview[]) {
     this.element.appendChild(DishInfo.init(dishDetail));
-    this.element.appendChild(DishReview.init(reviews));
+    this.element.appendChild(DishReview.init(reviews, dishDetail.id));
   }
 }

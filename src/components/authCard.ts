@@ -302,7 +302,7 @@ export default class AuthCard {
     formSubmissionButton: HTMLButtonElement,
     formData: IAuthUser,
   ) {
-    const spinner = LoaderSpinner.render();
+    const spinner = LoaderSpinner.render(20);
     formSubmissionButton.innerText = 'Logging In';
     formSubmissionButton.classList.add('auth-card__button--loading');
     formSubmissionButton.appendChild(spinner);

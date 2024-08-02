@@ -1,3 +1,4 @@
+import { StateManager } from './../state-management/stateManager';
 export default class Rating {
   static htmlTemplateURL: string = '/assets/templates/components/rating.html';
   static element: HTMLElement = document.createElement('div');
@@ -12,6 +13,8 @@ export default class Rating {
   static rating: number = -1;
   static selectedIndex: number = -1;
   static init(rating: number): HTMLElement {
+    this.rating = rating - 1;
+
     if (this.element) {
       fetch(this.htmlTemplateURL)
         .then((response) => response.text())
@@ -19,10 +22,10 @@ export default class Rating {
           this.element.classList.add('rating');
           this.element.innerHTML = html;
           this.appendStars();
-          this.setupEventListeners();
+          this.render();
+          if (StateManager.state.user) this.setupEventListeners();
         });
     }
-    this.rating = rating;
     return this.element;
   }
 
@@ -30,12 +33,26 @@ export default class Rating {
     const starsWrapper = this.element.querySelector(
       '.rating__stars-wrapper',
     ) as HTMLDivElement;
+    const ratingText = this.element.querySelector(
+      '.rating__text',
+    ) as HTMLParagraphElement;
+    if (!StateManager.state.user) {
+      ratingText.textContent = 'Please login to rate this dish.';
+    }
 
     for (let i = 0; i < this.numOfStars; i++) {
       const starElement = document.createElement('i');
       starElement.classList.add('fa-regular', 'fa-star', 'rating__star');
       starElement.setAttribute('data-value', (i + 1).toString());
       starsWrapper.appendChild(starElement);
+    }
+  }
+  static render() {
+    if (this.rating !== null) {
+      this.selectedIndex = this.rating;
+      this.updateStars(this.rating);
+      this.updateText(this.rating);
+      this.updateScore(this.rating);
     }
   }
   static setupEventListeners(): void {
@@ -61,19 +78,11 @@ export default class Rating {
       });
       star.addEventListener('click', () => {
         this.selectedIndex = index;
-        this.persistRating(index);
         this.updateStars(index);
         this.updateText(index);
         this.updateScore(index);
       });
     });
-    const persistedRating = this.getPersistedRating();
-    if (persistedRating !== null) {
-      this.selectedIndex = persistedRating;
-      this.updateStars(persistedRating);
-      this.updateText(persistedRating);
-      this.updateScore(persistedRating);
-    }
   }
 
   static updateStars(index: number): void {
@@ -99,37 +108,29 @@ export default class Rating {
 
   static updateText(index: number): void {
     const ratingText = this.element.querySelector('.rating__text');
-    if (ratingText) {
+    if (ratingText && StateManager.state.user) {
       ratingText.textContent = this.starMessages[index];
     }
   }
 
   static resetText(): void {
     const ratingText = this.element.querySelector('.rating__text');
-    if (ratingText) {
+    if (ratingText && StateManager.state.user) {
       ratingText.textContent = 'What do you think about this dish?';
     }
   }
 
   static updateScore(index: number): void {
     const ratingText = this.element.querySelector('.rating__score');
-    if (ratingText) {
+    if (ratingText && StateManager.state.user) {
       ratingText.textContent = `${index + 1}/${this.numOfStars}`;
     }
   }
 
   static resetScore(): void {
     const ratingText = this.element.querySelector('.rating__score');
-    if (ratingText) {
+    if (ratingText && StateManager.state.user) {
       ratingText.textContent = `${this.rating}/${this.numOfStars}`;
     }
-  }
-  static persistRating(index: number): void {
-    localStorage.setItem('selectedRating', index.toString());
-  }
-
-  static getPersistedRating(): number | null {
-    const rating = localStorage.getItem('selectedRating');
-    return rating !== null ? parseInt(rating, 10) : null;
   }
 }

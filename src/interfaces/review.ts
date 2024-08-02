@@ -16,6 +16,7 @@ export interface ICreateReview {
   comment: string;
 }
 export interface IEditReview {
+  targetId: string;
   comment: string;
 }
 export interface IReviewResponse {

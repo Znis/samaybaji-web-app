@@ -1565,7 +1565,7 @@ body.open .modal {
     width: 100%;
     gap: 2rem; }
   .dish-review__review-inputbox {
-    width: 40%;
+    width: 20rem;
     height: 0;
     border: 1px solid #888;
     border-radius: 0.5rem;
@@ -1592,6 +1592,12 @@ body.open .modal {
         display: block;
         height: auto;
         opacity: 1; }
+  .dish-review__form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center; }
 
 .checkout {
   display: flex;

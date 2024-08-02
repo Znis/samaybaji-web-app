@@ -57,7 +57,7 @@
     gap: 2rem;
   }
   &__review-inputbox {
-    width: 40%;
+    width: 20rem;
     height: 0;
     border: 1px solid #888;
     border-radius: 0.5rem;
@@ -94,5 +94,12 @@
         opacity: 1;
       }
     }
+  }
+  &__form{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
   }
 }

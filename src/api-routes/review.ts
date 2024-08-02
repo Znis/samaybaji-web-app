@@ -6,11 +6,8 @@ import { ReviewTargetType } from '../enums/review';
 const baseUrl = 'http://localhost:8000';
 const allReviewsUrl = `/reviews/all`;
 const usersReviewsUrl = `/reviews/user`;
-const targetReviewsUrl = `/reviews/`;
-const specificReviewUrl = `/reviews/`;
-const createReviewUrl = `/reviews/create`;
-const editReviewUrl = `/reviews/edit`;
-const deleteReviewUrl = `/reviews/delete`;
+const reviewUrl = `/reviews`;
+const specificReview = `/reviews/specific-review`;
 
 export const fetchSpecificReview = async (
   targetId: string,
@@ -18,7 +15,7 @@ export const fetchSpecificReview = async (
   userId?: string,
 ) => {
   return await axios
-    .get(`${baseUrl}${specificReviewUrl}`, {
+    .get(`${baseUrl}${specificReview}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
@@ -57,27 +54,19 @@ export const fetchAllReviews = async () => {
       return res.data;
     });
 };
-export const fetchTargetReviews = async (
-  targetType: ReviewTargetType,
-  targetId: string,
-) => {
+export const fetchTargetReviews = async (targetId: string) => {
   return await axios
-    .get(`${baseUrl}${targetReviewsUrl}`, {
-      headers: {
-        Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        targetId: targetId,
-        targetType: targetType,
-      },
-    })
+    .get(`${baseUrl}${reviewUrl}/${targetId}`, {})
     .then((res) => {
       return res.data;
     });
 };
-export const createReview = async (reviewData: ICreateReview) => {
+export const createReview = async (
+  reviewData: ICreateReview,
+  targetId: string,
+) => {
   return await axios
-    .post(`${baseUrl}${createReviewUrl}`, reviewData, {
+    .post(`${baseUrl}${reviewUrl}/${targetId}`, reviewData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
@@ -91,12 +80,9 @@ export const editReview = async (
   targetId: string,
 ) => {
   return await axios
-    .patch(`${baseUrl}${editReviewUrl}`, editReviewData, {
+    .patch(`${baseUrl}${reviewUrl}/${targetId}`, editReviewData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        targetId: targetId,
       },
     })
     .then((res) => {
@@ -105,12 +91,9 @@ export const editReview = async (
 };
 export const deleteReview = async (targetId: string) => {
   return await axios
-    .delete(`${baseUrl}${deleteReviewUrl}`, {
+    .delete(`${baseUrl}${reviewUrl}/${targetId}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        targetId: targetId,
       },
     })
     .then((res) => {
