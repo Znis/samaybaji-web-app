@@ -7,36 +7,12 @@ const baseUrl = 'http://localhost:8000';
 const allReviewsUrl = `/reviews/all`;
 const usersReviewsUrl = `/reviews/user`;
 const reviewUrl = `/reviews`;
-const specificReview = `/reviews/specific-review`;
 
-export const fetchSpecificReview = async (
-  targetId: string,
-  targetType: ReviewTargetType,
-  userId?: string,
-) => {
-  return await axios
-    .get(`${baseUrl}${specificReview}`, {
-      headers: {
-        Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        targetId: targetId,
-        targetType: targetType,
-        userId: userId,
-      },
-    })
-    .then((res) => {
-      return res.data;
-    });
-};
-export const fetchUserReviews = async (userId?: string) => {
+export const fetchUserReviews = async () => {
   return await axios
     .get(`${baseUrl}${usersReviewsUrl}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        userId: userId,
       },
     })
     .then((res) => {

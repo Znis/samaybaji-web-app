@@ -4,16 +4,11 @@ import { ReviewTargetType } from '../enums/review';
 import { ICreateRating, IEditRating } from '../interfaces/rating';
 
 const baseUrl = 'http://localhost:8000';
-const usersRatingsUrl = `/ratings/user`;
-const targetRatingsUrl = `/ratiRating`;
-const specificRatingUrl = `/ratings/`;
-const createRatingUrl = `/ratings/create`;
-const editRatingUrl = `/ratings/edit`;
-const deleteRatingUrl = `/ratings/delete`;
+const ratingUrl = '/ratings';
+const specificRatingUrl = '/ratings/specific-rating/';
 
 export const fetchSpecificRating = async (
   targetId: string,
-  targetType: ReviewTargetType,
   userId?: string,
 ) => {
   return await axios
@@ -23,7 +18,6 @@ export const fetchSpecificRating = async (
       },
       params: {
         targetId: targetId,
-        targetType: targetType,
         userId: userId,
       },
     })
@@ -31,38 +25,20 @@ export const fetchSpecificRating = async (
       return res.data;
     });
 };
-export const fetchUserRatings = async (userId?: string) => {
+
+export const fetchTargetRatings = async (targetId: string) => {
   return await axios
-    .get(`${baseUrl}${usersRatingsUrl}`, {
-      headers: {
-        Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        userId: userId,
-      },
-    })
+    .get(`${baseUrl}${ratingUrl}/${targetId}`, {})
     .then((res) => {
       return res.data;
     });
 };
-export const fetchTargetRatings = async (
-  targetType: ReviewTargetType,
+export const createRating = async (
+  ratingData: ICreateRating,
   targetId: string,
 ) => {
   return await axios
-    .get(`${baseUrl}${targetRatingsUrl}`, {
-      params: {
-        targetId: targetId,
-        targetType: targetType,
-      },
-    })
-    .then((res) => {
-      return res.data;
-    });
-};
-export const createRating = async (ratingData: ICreateRating) => {
-  return await axios
-    .post(`${baseUrl}${createRatingUrl}`, ratingData, {
+    .post(`${baseUrl}${ratingUrl}/${targetId}`, ratingData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
       },
@@ -76,26 +52,9 @@ export const editRating = async (
   targetId: string,
 ) => {
   return await axios
-    .patch(`${baseUrl}${editRatingUrl}`, editRatingData, {
+    .patch(`${baseUrl}${ratingUrl}/${targetId}`, editRatingData, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        targetId: targetId,
-      },
-    })
-    .then((res) => {
-      return res.data;
-    });
-};
-export const deleteRating = async (targetId: string) => {
-  return await axios
-    .delete(`${baseUrl}${deleteRatingUrl}`, {
-      headers: {
-        Authorization: `Bearer ${StateManager.state.accessToken}`,
-      },
-      params: {
-        targetId: targetId,
       },
     })
     .then((res) => {

@@ -10,13 +10,10 @@ export interface IReview {
 }
 
 export interface ICreateReview {
-  targetId: string;
   targetType: ReviewTargetType;
-  userId: string;
   comment: string;
 }
 export interface IEditReview {
-  targetId: string;
   comment: string;
 }
 export interface IReviewResponse {

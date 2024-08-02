@@ -4,8 +4,13 @@ import { makeApiCall } from '../../../apiCalls';
 import CustomerReview from '../../../components/customerReview';
 import Toast from '../../../components/toast';
 import { ReviewTargetType } from '../../../enums/review';
-import { ICreateReview, IReview } from '../../../interfaces/review';
+import {
+  ICreateReview,
+  IEditReview,
+  IReview,
+} from '../../../interfaces/review';
 import { StateManager } from '../../../state-management/stateManager';
+import DishDetailLayout from '../dishDetailLayout';
 
 export default class DishReview {
   static htmlTemplateURL =
@@ -13,6 +18,7 @@ export default class DishReview {
   static element = document.createElement('section');
   static html = '';
   static dishId = '';
+  static dishReviews: IReview[] = [];
 
   static init(dishReviews: IReview[], dishId: string): HTMLElement {
     if (this.element) {
@@ -22,13 +28,14 @@ export default class DishReview {
           this.element.classList.add('dish-review');
           this.html = html;
           this.dishId = dishId;
-          this.render(dishReviews);
+          this.dishReviews = dishReviews;
+          this.render();
           this.setEventListeners();
         });
     }
     return this.element;
   }
-  static async render(dishReviews: IReview[]) {
+  static async render() {
     this.element.innerHTML = this.html;
     const toggleButton = this.element.querySelector(
       '#add-review-toggle-button',
@@ -36,7 +43,7 @@ export default class DishReview {
     toggleButton.disabled = true;
     if (StateManager.state.user) {
       toggleButton.disabled = false;
-      const ownReview = dishReviews.find((review) => {
+      const ownReview = this.dishReviews.find((review) => {
         return review.userId == StateManager.state.user!.id;
       });
       if (ownReview) {
@@ -51,7 +58,7 @@ export default class DishReview {
       }
     }
 
-    dishReviews.forEach(async (dishReview) => {
+    this.dishReviews.forEach(async (dishReview) => {
       const customer = await fetchUser(dishReview.userId);
       if (dishReview.userId != StateManager.state.user?.id) {
         const customerReview = new CustomerReview(dishReview, customer);
@@ -81,23 +88,23 @@ export default class DishReview {
         reviewForm.reportValidity();
         return;
       }
-      if (
-        toggleButton?.innerHTML === 'Edit Review' &&
-        StateManager.state.user
-      ) {
+      const ownReview = this.dishReviews.find((review) => {
+        return review.userId == StateManager.state.user!.id;
+      });
+      if (ownReview && StateManager.state.user) {
         try {
           await makeApiCall(
             editReview,
             {
               comment: reviewInputBox.value,
-              targetType: ReviewTargetType.DISH,
-              userId: StateManager.state.user!.id,
-            } as ICreateReview,
-            this.dishId,
+            } as IEditReview,
+            ownReview!.id,
           );
+          location.reload();
+          Toast.show('Successfully edited review');
         } catch (error) {
           console.log(error);
-          Toast.show('Failed to post review');
+          Toast.show('Failed to edit review');
         }
       } else {
         try {
@@ -106,13 +113,15 @@ export default class DishReview {
             {
               comment: reviewInputBox.value,
               targetType: ReviewTargetType.DISH,
-              userId: StateManager.state.user!.id,
             } as ICreateReview,
             this.dishId,
           );
+          location.reload();
+          Toast.show('Successfully created review');
+          reviewInputBox.value = '';
         } catch (error) {
           console.log(error);
-          Toast.show('Failed to post review');
+          Toast.show('Failed to create review');
         }
       }
     });
@@ -123,8 +132,12 @@ export default class DishReview {
         postButton.classList.toggle('visible');
         if (toggleButton.innerHTML === 'Add Review') {
           toggleButton.innerHTML = 'Cancel';
+          return;
+        }
+        if (toggleButton.innerHTML === 'Edit Review') {
+          toggleButton.innerHTML = 'Cancel';
         } else {
-          toggleButton.innerHTML = 'Add Review';
+          toggleButton.innerHTML = 'Edit Review';
         }
       });
     }

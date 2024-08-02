@@ -27,7 +27,7 @@ export default class DishInfo {
 
   static render(dishDetailData: IDish): void {
     this.element.innerHTML = this.html;
-    this.renderRating(4);
+    this.renderRating(dishDetailData.id);
     this.renderDishInfoAttribute(dishDetailData.attributes);
     this.renderDishInfoItem(dishDetailData.items);
     this.renderAddToCartButton(dishDetailData.menuItemId);
@@ -52,10 +52,10 @@ export default class DishInfo {
     dishDescription!.textContent = dishDetailData.description;
   }
 
-  static renderRating(rating: number): void {
+  static renderRating(dishId: string): void {
     this.element
       .querySelector('.dish-info__rating-wrapper')!
-      .appendChild(Rating.init(rating));
+      .appendChild(Rating.init(dishId));
   }
   static renderDishInfoAttribute(dishInfoAttributes: string[]): void {
     const attributeWrapper = this.element.querySelector(

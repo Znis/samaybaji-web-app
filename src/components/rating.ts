@@ -1,3 +1,4 @@
+import { fetchTargetRatings } from '../api-routes/rating';
 import { StateManager } from './../state-management/stateManager';
 export default class Rating {
   static htmlTemplateURL: string = '/assets/templates/components/rating.html';
@@ -11,24 +12,33 @@ export default class Rating {
   ];
   static numOfStars: number = 5;
   static rating: number = -1;
+  static ratingCount = -1;
   static selectedIndex: number = -1;
-  static init(rating: number): HTMLElement {
-    this.rating = rating - 1;
-
+  static html = '';
+  static init(dishId: string): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateURL)
         .then((response) => response.text())
         .then((html) => {
           this.element.classList.add('rating');
-          this.element.innerHTML = html;
-          this.appendStars();
-          this.render();
-          if (StateManager.state.user) this.setupEventListeners();
+          this.html = html;
+          this.fetchRating(dishId);
         });
     }
     return this.element;
   }
-
+  static async fetchRating(dishId: string) {
+    this.element.innerHTML = this.html;
+    const rating = (await fetchTargetRatings(dishId)) as unknown as {
+      count: number;
+      rating: number;
+    };
+    this.rating = rating.rating || 0;
+    this.ratingCount = rating.count;
+    this.appendStars();
+    this.render();
+    if (StateManager.state.user) this.setupEventListeners();
+  }
   static appendStars(): void {
     const starsWrapper = this.element.querySelector(
       '.rating__stars-wrapper',
@@ -36,6 +46,10 @@ export default class Rating {
     const ratingText = this.element.querySelector(
       '.rating__text',
     ) as HTMLParagraphElement;
+    const ratingsCount = this.element.querySelector(
+      '.rating__reviews-count',
+    ) as HTMLParagraphElement;
+    ratingsCount.innerHTML = `${this.ratingCount} reviews`
     if (!StateManager.state.user) {
       ratingText.textContent = 'Please login to rate this dish.';
     }
