@@ -93,10 +93,7 @@ export default class CustomerReviewDashboard {
 
     return accordionContent;
   }
-  static accordionHeaderEventListener(
-    accordionHeader: HTMLDivElement,
-    reviewId: string,
-  ) {}
+
   static async render(dishReviews: IReview[], restaurantReviews: IReview[]) {
     const reviewDishContainer = this.element.querySelector(
       '#review-dish',
@@ -126,10 +123,9 @@ export default class CustomerReviewDashboard {
       const accordionContentElement =
         await this.renderAccordionContent(reviewSummary);
       const accordionHeaderElement = this.createAccordionHeader(heading);
-      const accordionHeaderEventListener = this.accordionHeaderEventListener;
       const accordionHeader = {
         element: accordionHeaderElement,
-        eventListeners: accordionHeaderEventListener,
+        eventListeners: () => null,
         params: review.id,
       };
       const accordionContent = {
@@ -159,10 +155,9 @@ export default class CustomerReviewDashboard {
       const accordionContentElement =
         await this.renderAccordionContent(reviewSummary);
       const accordionHeaderElement = this.createAccordionHeader(heading);
-      const accordionHeaderEventListener = this.accordionHeaderEventListener;
       const accordionHeader = {
         element: accordionHeaderElement,
-        eventListeners: accordionHeaderEventListener,
+        eventListeners: () => null,
         params: review.id,
       };
       const accordionContent = {

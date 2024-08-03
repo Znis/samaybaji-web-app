@@ -3,9 +3,8 @@ import { fetchTargetReviews } from '../../../../api-routes/review';
 import { fetchUser } from '../../../../api-routes/users';
 import { makeApiCall } from '../../../../apiCalls';
 import { Accordion } from '../../../../components/accordion';
-import { ReviewTargetType } from '../../../../enums/review';
 import { IRestaurant } from '../../../../interfaces/restaurant';
-import { IReview, IReviewResponse } from '../../../../interfaces/review';
+import { IReview } from '../../../../interfaces/review';
 import IUser from '../../../../interfaces/users';
 
 export default class RestaurantReviewDashboard {
@@ -33,7 +32,6 @@ export default class RestaurantReviewDashboard {
     )) as unknown as IRestaurant;
     const reviews = await makeApiCall(fetchTargetReviews, restaurant.id);
     const restaurantReviews = reviews as unknown as IReview[];
-    console.log(restaurantReviews);
     this.render(restaurantReviews);
   }
 
@@ -95,10 +93,7 @@ export default class RestaurantReviewDashboard {
 
     return accordionContent;
   }
-  static accordionHeaderEventListener(
-    accordionHeader: HTMLDivElement,
-    reviewId: string,
-  ) {}
+
   static async render(restaurantReviews: IReview[]) {
     const dishReviewContainer = this.element.querySelector(
       '#dish-review-container',
@@ -125,10 +120,9 @@ export default class RestaurantReviewDashboard {
       const accordionContentElement =
         await this.renderAccordionContent(reviewSummary);
       const accordionHeaderElement = this.createAccordionHeader(heading);
-      const accordionHeaderEventListener = this.accordionHeaderEventListener;
       const accordionHeader = {
         element: accordionHeaderElement,
-        eventListeners: accordionHeaderEventListener,
+        eventListeners: () => null,
         params: review.id,
       };
       const accordionContent = {

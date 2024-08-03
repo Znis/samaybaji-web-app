@@ -1,25 +1,24 @@
 .summary {
-  
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    justify-content: center;
-    background-color: #fbfcfa;
-    gap: 1rem;
-    border: 1px solid #888;
-    border-radius: 2rem;
-    padding: 1rem;
-  
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fbfcfa;
+  gap: 1rem;
+  border: 1px solid #888;
+  border-radius: 2rem;
+  padding: 1rem;
+
   &-heading {
     font-size: 1.5rem;
     letter-spacing: 1.5px;
     color: #333;
   }
-  &-image-wrapper{
+  &-image-wrapper {
     height: 4rem;
     width: 4rem;
   }
-  &-image{
+  &-image {
     width: 100%;
     height: 100%;
     border-radius: 50%;

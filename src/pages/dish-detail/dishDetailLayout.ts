@@ -1,7 +1,6 @@
 import { fetchDishByMenuItemId } from '../../api-routes/dish';
 import { fetchTargetReviews } from '../../api-routes/review';
 import Toast from '../../components/toast';
-import { ReviewTargetType } from '../../enums/review';
 import { IDish } from '../../interfaces/dish';
 import { IReview } from '../../interfaces/review';
 import { navigate } from '../../router';
@@ -23,7 +22,6 @@ export default class DishDetailLayout {
       const reviews = await fetchTargetReviews(dishDetail.id);
       this.render(dishDetail, reviews);
     } catch (error) {
-      console.log(error);
       history.pushState(null, '', '/');
       navigate('/');
       Toast.show('No Dish Detail Found');

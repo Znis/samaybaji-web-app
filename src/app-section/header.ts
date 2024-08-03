@@ -5,7 +5,6 @@ import { StateManager } from '../state-management/stateManager';
 import Toast from '../components/toast';
 import { Roles } from '../enums/roles';
 import { RestaurantForm } from '../components/restaurantForm';
-import { LoaderSpinner } from '../components/loaderSpinner';
 
 export default class Header {
   static htmlTemplateURL = '/assets/templates/app-section/header.html';

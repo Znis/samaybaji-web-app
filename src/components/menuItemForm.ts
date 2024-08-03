@@ -1,14 +1,12 @@
 import Modal from './modal';
-import axios, { HttpStatusCode } from 'axios';
+import axios from 'axios';
 import { LoaderSpinner } from './loaderSpinner';
 import Toast from './toast';
-import IMenuItem, { ICreateMenuItem } from '../interfaces/menuItem';
-import { ICreateDish, IDish } from '../interfaces/dish';
+import IMenuItem from '../interfaces/menuItem';
+import { IDish } from '../interfaces/dish';
 import { getUploadUrl, makeApiCall, uploadImage } from '../apiCalls';
-import { createRestaurant } from '../api-routes/restaurant';
 import { createMenuItem, editMenuItem } from '../api-routes/menuItem';
 import { createDish, editDish } from '../api-routes/dish';
-import { StateManager } from '../state-management/stateManager';
 import RestaurantMenuDashboard from '../pages/dashboard/restaurant/section/menu';
 
 export class MenuItemForm {
@@ -183,7 +181,6 @@ export class MenuItemForm {
       Toast.show('Menu Item and Dish Update Successsful');
       RestaurantMenuDashboard.init();
     } catch (error) {
-      console.log('yo');
       if (axios.isAxiosError(error)) {
         this.innerElements().errorMessage.innerHTML = error.message;
         Toast.show('Menu Item Addition Failed');

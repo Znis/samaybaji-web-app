@@ -56,11 +56,11 @@
       border: 1px solid #ccc;
       box-sizing: border-box;
       position: relative;
-  
+
       &:focus {
         border: 1px solid #333;
       }
-  
+
       &::placeholder {
         color: #888;
         font-size: 0.8rem;
@@ -73,7 +73,7 @@
       height: 14px;
       width: 14px;
       cursor: pointer;
-  
+
       &:checked {
         outline: 1px solid var(--brown);
         outline-offset: 1px;
@@ -101,4 +101,3 @@
     }
   }
 }
-

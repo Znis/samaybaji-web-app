@@ -166,7 +166,7 @@ $serif: 'Lora', serif;
     align-items: center;
     padding: 0.8rem;
     cursor: pointer;
-    &--loading{
+    &--loading {
       opacity: 0.8;
     }
     &:hover:enabled {
@@ -288,21 +288,19 @@ $serif: 'Lora', serif;
       color: #111;
     }
   }
-  &__error-message{
+  &__error-message {
     height: 0.7rem;
     width: 90%;
     text-wrap: wrap;
     color: orangered;
     font-size: 0.7rem;
-    
   }
-  &__response-message{
+  &__response-message {
     height: 0.7rem;
     width: 100%;
     text-wrap: wrap;
     color: orangered;
     font-size: 0.7rem;
     text-align: center;
-    
   }
 }

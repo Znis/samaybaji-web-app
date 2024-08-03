@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { StateManager } from '../state-management/stateManager';
 import { ICreateReview, IEditReview } from '../interfaces/review';
-import { ReviewTargetType } from '../enums/review';
 
 const baseUrl = 'http://localhost:8000';
 const allReviewsUrl = `/reviews/all`;

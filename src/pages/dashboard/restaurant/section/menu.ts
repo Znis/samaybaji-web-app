@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { fetchDish, fetchDishByMenuItemId } from '../../../../api-routes/dish';
+import { fetchDishByMenuItemId } from '../../../../api-routes/dish';
 import { createMenu, fetchAllMenus } from '../../../../api-routes/menu';
 import {
   deleteMenuItem,
@@ -330,7 +330,6 @@ export default class RestaurantMenuDashboard {
       );
       Toast.show('Status updated successfully');
     } catch (error) {
-      console.log(error);
       Toast.show('An error occurred while switching the status');
     }
   }

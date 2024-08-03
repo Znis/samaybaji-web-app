@@ -141,14 +141,6 @@ export default class CustomerOrdersDashboard {
     totalAmount.innerHTML = `${orderSummary.totalAmount || ''}`;
     return accordionContent;
   }
-  static accordionContentEventListener(accordionHeader: HTMLDivElement) {
-    const totalAmount = accordionHeader.querySelector(
-      '#order-summary-total-amount',
-    ) as HTMLSpanElement;
-    totalAmount.addEventListener('click', () => {
-      console.log('clicked');
-    });
-  }
   static accordionHeaderEventListener(
     accordionHeader: HTMLDivElement,
     orderId: string,
@@ -157,20 +149,19 @@ export default class CustomerOrdersDashboard {
     const cancelButton = accordionHeader.querySelector('#cancel-order');
     deleteButton!.addEventListener('click', async (event) => {
       event.stopPropagation();
-      const deleteResponse = await makeApiCall(deleteOrder, orderId);
+      await makeApiCall(deleteOrder, orderId);
       CustomerOrdersDashboard.fetchAllOrders();
     });
     cancelButton!.addEventListener('click', async (event) => {
       event.stopPropagation();
 
-      const cancelResponse = await makeApiCall(
+      await makeApiCall(
         editOrder,
         {
           status: OrderStatus.CANCELLED,
         } as IEditOrder,
         orderId,
       );
-      console.log(cancelResponse);
       CustomerOrdersDashboard.fetchAllOrders();
     });
   }
@@ -213,7 +204,6 @@ export default class CustomerOrdersDashboard {
         heading,
       );
       const accordionHeaderEventListener = this.accordionHeaderEventListener;
-      const accordionContentEventListener = this.accordionContentEventListener;
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: accordionHeaderEventListener,
@@ -221,14 +211,13 @@ export default class CustomerOrdersDashboard {
       };
       const accordionContent = {
         element: accordionContentElement,
-        eventListeners: accordionContentEventListener,
+        eventListeners: () => null,
       };
 
       const accordion = new Accordion(accordionContent, accordionHeader);
       const activeOrderContainer = this.element.querySelector('#active-orders');
       const historyOrderContainer =
         this.element.querySelector('#history-orders');
-      console.log(order.status);
       if (
         order.status == OrderStatus.CANCELLED ||
         order.status == OrderStatus.DELIVERED

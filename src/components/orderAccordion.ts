@@ -26,7 +26,6 @@ export class Accordion {
         .then((html) => {
           this.element.classList.add('order__accordion-item');
           this.element.innerHTML = html;
-          this.setEventListeners();
           this.render();
           this.renderAccordion();
         });
@@ -38,7 +37,7 @@ export class Accordion {
       '.order__accordion-header',
     );
 
-    accordionHeaders.forEach((header, idx) => {
+    accordionHeaders.forEach((header) => {
       const accordionItem = header.parentElement;
       const accordionContent = accordionItem!.querySelector(
         '.order__accordion-content',
@@ -47,20 +46,6 @@ export class Accordion {
         header.classList.toggle('active');
         accordionContent.classList.toggle('open');
       });
-    });
-  }
-  setEventListeners() {
-    const deleteOrder = this.element.querySelector(
-      '#delete-order',
-    ) as HTMLButtonElement;
-    deleteOrder.addEventListener('click', () => {
-      console.log('delete-order');
-    });
-    const cancelOrder = this.element.querySelector(
-      '#cancel-order',
-    ) as HTMLButtonElement;
-    cancelOrder.addEventListener('click', () => {
-      console.log('order-cancel');
     });
   }
   render() {

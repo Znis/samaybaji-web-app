@@ -159,7 +159,8 @@
     flex-direction: column;
     gap: 2rem;
   }
-  &__cart, &__order-billing{
+  &__cart,
+  &__order-billing {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -178,19 +179,19 @@
     justify-content: center;
     gap: 0.5rem;
   }
-  &__success-container{
+  &__success-container {
     display: flex;
     width: 100%;
     flex-direction: column;
     justify-content: center;
     gap: 2rem;
   }
-  &__success-heading{
+  &__success-heading {
     font-size: 1.8rem;
     letter-spacing: 1.5px;
     color: #333;
   }
-  &__order-summary{
+  &__order-summary {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -201,17 +202,17 @@
     border-radius: 2rem;
     padding: 1rem;
   }
-  &__order-summary-heading{
+  &__order-summary-heading {
     font-size: 1.5rem;
     letter-spacing: 1.5px;
     color: #333;
   }
-  &__order-summary-attribute{
+  &__order-summary-attribute {
     font-size: 1rem;
     letter-spacing: 0.8px;
     color: #444;
   }
-  &__order-summary-attribute-value{
+  &__order-summary-attribute-value {
     font-size: 1rem;
     letter-spacing: 0.8px;
     font-weight: 500;
@@ -233,7 +234,7 @@ input[type='radio']:checked::after {
   outline: 1px solid #444;
 }
 
-button{
+button {
   display: flex;
   align-items: center;
   justify-content: center;

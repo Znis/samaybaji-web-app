@@ -137,7 +137,6 @@ export default class DishReview {
           Toast.show('Successfully created review');
           reviewInputBox.value = '';
         } catch (error) {
-          console.log(error);
           Toast.show('Failed to create review');
         }
       }

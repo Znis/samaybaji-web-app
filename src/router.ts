@@ -90,8 +90,8 @@ window.addEventListener('popstate', async () => {
       StateManager.resetState();
       return;
     }
-  } catch (error) {
-    console.log('Not an admin route');
+  } catch {
+    //intentionally left blank
   }
 });
 
@@ -108,6 +108,6 @@ window.addEventListener('DOMContentLoaded', async () => {
       return;
     }
   } catch (error) {
-    console.log('Not an admin route');
+    //intentionally left blank
   }
 });

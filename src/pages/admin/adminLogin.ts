@@ -5,7 +5,6 @@ import Toast from '../../components/toast';
 import { IAuthUser } from '../../interfaces/users';
 import DashboardLayout from '../dashboard/layout';
 import { Roles } from '../../enums/roles';
-import { StateManager } from '../../state-management/stateManager';
 
 export default class AdminLogin {
   static htmlTemplateurl = '/assets/templates/pages/admin/admin-login.html';
@@ -67,7 +66,6 @@ export default class AdminLogin {
           Toast.show(error.response?.data.message);
         } else {
           Toast.show('An unexpected error occurred');
-          console.log(error);
         }
         this.innerElements.loginButton.disabled = false;
         this.innerElements.loginButton.removeChild(spinner);

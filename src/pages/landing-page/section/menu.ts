@@ -1,7 +1,6 @@
 import { fetchPopularMenuItems } from '../../../api-routes/menuItem';
 import { LoaderSpinner } from '../../../components/loaderSpinner';
 import MenuItem from '../../../components/menuItem';
-import { IMenu } from '../../../interfaces/menu';
 import IMenuItem from '../../../interfaces/menuItem';
 
 export default class Menu {

@@ -1,62 +1,62 @@
 .form {
-    &__inputbox {
-      width: 100%;
-      background: $pale;
-      font-size: 1rem;
-      color: #333;
-      text-transform: none;
-      background: #ffffff;
-      border-radius: 0.5rem;
-      padding: 0.5rem 1rem;
-      display: inline-block;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-      position: relative;
-  
-      &:focus {
-        border: 1px solid #333;
-      }
-  
-      &::placeholder {
-        color: #888;
-        font-size: 0.8rem;
-        font-weight: 100;
-      }
+  &__inputbox {
+    width: 100%;
+    background: $pale;
+    font-size: 1rem;
+    color: #333;
+    text-transform: none;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    position: relative;
+
+    &:focus {
+      border: 1px solid #333;
     }
-    &__checkbox-input {
-      color: $primary;
-      border: 1px solid var(--brown);
-      height: 14px;
-      width: 14px;
-      cursor: pointer;
-  
-      &:checked {
-        outline: 1px solid var(--brown);
-        outline-offset: 1px;
-        background-color: $primary;
-      }
-    }
-    &__label {
-      font-size: 1rem;
-      color: #444;
-    }
-    &__group {
-      display: flex;
-      width: 50%;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-    }
-    &__row-group {
-      display: flex;
-      width: 100%;
-      gap: 2rem;
-      justify-content: space-evenly;
-      align-items: center;
-    }
-    &__error-message{
-      color: red;
+
+    &::placeholder {
+      color: #888;
       font-size: 0.8rem;
+      font-weight: 100;
     }
   }
+  &__checkbox-input {
+    color: $primary;
+    border: 1px solid var(--brown);
+    height: 14px;
+    width: 14px;
+    cursor: pointer;
+
+    &:checked {
+      outline: 1px solid var(--brown);
+      outline-offset: 1px;
+      background-color: $primary;
+    }
+  }
+  &__label {
+    font-size: 1rem;
+    color: #444;
+  }
+  &__group {
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  &__row-group {
+    display: flex;
+    width: 100%;
+    gap: 2rem;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  &__error-message {
+    color: red;
+    font-size: 0.8rem;
+  }
+}

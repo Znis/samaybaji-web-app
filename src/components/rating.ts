@@ -135,7 +135,6 @@ export default class Rating {
         this.fetchRating();
         Toast.show('Rating edited');
       } catch (error) {
-        console.log(error);
         Toast.show('Rating edit failed');
       }
     } else {
@@ -151,7 +150,6 @@ export default class Rating {
         this.fetchRating();
         Toast.show('Rating done successfully');
       } catch (error) {
-        console.log(error);
         Toast.show('Rating failed');
       }
     }

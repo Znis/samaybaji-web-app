@@ -196,7 +196,7 @@ export default class Checkout {
       try {
         confirmCheckoutButton.appendChild(spinner);
         confirmCheckoutButton.disabled = true;
-        const response = await makeApiCall(createOrder, order);
+        await makeApiCall(createOrder, order);
         await makeApiCall(clearCart);
         const trackOrderButton = this.element.querySelector(
           '#track-order-button',

@@ -2,7 +2,7 @@ import { LoaderSpinner } from './loaderSpinner';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import intlTelInput from 'intl-tel-input';
 import Modal from './modal';
-import axios, { HttpStatusCode } from 'axios';
+import { HttpStatusCode } from 'axios';
 import { IAuthUser, ICreateUser } from '../interfaces/users';
 import { StateManager } from '../state-management/stateManager';
 import Toast from './toast';
@@ -67,9 +67,6 @@ export default class AuthCard {
     const phoneNumberInput = this.element.querySelector(
       '#register-phone',
     ) as HTMLInputElement;
-    const tcCheckbox = this.element.querySelector(
-      '#register-terms-conditions',
-    ) as HTMLInputElement;
     const emailError = this.element.querySelector(
       '#login-email-validate-error',
     ) as HTMLDivElement;
@@ -93,9 +90,6 @@ export default class AuthCard {
     ) as HTMLDivElement;
     const phoneError = this.element.querySelector(
       '#register-phone-validate-error',
-    ) as HTMLDivElement;
-    const tcCheckboxError = this.element.querySelector(
-      '#register-tc-validate-error',
     ) as HTMLDivElement;
     const registerResponseMessage = this.element.querySelector(
       '#register-response-message',
@@ -293,7 +287,6 @@ export default class AuthCard {
     password: string,
     confirmPassword: string,
   ): boolean {
-    console.log(password, confirmPassword);
     return confirmPassword == password;
   }
 

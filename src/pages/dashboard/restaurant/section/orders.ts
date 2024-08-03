@@ -1,12 +1,10 @@
-import { IDish } from './../../../../interfaces/dish';
 import { fetchRestaurantOrders } from '../../../../api-routes/order';
 import { editOrderItem } from '../../../../api-routes/orderItem';
 import { makeApiCall } from '../../../../apiCalls';
 import { Accordion } from '../../../../components/accordion';
-import { OrderItemStatus, OrderStatus } from '../../../../enums/order';
+import { OrderItemStatus } from '../../../../enums/order';
 import IMenuItem from '../../../../interfaces/menuItem';
 import { IOrder } from '../../../../interfaces/order';
-import { IOrderItem } from '../../../../interfaces/orderItem';
 
 export default class RestaurantOrdersDashboard {
   static element: HTMLElement = document.createElement('div');
@@ -28,7 +26,6 @@ export default class RestaurantOrdersDashboard {
   static async fetchAllOrders() {
     this.element.innerHTML = this.html;
     const orders = await makeApiCall(fetchRestaurantOrders);
-    console.log(orders);
     this.render(orders as unknown as IOrder[]);
   }
   static createAccordionHeader(status: string, heading: string) {
@@ -132,9 +129,8 @@ export default class RestaurantOrdersDashboard {
 
     return accordionContent;
   }
-  static accordionContentEventListener(accordionHeader: HTMLDivElement) {}
   static accordionHeaderEventListener(
-    accordionHeader: HTMLDivElement,
+    _accordionHeader: HTMLDivElement,
     orderItemId: string,
   ) {
     const selectStatus = this.element.querySelector(
@@ -154,11 +150,7 @@ export default class RestaurantOrdersDashboard {
       } else {
         editStatus = { status: OrderItemStatus.PENDING };
       }
-      const updateStatusResponse = await makeApiCall(
-        editOrderItem,
-        editStatus,
-        orderItemId,
-      );
+      await makeApiCall(editOrderItem, editStatus, orderItemId);
       RestaurantOrdersDashboard.fetchAllOrders();
     });
   }
@@ -206,7 +198,6 @@ export default class RestaurantOrdersDashboard {
         heading,
       );
       const accordionHeaderEventListener = this.accordionHeaderEventListener;
-      const accordionContentEventListener = this.accordionContentEventListener;
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: accordionHeaderEventListener,
@@ -214,14 +205,13 @@ export default class RestaurantOrdersDashboard {
       };
       const accordionContent = {
         element: accordionContentElement,
-        eventListeners: accordionContentEventListener,
+        eventListeners: () => null,
       };
 
       const accordion = new Accordion(accordionContent, accordionHeader);
       const activeOrderContainer = this.element.querySelector('#active-orders');
       const historyOrderContainer =
         this.element.querySelector('#history-orders');
-      console.log(item.status);
       if (
         item.status == OrderItemStatus.READY ||
         item.status == OrderItemStatus.DELIVERED ||

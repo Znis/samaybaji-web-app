@@ -1,11 +1,10 @@
 import { getUploadUrl, makeApiCall, uploadImage } from '../apiCalls';
 import { ICreateRestaurant, IRestaurant } from '../interfaces/restaurant';
 import Modal from './modal';
-import axios, { Axios, AxiosError, HttpStatusCode } from 'axios';
+import axios from 'axios';
 import { LoaderSpinner } from './loaderSpinner';
 import Toast from './toast';
 import { createRestaurant } from '../api-routes/restaurant';
-import { fetchRoleId } from '../api-routes/users';
 import { StateManager } from '../state-management/stateManager';
 import { Roles } from '../enums/roles';
 

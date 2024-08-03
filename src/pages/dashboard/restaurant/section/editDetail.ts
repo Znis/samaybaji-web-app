@@ -1,7 +1,5 @@
-import { deleteUser, editUser } from '../../../../api-routes/users';
 import { makeApiCall } from '../../../../apiCalls';
 import { navigate } from '../../../../router';
-import { StateManager } from '../../../../state-management/stateManager';
 import Toast from '../../../../components/toast';
 import { deleteMenu, editMenu } from '../../../../api-routes/menu';
 import { IEditMenu } from '../../../../interfaces/menu';
