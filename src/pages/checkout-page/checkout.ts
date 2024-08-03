@@ -177,7 +177,7 @@ export default class Checkout {
           notes: '',
         };
       });
-  
+
       const order = {
         customerPhone: data['customer_phone'] as string,
         deliveryAddress: data['delivery_address'] as string,

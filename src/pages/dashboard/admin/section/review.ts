@@ -84,10 +84,6 @@ export default class AdminReviewDashboard {
       '#review-posted-date',
     ) as HTMLSpanElement;
     reviewPostedDate.innerHTML = `${review.postedDate || ''}`;
-    const reviewRating = accordionContent.querySelector(
-      '#review-rating',
-    ) as HTMLSpanElement;
-    reviewRating.innerHTML = `${review.rating || 'Not Rated'}`;
 
     return accordionContent;
   }

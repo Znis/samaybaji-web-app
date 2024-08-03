@@ -45,7 +45,7 @@ export default class EditCustomerDetailsDashboard {
         '#delete-profile-button',
       ) as HTMLButtonElement,
       errorMessage: this.element.querySelector(
-        '.form__error-message',
+        'menu-edit-error',
       ) as HTMLParagraphElement,
       editMenuButton: this.element.querySelector(
         '#edit-menu-button',

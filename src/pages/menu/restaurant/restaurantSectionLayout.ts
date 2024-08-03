@@ -11,11 +11,14 @@ export default class RestaurantSectionLayout {
 
   init(restaurantMenu: IMenu): HTMLElement {
     this.element.classList.add('restaurant');
-
-    this.element.appendChild(new RestaurantTitle(restaurantMenu.name).init());
-    this.element.appendChild(
-      new RestaurantMenuList(restaurantMenu.menuItems).init(),
-    );
+    if (restaurantMenu.menuItems.length) {
+      this.element.appendChild(new RestaurantTitle(restaurantMenu.name).init());
+      this.element.appendChild(
+        new RestaurantMenuList(restaurantMenu.menuItems).init(),
+      );
+    } else {
+      this.element = document.createElement('div');
+    }
 
     return this.element;
   }

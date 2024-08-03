@@ -53,7 +53,6 @@ export default class Rating {
       if (ownRating.length) rating.rating = ownRating[0].rating;
     }
     this.rating = rating.rating || -1;
-    this.rating -= 1;
     this.ratingCount = rating.count;
     this.appendStars();
     this.render();
@@ -129,7 +128,7 @@ export default class Rating {
         await makeApiCall(
           editRating,
           {
-            rating: index + 1,
+            rating: index,
           } as IEditRating,
           ownRating[0].id,
         );
@@ -144,7 +143,7 @@ export default class Rating {
         await makeApiCall(
           createRating,
           {
-            rating: index + 1,
+            rating: index,
             targetType: ReviewTargetType.DISH,
           } as ICreateRating,
           this.dishId,
@@ -194,14 +193,14 @@ export default class Rating {
 
   static updateScore(index: number): void {
     const ratingText = this.element.querySelector('.rating__score');
-    if (ratingText && StateManager.state.user) {
+    if (ratingText) {
       ratingText.textContent = `${index + 1}/${this.numOfStars}`;
     }
   }
 
   static resetScore(): void {
     const ratingText = this.element.querySelector('.rating__score');
-    if (ratingText && StateManager.state.user) {
+    if (ratingText) {
       ratingText.textContent = `${this.rating + 1}/${this.numOfStars}`;
     }
   }

@@ -46,7 +46,7 @@ export default class EditCustomerDetailsDashboard {
         '#delete-profile-button',
       ) as HTMLButtonElement,
       errorMessage: this.element.querySelector(
-        '.form__error-message',
+        '#customer-edit-error',
       ) as HTMLParagraphElement,
       editProfileButton: this.element.querySelector(
         '#edit-profile-button',
@@ -73,10 +73,6 @@ export default class EditCustomerDetailsDashboard {
 
   static async handleFormSubmit(event: Event) {
     event.preventDefault();
-    if (!this.innerElements.userEditDetailsForm.checkValidity()) {
-      this.innerElements.userEditDetailsForm.reportValidity();
-      return;
-    }
 
     const formData = new FormData(this.innerElements.userEditDetailsForm);
     if (!this.validateForm(formData)) return;

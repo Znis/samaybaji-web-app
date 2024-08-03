@@ -203,6 +203,7 @@ export default class CustomerOrdersDashboard {
       order.orderItems.forEach((item: IOrderItem) => {
         heading += `${item.menuItemData.name} x${item.quantity} `;
       });
+      if (!heading) heading = 'Order Items Deleted';
       const accordionContentElement =
         await this.renderAccordionContent(orderSummary);
       const accordionHeaderElement = this.createAccordionHeader(

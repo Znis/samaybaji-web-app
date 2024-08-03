@@ -1378,6 +1378,10 @@ body.open .modal {
     box-sizing: border-box; }
     .cart__promo-code-input:focus {
       border: 1px solid #333; }
+    .cart__promo-code-input::placeholder {
+      font-size: 0.8rem;
+      color: #888;
+      font-style: italic; }
   .cart__total-title {
     font-size: 1.4rem;
     color: #333; }

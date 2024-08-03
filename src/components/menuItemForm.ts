@@ -9,6 +9,7 @@ import { createRestaurant } from '../api-routes/restaurant';
 import { createMenuItem, editMenuItem } from '../api-routes/menuItem';
 import { createDish, editDish } from '../api-routes/dish';
 import { StateManager } from '../state-management/stateManager';
+import RestaurantMenuDashboard from '../pages/dashboard/restaurant/section/menu';
 
 export class MenuItemForm {
   static htmlTemplateURL = '/assets/templates/components/menu-item-form.html';
@@ -120,8 +121,7 @@ export class MenuItemForm {
     const imageUploadUrl = (await makeApiCall(getUploadUrl)) as unknown as {
       url: { url: string; fileName: string; bucketName: string };
     };
-    const imageUploadResponse = await makeApiCall(
-      uploadImage,
+    await uploadImage(
       imageUploadUrl!.url.url,
       this.innerElements().menuItemImage.files![0],
     );
@@ -160,9 +160,6 @@ export class MenuItemForm {
           description: this.innerElements().dishDescription.value,
           attributes: attributesList,
           items: itemsList,
-          menuItemId: menuItemApiResponse.created.id,
-          restaurantId: StateManager.state.user?.restaurantId as string,
-          menuId: menuItemApiResponse.created.menuId,
         };
         await makeApiCall(createDish, dishData, menuItemApiResponse.created.id);
       } else {
@@ -184,6 +181,7 @@ export class MenuItemForm {
       }
       Modal.toggle();
       Toast.show('Menu Item and Dish Update Successsful');
+      RestaurantMenuDashboard.init();
     } catch (error) {
       console.log('yo');
       if (axios.isAxiosError(error)) {

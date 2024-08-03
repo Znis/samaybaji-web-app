@@ -28,7 +28,10 @@ export default class RestaurantMenuDashboard {
         .then(async (html) => {
           this.element.classList.add('dashboard');
           this.element.innerHTML = html;
+          const spinner = LoaderSpinner.render(50);
+          this.element.appendChild(spinner);
           const checkMenu = await this.checkIfMenuIsPresent();
+          this.element.removeChild(spinner);
 
           if (!checkMenu) {
             this.renderDashboard();
@@ -92,6 +95,7 @@ export default class RestaurantMenuDashboard {
           description: descriptionField.value,
         });
         Toast.show('Menu Registration Successful');
+        this.init();
       } catch (error) {
         if (axios.isAxiosError(error)) {
           errorMessage.innerHTML = error.message;
@@ -332,8 +336,11 @@ export default class RestaurantMenuDashboard {
       await makeApiCall(deleteMenuItem, menuItemId);
       Toast.show('Menu item deleted successfully');
     } catch (error) {
-      console.log(error);
-      Toast.show('An error occurred while deleteing the menu item');
+      if (axios.isAxiosError(error)) {
+        Toast.show(error.message);
+      } else {
+        Toast.show('An unexpected error occurred');
+      }
     }
   }
 }

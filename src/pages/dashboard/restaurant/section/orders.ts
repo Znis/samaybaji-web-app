@@ -1,8 +1,10 @@
+import { IDish } from './../../../../interfaces/dish';
 import { fetchRestaurantOrders } from '../../../../api-routes/order';
 import { editOrderItem } from '../../../../api-routes/orderItem';
 import { makeApiCall } from '../../../../apiCalls';
 import { Accordion } from '../../../../components/accordion';
 import { OrderItemStatus, OrderStatus } from '../../../../enums/order';
+import IMenuItem from '../../../../interfaces/menuItem';
 import { IOrder } from '../../../../interfaces/order';
 import { IOrderItem } from '../../../../interfaces/orderItem';
 
@@ -109,6 +111,14 @@ export default class RestaurantOrdersDashboard {
       '#order-summary-name',
     ) as HTMLSpanElement;
     orderItemName.innerHTML = `${orderItemSummary.name || ''}`;
+    const orderItemDate = accordionContent.querySelector(
+      '#order-summary-date',
+    ) as HTMLSpanElement;
+    orderItemDate.innerHTML = `${orderItemSummary.date || ''}`;
+    const orderItemTime = accordionContent.querySelector(
+      '#order-summary-time',
+    ) as HTMLSpanElement;
+    orderItemTime.innerHTML = `${orderItemSummary.time || ''}`;
     const orderItemQuantity = accordionContent.querySelector(
       '#order-summary-quantity',
     ) as HTMLSpanElement;
@@ -163,51 +173,61 @@ export default class RestaurantOrdersDashboard {
       activeOrderContainer!.innerHTML = `<h3>No active orders</h3>`;
       historyOrderContainer!.innerHTML = `<h3>No history orders</h3>`;
     }
+    orders.sort(
+      (a, b) =>
+        new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime(),
+    );
     orders.forEach(async (order) => {
-      order.orderItems.forEach(async (item) => {
-        const orderItemSummary = {
-          customerName: order.customerName,
-          name: item.menuItemData.name,
-          quantity: item.quantity.toString(),
-          price: (item.unitPrice * item.quantity).toString(),
-        };
-        const heading = `${item.menuItemData.name} x${item.quantity}`;
+      const item = order.orderItems as unknown as {
+        menuItemData: IMenuItem;
+        quantity: number;
+        unitPrice: number;
+        status: string;
+        id: string;
+        menuItemId: string;
+      };
+      const orderItemSummary = {
+        customerName: order.customerName,
+        name: item.menuItemData.name,
+        quantity: item.quantity.toString(),
+        price: (item.unitPrice * item.quantity).toString(),
+        date: new Date(order.orderDate).toDateString(),
+        time: order.orderTime,
+      };
+      const heading = `${item.menuItemData.name} x${item.quantity}` || 'Order Item Deleted';
 
-        const accordionContentElement =
-          await this.renderAccordionContent(orderItemSummary);
-        const accordionHeaderElement = this.createAccordionHeader(
-          item.status,
-          heading,
-        );
-        const accordionHeaderEventListener = this.accordionHeaderEventListener;
-        const accordionContentEventListener =
-          this.accordionContentEventListener;
-        const accordionHeader = {
-          element: accordionHeaderElement,
-          eventListeners: accordionHeaderEventListener,
-          params: item.id,
-        };
-        const accordionContent = {
-          element: accordionContentElement,
-          eventListeners: accordionContentEventListener,
-        };
+      const accordionContentElement =
+        await this.renderAccordionContent(orderItemSummary);
+      const accordionHeaderElement = this.createAccordionHeader(
+        item.status,
+        heading,
+      );
+      const accordionHeaderEventListener = this.accordionHeaderEventListener;
+      const accordionContentEventListener = this.accordionContentEventListener;
+      const accordionHeader = {
+        element: accordionHeaderElement,
+        eventListeners: accordionHeaderEventListener,
+        params: item.id,
+      };
+      const accordionContent = {
+        element: accordionContentElement,
+        eventListeners: accordionContentEventListener,
+      };
 
-        const accordion = new Accordion(accordionContent, accordionHeader);
-        const activeOrderContainer =
-          this.element.querySelector('#active-orders');
-        const historyOrderContainer =
-          this.element.querySelector('#history-orders');
-        console.log(item.status);
-        if (
-          item.status == OrderItemStatus.READY ||
-          item.status == OrderItemStatus.DELIVERED ||
-          item.status == OrderItemStatus.CANCELLED
-        ) {
-          historyOrderContainer!.appendChild(accordion.element);
-        } else {
-          activeOrderContainer!.appendChild(accordion.element);
-        }
-      });
+      const accordion = new Accordion(accordionContent, accordionHeader);
+      const activeOrderContainer = this.element.querySelector('#active-orders');
+      const historyOrderContainer =
+        this.element.querySelector('#history-orders');
+      console.log(item.status);
+      if (
+        item.status == OrderItemStatus.READY ||
+        item.status == OrderItemStatus.DELIVERED ||
+        item.status == OrderItemStatus.CANCELLED
+      ) {
+        historyOrderContainer!.appendChild(accordion.element);
+      } else {
+        activeOrderContainer!.appendChild(accordion.element);
+      }
     });
   }
 }

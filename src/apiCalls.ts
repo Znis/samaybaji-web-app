@@ -19,7 +19,7 @@ export const getUploadUrl = async () => {
 
 export const uploadImage = async (url: string, image: File) => {
   return await axios
-    .put(`${url}`, {
+    .put(`${url}`, image, {
       headers: {
         'Content-Type': image.type,
       },

@@ -78,6 +78,11 @@
     &:focus {
       border: 1px solid #333;
     }
+    &::placeholder{
+      font-size: 0.8rem;
+      color: #888;
+      font-style: italic;
+    }
   }
   &__total-title {
     font-size: 1.4rem;
