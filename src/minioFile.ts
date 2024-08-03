@@ -2,7 +2,7 @@ import * as Minio from 'minio';
 import config from './config';
 
 const minioClient = new Minio.Client({
-  endPoint: config.minio.MINIO_ENDPOINT!,
+  endPoint: 'localhost',
   port: +config.minio.MINIO_API_PORT,
   useSSL: false,
   accessKey: config.minio.MINIO_ROOT_USER!,
