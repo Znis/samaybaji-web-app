@@ -59,6 +59,8 @@ export default class AdminLogin {
         if (response.user.roleId != Roles.SUPERADMIN) {
           throw new Error('Not a super admin');
         }
+        this.innerElements.loginButton.disabled = false;
+        this.innerElements.loginButton.removeChild(spinner);
         this.renderDashboard(response.accessToken);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -67,7 +69,6 @@ export default class AdminLogin {
           Toast.show('An unexpected error occurred');
           console.log(error);
         }
-      } finally {
         this.innerElements.loginButton.disabled = false;
         this.innerElements.loginButton.removeChild(spinner);
       }

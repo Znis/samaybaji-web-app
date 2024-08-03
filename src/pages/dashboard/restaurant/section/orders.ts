@@ -12,19 +12,21 @@ export default class RestaurantOrdersDashboard {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
     '/assets/templates/pages/customer-dashboard/section/order.html';
+  static html = '';
   static init(): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
         .then((html) => {
           this.element.classList.add('dashboard');
-          this.element.innerHTML = html;
+          this.html = html;
           this.fetchAllOrders();
         });
     }
     return this.element;
   }
   static async fetchAllOrders() {
+    this.element.innerHTML = this.html;
     const orders = await makeApiCall(fetchRestaurantOrders);
     console.log(orders);
     this.render(orders as unknown as IOrder[]);
@@ -194,7 +196,8 @@ export default class RestaurantOrdersDashboard {
         date: new Date(order.orderDate).toDateString(),
         time: order.orderTime,
       };
-      const heading = `${item.menuItemData.name} x${item.quantity}` || 'Order Item Deleted';
+      const heading =
+        `${item.menuItemData.name} x${item.quantity}` || 'Order Item Deleted';
 
       const accordionContentElement =
         await this.renderAccordionContent(orderItemSummary);

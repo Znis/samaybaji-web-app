@@ -21,13 +21,14 @@ export default class RestaurantMenuDashboard {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
     '/assets/templates/pages/customer-dashboard/section/menu.html';
+  static html = '';
   static init(): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
         .then(async (html) => {
           this.element.classList.add('dashboard');
-          this.element.innerHTML = html;
+          this.html = html;
           const spinner = LoaderSpinner.render(50);
           this.element.appendChild(spinner);
           const checkMenu = await this.checkIfMenuIsPresent();
@@ -55,6 +56,7 @@ export default class RestaurantMenuDashboard {
     return false;
   }
   static async fetchAllMenuItems() {
+    this.element.innerHTML = this.html;
     const menus = (await fetchAllMenus()) as unknown as IMenu[];
     const ownMenu = menus.find(
       (menu) => menu.restaurantId == StateManager.state.user?.restaurantId,
@@ -117,6 +119,7 @@ export default class RestaurantMenuDashboard {
     });
   }
   static renderDashboard() {
+    this.element.innerHTML = this.html;
     const createMenuContainer = this.element.querySelector(
       '#create-menu-container',
     ) as HTMLDivElement;

@@ -13,19 +13,21 @@ export default class CustomerOrdersDashboard {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
     '/assets/templates/pages/customer-dashboard/section/order.html';
+  static html = '';
   static init(): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
         .then((html) => {
           this.element.classList.add('dashboard');
-          this.element.innerHTML = html;
+          this.html = html;
           this.fetchAllOrders();
         });
     }
     return this.element;
   }
   static async fetchAllOrders() {
+    this.element.innerHTML = this.html;
     const orders = await makeApiCall(fetchUserOrders);
     this.render(orders as unknown as IOrder[]);
   }

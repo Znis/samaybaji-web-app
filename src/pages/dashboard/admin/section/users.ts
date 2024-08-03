@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { deleteUser, fetchAllUsers } from '../../../../api-routes/users';
-import { makeApiCall } from '../../../../apiCalls';
+import { deleteUserByAdmin, fetchAllUsers } from '../../../../api-routes/users';
 import { Accordion } from '../../../../components/accordion';
 import Toast from '../../../../components/toast';
 import IUser from '../../../../interfaces/users';
@@ -9,21 +8,25 @@ export default class AdminUsersDashboard {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
     '/assets/templates/pages/customer-dashboard/section/user.html';
+  static html = '';
+  static adminAccessToken = '';
   static init(adminAccessToken: string): HTMLElement {
+    this.adminAccessToken = adminAccessToken;
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
         .then((html) => {
           this.element.classList.add('dashboard');
-          this.element.innerHTML = html;
-          this.fetchAllUsers(adminAccessToken);
+          this.html = html;
+          this.fetchAllUsers();
         });
     }
     return this.element;
   }
 
-  static async fetchAllUsers(adminAccessToken: string) {
-    const users = await fetchAllUsers(adminAccessToken);
+  static async fetchAllUsers() {
+    this.element.innerHTML = this.html;
+    const users = await fetchAllUsers(this.adminAccessToken);
     this.render(users as unknown as IUser[]);
   }
   static createAccordionHeader(heading: string) {
@@ -44,7 +47,7 @@ export default class AdminUsersDashboard {
 
     const deleteOrderIcon = document.createElement('i');
     deleteOrderIcon.className =
-      'fa-solid fa-check accordion-header-danger-action-icon';
+      'fa-solid fa-trash accordion-header-danger-action-icon';
     deleteOrderIcon.id = 'delete-user';
     accordionHeader.appendChild(deleteOrderIcon);
     const angleDownIcon = document.createElement('i');
@@ -55,6 +58,7 @@ export default class AdminUsersDashboard {
     iconWrapper.classList.add('accordion-header-icon-wrapper');
     iconWrapper.appendChild(deleteOrderIcon);
     iconWrapper.appendChild(angleDownIcon);
+    accordionHeader.appendChild(accordionTitleWrapper);
     accordionHeader.appendChild(iconWrapper);
     return accordionHeader;
   }
@@ -81,7 +85,7 @@ export default class AdminUsersDashboard {
     const userFullName = accordionContent.querySelector(
       '#user-fullname',
     ) as HTMLSpanElement;
-    userFullName.innerHTML = `${user.fullname || ''}`;
+    userFullName.innerHTML = `${user.fullName || ''}`;
     const userEmail = accordionContent.querySelector(
       '#user-email',
     ) as HTMLSpanElement;
@@ -93,8 +97,26 @@ export default class AdminUsersDashboard {
 
     return accordionContent;
   }
+  static accordionHeaderEventListener(
+    accordionHeader: HTMLDivElement,
+    userId: string,
+  ) {
+    const deleteButton = accordionHeader.querySelector('#delete-user');
+    deleteButton!.addEventListener('click', (event) => {
+      event.stopPropagation();
+      AdminUsersDashboard.deleteUser(userId);
+      AdminUsersDashboard.fetchAllUsers();
+    });
+  }
   static async render(users: IUser[]) {
+    const usersContainer = this.element.querySelector(
+      '#users-container',
+    ) as HTMLDivElement;
+    if (!users.length) {
+      usersContainer.innerHTML = '<h3>No Users</h3>';
+    }
     users.forEach(async (user) => {
+      if (user.name === 'Admin') return;
       const userSummary = {
         fullName: user.name,
         email: user.email,
@@ -105,9 +127,10 @@ export default class AdminUsersDashboard {
       const accordionContentElement =
         await this.renderAccordionContent(userSummary);
       const accordionHeaderElement = this.createAccordionHeader(heading);
+      const accordionHeaderEventListener = this.accordionHeaderEventListener;
       const accordionHeader = {
         element: accordionHeaderElement,
-        eventListeners: () => null,
+        eventListeners: accordionHeaderEventListener,
         params: user.id,
       };
       const accordionContent = {
@@ -117,16 +140,12 @@ export default class AdminUsersDashboard {
 
       const accordion = new Accordion(accordionContent, accordionHeader);
 
-      const usersContainer = this.element.querySelector(
-        '#users-container',
-      ) as HTMLDivElement;
-
       usersContainer!.appendChild(accordion.element);
     });
   }
   static async deleteUser(userId: string) {
     try {
-      await deleteUser(userId, accessToken);
+      await deleteUserByAdmin(userId, this.adminAccessToken);
       Toast.show('User deleted successfully');
     } catch (error) {
       if (axios.isAxiosError(error)) {

@@ -13,13 +13,14 @@ export default class CustomerReviewDashboard {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
     '/assets/templates/pages/customer-dashboard/section/review.html';
+  static html = '';
   static init(): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
         .then((html) => {
           this.element.classList.add('dashboard');
-          this.element.innerHTML = html;
+          this.html = html;
           this.fetchUserReviews();
         });
     }
@@ -27,6 +28,7 @@ export default class CustomerReviewDashboard {
   }
 
   static async fetchUserReviews() {
+    this.element.innerHTML = this.html;
     const reviews = await makeApiCall(fetchUserReviews);
     const dishReviews = (reviews as unknown as IReviewResponse).dishReviews;
     const restaurantReviews = (reviews as unknown as IReviewResponse)
