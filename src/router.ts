@@ -79,6 +79,8 @@ export const navigate = async (link: string) => {
 };
 
 window.addEventListener('popstate', async () => {
+  const route = await router.resolve({ pathname: window.location.pathname });
+  if (route) Content.render(route);
   try {
     const adminRoute = await adminRouter.resolve({
       pathname: window.location.pathname,
@@ -87,14 +89,14 @@ window.addEventListener('popstate', async () => {
       AppLayout.initAdmin(adminRoute);
       return;
     }
-  } catch {
-    console.log('admin route not found');
+  } catch (error) {
+    console.log('Not an admin route');
   }
-  const route = await router.resolve({ pathname: window.location.pathname });
-  if (route) Content.render(route);
 });
 
 window.addEventListener('DOMContentLoaded', async () => {
+  const route = await router.resolve({ pathname: window.location.pathname });
+  if (route) Content.render(route);
   try {
     const adminRoute = await adminRouter.resolve({
       pathname: window.location.pathname,
@@ -103,10 +105,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       AppLayout.initAdmin(adminRoute);
       return;
     }
-  } catch {
-    console.log('admin route not found');
+  } catch (error) {
+    console.log('Not an admin route');
   }
-
-  const route = await router.resolve({ pathname: window.location.pathname });
-  if (route) Content.render(route);
 });

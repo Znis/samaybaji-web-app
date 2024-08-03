@@ -1,5 +1,5 @@
 import { deleteUser, editUser } from '../../../../api-routes/users';
-import { makeApiCall } from '../../../../apiCalls';
+import { getUploadUrl, makeApiCall, uploadImage } from '../../../../apiCalls';
 import { navigate } from '../../../../router';
 import { StateManager } from '../../../../state-management/stateManager';
 import Toast from '../../../../components/toast';
@@ -51,6 +51,9 @@ export default class EditCustomerDetailsDashboard {
       editProfileButton: this.element.querySelector(
         '#edit-profile-button',
       ) as HTMLButtonElement,
+      profileImage: this.element.querySelector(
+        '#user-profile-image',
+      ) as HTMLInputElement,
     };
   }
 
@@ -114,12 +117,23 @@ export default class EditCustomerDetailsDashboard {
 
   static async submitEditForm(formData: FormData) {
     const spinner = LoaderSpinner.render(20);
+    const profileImageUploadUrl = (await makeApiCall(
+      getUploadUrl,
+    )) as unknown as {
+      url: { url: string; fileName: string; bucketName: string };
+    };
+    await makeApiCall(
+      uploadImage,
+      profileImageUploadUrl!.url.url,
+      this.innerElements.profileImage.files![0],
+    );
     try {
       this.innerElements.editProfileButton.appendChild(spinner);
       this.innerElements.editProfileButton.disabled = true;
       const editUserData = {
         name: formData.get('user-fullname') as string,
         password: formData.get('user-password') as string,
+        imageSrc: profileImageUploadUrl.url.fileName,
       };
       const response = await makeApiCall(editUser, editUserData);
       if (response) {

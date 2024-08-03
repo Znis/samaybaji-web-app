@@ -14,6 +14,10 @@ import CustomerOrdersDashboard from './customer/section/orders';
 import CustomerReviewDashboard from './customer/section/review';
 import EditCustomerDetailsDashboard from './customer/section/editDetail';
 import EditRestaurantDetailsDashboard from './restaurant/section/editDetail';
+import { StateManager } from '../../state-management/stateManager';
+import { makeApiCall } from '../../apiCalls';
+import { fetchRestaurantInfo } from '../../api-routes/restaurant';
+import { IRestaurant } from '../../interfaces/restaurant';
 
 export default class DashboardLayout {
   static element: HTMLElement = document.createElement('div');
@@ -23,10 +27,10 @@ export default class DashboardLayout {
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
-        .then((html) => {
+        .then(async (html) => {
           this.element.classList.add('dashboard-page');
           this.element.innerHTML = html;
-          this.renderSidebar(type);
+          await this.renderSidebar(type);
           this.setEventListeners(type);
         });
     }
@@ -87,11 +91,11 @@ export default class DashboardLayout {
       }
     });
   }
-  static renderSidebar(type: string) {
+  static async renderSidebar(type: string) {
     if (type === 'admin') {
       this.renderAdminSidebar();
     } else if (type === 'restaurant') {
-      this.renderRestaurantSidebar();
+      await this.renderRestaurantSidebar();
     } else {
       this.renderCustomerSidebar();
     }
@@ -236,7 +240,14 @@ export default class DashboardLayout {
     const profileImage = this.element.querySelector(
       '.aside__profile-image',
     ) as HTMLImageElement;
-    profileImage.setAttribute('src', '/assets/images/home-img.png');
+    profileImage.setAttribute(
+      'src',
+      StateManager.state.user?.imageSrc || '/assets/images/user.jpg',
+    );
+    const profileName = this.element.querySelector(
+      '.aside__profile-name',
+    ) as HTMLParagraphElement;
+    profileName.innerHTML = StateManager.state.user?.name || 'Customer';
     const menuContainer = this.element.querySelector(
       '.aside__menu',
     ) as HTMLDivElement;
@@ -260,11 +271,19 @@ export default class DashboardLayout {
     menuContainer.appendChild(reviewsMenuOption);
     menuContainer.appendChild(editDetailsMenuOption);
   }
-  static renderRestaurantSidebar() {
+  static async renderRestaurantSidebar() {
     const profileImage = this.element.querySelector(
       '.aside__profile-image',
     ) as HTMLImageElement;
-    profileImage.setAttribute('src', '/assets/images/home-img.png');
+    const restaurantInfo = (await makeApiCall(
+      fetchRestaurantInfo,
+      StateManager.state.user?.restaurantId as string,
+    )) as unknown as IRestaurant;
+    profileImage.setAttribute('src', restaurantInfo.profilePic);
+    const profileName = this.element.querySelector(
+      '.aside__profile-name',
+    ) as HTMLParagraphElement;
+    profileName.innerHTML = restaurantInfo.name || 'Restaurant';
     const menuContainer = this.element.querySelector(
       '.aside__menu',
     ) as HTMLDivElement;
@@ -297,7 +316,11 @@ export default class DashboardLayout {
     const profileImage = this.element.querySelector(
       '.aside__profile-image',
     ) as HTMLImageElement;
-    profileImage.setAttribute('src', '/assets/images/logo.png');
+    profileImage.setAttribute('src', '/assets/images/user.jpg');
+    const profileName = this.element.querySelector(
+      '.aside__profile-name',
+    ) as HTMLParagraphElement;
+    profileName.innerHTML = 'Admin';
     const menuContainer = this.element.querySelector(
       '.aside__menu',
     ) as HTMLDivElement;

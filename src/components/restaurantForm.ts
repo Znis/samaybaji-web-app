@@ -98,7 +98,7 @@ export class RestaurantForm {
     )) as unknown as {
       url: { url: string; fileName: string; bucketName: string };
     };
-    const profileImageUploadResponse = await makeApiCall(
+    await makeApiCall(
       uploadImage,
       profileImageUploadUrl!.url.url,
       this.innerElements().profilePic.files![0],
@@ -108,7 +108,7 @@ export class RestaurantForm {
     )) as unknown as {
       url: { url: string; fileName: string; bucketName: string };
     };
-    const coverImageUploadResponse = await makeApiCall(
+    await makeApiCall(
       uploadImage,
       coverImageUploadUrl!.url.url,
       this.innerElements().coverPic.files![0],
