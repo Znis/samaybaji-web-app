@@ -5,10 +5,10 @@ import { Accordion } from '../../../../components/accordion';
 import { IReview, IReviewResponse } from '../../../../interfaces/review';
 import IUser from '../../../../interfaces/users';
 
-export default class AdminReviewDashboard {
+export default class AdminDashboard {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
-    '/assets/templates/pages/customer-dashboard/section/review.html';
+    '/assets/templates/pages/customer-dashboard/section/general.html';
   static init(): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateurl)
@@ -39,7 +39,11 @@ export default class AdminReviewDashboard {
     const checkIcon = document.createElement('i');
     checkIcon.className = 'fa-solid fa-circle-check accordion-header-icon';
     accordionTitleWrapper.appendChild(checkIcon);
-
+    const deleteMenuItemIcon = document.createElement('i');
+    deleteMenuItemIcon.className =
+      'fa-solid fa-trash accordion-header-danger-action-icon';
+    deleteMenuItemIcon.id = 'delete-item';
+    accordionHeader.appendChild(deleteMenuItemIcon);
     const accordionTitle = document.createElement('p');
     accordionTitle.className = 'accordion-title';
     accordionTitle.innerText = heading;
@@ -50,13 +54,24 @@ export default class AdminReviewDashboard {
       'fa-solid fa-angle-down accordion-header-trailing-icon';
     const iconWrapper = document.createElement('div');
     iconWrapper.classList.add('accordion-header-icon-wrapper');
-
+    iconWrapper.appendChild(deleteMenuItemIcon);
     iconWrapper.appendChild(angleDownIcon);
     accordionHeader.appendChild(accordionTitleWrapper);
     accordionHeader.appendChild(iconWrapper);
     return accordionHeader;
   }
+  static accordionHeaderEventListener(
+    accordionHeader: HTMLDivElement,
+    itemId: string,
+  ) {
+    const deleteButton = accordionHeader.querySelector('#delete-item');
 
+    deleteButton!.addEventListener('click', async (event) => {
+      event.stopPropagation();
+      await AdminDashboard.deleteItem(itemId);
+      AdminDashboard.init();
+    });
+  }
   static async initialiseAccordionContent() {
     const accordionContent = document.createElement('div');
     accordionContent.className = 'accordion-content';
@@ -87,7 +102,7 @@ export default class AdminReviewDashboard {
 
     return accordionContent;
   }
-  static async render(dishReviews: IReview[], restaurantReviews: IReview[]) {
+  static async render(items) {
     const reviewDishContainer = this.element.querySelector(
       '#review-dish',
     ) as HTMLDivElement;
@@ -118,6 +133,7 @@ export default class AdminReviewDashboard {
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: () => null,
+        params: review.id,
       };
       const accordionContent = {
         element: accordionContentElement,
@@ -129,7 +145,6 @@ export default class AdminReviewDashboard {
       reviewDishContainer!.appendChild(accordion.element);
     });
     restaurantReviews.forEach(async (review) => {
-      console.log(review);
       const customer = (await makeApiCall(
         fetchUser,
         review.userId,
@@ -147,6 +162,7 @@ export default class AdminReviewDashboard {
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: () => null,
+        params: review.id,
       };
       const accordionContent = {
         element: accordionContentElement,
@@ -158,4 +174,5 @@ export default class AdminReviewDashboard {
       reviewRestaurantContainer!.appendChild(accordion.element);
     });
   }
+
 }

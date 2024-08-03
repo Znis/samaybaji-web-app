@@ -1,7 +1,3 @@
-import ReviewDashboard from './restaurant/section/review';
-import EditDetailsDashboard from './restaurant/section/editDetail';
-import MenuDashboard from './restaurant/section/menu';
-import OrdersDashboard from './restaurant/section/orders';
 import AdminMenuDashboard from './admin/section/menu';
 import AdminOrdersDashboard from './admin/section/orders';
 import AdminUsersDashboard from './admin/section/users';
@@ -23,7 +19,9 @@ export default class DashboardLayout {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
     '/assets/templates/pages/customer-dashboard/layout.html';
-  static init(type: string): HTMLElement {
+  static adminAccessToken = '';
+  static init(type: string, adminAccessToken?: string): HTMLElement {
+    if (adminAccessToken) this.adminAccessToken = adminAccessToken;
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
@@ -103,53 +101,10 @@ export default class DashboardLayout {
   static setEventListeners(type: string) {
     const innerElems = this.innerElements();
     if (type === 'admin') {
-      this.renderContent(AdminUsersDashboard.init());
-      this.innerElements().admin.userMenuOption!.addEventListener(
-        'click',
-        () => {
-          this.renderContent(AdminUsersDashboard.init());
-          this.setActiveMenuOption(
-            innerElems.admin,
-            innerElems.admin.userMenuOption!,
-          );
-        },
-      );
-      this.innerElements().admin.menuOption!.addEventListener('click', () => {
-        this.renderContent(AdminMenuDashboard.init());
-        this.setActiveMenuOption(
-          innerElems.admin,
-          innerElems.admin.menuOption!,
-        );
-      });
-      this.innerElements().admin.ordersMenuOption!.addEventListener(
-        'click',
-        () => {
-          this.renderContent(AdminOrdersDashboard.init());
-          this.setActiveMenuOption(
-            innerElems.admin,
-            innerElems.admin.ordersMenuOption!,
-          );
-        },
-      );
-      this.innerElements().admin.restaurantMenuOption!.addEventListener(
-        'click',
-        () => {
-          this.renderContent(AdminRestaurantsDashboard.init());
-          this.setActiveMenuOption(
-            innerElems.admin,
-            innerElems.admin.restaurantMenuOption!,
-          );
-        },
-      );
-      this.innerElements().admin.reviewsMenuOption!.addEventListener(
-        'click',
-        () => {
-          this.renderContent(AdminReviewDashboard.init());
-          this.setActiveMenuOption(
-            innerElems.admin,
-            innerElems.admin.reviewsMenuOption!,
-          );
-        },
+      this.renderContent(AdminUsersDashboard.init(this.adminAccessToken));
+      this.setActiveMenuOption(
+        innerElems.admin,
+        innerElems.admin.userMenuOption!,
       );
     } else if (type === 'restaurant') {
       this.renderContent(RestaurantMenuDashboard.init());
@@ -353,9 +308,5 @@ export default class DashboardLayout {
     userMenuOption.id = 'users-option';
     userMenuOption.innerText = 'Users';
     menuContainer.appendChild(userMenuOption);
-    menuContainer.appendChild(restaurantMenuOption);
-    menuContainer.appendChild(menuOption);
-    menuContainer.appendChild(ordersMenuOption);
-    menuContainer.appendChild(reviewsMenuOption);
   }
 }

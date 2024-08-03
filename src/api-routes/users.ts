@@ -7,11 +7,11 @@ const usersUrl = '/users';
 const allUsersUrl = '/users/all';
 const userRoleUrl = '/users/role';
 
-export const fetchAllUsers = async () => {
+export const fetchAllUsers = async (adminAccessToken: string) => {
   return await axios
     .get(`${baseUrl}${allUsersUrl}`, {
       headers: {
-        Authorization: `Bearer ${StateManager.state.accessToken}`,
+        Authorization: `Bearer ${adminAccessToken}`,
       },
     })
     .then((res) => {
@@ -62,11 +62,25 @@ export const editUser = async (formData: IUpdateUser, userId?: string) => {
       return res.data;
     });
 };
-export const deleteUser = async (userId?: string) => {
+export const deleteUser = async () => {
   return await axios
     .delete(`${baseUrl}${usersUrl}`, {
       headers: {
         Authorization: `Bearer ${StateManager.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
+export const deleteUserByAdmin = async (
+  userId: string,
+  adminAccessToken: string,
+) => {
+  return await axios
+    .delete(`${baseUrl}${usersUrl}`, {
+      headers: {
+        Authorization: `Bearer ${adminAccessToken}`,
       },
       params: {
         userId: userId,

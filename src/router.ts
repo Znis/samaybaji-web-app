@@ -87,6 +87,7 @@ window.addEventListener('popstate', async () => {
     });
     if (adminRoute) {
       AppLayout.initAdmin(adminRoute);
+      StateManager.resetState();
       return;
     }
   } catch (error) {
@@ -103,6 +104,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     });
     if (adminRoute) {
       AppLayout.initAdmin(adminRoute);
+      StateManager.resetState();
       return;
     }
   } catch (error) {

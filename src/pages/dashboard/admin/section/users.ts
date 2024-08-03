@@ -1,28 +1,31 @@
+import axios from 'axios';
+import { deleteUser, fetchAllUsers } from '../../../../api-routes/users';
+import { makeApiCall } from '../../../../apiCalls';
 import { Accordion } from '../../../../components/accordion';
+import Toast from '../../../../components/toast';
 import IUser from '../../../../interfaces/users';
 
 export default class AdminUsersDashboard {
   static element: HTMLElement = document.createElement('div');
   static htmlTemplateurl =
     '/assets/templates/pages/customer-dashboard/section/user.html';
-  static init(): HTMLElement {
+  static init(adminAccessToken: string): HTMLElement {
     if (this.element) {
       fetch(this.htmlTemplateurl)
         .then((response) => response.text())
         .then((html) => {
           this.element.classList.add('dashboard');
           this.element.innerHTML = html;
-          //   this.fetchRestaurantReview();
+          this.fetchAllUsers(adminAccessToken);
         });
     }
     return this.element;
   }
 
-  //   static async fetchRestaurantReview() {
-  //     const menuItems = await makeApiCall(fetchAllMenuItems);
-  //     console.log(menuItems);
-  //     this.render(menuItems as unknown as IMenuItem[]);
-  //   }
+  static async fetchAllUsers(adminAccessToken: string) {
+    const users = await fetchAllUsers(adminAccessToken);
+    this.render(users as unknown as IUser[]);
+  }
   static createAccordionHeader(heading: string) {
     const accordionHeader = document.createElement('div');
     accordionHeader.className = 'accordion-header';
@@ -39,17 +42,10 @@ export default class AdminUsersDashboard {
     accordionTitle.innerText = heading;
     accordionTitleWrapper.appendChild(accordionTitle);
 
-    const editUserIcon = document.createElement('i');
-    editUserIcon.className =
-      'fa-solid fa-angle-down accordion-header-action-icon';
-
-    editUserIcon.id = 'edit-user';
-    accordionHeader.appendChild(editUserIcon);
-
     const deleteOrderIcon = document.createElement('i');
     deleteOrderIcon.className =
-      'fa-solid fa-check accordion-header-action-icon';
-    deleteOrderIcon.id = 'delete-order';
+      'fa-solid fa-check accordion-header-danger-action-icon';
+    deleteOrderIcon.id = 'delete-user';
     accordionHeader.appendChild(deleteOrderIcon);
     const angleDownIcon = document.createElement('i');
     angleDownIcon.className =
@@ -57,7 +53,6 @@ export default class AdminUsersDashboard {
 
     const iconWrapper = document.createElement('div');
     iconWrapper.classList.add('accordion-header-icon-wrapper');
-    iconWrapper.appendChild(editUserIcon);
     iconWrapper.appendChild(deleteOrderIcon);
     iconWrapper.appendChild(angleDownIcon);
     accordionHeader.appendChild(iconWrapper);
@@ -113,6 +108,7 @@ export default class AdminUsersDashboard {
       const accordionHeader = {
         element: accordionHeaderElement,
         eventListeners: () => null,
+        params: user.id,
       };
       const accordionContent = {
         element: accordionContentElement,
@@ -127,5 +123,17 @@ export default class AdminUsersDashboard {
 
       usersContainer!.appendChild(accordion.element);
     });
+  }
+  static async deleteUser(userId: string) {
+    try {
+      await deleteUser(userId, accessToken);
+      Toast.show('User deleted successfully');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        Toast.show(error.message);
+      } else {
+        Toast.show('An unexpected error occurred');
+      }
+    }
   }
 }

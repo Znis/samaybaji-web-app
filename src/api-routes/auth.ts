@@ -3,6 +3,7 @@ import { IAuthUser } from '../interfaces/users';
 
 const baseUrl = 'http://localhost:8000';
 const loginUrl = '/login';
+const adminLoginUrl = '/login/admin';
 const refreshUrl = '/refresh';
 
 export const login = async (formData: IAuthUser) => {
@@ -14,7 +15,15 @@ export const login = async (formData: IAuthUser) => {
       return res.data;
     });
 };
-
+export const adminLogin = async (formData: IAuthUser) => {
+  return await axios
+    .post(`${baseUrl}${adminLoginUrl}`, formData, {
+      withCredentials: true,
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
 export const fetchAccessToken = async () => {
   return await axios
     .post(
