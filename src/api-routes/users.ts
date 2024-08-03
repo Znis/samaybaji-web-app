@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { ICreateUser, IUpdateUser } from '../interfaces/users';
 import { StateManager } from '../state-management/stateManager';
+import { baseUrl } from './base';
 
-const baseUrl = 'http://localhost:8000';
 const usersUrl = '/users';
 const allUsersUrl = '/users/all';
 const userRoleUrl = '/users/role';

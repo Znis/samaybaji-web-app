@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { StateManager } from '../state-management/stateManager';
 import { ICreateCartItemData, IEditCartItemData } from '../interfaces/cartItem';
+import { baseUrl } from './base';
 
-const baseUrl = 'http://localhost:8000';
 const cartUrl = '/carts';
 const cartItemsUrl = '/cart-items';
 const addCartItemUrl = `${cartItemsUrl}/add`;

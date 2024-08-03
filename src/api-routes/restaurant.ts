@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { ICreateRestaurant, IEditRestaurant } from '../interfaces/restaurant';
 import { StateManager } from '../state-management/stateManager';
+import { baseUrl } from './base';
 
-const baseUrl = 'http://localhost:8000';
 const restaurantUrl = '/restaurants/all';
 const userRestaurantUrl = '/restaurants';
 const createRestaurantUrl = `/restaurants/create`;

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { StateManager } from '../state-management/stateManager';
 import { ICreateRating, IEditRating } from '../interfaces/rating';
+import { baseUrl } from './base';
 
-const baseUrl = 'http://localhost:8000';
 const ratingUrl = '/ratings';
 const specificRatingUrl = '/ratings/specific-rating';
 

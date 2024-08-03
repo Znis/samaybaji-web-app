@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { StateManager } from '../state-management/stateManager';
 import { ICreateDish, IEditDish } from '../interfaces/dish';
+import { baseUrl } from './base';
 
-const baseUrl = 'http://localhost:8000';
 const allDishUrl = `/dish/all`;
 const dishUrl = `/dish`;
 const dishUrlWithMenuItemId = `/dish/menu-item-id`;

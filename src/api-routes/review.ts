@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { StateManager } from '../state-management/stateManager';
 import { ICreateReview, IEditReview } from '../interfaces/review';
+import { baseUrl } from './base';
 
-const baseUrl = 'http://localhost:8000';
 const allReviewsUrl = `/reviews/all`;
 const usersReviewsUrl = `/reviews/user`;
 const reviewUrl = `/reviews`;

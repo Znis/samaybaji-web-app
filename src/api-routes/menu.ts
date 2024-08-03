@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { StateManager } from '../state-management/stateManager';
 import { ICreateMenu, IEditMenu } from '../interfaces/menu';
+import { baseUrl } from './base';
 
-const baseUrl = 'http://localhost:8000';
 const menuUrl = '/menus/all';
 const restaurantMenu = '/menus';
 

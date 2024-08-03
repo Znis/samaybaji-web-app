@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { ICreateOrderItem, IEditOrderItem } from '../interfaces/orderItem';
 import { StateManager } from '../state-management/stateManager';
+import { baseUrl } from './base';
 
-const baseUrl = 'http://localhost:8000';
 const orderItemUrl = '/order-items';
 
 export const createOrderItem = async (

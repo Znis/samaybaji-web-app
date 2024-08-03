@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { IAuthUser } from '../interfaces/users';
+import { baseUrl } from './base';
 
-const baseUrl = 'http://localhost:8000';
 const loginUrl = '/login';
 const adminLoginUrl = '/login/admin';
 const refreshUrl = '/refresh';

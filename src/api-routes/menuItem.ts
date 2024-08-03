@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { StateManager } from '../state-management/stateManager';
 import { ICreateMenuItem, IEditMenuItem } from '../interfaces/menuItem';
+import { baseUrl } from './base';
 
-const baseUrl = 'http://localhost:8000';
 const menuItemsUrl = `/menu-items`;
 const popularMenuItemsUrl = '/menu-items/popular';
 

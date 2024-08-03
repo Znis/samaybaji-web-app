@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { ICreateOrder, IEditOrder } from '../interfaces/order';
 import { StateManager } from '../state-management/stateManager';
+import { baseUrl } from './base';
 
-const baseUrl = 'http://localhost:8000';
 const ordersUrl = `/orders`;
 const allOrdersUrl = `/orders/all`;
 const restaurantOrdersUrl = `/orders/restaurant`;

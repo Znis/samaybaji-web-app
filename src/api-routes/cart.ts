@@ -1,7 +1,7 @@
 import { StateManager } from './../state-management/stateManager';
 import axios from 'axios';
+import { baseUrl } from './base';
 
-const baseUrl = 'http://localhost:8000';
 const cartUrl = '/carts';
 const clearCartUrl = `${cartUrl}/clear`;
 export const clearCart = async () => {
