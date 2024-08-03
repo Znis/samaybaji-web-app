@@ -5,7 +5,7 @@ import path from 'path';
 import minioClient from '../../minioFile';
 import config from '../../config';
 
-const DISH_IMAGE_PATH = __dirname + '../../../../assets/images/dish/';
+const DISH_IMAGE_PATH = __dirname + '../../../../assets/images/dishes/';
 
 async function uploadImageAndGetUUID(imagePath: string): Promise<string> {
   const imageUUID = uuidv4();

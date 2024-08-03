@@ -7,6 +7,7 @@ import IRestaurant, {
 } from '../interfaces/restaurant';
 import UserServices from './users';
 import { Roles } from '../enums/roles';
+import MinioService from './minio';
 
 const logger = loggerWithNameSpace('Restaurant Service');
 export default class RestaurantService {
@@ -24,6 +25,12 @@ export default class RestaurantService {
       logger.error(`Restaurant with restaurantId ${restaurantId} not found`);
       return null;
     }
+    restaurant.profilePic = (await MinioService.getReadUrl(
+      restaurant.profilePic!,
+    )) as string;
+    restaurant.coverPic = (await MinioService.getReadUrl(
+      restaurant.coverPic!,
+    )) as string;
     logger.info(`Restaurant with restaurantId ${restaurantId} found`);
     return restaurant;
   }
@@ -33,6 +40,12 @@ export default class RestaurantService {
       logger.error(`Restaurant with userId ${userId} not found`);
       return null;
     }
+    restaurant.profilePic = (await MinioService.getReadUrl(
+      restaurant.profilePic!,
+    )) as string;
+    restaurant.coverPic = (await MinioService.getReadUrl(
+      restaurant.coverPic!,
+    )) as string;
     logger.info(`Restaurant with userId ${userId} found`);
     return restaurant;
   }

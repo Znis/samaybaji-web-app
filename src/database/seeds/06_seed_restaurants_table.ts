@@ -1,5 +1,9 @@
 import type { Knex } from 'knex';
 import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs';
+import path from 'path';
+import minioClient from '../../minioFile';
+import config from '../../config';
 export async function seed(knex: Knex): Promise<void> {
   await knex('restaurants').del(); // Deletes ALL existing entries
 
@@ -13,6 +17,21 @@ export async function seed(knex: Knex): Promise<void> {
     .where('name', 'Customer Two')
     .first();
 
+  const RESTAURANT_IMAGE_PATH = path.resolve(
+    __dirname,
+    '../../../assets/images/restaurants',
+  );
+
+  async function uploadImageAndGetUUID(imagePath: string): Promise<string> {
+    const imageUUID = uuidv4();
+    const image = await fs.promises.readFile(imagePath);
+    await minioClient.putObject(
+      config.minio.MINIO_BUCKET_NAME,
+      imageUUID,
+      image,
+    );
+    return imageUUID;
+  }
   // Retrieve role Id of customer_with_restaurant
   const roles = await knex('roles').select('id', 'name');
 
@@ -45,8 +64,12 @@ export async function seed(knex: Knex): Promise<void> {
       contact_number: '9812345678',
       open_hours: '10:00 AM - 10:00 PM',
       rating: 4,
-      profile_pic: uuidv4(),
-      cover_pic: uuidv4(),
+      profile_pic: await uploadImageAndGetUUID(
+        path.join(RESTAURANT_IMAGE_PATH, 'restaurant1.jpg'),
+      ),
+      cover_pic: await uploadImageAndGetUUID(
+        path.join(RESTAURANT_IMAGE_PATH, 'restaurant1.jpg'),
+      ),
       pan_number: '1234567890',
       user_id: customer1.id,
     },
@@ -57,8 +80,12 @@ export async function seed(knex: Knex): Promise<void> {
       contact_number: '9823456789',
       open_hours: '11:00 AM - 11:00 PM',
       rating: 5,
-      profile_pic: uuidv4(),
-      cover_pic: uuidv4(),
+      profile_pic: await uploadImageAndGetUUID(
+        path.join(RESTAURANT_IMAGE_PATH, 'restaurant2.jpg'),
+      ),
+      cover_pic: await uploadImageAndGetUUID(
+        path.join(RESTAURANT_IMAGE_PATH, 'restaurant2.jpg'),
+      ),
       pan_number: '0987654321',
       user_id: customer2.id,
     },

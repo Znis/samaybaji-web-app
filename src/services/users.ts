@@ -34,7 +34,12 @@ export default class UserService {
     }
     logger.info(`User with id ${userId} found`);
     const { passwordHash, ...user } = data;
-    user.imageSrc = await MinioService.getReadUrl(user.imageSrc!);
+    try {
+      user.imageSrc = await MinioService.getReadUrl(user.imageSrc!);
+    } catch {
+      logger.error(`Image not found for user with id ${userId}`);
+    }
+
     return user;
   }
 
@@ -44,7 +49,11 @@ export default class UserService {
       logger.error(`User with email ${email} not found`);
       return null;
     }
-    data.imageSrc = await MinioService.getReadUrl(data.imageSrc!);
+    try {
+      data.imageSrc = await MinioService.getReadUrl(data.imageSrc!);
+    } catch {
+      logger.error(`Image not found for user with email ${email}`);
+    }
     logger.info(`User with email ${email} found`);
     return data;
   }

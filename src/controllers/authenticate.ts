@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import AuthenticateService from '../services/authenticate';
 import loggerWithNameSpace from '../utils/logger';
 import config from '../config';
+import { Roles } from '../enums/roles';
 
 const logger = loggerWithNameSpace('Auth Controller');
 export async function login(req: Request, res: Response, next: NextFunction) {
@@ -17,6 +18,27 @@ export async function login(req: Request, res: Response, next: NextFunction) {
       maxAge: config.jwt.refreshTokenExpiryS * 1000,
     });
 
+    return res
+      .status(HttpStatusCode.OK)
+      .json({ accessToken: accessToken, user: user });
+  } catch (error) {
+    logger.error('Login Failed');
+    next(error);
+  }
+}
+
+export async function adminLogin(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { body } = req;
+    const { accessToken, refreshTokenId, user } =
+      await AuthenticateService.login(body);
+    if (user.roleId != Roles.SUPERADMIN) {
+      throw new Error('User is not an admin');
+    }
     return res
       .status(HttpStatusCode.OK)
       .json({ accessToken: accessToken, user: user });

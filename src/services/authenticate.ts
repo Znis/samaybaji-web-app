@@ -53,9 +53,16 @@ export default class AuthenticationService {
       userInfoPayload.id,
     )) as string;
 
+    if (roleId == Roles.SUPERADMIN) {
+      return {
+        accessToken: accessToken,
+        user: { ...userInfoPayload, roleId: roleId },
+      };
+    }
     const authenticatedUser = {
       ...userInfoPayload,
       roleId: roleId,
+      imageSrc: existingUser.imageSrc,
       restaurantId: '',
     };
     if (roleId == Roles.CUSTOMER_WITH_RESTAURANT) {
