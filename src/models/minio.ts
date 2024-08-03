@@ -1,3 +1,4 @@
+import config from '../config';
 import minioClient, { bucketName } from '../minioFile';
 import { v4 as uuid } from 'uuid';
 
@@ -11,13 +12,17 @@ export class MinioModel {
     const url = await minioClient.presignedPutObject(
       bucketName,
       uuidName,
-      5 * 60,
+      config.minio.PUT_TIME,
     );
     return { url: url, fileName: uuidName, bucketName: bucketName };
   }
 
   static async getReadUrl(fileName: string) {
-    return minioClient.presignedGetObject(bucketName, fileName, 5 * 60);
+    return minioClient.presignedGetObject(
+      bucketName,
+      fileName,
+      config.minio.GET_TIME,
+    );
   }
 
   static async deleteObject(fileName: string) {

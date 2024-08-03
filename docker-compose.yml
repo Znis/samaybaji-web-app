@@ -15,9 +15,8 @@ services:
       - ./minio_data:/data
     restart: always
     networks:
-      mynetwork:
-        aliases:
-          - minio
+      - mynetwork
+      
   postgres:
     container_name: postgres
     image: postgres:16
@@ -64,6 +63,7 @@ services:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
+
     ports:
       - "${PORT}:${PORT}"
     command: bash -c "npm run migrate && npm run seed && npm start"
@@ -78,7 +78,7 @@ services:
     container_name: frontend
     image: znis/samaybaji_frontend:latest
     ports:
-      - "${FRONTEND_PORT}:80"
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     restart: always
     depends_on:
       - postgres

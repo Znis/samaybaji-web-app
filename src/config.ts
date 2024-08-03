@@ -27,6 +27,8 @@ const config = {
     MINIO_CONSOLE_PORT: process.env.MINIO_CONSOLE_PORT || 9001,
     MINIO_ENDPOINT: process.env.MINIO_ENDPOINT,
     MINIO_BUCKET_NAME: process.env.MINIO_BUCKET_NAME || 'samaybaji-images',
+    GET_TIME: 5 * 60,
+    PUT_TIME: 5 * 60,
   },
 };
 
