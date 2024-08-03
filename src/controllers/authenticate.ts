@@ -11,6 +11,9 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     const { body } = req;
     const { accessToken, refreshTokenId, user } =
       await AuthenticateService.login(body);
+    if (user.roleId == Roles.SUPERADMIN) {
+      throw new Error('Admin is not allowed');
+    }
     logger.info('Login Successful');
     res.cookie('refreshTokenId', refreshTokenId, {
       httpOnly: true,

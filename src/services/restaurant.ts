@@ -25,12 +25,21 @@ export default class RestaurantService {
       logger.error(`Restaurant with restaurantId ${restaurantId} not found`);
       return null;
     }
-    restaurant.profilePic = (await MinioService.getReadUrl(
-      restaurant.profilePic!,
-    )) as string;
-    restaurant.coverPic = (await MinioService.getReadUrl(
-      restaurant.coverPic!,
-    )) as string;
+    try {
+      restaurant.profilePic = (await MinioService.getReadUrl(
+        restaurant.profilePic!,
+      )) as string;
+    } catch {
+      // intentionally left blank
+    }
+
+    try {
+      restaurant.coverPic = (await MinioService.getReadUrl(
+        restaurant.coverPic!,
+      )) as string;
+    } catch {
+      // intentionally left blank
+    }
     logger.info(`Restaurant with restaurantId ${restaurantId} found`);
     return restaurant;
   }
@@ -40,12 +49,21 @@ export default class RestaurantService {
       logger.error(`Restaurant with userId ${userId} not found`);
       return null;
     }
-    restaurant.profilePic = (await MinioService.getReadUrl(
-      restaurant.profilePic!,
-    )) as string;
-    restaurant.coverPic = (await MinioService.getReadUrl(
-      restaurant.coverPic!,
-    )) as string;
+    try {
+      restaurant.profilePic = (await MinioService.getReadUrl(
+        restaurant.profilePic!,
+      )) as string;
+    } catch {
+      // intentionally left blank
+    }
+    try {
+      restaurant.coverPic = (await MinioService.getReadUrl(
+        restaurant.coverPic!,
+      )) as string;
+    } catch {
+      // intentionally left blank
+    }
+
     logger.info(`Restaurant with userId ${userId} found`);
     return restaurant;
   }

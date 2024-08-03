@@ -20,7 +20,11 @@ export default class UserService {
     const users = data.map(({ passwordHash, ...user }) => user);
     const newData = await Promise.all(
       users.map(async (user: IUser) => {
-        user.imageSrc = await MinioService.getReadUrl(user.imageSrc!);
+        try {
+          user.imageSrc = await MinioService.getReadUrl(user.imageSrc!);
+        } catch {
+          // intentionally left blank
+        }
         return user;
       }),
     );

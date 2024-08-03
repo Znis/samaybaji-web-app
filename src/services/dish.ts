@@ -12,7 +12,11 @@ export default class DishService {
     }
     const newData = await Promise.all(
       dishes.map(async (dish: IDish) => {
-        dish.imgSrc = (await MinioService.getReadUrl(dish.imgSrc!)) as string;
+        try {
+          dish.imgSrc = (await MinioService.getReadUrl(dish.imgSrc!)) as string;
+        } catch {
+          // intentionally left blank
+        }
         return dish;
       }),
     );
@@ -20,11 +24,15 @@ export default class DishService {
   }
   static async getDishByMenuItemId(menuItemId: string) {
     const dish = await DishModel.getDishByMenuItemId(menuItemId);
-    console.log(dish)
+    console.log(dish);
     if (!dish) {
       return null;
     }
-    dish.imgSrc = (await MinioService.getReadUrl(dish.imgSrc!)) as string;
+    try {
+      dish.imgSrc = (await MinioService.getReadUrl(dish.imgSrc!)) as string;
+    } catch {
+      // intentionally left blank
+    }
     return dish;
   }
   static async getDish(dishId: string) {
@@ -32,7 +40,12 @@ export default class DishService {
     if (!dish) {
       return null;
     }
-    dish.imgSrc = (await MinioService.getReadUrl(dish.imgSrc!)) as string;
+    try {
+      dish.imgSrc = (await MinioService.getReadUrl(dish.imgSrc!)) as string;
+    } catch {
+      // intentionally left blank
+    }
+
     return dish;
   }
 
@@ -67,7 +80,6 @@ export default class DishService {
   }
 
   static async deleteDish(dishId: string) {
-    const dishToBeDeleted = await this.getDish(dishId);
     const queryResult = await DishModel.deleteDish(dishId)!;
     if (!queryResult) {
       throw new ModelError('Could not delete Dish');

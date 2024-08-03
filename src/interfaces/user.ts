@@ -24,7 +24,6 @@ export interface IUpdateUser {
   phoneNumber?: string;
   password?: string;
   passwordHash?: string;
-
 }
 
 export default IUser;

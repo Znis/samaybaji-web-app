@@ -17,9 +17,13 @@ export default class MenuItemService {
     }
     const newData = await Promise.all(
       menuItems.map(async (menuItem: IMenuItem) => {
-        menuItem.imageSrc = (await MinioService.getReadUrl(
-          menuItem.imageSrc!,
-        )) as string;
+        try {
+          menuItem.imageSrc = (await MinioService.getReadUrl(
+            menuItem.imageSrc!,
+          )) as string;
+        } catch {
+          // intentionally left blank
+        }
         return menuItem;
       }),
     );
@@ -31,9 +35,14 @@ export default class MenuItemService {
     if (!menuItem) {
       return null;
     }
-    menuItem.imageSrc = (await MinioService.getReadUrl(
-      menuItem.imageSrc!,
-    )) as string;
+    try {
+      menuItem.imageSrc = (await MinioService.getReadUrl(
+        menuItem.imageSrc!,
+      )) as string;
+    } catch {
+      // intentionally left blank
+    }
+
     return menuItem;
   }
 
@@ -44,9 +53,13 @@ export default class MenuItemService {
     }
     const newData = await Promise.all(
       menuItems.map(async (menuItem: IMenuItem) => {
-        menuItem.imageSrc = (await MinioService.getReadUrl(
-          menuItem.imageSrc!,
-        )) as string;
+        try {
+          menuItem.imageSrc = (await MinioService.getReadUrl(
+            menuItem.imageSrc!,
+          )) as string;
+        } catch {
+          // intentionally left blank
+        }
         return menuItem;
       }),
     );
@@ -60,9 +73,13 @@ export default class MenuItemService {
     }
     const newData = await Promise.all(
       popularMenuItems.map(async (menuItem: IMenuItem) => {
-        menuItem.imageSrc = (await MinioService.getReadUrl(
-          menuItem.imageSrc!,
-        )) as string;
+        try {
+          menuItem.imageSrc = (await MinioService.getReadUrl(
+            menuItem.imageSrc!,
+          )) as string;
+        } catch {
+          // intentionally left blank
+        }
         return menuItem;
       }),
     );
