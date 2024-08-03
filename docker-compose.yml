@@ -1,6 +1,6 @@
 services:
   minio:
-    container_name: minio_conatiner
+    container_name: minio_container
     image: minio/minio
     command: server /data --console-address ":9001"
     environment:
@@ -9,8 +9,67 @@ services:
       - MINIO_CONSOLE_PORT=${MINIO_CONSOLE_PORT}
       - MINIO_API_PORT=${MINIO_API_PORT}
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - ${MINIO_API_PORT}:${MINIO_API_PORT}
+      - ${MINIO_CONSOLE_PORT}:${MINIO_CONSOLE_PORT}
     volumes:
       - ./minio_data:/data
     restart: always
+
+  postgres:
+      container_name: postgres
+      image: postgres:16
+      environment:
+        - POSTGRES_USER=${DB_USER}
+        - POSTGRES_PASSWORD=${DB_PASSWORD}
+        - POSTGRES_DB=${DB_NAME}
+      volumes:
+        - ./data:/var/lib/postgresql/data
+      ports:
+        - "5432:5432"
+      restart: always
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:8.9
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_MAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW}
+    ports:
+      - "5050:80"
+    restart: always
+    depends_on:
+      - postgres
+
+  backend:
+    container_name: backend
+    image: znis/samaybaji_backend:latest
+
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=postgres
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=${DB_USER}
+      - DB_PORT=${DB_PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - PORT=${PORT}
+      - DB_CLIENT=${DB_CLIENT}
+      - MINIO_ENDPOINT=minio_container:${MINIO_API_PORT}
+      - MINIO_ACCESS_KEY=${MINIO_ROOT_USER}
+      - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD}
+      - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
+
+    ports:
+      - "${PORT}:${PORT}"
+    command: bash -c "npm run migrate && npm run seed && npm start"
+
+    restart: always
+    depends_on: [postgres, minio]
+
+  frontend:
+    container_name: frontend
+    image: znis/samaybaji_frontend:latest
+
+    ports:
+      - "${FRONTEND_PORT}:80"
+    restart: always
+    depends_on: [postgres, minio, backend]

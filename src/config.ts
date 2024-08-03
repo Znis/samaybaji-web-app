@@ -25,6 +25,7 @@ const config = {
     MINIO_ROOT_PASSWORD: process.env.MINIO_ROOT_PASSWORD,
     MINIO_API_PORT: process.env.MINIO_API_PORT || 9000,
     MINIO_CONSOLE_PORT: process.env.MINIO_CONSOLE_PORT || 9001,
+    MINIO_ENDPOINT: process.env.MINIO_ENDPOINT,
     MINIO_BUCKET_NAME: process.env.MINIO_BUCKET_NAME || 'samaybaji-images',
   },
 };
