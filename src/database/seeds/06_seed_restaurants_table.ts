@@ -1,20 +1,17 @@
 import type { Knex } from 'knex';
-
+import { v4 as uuidv4 } from 'uuid';
 export async function seed(knex: Knex): Promise<void> {
   await knex('restaurants').del(); // Deletes ALL existing entries
 
   // Retrieve user Ids
-  const users = await knex('users')
+  const customer1 = await knex('users')
     .select('id')
-    .orderBy('id')
-    .offset(1) // Skip the first user as it is SUPERADMIN
-    .limit(2); // Retrieve 2 users (2nd and 3rd)
-
-  const userIds = users.map((user) => user.id);
-
-  if (userIds.length < 2) {
-    throw new Error('Not enough users to seed restaurants.');
-  }
+    .where('name', 'Customer One')
+    .first();
+  const customer2 = await knex('users')
+    .select('id')
+    .where('name', 'Customer Two')
+    .first();
 
   // Retrieve role Id of customer_with_restaurant
   const roles = await knex('roles').select('id', 'name');
@@ -29,11 +26,12 @@ export async function seed(knex: Knex): Promise<void> {
 
   // Update user roles
   try {
-    userIds.forEach(async (userId) => {
-      await knex('users_roles')
-        .update({ role_id: customerWithRestaurantRoleId })
-        .where('user_id', userId);
-    });
+    await knex('users_roles')
+      .update({ role_id: customerWithRestaurantRoleId })
+      .where('user_id', customer1.id);
+    await knex('users_roles')
+      .update({ role_id: customerWithRestaurantRoleId })
+      .where('user_id', customer2.id);
   } catch {
     throw new Error('Could not update user roles');
   }
@@ -47,10 +45,10 @@ export async function seed(knex: Knex): Promise<void> {
       contact_number: '9812345678',
       open_hours: '10:00 AM - 10:00 PM',
       rating: 4,
-      profile_pic: '/assets/images/dish/wo.jpg',
-      cover_pic: '/assets/images/dish/wo.jpg',
+      profile_pic: uuidv4(),
+      cover_pic: uuidv4(),
       pan_number: '1234567890',
-      user_id: userIds[0],
+      user_id: customer1.id,
     },
     {
       name: 'Newari Restaurant 2',
@@ -59,10 +57,10 @@ export async function seed(knex: Knex): Promise<void> {
       contact_number: '9823456789',
       open_hours: '11:00 AM - 11:00 PM',
       rating: 5,
-      profile_pic: '/assets/images/dish/wo.jpg',
-      cover_pic: '/assets/images/dish/wo.jpg',
+      profile_pic: uuidv4(),
+      cover_pic: uuidv4(),
       pan_number: '0987654321',
-      user_id: userIds[1],
+      user_id: customer2.id,
     },
   ]);
 }

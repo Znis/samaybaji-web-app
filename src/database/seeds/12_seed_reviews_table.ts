@@ -4,9 +4,15 @@ export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
   await knex('reviews').del();
 
-  const users = await knex('users').select('id').limit(4);
-  const user1 = users[1]?.id;
-  const user2 = users[2]?.id;
+  // Retrieve user Ids
+  const customer3 = await knex('users')
+    .select('id')
+    .where('name', 'Customer Three')
+    .first();
+  const customer4 = await knex('users')
+    .select('id')
+    .where('name', 'Customer Four')
+    .first();
 
   const dishes = await knex('dishes').select('id').limit(2);
   const dish1 = dishes[0]?.id;
@@ -19,7 +25,7 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('reviews').insert([
     {
       id: knex.raw('uuid_generate_v4()'),
-      user_id: user1,
+      user_id: customer3.id,
       target_id: dish1,
       target_type: 'dish',
       comment: 'Amazing taste! The best dish I have ever had.',
@@ -28,7 +34,7 @@ export async function seed(knex: Knex): Promise<void> {
     },
     {
       id: knex.raw('uuid_generate_v4()'),
-      user_id: user2,
+      user_id: customer4.id,
       target_id: dish2,
       target_type: 'dish',
       comment: 'Really good, but a bit spicy for my taste.',
@@ -37,7 +43,7 @@ export async function seed(knex: Knex): Promise<void> {
     },
     {
       id: knex.raw('uuid_generate_v4()'),
-      user_id: user1,
+      user_id: customer3.id,
       target_id: restaurant1,
       target_type: 'restaurant',
       comment: 'Fantastic atmosphere and great service.',
@@ -46,7 +52,7 @@ export async function seed(knex: Knex): Promise<void> {
     },
     {
       id: knex.raw('uuid_generate_v4()'),
-      user_id: user2,
+      user_id: customer4.id,
       target_id: restaurant2,
       target_type: 'restaurant',
       comment: 'Decent food, but the service was slow.',

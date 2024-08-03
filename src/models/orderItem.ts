@@ -41,16 +41,15 @@ export default class OrderItemModel extends BaseModel {
         return null;
       });
   }
-  static getOwnOrderItems(orderId: string, restaurantId: string) {
+  static getOwnOrderItems(restaurantId: string) {
     return this.queryBuilder()
       .select('order_items.*')
-      .distinct()
       .from('order_items')
-      .join('orders', 'order_items.order_id', 'orders.id')
       .join('menu_items', 'order_items.menu_item_id', 'menu_items.id')
       .join('menus', 'menu_items.menu_id', 'menus.id')
-      .where('orders.id', orderId)
-      .andWhere('menus.restaurant_id', restaurantId)
+      .join('restaurants', 'menus.restaurant_id', 'restaurants.id')
+      .where('restaurants.id', restaurantId)
+      .distinct()
       .then((data) => {
         return data;
       })
@@ -64,8 +63,9 @@ export default class OrderItemModel extends BaseModel {
       .select('*')
       .from('order_items')
       .where('menu_item_id', menuItemId)
-      .andWhere('status', 'pending')
-      .orWhere('status', 'cooking')
+      .andWhere(function () {
+        this.where('status', 'pending').orWhere('status', 'cooking');
+      })
       .then((data) => {
         return data;
       })

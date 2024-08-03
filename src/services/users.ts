@@ -6,6 +6,7 @@ import loggerWithNameSpace from '../utils/logger';
 import IUser, { ICreateUser, IUpdateUser } from '../interfaces/user';
 import CartServices from './cart';
 import AuthorizationService from './authorize';
+import MinioService from './minio';
 
 const logger = loggerWithNameSpace('Users Service');
 const salt = 10;
@@ -17,7 +18,13 @@ export default class UserService {
     }
     logger.info('All Users Found');
     const users = data.map(({ passwordHash, ...user }) => user);
-    return users;
+    const newData = await Promise.all(
+      users.map(async (user: IUser) => {
+        user.imageSrc = await MinioService.getReadUrl(user.imageSrc!);
+        return user;
+      }),
+    );
+    return newData;
   }
   static async getUser(userId: string) {
     const data = await UserModel.getUser(userId);
@@ -27,6 +34,7 @@ export default class UserService {
     }
     logger.info(`User with id ${userId} found`);
     const { passwordHash, ...user } = data;
+    user.imageSrc = await MinioService.getReadUrl(user.imageSrc!);
     return user;
   }
 
@@ -36,6 +44,7 @@ export default class UserService {
       logger.error(`User with email ${email} not found`);
       return null;
     }
+    data.imageSrc = await MinioService.getReadUrl(data.imageSrc!);
     logger.info(`User with email ${email} found`);
     return data;
   }
@@ -80,6 +89,7 @@ export default class UserService {
   }
 
   static async deleteUser(id: string) {
+    const userBeingDeleted = await this.getUser(id);
     const queryResult = await UserModel.deleteUserById(id)!;
     if (!queryResult) {
       logger.error(`Deleting user with id ${id} failed`);

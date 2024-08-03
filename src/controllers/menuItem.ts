@@ -132,7 +132,7 @@ export async function deleteMenuItem(
   next: NextFunction,
 ) {
   try {
-    const menuItemId = req.params.menuItemD as string;
+    const menuItemId = req.params.menuItemId as string;
     await MenuItemService.deleteMenuItem(menuItemId);
     logger.info(`Menu item with menuItemId ${menuItemId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');

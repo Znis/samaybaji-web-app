@@ -9,7 +9,7 @@ const minioClient = new Minio.Client({
   secretKey: config.minio.MINIO_ROOT_PASSWORD!,
 });
 
-export const bucketName = 'samaybaji-images';
+export const bucketName = config.minio.MINIO_BUCKET_NAME;
 
 async function makeBucket() {
   const exists = await minioClient.bucketExists(bucketName);

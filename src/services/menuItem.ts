@@ -6,8 +6,8 @@ import IMenuItem, {
   IEditMenuItem,
 } from '../interfaces/menuItem';
 import OrderItemService from './orderItem';
-
-const logger = loggerWithNameSpace('Menu Item Service');
+import MinioService from './minio';
+import { BaseError } from '../error/baseError';
 
 export default class MenuItemService {
   static async getAllMenuItems() {
@@ -15,38 +15,58 @@ export default class MenuItemService {
     if (!menuItems) {
       return null;
     }
-    logger.info('All Menu Items Found');
-    return menuItems;
+    const newData = await Promise.all(
+      menuItems.map(async (menuItem: IMenuItem) => {
+        menuItem.imageSrc = (await MinioService.getReadUrl(
+          menuItem.imageSrc!,
+        )) as string;
+        return menuItem;
+      }),
+    );
+    return newData;
   }
 
   static async getMenuItem(menuItemId: string) {
     const menuItem = await MenuItemModel.getMenuItem(menuItemId);
     if (!menuItem) {
-      logger.error(`Menu item with menuItemId ${menuItemId} not found`);
       return null;
     }
-    logger.info(`Menu item with menuItemId ${menuItemId} found`);
+    menuItem.imageSrc = (await MinioService.getReadUrl(
+      menuItem.imageSrc!,
+    )) as string;
     return menuItem;
   }
 
   static async getMenuItemsByMenuId(menuId: string) {
     const menuItems = await MenuItemModel.getMenuItemsByMenuId(menuId);
     if (!menuItems) {
-      logger.error(`Menu items of menuId ${menuId} not found`);
       return null;
     }
-    logger.info(`Menu items of menuId ${menuId} found`);
-    return menuItems;
+    const newData = await Promise.all(
+      menuItems.map(async (menuItem: IMenuItem) => {
+        menuItem.imageSrc = (await MinioService.getReadUrl(
+          menuItem.imageSrc!,
+        )) as string;
+        return menuItem;
+      }),
+    );
+    return newData;
   }
 
   static async getPopularMenuItems() {
     const popularMenuItems = await MenuItemModel.getPopularMenuItems();
     if (!popularMenuItems) {
-      logger.error(`No any popular menu items found`);
       return null;
     }
-    logger.info(`Popular menu items found`);
-    return popularMenuItems;
+    const newData = await Promise.all(
+      popularMenuItems.map(async (menuItem: IMenuItem) => {
+        menuItem.imageSrc = (await MinioService.getReadUrl(
+          menuItem.imageSrc!,
+        )) as string;
+        return menuItem;
+      }),
+    );
+    return newData;
   }
   static async createMenuItem(menuId: string, menuItemData: ICreateMenuItem) {
     const queryResult = await MenuItemModel.createMenuItem(
@@ -54,7 +74,6 @@ export default class MenuItemService {
       menuItemData,
     )!;
     if (!queryResult) {
-      logger.error('Could not create new menu item');
       throw new ModelError('Could not create menu item');
     }
 
@@ -70,11 +89,8 @@ export default class MenuItemService {
       editMenuItemData,
     )!;
     if (!queryResult) {
-      logger.error(`Could not edit menu item with menuItemId ${menuItemId}`);
       throw new ModelError('Could not edit Menu item');
     }
-    logger.info(`Menu item with menuItemId ${menuItemId} updated`);
-
     return {
       ...editMenuItemData,
       id: menuItemId,
@@ -82,23 +98,18 @@ export default class MenuItemService {
   }
 
   static async deleteMenuItem(menuItemId: string) {
-    const activeOrderItems =
+    const menuItemToBeDeleted = await MenuItemService.getMenuItem(menuItemId);
+    const activeOrderItemsCount =
       await OrderItemService.getActiveOrderItemsByMenuItemId(menuItemId);
-    if (activeOrderItems!.length) {
-      logger.error(
-        `Could not delete menu item with menuItemId ${menuItemId} because it has active order items`,
-      );
-      throw new ModelError(
+    if (activeOrderItemsCount) {
+      throw new BaseError(
         'Could not delete Menu item due to active order items',
       );
     }
     const queryResult = await MenuItemModel.deleteMenuItem(menuItemId)!;
     if (!queryResult) {
-      logger.error(`Could not delete menu item with menuItemId ${menuItemId}`);
       throw new ModelError('Could not delete Menu item');
     }
-    logger.info(`Menu item with menuItemId ${menuItemId} deleted`);
-
     return true;
   }
 }

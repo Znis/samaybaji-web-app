@@ -1,5 +1,18 @@
 import type { Knex } from 'knex';
 import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs';
+import path from 'path';
+import minioClient from '../../minioFile';
+import config from '../../config';
+
+const DISH_IMAGE_PATH = __dirname + '../../../../assets/images/dish/';
+
+async function uploadImageAndGetUUID(imagePath: string): Promise<string> {
+  const imageUUID = uuidv4();
+  const image = await fs.promises.readFile(imagePath);
+  await minioClient.putObject(config.minio.MINIO_BUCKET_NAME, imageUUID, image);
+  return imageUUID;
+}
 
 export async function seed(knex: Knex): Promise<void> {
   await knex('menu_items').del(); // Deletes ALL existing entries
@@ -20,7 +33,9 @@ export async function seed(knex: Knex): Promise<void> {
       name: 'Yomari',
       price: 150,
       portion: '1 piece',
-      image_src: '/assets/images/dish/yomari.jpeg',
+      image_src: await uploadImageAndGetUUID(
+        path.join(DISH_IMAGE_PATH, 'yomari.png'),
+      ),
       is_popular: true,
       menu_id: menuIds[0],
       status: 'In Stock',
@@ -30,7 +45,9 @@ export async function seed(knex: Knex): Promise<void> {
       name: 'Chatamari',
       price: 200,
       portion: '1 piece',
-      image_src: '/assets/images/dish/chatamari.jpg',
+      image_src: await uploadImageAndGetUUID(
+        path.join(DISH_IMAGE_PATH, 'chatamari.jpg'),
+      ),
       is_popular: true,
       menu_id: menuIds[0],
       status: 'In Stock',
@@ -40,7 +57,9 @@ export async function seed(knex: Knex): Promise<void> {
       name: 'Bara',
       price: 100,
       portion: '1 piece',
-      image_src: '/assets/images/dish/bara.png',
+      image_src: await uploadImageAndGetUUID(
+        path.join(DISH_IMAGE_PATH, 'bara.png'),
+      ),
       is_popular: false,
       menu_id: menuIds[1],
       status: 'In Stock',
@@ -50,7 +69,9 @@ export async function seed(knex: Knex): Promise<void> {
       name: 'Sukuti',
       price: 250,
       portion: '100 grams',
-      image_src: '/assets/images/dish/sukuti.jpg',
+      image_src: await uploadImageAndGetUUID(
+        path.join(DISH_IMAGE_PATH, 'sukuti.jpg'),
+      ),
       is_popular: true,
       menu_id: menuIds[1],
       status: 'In Stock',
@@ -60,7 +81,9 @@ export async function seed(knex: Knex): Promise<void> {
       name: 'Wo',
       price: 120,
       portion: '1 piece',
-      image_src: '/assets/images/dish/wo.jpg',
+      image_src: await uploadImageAndGetUUID(
+        path.join(DISH_IMAGE_PATH, 'wo.jpg'),
+      ),
       is_popular: false,
       menu_id: menuIds[0],
       status: 'Out of Stock',

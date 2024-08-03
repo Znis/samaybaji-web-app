@@ -31,19 +31,17 @@ export default class OrderItemService {
   }
   static async getActiveOrderItemsByMenuItemId(menuItemId: string) {
     const activeOrderItems =
-      await OrderItemModel.getActiveOrderItemsByMenuItemId(menuItemId);
-    if (!activeOrderItems) {
+      (await OrderItemModel.getActiveOrderItemsByMenuItemId(
+        menuItemId,
+      )) as IOrderItem[];
+    if (!activeOrderItems.length) {
       logger.error(`Active order items of menuItemId ${menuItemId} not found`);
-      return null;
     }
     logger.info(`Active order items of ${menuItemId} found`);
-    return activeOrderItems;
+    return activeOrderItems.length;
   }
-  static async getOwnOrderItems(orderId: string, restaurantId: string) {
-    const orderItems = await OrderItemModel.getOwnOrderItems(
-      orderId,
-      restaurantId,
-    );
+  static async getOwnOrderItems(restaurantId: string) {
+    const orderItems = await OrderItemModel.getOwnOrderItems(restaurantId);
     if (!orderItems) {
       logger.error('Could not get the order items');
       throw new ModelError('Could not get the order items');
@@ -56,7 +54,6 @@ export default class OrderItemService {
         return { ...item, menuItemData: menuItemData } as IOrderItem;
       }),
     );
-    logger.info(`Order items of ${orderId} found`);
     return orderItemsWithMenuItemData;
   }
 

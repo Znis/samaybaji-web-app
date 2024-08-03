@@ -43,15 +43,24 @@ export default class AuthorizationService {
 
   static async getRestaurantId(userId: string) {
     const restaurant = await RestaurantServices.getRestaurant(userId);
+    if (!restaurant) {
+      return null;
+    }
     return restaurant.id;
   }
   static async getMenuId(restaurantId: string) {
     const menu = await MenuServices.getMenu(restaurantId);
+    if (!menu) {
+      return null;
+    }
     return menu.id;
   }
 
   static async getCartId(userId: string) {
     const cart = await CartServices.getCart(userId);
+    if (!cart) {
+      return null;
+    }
     return cart.id;
   }
 }

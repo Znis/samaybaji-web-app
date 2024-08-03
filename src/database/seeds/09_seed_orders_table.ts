@@ -5,25 +5,28 @@ import { OrderStatus } from '../../enums/order';
 export async function seed(knex: Knex): Promise<void> {
   await knex('orders').del(); // Deletes ALL existing entries
 
-  const users = await knex('users').select('id').limit(2);
-  const restaurants = await knex('restaurants').select('id').limit(2);
-
-  if (users.length < 2 || restaurants.length < 2) {
-    throw new Error('Not enough users or restaurants to seed orders');
-  }
+  // Retrieve user Ids
+  const customer3 = await knex('users')
+    .select('*')
+    .where('name', 'Customer Three')
+    .first();
+  const customer4 = await knex('users')
+    .select('*')
+    .where('name', 'Customer Four')
+    .first();
 
   const ordersData = [
     {
       id: uuidv4(),
-      user_id: users[0].id,
+      user_id: customer3.id,
       status: OrderStatus.PENDING,
       sub_total_amount: 700,
       order_date: '2024-07-27',
       order_time: '18:30:00',
       payment_method: 'online',
       delivery_address: '123 Kathmandu Street, Lalitpur, Nepal',
-      customer_name: 'Ramesh Shrestha',
-      customer_phone: '+977-9812345678',
+      customer_name: customer3.name,
+      customer_phone: customer3.phone_number,
       delivery_amount: 100,
       discount_amount: 50,
       total_amount: 550,
@@ -33,15 +36,15 @@ export async function seed(knex: Knex): Promise<void> {
     },
     {
       id: uuidv4(),
-      user_id: users[1].id,
+      user_id: customer4.id,
       status: OrderStatus.COOKING,
       sub_total_amount: 700,
       order_date: '2024-07-28',
       order_time: '19:00:00',
       payment_method: 'cod',
       delivery_address: '456 Bhaktapur Road, Kathmandu, Nepal',
-      customer_name: 'Sita Tamang',
-      customer_phone: '+977-9801234567',
+      customer_name: customer4.name,
+      customer_phone: customer4.phone_number,
       delivery_amount: 120,
       discount_amount: 50,
       total_amount: 820,
@@ -51,15 +54,15 @@ export async function seed(knex: Knex): Promise<void> {
     },
     {
       id: uuidv4(),
-      user_id: users[0].id,
+      user_id: customer3.id,
       status: OrderStatus.EN_ROUTE,
       sub_total_amount: 700,
       order_date: '2024-07-28',
       order_time: '20:00:00',
       payment_method: 'online',
       delivery_address: '789 Patan Durbar Square, Lalitpur, Nepal',
-      customer_name: 'Kiran Manandhar',
-      customer_phone: '+977-9851234567',
+      customer_name: customer3.name,
+      customer_phone: customer3.phone_number,
       delivery_amount: 90,
       discount_amount: 50,
       total_amount: 630,
@@ -69,15 +72,15 @@ export async function seed(knex: Knex): Promise<void> {
     },
     {
       id: uuidv4(),
-      user_id: users[1].id,
+      user_id: customer4.id,
       sub_total_amount: 700,
       status: OrderStatus.DELIVERED,
       order_date: '2024-07-29',
       order_time: '21:00:00',
       payment_method: 'cod',
       delivery_address: '321 Thamel, Kathmandu, Nepal',
-      customer_name: 'Sunita Rai',
-      customer_phone: '+977-9861234567',
+      customer_name: customer4.name,
+      customer_phone: customer4.phone_number,
       delivery_amount: 110,
       discount_amount: 50,
       total_amount: 740,

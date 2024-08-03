@@ -2,33 +2,37 @@ import DishModel from '../models/dish';
 import { ModelError } from '../error/modelError';
 import loggerWithNameSpace from '../utils/logger';
 import { ICreateDish, IDish, IEditDish } from '../interfaces/dish';
+import MinioService from './minio';
 
-const logger = loggerWithNameSpace('Dish Service');
 export default class DishService {
   static async getAllDishes() {
     const dishes = await DishModel.getAllDishes();
     if (!dishes) {
       return null;
     }
-    logger.info('All Dishes Found');
-    return dishes;
+    const newData = await Promise.all(
+      dishes.map(async (dish: IDish) => {
+        dish.imgSrc = (await MinioService.getReadUrl(dish.imgSrc!)) as string;
+        return dish;
+      }),
+    );
+    return newData;
   }
   static async getDishByMenuItemId(menuItemId: string) {
     const dish = await DishModel.getDishByMenuItemId(menuItemId);
+    console.log(dish)
     if (!dish) {
-      logger.error(`Dish with menuItemId ${menuItemId} not found`);
       return null;
     }
-    logger.info(`Dish with menuItemId ${menuItemId} found`);
+    dish.imgSrc = (await MinioService.getReadUrl(dish.imgSrc!)) as string;
     return dish;
   }
   static async getDish(dishId: string) {
     const dish = await DishModel.getDish(dishId);
     if (!dish) {
-      logger.error(`Dish with dishId ${dishId} not found`);
       return null;
     }
-    logger.info(`Dish with dishId ${dishId} found`);
+    dish.imgSrc = (await MinioService.getReadUrl(dish.imgSrc!)) as string;
     return dish;
   }
 
@@ -45,20 +49,16 @@ export default class DishService {
       dishData,
     )!;
     if (!queryResult) {
-      logger.error('Could not create new dish');
       throw new ModelError('Could not create dish');
     }
-    logger.info(`New dish for menuItemId ${menuItemId} created`);
     return { ...dishData, id: queryResult.id } as IDish;
   }
 
   static async editDish(dishId: string, editDishData: IEditDish) {
     const queryResult = await DishModel.editDish(dishId, editDishData)!;
     if (!queryResult) {
-      logger.error(`Could not edit dish with dishId ${dishId}`);
       throw new ModelError('Could not edit Dish');
     }
-    logger.info(`Dish with dishId ${queryResult.id} updated`);
 
     return {
       ...editDishData,
@@ -67,13 +67,11 @@ export default class DishService {
   }
 
   static async deleteDish(dishId: string) {
+    const dishToBeDeleted = await this.getDish(dishId);
     const queryResult = await DishModel.deleteDish(dishId)!;
     if (!queryResult) {
-      logger.error(`Could not delete dish with dishId ${dishId}`);
       throw new ModelError('Could not delete Dish');
     }
-    logger.info(`Dish with dishId ${dishId} deleted`);
-
     return true;
   }
 }

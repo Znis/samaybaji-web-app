@@ -46,6 +46,7 @@ export default class OrderModel extends BaseModel {
   static getOrdersByRestaurantId(restaurantId: string) {
     return this.queryBuilder()
       .select('orders.*')
+      .distinct()
       .from('orders')
       .join('order_items', 'orders.id', 'order_items.order_id')
       .join('menu_items', 'order_items.menu_item_id', 'menu_items.id')

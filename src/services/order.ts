@@ -67,17 +67,17 @@ export default class OrderService {
       logger.error(`Order of restaurantId ${restaurantId} not found`);
       return null;
     }
-    const orderWithOrderItems = await Promise.all(
-      orders.map(async (order: IOrder) => {
-        const orderItems = (await OrderItemServices.getOwnOrderItems(
-          order.id,
-          restaurantId,
-        )) as IOrderItem[];
-        return { ...order, orderItems: orderItems };
+    const orderItems = (await OrderItemServices.getOwnOrderItems(
+      restaurantId,
+    )) as IOrderItem[];
+    const orderWithOrderItem = await Promise.all(
+      orderItems.map(async (orderItem: IOrderItem) => {
+        const order = orders.filter((item) => item.id == orderItem.orderId)[0];
+        return { ...order, orderItems: orderItem };
       }),
     );
-    logger.info(`Orders of restaurantId ${restaurantId} Found`);
-    return orderWithOrderItems;
+    console.log(orderWithOrderItem);
+    return orderWithOrderItem;
   }
 
   static async createOrder(userId: string, orderData: ICreateOrder) {

@@ -9,7 +9,7 @@ const config = {
   port: process.env.PORT,
   jwt: {
     secret: process.env.JWT_SECRET,
-    accessTokenExpiryS: 10,
+    accessTokenExpiryS: 10000,
     refreshTokenExpiryS: 20000,
   },
   database: {
@@ -25,6 +25,7 @@ const config = {
     MINIO_ROOT_PASSWORD: process.env.MINIO_ROOT_PASSWORD,
     MINIO_API_PORT: process.env.MINIO_API_PORT || 9000,
     MINIO_CONSOLE_PORT: process.env.MINIO_CONSOLE_PORT || 9001,
+    MINIO_BUCKET_NAME: process.env.MINIO_BUCKET_NAME || 'samaybaji-images',
   },
 };
 
