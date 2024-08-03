@@ -2,7 +2,7 @@ import { navigate } from '../../../router';
 
 export default class Hero {
   static htmlTemplateurl =
-    './assets/templates/pages/landing-page/section/hero.html';
+    '/assets/templates/pages/landing-page/section/hero.html';
   static element: HTMLElement = document.createElement('section');
 
   static init(): HTMLElement {

@@ -13,7 +13,7 @@ export default class CartItem {
   deleteButton: HTMLButtonElement;
 
   constructor(cartItemData: IFormattedCartItemData) {
-    this.url = './assets/templates/components/cart-item.html';
+    this.url = '/assets/templates/components/cart-item.html';
     this.element = document.createElement('div');
     this.cartItemData = cartItemData;
 

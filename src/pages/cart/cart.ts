@@ -13,7 +13,7 @@ import { navigate } from '../../router';
 import { StateManager } from '../../state-management/stateManager';
 
 export default class Cart {
-  static htmlTemplateUrl = './assets/templates/pages/cart/cart.html';
+  static htmlTemplateUrl = '/assets/templates/pages/cart/cart.html';
   static element: HTMLElement = document.createElement('section');
   static totalAmount = 0;
   static discountAmount = 0;

@@ -1,6 +1,6 @@
 export default class About {
   static htmlTemplateurl =
-    './assets/templates/pages/landing-page/section/about.html';
+    '/assets/templates/pages/landing-page/section/about.html';
   static element: HTMLElement = document.createElement('section');
 
   static init(): HTMLElement {

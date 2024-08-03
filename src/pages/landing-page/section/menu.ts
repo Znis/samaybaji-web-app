@@ -5,7 +5,7 @@ import IMenuItem from '../../../interfaces/menuItem';
 
 export default class Menu {
   static htmlTemplateurl =
-    './assets/templates/pages/landing-page/section/menu.html';
+    '/assets/templates/pages/landing-page/section/menu.html';
   static element: HTMLElement = document.createElement('section');
 
   static init(): HTMLElement {

@@ -13,7 +13,7 @@ import axios from 'axios';
 
 export default class Checkout {
   static htmlTemplateUrl =
-    './assets/templates/pages/checkout-page/checkout-page.html';
+    '/assets/templates/pages/checkout-page/checkout-page.html';
   static element: HTMLElement = document.createElement('section');
   static deliveryAmount = 100;
   static discountAmount = 0;

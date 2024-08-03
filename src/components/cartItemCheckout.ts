@@ -6,7 +6,7 @@ export default class CartItemCheckout {
   cartItemData: IFormattedCartItemData;
   constructor(cartItemData: IFormattedCartItemData) {
     this.htmlTemplateUrl =
-      './assets/templates/components/cart-item-checkout.html';
+      '/assets/templates/components/cart-item-checkout.html';
     this.element = document.createElement('div');
     this.cartItemData = cartItemData;
 
