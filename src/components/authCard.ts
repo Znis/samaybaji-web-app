@@ -171,7 +171,7 @@ export default class AuthCard {
         ) {
           this.showError(
             this.innerElements.registerPasswordError,
-            'Must be 4 char long, 1 ucase and 1 special character',
+            'Must be 4 character long, 1 uppercase and 1 special character',
           );
           isValid = false;
         }
