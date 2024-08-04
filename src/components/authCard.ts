@@ -234,6 +234,8 @@ export default class AuthCard {
         if (response.response.status != HttpStatusCode.Accepted) {
           if (response.response.status == HttpStatusCode.Unauthorized) {
             this.showError(loginResponseMessage, 'Invalid Credentials');
+          } else if (response.response.status == HttpStatusCode.Forbidden) {
+            this.showError(loginResponseMessage, 'Admin is not allowed');
           } else {
             this.showError(loginResponseMessage, response.message);
           }

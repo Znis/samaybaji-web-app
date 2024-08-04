@@ -147,6 +147,7 @@ export default class AdminUsersDashboard {
     try {
       await deleteUserByAdmin(userId, this.adminAccessToken);
       Toast.show('User deleted successfully');
+      this.fetchAllUsers();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         Toast.show(error.message);
