@@ -12,6 +12,12 @@ import IMenuItem from '../interfaces/menuItem';
 const logger = loggerWithNameSpace('Order Item Service');
 
 export default class OrderItemService {
+  /**
+   * Retrieves order items by the provided order ID and enriches them with menu item data.
+   *
+   * @param {string} orderId - The ID of the order to retrieve items for.
+   * @return {Promise<IOrderItem[]>} An array of order items with associated menu item data.
+   */
   static async getOrderItemsByOrderId(orderId: string) {
     const orderItems = await OrderItemModel.getOrderItemsByOrderId(orderId);
     if (!orderItems) {
@@ -29,6 +35,12 @@ export default class OrderItemService {
     logger.info(`Order items of ${orderId} found`);
     return orderItemsWithMenuItemData;
   }
+  /**
+   * Retrieves the number of active order items associated with a given menu item ID.
+   *
+   * @param {string} menuItemId - The ID of the menu item to retrieve active order items for.
+   * @return {number} The number of active order items associated with the menu item.
+   */
   static async getActiveOrderItemsByMenuItemId(menuItemId: string) {
     const activeOrderItems =
       (await OrderItemModel.getActiveOrderItemsByMenuItemId(
@@ -40,6 +52,13 @@ export default class OrderItemService {
     logger.info(`Active order items of ${menuItemId} found`);
     return activeOrderItems.length;
   }
+  /**
+   * Retrieves the order items associated with a specific restaurant.
+   *
+   * @param {string} restaurantId - The ID of the restaurant to retrieve order items for.
+   * @return {Promise<IOrderItem[]>} A promise that resolves to an array of order items with associated menu item data.
+   * @throws {ModelError} If the order items could not be retrieved.
+   */
   static async getOwnOrderItems(restaurantId: string) {
     const orderItems = await OrderItemModel.getOwnOrderItems(restaurantId);
     if (!orderItems) {
@@ -57,6 +76,14 @@ export default class OrderItemService {
     return orderItemsWithMenuItemData;
   }
 
+  /**
+   * Creates an order item for a given order ID and order data.
+   *
+   * @param {string} orderId - The ID of the order.
+   * @param {ICreateOrderItem[]} orderData - The data of the order item to be created.
+   * @return {Promise<IOrderItem[]>} A promise that resolves to an array of created order items.
+   * @throws {ModelError} If the order item creation fails.
+   */
   static async createOrderItem(orderId: string, orderData: ICreateOrderItem[]) {
     const queryResult = await OrderItemModel.createOrderItem(
       orderId,
@@ -70,6 +97,14 @@ export default class OrderItemService {
       return { ...orderData[idx], id: item.id };
     }) as IOrderItem[];
   }
+  /**
+   * Edits an order item with the specified orderItemId using the provided editOrderData.
+   *
+   * @param {string} orderItemId - The ID of the order item to be edited.
+   * @param {IEditOrderItem} editOrderData - The data used to edit the order item.
+   * @return {Promise<IOrderItem>} A promise that resolves to the edited order item.
+   * @throws {ModelError} If the order item could not be edited.
+   */
   static async editOrderItem(
     orderItemId: string,
     editOrderData: IEditOrderItem,
@@ -90,6 +125,13 @@ export default class OrderItemService {
     } as IOrderItem;
   }
 
+  /**
+   * Deletes an order item with the specified orderItemId.
+   *
+   * @param {string} orderItemId - The ID of the order item to be deleted.
+   * @return {Promise<boolean>} A promise that resolves to true if the order item is successfully deleted,
+   *                            or throws a ModelError if the deletion fails.
+   */
   static async deleteOrderItem(orderItemId: string) {
     const queryResult = await OrderItemModel.deleteOrderItem(orderItemId)!;
     if (!queryResult) {

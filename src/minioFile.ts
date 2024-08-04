@@ -11,6 +11,11 @@ const minioClient = new Minio.Client({
 
 export const bucketName = config.minio.MINIO_BUCKET_NAME;
 
+/**
+ * Checks if a bucket exists in the Minio server and creates it if it does not.
+ *
+ * @return {Promise<void>} A Promise that resolves when the bucket has been checked or created.
+ */
 async function makeBucket() {
   const exists = await minioClient.bucketExists(bucketName);
   if (exists) {

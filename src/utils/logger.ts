@@ -15,6 +15,12 @@ const logger = winston.createLogger({
   transports: [new winston.transports.Console()],
 });
 
+/**
+ * Creates a new logger instance with the specified namespace.
+ *
+ * @param {string} namespace - The namespace for the new logger instance.
+ * @return {Logger} A new logger instance with the specified namespace.
+ */
 const loggerWithNameSpace = function (namespace: string) {
   return logger.child({ namespace });
 };

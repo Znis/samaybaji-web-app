@@ -13,6 +13,19 @@ import { Roles } from '../enums/roles';
 const logger = loggerWithNameSpace('Authentication Service');
 
 export default class AuthenticationService {
+  /**
+   * Authenticates a user by checking if the provided email and password match
+   * an existing user in the database. If the credentials are valid, generates
+   * an access token and refresh token for the user and returns them along with
+   * the user's information, role ID and restaurant ID on the basis of their roles
+   * in the response.
+   *
+   * @param {Pick<IAuthUser, 'email' | 'password'>} body - The email and password
+   * of the user to authenticate.
+   * @return {Promise<{accessToken: string, refreshTokenId: string, user: IAuthUser}>}
+   * The access token, refresh token ID, and user information for the authenticated user.
+   * @throws {UnauthenticatedError} If the provided credentials are invalid.
+   */
   static async login(body: Pick<IAuthUser, 'email' | 'password'>) {
     const existingUser = await UserServices.getUserByEmail(body.email);
 
@@ -80,6 +93,13 @@ export default class AuthenticationService {
     };
   }
 
+  /**
+   * Refreshes the access token using the provided refresh token ID.
+   *
+   * @param {string | undefined} refreshTokenId - The ID of the refresh token.
+   * @return {Promise<{accessToken: string}>} - The newly generated access token.
+   * @throws {UnauthenticatedError} - If the refresh token ID is not found or the token is invalid.
+   */
   static async refresh(refreshTokenId: string | undefined) {
     if (!refreshTokenId) {
       logger.error('Refresh token Id not found');
@@ -124,6 +144,12 @@ export default class AuthenticationService {
     }
   }
 
+  /**
+   * Retrieves a refresh token from the database based on the provided refreshTokenId.
+   *
+   * @param {string} refreshTokenId - The ID of the refresh token to retrieve.
+   * @return {Promise<string | null>} A Promise that resolves to the refresh token string if found, or null if not found.
+   */
   static async getRefreshToken(refreshTokenId: string) {
     const data = await AuthenticateModel.getRefreshToken(refreshTokenId);
     if (!data) {
@@ -131,6 +157,14 @@ export default class AuthenticationService {
     }
     return data.refreshToken;
   }
+  /**
+   * Adds a refresh token to the table for a given user.
+   *
+   * @param {string} userId - The ID of the user.
+   * @param {string} refreshToken - The refresh token to be added.
+   * @param {Date} expiryTime - The expiry time of the refresh token.
+   * @return {Promise<number>} - The ID of the inserted row.
+   */
   static async addRefreshToken(
     userId: string,
     refreshToken: string,

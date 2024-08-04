@@ -6,6 +6,11 @@ import { ICreateReview, IEditReview, IReview } from '../interfaces/review';
 
 const logger = loggerWithNameSpace('Review Service');
 export default class ReviewService {
+  /**
+   * Retrieves all reviews for both dish and restaurant targets.
+   *
+   * @return {Promise<{ dishReviews: IReview[], restaurantReviews: IReview[] } | null>} An object containing both dish and restaurant reviews, or null if no reviews are found.
+   */
   static async getAllReviews() {
     const dishReviews = await ReviewModel.getAllReviews(ReviewTargetType.DISH);
     const restaurantReviews = await ReviewModel.getAllReviews(
@@ -18,6 +23,12 @@ export default class ReviewService {
     logger.info('All Reviews Found');
     return { dishReviews: dishReviews, restaurantReviews: restaurantReviews };
   }
+  /**
+   * Retrieves the reviews made by a user for both dish and restaurant targets.
+   *
+   * @param {string} userId - The ID of the user.
+   * @return {Promise<{ dishReviews: IReview[], restaurantReviews: IReview[] } | null>} An object containing both dish and restaurant reviews, or null if no reviews are found.
+   */
   static async getReviewsByUserId(userId: string) {
     const dishReviews = await ReviewModel.getReviewsByUserId(
       userId,
@@ -35,6 +46,12 @@ export default class ReviewService {
     return { dishReviews: dishReviews, restaurantReviews: restaurantReviews };
   }
 
+  /**
+   * Retrieves reviews by the given target ID.
+   *
+   * @param {string} targetId - The ID of the target.
+   * @return {Promise<Review[] | null>} An array of reviews or null if not found.
+   */
   static async getReviewsByTargetId(targetId: string) {
     const reviews = await ReviewModel.getReviewsByTargetId(targetId);
     if (!reviews) {
@@ -45,6 +62,15 @@ export default class ReviewService {
     return reviews;
   }
 
+  /**
+   * Creates a new review in the database.
+   *
+   * @param {ICreateReview} reviewData - The data for the review to be created.
+   * @param {string} targetId - The ID of the target for the review.
+   * @param {string} userId - The ID of the user creating the review.
+   * @return {Promise<IReview>} The newly created review with its ID.
+   * @throws {ModelError} If the review could not be created.
+   */
   static async createReview(
     reviewData: ICreateReview,
     targetId: string,
@@ -63,6 +89,13 @@ export default class ReviewService {
     return { ...reviewData, id: queryResult.id } as IReview;
   }
 
+  /**
+   * Updates a review in the database.
+   *
+   * @param {string} reviewId - The ID of the review to be updated.
+   * @param {IEditReview} editReviewData - The updated data for the review.
+   * @return {IReview} The updated review data.
+   */
   static async editReview(reviewId: string, editReviewData: IEditReview) {
     const queryResult = await ReviewModel.editReview(reviewId, editReviewData)!;
     if (!queryResult) {
@@ -77,6 +110,12 @@ export default class ReviewService {
     } as IReview;
   }
 
+  /**
+   * Deletes a review from the database.
+   *
+   * @param {string} reviewId - The ID of the review to be deleted.
+   * @return {Promise<boolean>} A promise that resolves to true if the review is successfully deleted, or rejects with a ModelError if the deletion fails.
+   */
   static async deleteReview(reviewId: string) {
     const queryResult = await ReviewModel.deleteReview(reviewId)!;
     if (!queryResult) {
