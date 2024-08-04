@@ -4,6 +4,7 @@ import AuthenticateService from '../services/authenticate';
 import loggerWithNameSpace from '../utils/logger';
 import config from '../config';
 import { Roles } from '../enums/roles';
+import { ForbiddenError } from '../error/forbiddenError';
 
 const logger = loggerWithNameSpace('Auth Controller');
 export async function login(req: Request, res: Response, next: NextFunction) {
@@ -12,7 +13,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     const { accessToken, refreshTokenId, user } =
       await AuthenticateService.login(body);
     if (user.roleId == Roles.SUPERADMIN) {
-      throw new Error('Admin is not allowed');
+      throw new ForbiddenError('Admin is not allowed');
     }
     logger.info('Login Successful');
     res.cookie('refreshTokenId', refreshTokenId, {

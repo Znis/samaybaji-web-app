@@ -42,8 +42,7 @@ export async function getCartItems(
     logger.info(`Cart of userId ${userId} found`);
     return res.status(HttpStatusCode.OK).json(cart);
   } catch (error) {
-    logger.error('Cart fetch failed');
-    logger.error(`Error: `, error);
+    logger.error(`Cart fetch failed: `, error);
 
     next(error);
   }
@@ -60,8 +59,7 @@ export async function clearCart(
     logger.info(`Cart with cartId ${cartId} cleared`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Cleared Successfully');
   } catch (error) {
-    logger.error('Cart clear failed');
-    logger.error(`Error: `, error);
+    logger.error(`Cart clear failed: `, error);
     next(error);
   }
 }
