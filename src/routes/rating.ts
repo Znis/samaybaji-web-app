@@ -19,6 +19,7 @@ import {
 
 const ratingRouter = express();
 
+//Routes for Authenticated User
 ratingRouter.get(
   '/specific-rating/:targetId',
   authenticate,

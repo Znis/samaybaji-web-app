@@ -20,7 +20,7 @@ import {
 
 const reviewRouter = express();
 
-//for admin only
+//Route for Admin Only
 reviewRouter.get(
   '/all',
   authenticate,
@@ -29,20 +29,20 @@ reviewRouter.get(
   getAllReviews,
 );
 
-//user dashboard
+//Route for Everyone
+reviewRouter.get(
+  '/:targetId',
+  validateReqParams(reviewCRParamsSchema),
+  getReviewsByTargetId,
+);
+
+//Routes for Authenticated User
 reviewRouter.get(
   '/user',
   authenticate,
   authorize(Permissions.VIEW_REVIEW),
   authorizeCRUD,
   getReviewsByUserId,
-);
-
-//either restaurant or dish review
-reviewRouter.get(
-  '/:targetId',
-  validateReqParams(reviewCRParamsSchema),
-  getReviewsByTargetId,
 );
 
 reviewRouter.post(

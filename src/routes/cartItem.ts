@@ -3,7 +3,7 @@ import express from 'express';
 import { authenticate } from '../middleware/authenticate';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 import { validateReqBody } from '../middleware/validator';
-import cartItemSchema, { editCartItemSchema } from '../schema/cartItem';
+import { editCartItemSchema } from '../schema/cartItem';
 import {
   addCartItem,
   deleteCartItem,
@@ -12,6 +12,8 @@ import {
 import cartItemArraySchema from '../schema/cartItem';
 
 const cartItemRouter = express();
+
+//Routes for Authenticated User
 cartItemRouter.post(
   '/add',
   validateReqBody(cartItemArraySchema),

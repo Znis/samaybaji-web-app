@@ -1,11 +1,7 @@
 import { Permissions } from './../enums/permissions';
 import express from 'express';
 import { authenticate } from '../middleware/authenticate';
-import {
-  validateReqBody,
-  validateReqParams,
-  validateReqQuery,
-} from '../middleware/validator';
+import { validateReqBody, validateReqParams } from '../middleware/validator';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 import {
   createDish,
@@ -24,7 +20,7 @@ import {
 
 const dishRouter = express();
 
-//for everyone
+//Route for Everyone
 dishRouter.get('/all', getAllDishes);
 
 dishRouter.get('/:dishId', validateReqParams(dishIdParamsSchema), getDish);
@@ -35,6 +31,7 @@ dishRouter.get(
   getDishByMenuItemId,
 );
 
+//Routes for Authenticated User
 dishRouter.post(
   '/:menuItemId',
   validateReqParams(menuItemIdParamsSchema),

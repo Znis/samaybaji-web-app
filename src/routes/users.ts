@@ -19,7 +19,7 @@ import { authorize, authorizeCRUD } from '../middleware/authorize';
 
 const usersRouter = express();
 
-//for admin only
+//Route for Admin Only
 usersRouter.get(
   '/all',
   authenticate,
@@ -28,7 +28,10 @@ usersRouter.get(
   getAllUsers,
 );
 
+//Route for Everyone
 usersRouter.get('/', validateReqQuery(userIdQuerySchema), getUser);
+
+//Routes for Authenticated User
 usersRouter.get(
   '/role',
   validateReqQuery(userIdQuerySchema),

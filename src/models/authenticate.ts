@@ -1,5 +1,7 @@
+import loggerWithNameSpace from '../utils/logger';
 import { BaseModel } from './base';
 
+const logger = loggerWithNameSpace('Authenticate Model');
 export default class AuthenticateModel extends BaseModel {
   /**
    * Retrieves the refresh token associated with the given refresh token ID.
@@ -15,7 +17,7 @@ export default class AuthenticateModel extends BaseModel {
         .where('id', refreshTokenId)
         .first();
     } catch (error) {
-      console.log(error);
+      logger.error('Model error: ', error);
       return null;
     }
   }
@@ -42,7 +44,7 @@ export default class AuthenticateModel extends BaseModel {
         .into('users_tokens')
         .returning('id');
     } catch (error) {
-      console.log(error);
+      logger.error('Model error: ', error);
       return null;
     }
   }

@@ -23,7 +23,7 @@ import {
 
 const orderRouter = express();
 
-//only for admin
+//Route for Admin Only
 orderRouter.get(
   '/all',
   authenticate,
@@ -32,6 +32,7 @@ orderRouter.get(
   getAllOrders,
 );
 
+//Routes for Authenticated User
 orderRouter.get(
   '/',
   authenticate,

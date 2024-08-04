@@ -15,6 +15,8 @@ import {
 } from '../schema/orderItem';
 
 const orderItemRouter = express();
+
+//Routes for Authenticated User
 orderItemRouter.post(
   '/',
   validateReqBody(createOrderItemArraySchema),

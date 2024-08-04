@@ -1,11 +1,7 @@
 import { Permissions } from './../enums/permissions';
 import express from 'express';
 import { authenticate } from '../middleware/authenticate';
-import {
-  validateReqBody,
-  validateReqParams,
-  validateReqQuery,
-} from '../middleware/validator';
+import { validateReqBody, validateReqParams } from '../middleware/validator';
 import { authorize, authorizeCRUD } from '../middleware/authorize';
 import {
   createMenuItem,
@@ -19,15 +15,15 @@ import {
   createMenuItemBodySchema,
   editMenuItemBodySchema,
   menuItemIdParamsSchema,
-  menuItemIdQuerySchema,
 } from '../schema/menuItem';
 
 const menuItemRouter = express();
 
-//for everyone
+//Route for Everyone
 menuItemRouter.get('/', getAllMenuItems);
 menuItemRouter.get('/popular', getPopularMenuItems);
 
+//Routes for Authenticated User
 menuItemRouter.post(
   '/:menuItemId',
   validateReqParams(menuItemIdParamsSchema),

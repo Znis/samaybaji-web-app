@@ -6,7 +6,7 @@ import { clearCart, getAllCarts, getCartItems } from '../controllers/cart';
 
 const cartRouter = express();
 
-//only for admin
+//Route for Admin Only
 cartRouter.get(
   '/all',
   authenticate,
@@ -15,6 +15,7 @@ cartRouter.get(
   getAllCarts,
 );
 
+//Routes for Authenticated User
 cartRouter.get(
   '/',
   authenticate,

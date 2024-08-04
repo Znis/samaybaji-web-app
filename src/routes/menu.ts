@@ -14,9 +14,10 @@ import {
 
 const menuRouter = express();
 
-//for everyone
+//Route for Everyone
 menuRouter.get('/all', getAllMenus);
 
+//Routes for Authenticated User
 menuRouter.get(
   '/',
   authenticate,

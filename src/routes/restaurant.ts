@@ -19,7 +19,7 @@ import {
 
 const restaurantRouter = express();
 
-//for everyone
+//Routes for Everyone
 restaurantRouter.get('/all', getAllRestaurants);
 restaurantRouter.get(
   '/:restaurantId',
@@ -27,6 +27,7 @@ restaurantRouter.get(
   getRestaurantInfo,
 );
 
+//Routes for Authenticated User
 restaurantRouter.get(
   '/',
   authenticate,
