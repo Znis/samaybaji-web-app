@@ -202,23 +202,33 @@ export default class OrderService {
     let hasPending = false;
     let hasCooking = false;
     let hasReady = false;
+    let hasCancelled = true;
 
     for (const item of orderItems) {
       switch (item.status) {
         case OrderItemStatus.PENDING:
           hasPending = true;
+          hasCancelled = false;
           break;
         case OrderItemStatus.COOKING:
           hasCooking = true;
+          hasCancelled = false;
           break;
         case OrderItemStatus.READY:
           hasReady = true;
+          hasCancelled = false;
+          break;
+        case OrderItemStatus.CANCELLED:
           break;
       }
     }
 
     if (orderItems.length === 0) {
       return OrderStatus.PENDING;
+    }
+
+    if (hasCancelled) {
+      return OrderStatus.CANCELLED;
     }
 
     if (hasPending) {
@@ -233,10 +243,6 @@ export default class OrderService {
       return OrderStatus.EN_ROUTE;
     }
 
-    if (!hasPending && !hasCooking && !hasReady) {
-      return OrderStatus.DELIVERED;
-    }
-
-    return OrderStatus.CANCELLED;
+    return OrderStatus.DELIVERED;
   }
 }
