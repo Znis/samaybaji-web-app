@@ -49,9 +49,10 @@ To set up the project locally, follow these steps:
 ### Frontend
 Make sure you have Node.js and npm installed on your machine.    
 
-*Configure the backend node server url in the src/api-routes/base.ts.*
+Clone the repository.  
+*Configure the backend node server url in the src/api-routes/base.ts.*  
 
-Clone the repository and run the following command from project root directory.
+Run the following command from project root directory.
 1. **Switch to frontend-main branch (default)**
    ```bash
    git checkout frontend-main
@@ -74,8 +75,10 @@ Make sure you have Node.js and npm and docker installed on your machine.
 Clone the repository.
 
 #### Configuration
-1. **Environment Variables**: Create a `.env` file in the project root directory and configure the necessary environment variables. Refer to the `.env.example` file for required variables.  
-Set the 'MINIO_ENDPOINT' in the `.env` file as `localhost` for locally running the bucket.
+1. **Environment Variables**: Create a `.env` file in the project root directory and configure the necessary environment variables. Refer to the `.env.example` file for required variables.    
+Set the 'MINIO_ENDPOINT' in the `.env` file as `localhost` for locally running the bucket.    
+Set the 'DB_NAME' in the `.env` file as `samaybaji` and 'DB_CLIENT' as `pg` for creating the database.   If not, please change the desired db name in the `create_db.sql` file at the root directory as well.    
+
 
 2. **Docker Compose**: The `docker-compose.yml` file is already configured to set up the necessary services (PostgreSQL, and MinIO). Adjust the configuration as needed using `.env`.
 
