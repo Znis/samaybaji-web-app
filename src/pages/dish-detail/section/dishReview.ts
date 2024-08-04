@@ -85,7 +85,7 @@ export default class DishReview {
   static setEventListeners() {
     const toggleButton = this.element.querySelector(
       '#add-review-toggle-button',
-    );
+    ) as HTMLButtonElement;
     const postButton = this.element.querySelector(
       '#post-review-button',
     ) as HTMLButtonElement;
@@ -156,17 +156,18 @@ export default class DishReview {
     });
 
     if (toggleButton && reviewInputBox && reviewContainer && postButton) {
-      toggleButton.addEventListener('click', () => {
+      toggleButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         reviewInputBox.classList.toggle('visible');
         postButton.classList.toggle('visible');
         if (toggleButton.innerHTML === 'Add Review') {
           toggleButton.innerHTML = 'Cancel';
-          return;
-        }
-        if (toggleButton.innerHTML === 'Edit Review') {
-          toggleButton.innerHTML = 'Cancel';
+        } else if (toggleButton.innerHTML === 'Cancel') {
+          toggleButton.innerHTML = toggleButton.dataset.previousState || '';
         } else {
-          toggleButton.innerHTML = 'Edit Review';
+          toggleButton.dataset.previousState = toggleButton.innerHTML;
+          toggleButton.innerHTML = 'Cancel';
         }
       });
     }

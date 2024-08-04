@@ -52,7 +52,7 @@ export default class Rating {
 
       if (ownRating.length) rating.rating = ownRating[0].rating;
     }
-    this.rating = rating.rating || -1;
+    this.rating = rating.rating - 1;
     this.ratingCount = rating.count;
     this.appendStars();
     this.render();
@@ -128,7 +128,7 @@ export default class Rating {
         await makeApiCall(
           editRating,
           {
-            rating: index,
+            rating: index + 1,
           } as IEditRating,
           ownRating[0].id,
         );
@@ -142,7 +142,7 @@ export default class Rating {
         await makeApiCall(
           createRating,
           {
-            rating: index,
+            rating: index + 1,
             targetType: ReviewTargetType.DISH,
           } as ICreateRating,
           this.dishId,
