@@ -47,7 +47,9 @@ Each role has a dedicated dashboard tailored to its specific permissions and fun
 
 To set up the project locally, follow these steps:  
 ### Frontend
-Make sure you have Node.js and npm installed on your machine.  
+Make sure you have Node.js and npm installed on your machine.    
+
+*Configure the backend node server url in the src/api-routes/base.ts.*
 
 Clone the repository and run the following command from project root directory.
 1. **Switch to frontend-main branch (default)**
