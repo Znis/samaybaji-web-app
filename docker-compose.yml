@@ -45,46 +45,6 @@ services:
     networks:
       - mynetwork
 
-  backend:
-    container_name: backend
-    image: znis/samaybaji_backend:latest
-    environment:
-      - DB_NAME=${DB_NAME}
-      - DB_HOST=postgres
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_USER=${DB_USER}
-      - DB_PORT=${DB_PORT}
-      - JWT_SECRET=${JWT_SECRET}
-      - PORT=${PORT}
-      - DB_CLIENT=${DB_CLIENT}
-      - MINIO_ENDPOINT=${MINIO_ENDPOINT}
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-      - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
-
-    ports:
-      - '${PORT}:${PORT}'
-    command: bash -c "npm run migrate && npm run seed && npm start"
-    restart: always
-    depends_on:
-      - postgres
-      - minio
-    networks:
-      - mynetwork
-
-  frontend:
-    container_name: frontend
-    image: znis/samaybaji_frontend:latest
-    ports:
-      - '${FRONTEND_PORT}:${FRONTEND_PORT}'
-    restart: always
-    depends_on:
-      - postgres
-      - minio
-      - backend
-    networks:
-      - mynetwork
-
 networks:
   mynetwork:
     driver: bridge
