@@ -1,8 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import { StateManager } from './state-management/stateManager';
 import { fetchAccessToken } from './api-routes/auth';
+import { baseUrl } from './api-routes/base';
 
-const baseUrl = 'http://localhost:8000';
 const getUploadUrlRoute = `/upload-url/`;
 
 export const getUploadUrl = async () => {
