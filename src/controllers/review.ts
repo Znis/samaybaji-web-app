@@ -7,6 +7,14 @@ import loggerWithNameSpace from '../utils/logger';
 
 const logger = loggerWithNameSpace('Review Controller');
 
+/**
+ * Controller function to retrieve all reviews and returns them in the response.
+ *
+ * @param {Request} req - The incoming HTTP request.
+ * @param {Response} res - The outgoing HTTP response.
+ * @param {NextFunction} next - The next middleware function in the stack.
+ * @return {Promise<void>} A promise that resolves when the response has been sent.
+ */
 export async function getAllReviews(
   req: Request,
   res: Response,
@@ -25,6 +33,15 @@ export async function getAllReviews(
     next(error);
   }
 }
+/**
+ * Controller function to retrieve the reviews made by a user for both dish and restaurant targets.
+ *
+ * @param {Request} req - The incoming HTTP request.
+ * @param {Response} res - The outgoing HTTP response.
+ * @param {NextFunction} next - The next middleware function in the stack.
+ * @return {Promise<void>} A promise that resolves when the response has been sent.
+ * @throws {BaseError} If no reviews are found.
+ */
 export async function getReviewsByUserId(
   req: Request,
   res: Response,
@@ -45,6 +62,15 @@ export async function getReviewsByUserId(
   }
 }
 
+/**
+ * Controller function to retrieve the reviews made for a specific target ID.
+ *
+ * @param {Request} req - The incoming HTTP request.
+ * @param {Response} res - The outgoing HTTP response.
+ * @param {NextFunction} next - The next middleware function in the stack.
+ * @return {Promise<void>} A promise that resolves when the response has been sent.
+ * @throws {BaseError} If no review is found.
+ */
 export async function getReviewsByTargetId(
   req: Request,
   res: Response,
@@ -55,11 +81,9 @@ export async function getReviewsByTargetId(
 
     const review = await ReviewService.getReviewsByTargetId(targetId);
     if (!review) {
-      logger.error(`No Review found with Id ${targetId}`);
       next(new BaseError('No Review Found'));
       return;
     }
-    logger.info(`Reviews for Id ${targetId} found`);
     return res.status(HttpStatusCode.OK).json(review);
   } catch (error) {
     logger.error('Review fetch failed');
@@ -69,6 +93,14 @@ export async function getReviewsByTargetId(
   }
 }
 
+/**
+ * Controller function to create a new review and returns the created review data.
+ *
+ * @param {Request} req - The incoming HTTP request.
+ * @param {Response} res - The outgoing HTTP response.
+ * @param {NextFunction} next - The next middleware function in the stack.
+ * @return {Promise<void>} A promise that resolves when the response has been sent.
+ */
 export async function createReview(
   req: Request,
   res: Response,
@@ -83,7 +115,6 @@ export async function createReview(
       targetId,
       userId,
     );
-    logger.info(`New Review for ${reviewData.targetType} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {
     logger.error('Review creation failed');
@@ -91,6 +122,14 @@ export async function createReview(
     next(error);
   }
 }
+/**
+ * Controller function to edit an existing review based on the provided review ID and review data.
+ *
+ * @param {Request} req - The incoming HTTP request.
+ * @param {Response} res - The outgoing HTTP response.
+ * @param {NextFunction} next - The next middleware function in the stack.
+ * @return {Promise<void>} A promise that resolves when the response has been sent.
+ */
 export async function editReview(
   req: Request,
   res: Response,
@@ -100,7 +139,6 @@ export async function editReview(
     const reviewId = req.params.reviewId as string;
     const reviewData = req.body;
     const response = await ReviewService.editReview(reviewId, reviewData);
-    logger.info(`Review of reviewId ${reviewId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Review edit failed');
@@ -108,6 +146,15 @@ export async function editReview(
     next(error);
   }
 }
+/**
+ * Controller function to delete a review from the database based on the provided review ID.
+ *
+ * @param {Request} req - The incoming HTTP request.
+ * @param {Response} res - The outgoing HTTP response.
+ * @param {NextFunction} next - The next middleware function in the stack.
+ * @return {Promise<void>} A promise that resolves when the review is successfully deleted.
+ * @throws {Error} If an error occurs during the deletion process.
+ */
 export async function deleteReview(
   req: Request,
   res: Response,
@@ -116,7 +163,6 @@ export async function deleteReview(
   try {
     const reviewId = req.params.reviewId as string;
     await ReviewService.deleteReview(reviewId);
-    logger.info(`Review of reviewId ${reviewId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Review deletion failed');

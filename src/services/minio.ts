@@ -1,5 +1,7 @@
 import { MinioModel } from '../models/minio';
+import loggerWithNameSpace from '../utils/logger';
 
+const logger = loggerWithNameSpace('Minio Service');
 export default class MinioService {
   /**
    * Generates a presigned URL for uploading an object to a MinIO bucket.
@@ -30,8 +32,8 @@ export default class MinioService {
   static async getReadUrl(fileName: string) {
     try {
       return MinioModel.getReadUrl(fileName);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      logger.error('Error reading url of the object: ', error);
     }
   }
 
@@ -44,8 +46,8 @@ export default class MinioService {
   static async deleteObject(fileName: string) {
     try {
       return MinioModel.deleteObject(fileName);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      logger.error('Error deleting object: ', error);
     }
   }
 }

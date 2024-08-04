@@ -6,6 +6,14 @@ import loggerWithNameSpace from '../utils/logger';
 
 const logger = loggerWithNameSpace('Order Item Controller');
 
+/**
+ * Controller function to add an order item to the database.
+ *
+ * @param {Request} req - The request object containing the order item data and order ID.
+ * @param {Response} res - The response object used to send the created order item.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the order item is created and the response is sent.
+ */
 export async function addOrderItem(
   req: Request,
   res: Response,
@@ -18,7 +26,6 @@ export async function addOrderItem(
       orderId,
       orderItemData,
     );
-    logger.info(`New order item for orderId ${orderId} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {
     logger.error('Order item creation failed');
@@ -26,6 +33,14 @@ export async function addOrderItem(
     next(error);
   }
 }
+/**
+ * Controller function to edit an order item with the specified orderItemId using the provided orderItemData.
+ *
+ * @param {Request} req - The request object containing the orderItemId and orderItemData.
+ * @param {Response} res - The response object used to send the edited order item.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the order item is edited and the response is sent.
+ */
 export async function editOrderItem(
   req: Request,
   res: Response,
@@ -38,7 +53,6 @@ export async function editOrderItem(
       orderItemId,
       orderItemData,
     );
-    logger.info(`Order Item with orderItemId ${orderItemId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Order item edit failed');
@@ -46,6 +60,14 @@ export async function editOrderItem(
     next(error);
   }
 }
+/**
+ * Controller function to delete an order item with the specified orderItemId.
+ *
+ * @param {Request} req - The request object containing the orderItemId.
+ * @param {Response} res - The response object used to send the deletion result.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the order item is deleted and the response is sent.
+ */
 export async function deleteOrderItem(
   req: Request,
   res: Response,
@@ -54,7 +76,6 @@ export async function deleteOrderItem(
   try {
     const orderItemId = req.params.orderItemId as string;
     await OrderItemService.deleteOrderItem(orderItemId);
-    logger.info(`Order item with orderItemId ${orderItemId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Order item deletion failed');

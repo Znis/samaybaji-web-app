@@ -8,6 +8,12 @@ import { Roles } from '../enums/roles';
 
 const logger = loggerWithNameSpace('Authorize Middleware');
 
+/**
+ * Checks if the current user has the required permission to perform an operation.
+ *
+ * @param {string} permission - The required permission to check for.
+ * @return {async (req: Request, res: Response, next: NextFunction) => void} A middleware function that checks the user's permission and calls the next function if permitted.
+ */
 export function authorize(permission: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -28,6 +34,14 @@ export function authorize(permission: string) {
   };
 }
 
+/**
+ * Middleware function that authorizes CRUD operations based on the user's role and assigns query parameters.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next function in the middleware chain.
+ * @return {Promise<void>} - A promise that resolves when the authorization and query parameter assignment are complete.
+ */
 export async function authorizeCRUD(
   req: Request,
   res: Response,

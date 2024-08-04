@@ -19,10 +19,10 @@ export const bucketName = config.minio.MINIO_BUCKET_NAME;
 async function makeBucket() {
   const exists = await minioClient.bucketExists(bucketName);
   if (exists) {
-    console.log('bucket exists: ', bucketName);
+    console.log('Bucket Exists: ', bucketName);
   } else {
     await minioClient.makeBucket(bucketName);
-    console.log('bucket created: ', bucketName);
+    console.log('Bucket Created: ', bucketName);
   }
 }
 

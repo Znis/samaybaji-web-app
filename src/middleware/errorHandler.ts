@@ -11,12 +11,28 @@ import { BaseError } from '../error/baseError';
 
 const logger = loggerWithNameSpace('Error Handler Middleware');
 
+/**
+ * Handles the case when a resource is not found.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @return {Response} The HTTP response with a status code of 404 and a JSON object containing the error message.
+ */
 export function notFoundError(req: Request, res: Response) {
   logger.error('Resource not found');
   return res.status(HttpStatusCode.NOT_FOUND).json({
     message: 'Resource Not Found',
   });
 }
+/**
+ * Handles generic errors and returns appropriate HTTP response.
+ *
+ * @param {Error} error - The error object.
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next function.
+ * @return {Response} The HTTP response.
+ */
 export function genericErrorHandler(
   error: Error,
   req: Request,

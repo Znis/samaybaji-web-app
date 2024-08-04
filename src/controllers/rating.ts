@@ -7,6 +7,14 @@ import loggerWithNameSpace from '../utils/logger';
 
 const logger = loggerWithNameSpace('Rating Controller');
 
+/**
+ * Controller function to retrieve a specific rating for a given target and user.
+ *
+ * @param {Request} req - The request object containing the user ID and target ID.
+ * @param {Response} res - The response object to send the rating data.
+ * @param {NextFunction} next - The next function in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the rating data is sent in the response.
+ */
 export async function getSpecificRating(
   req: Request,
   res: Response,
@@ -28,6 +36,14 @@ export async function getSpecificRating(
     next(error);
   }
 }
+/**
+ * Controller function to retrieve the ratings for a given target ID.
+ *
+ * @param {Request} req - The request object containing the target ID.
+ * @param {Response} res - The response object to send the rating data.
+ * @param {NextFunction} next - The next function in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the rating data is sent in the response.
+ */
 export async function getTargetRatings(
   req: Request,
   res: Response,
@@ -41,7 +57,6 @@ export async function getTargetRatings(
       next(new BaseError('No Rating Found'));
       return;
     }
-    logger.info(`Rating for Id ${targetId} found`);
     return res.status(HttpStatusCode.OK).json(rating);
   } catch (error) {
     logger.error('Rating fetch failed');
@@ -51,6 +66,15 @@ export async function getTargetRatings(
   }
 }
 
+/**
+ * Controller function to create a new rating for a target and user.
+ *
+ * @param {Request} req - The request object containing the target ID and user ID in the query parameters,
+ * and the rating data in the request body.
+ * @param {Response} res - The response object to send the created rating data.
+ * @param {NextFunction} next - The next function in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the rating data is sent in the response.
+ */
 export async function createRating(
   req: Request,
   res: Response,
@@ -65,7 +89,6 @@ export async function createRating(
       targetId,
       userId,
     );
-    logger.info(`New Rating for ${ratingData.targetType} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {
     logger.error('Rating creation failed');
@@ -73,6 +96,14 @@ export async function createRating(
     next(error);
   }
 }
+/**
+ * Controller function to edit a rating based on the provided ratingId and ratingData.
+ *
+ * @param {Request} req - The request object containing the ratingId and ratingData.
+ * @param {Response} res - The response object to send the edited rating data.
+ * @param {NextFunction} next - The next function in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the edited rating data is sent in the response.
+ */
 export async function editRating(
   req: Request,
   res: Response,
@@ -82,7 +113,6 @@ export async function editRating(
     const ratingId = req.params.ratingId as string;
     const ratingData = req.body;
     const response = await RatingService.editRating(ratingId, ratingData);
-    logger.info(`Rating of ratingId ${ratingId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Rating edit failed');
@@ -90,6 +120,14 @@ export async function editRating(
     next(error);
   }
 }
+/**
+ * Controller function to delete a rating based on the provided ratingId.
+ *
+ * @param {Request} req - The request object containing the ratingId.
+ * @param {Response} res - The response object to send the deletion status.
+ * @param {NextFunction} next - The next function in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the rating is deleted.
+ */
 export async function deleteRating(
   req: Request,
   res: Response,
@@ -98,7 +136,6 @@ export async function deleteRating(
   try {
     const ratingId = req.params.RatingId as string;
     await RatingService.deleteRating(ratingId);
-    logger.info(`Rating of ratingId ${ratingId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Rating deletion failed');

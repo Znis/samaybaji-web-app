@@ -36,7 +36,6 @@ export default class DishService {
    */
   static async getDishByMenuItemId(menuItemId: string) {
     const dish = await DishModel.getDishByMenuItemId(menuItemId);
-    console.log(dish);
     if (!dish) {
       return null;
     }

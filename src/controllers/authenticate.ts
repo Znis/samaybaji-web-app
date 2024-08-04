@@ -7,6 +7,14 @@ import { Roles } from '../enums/roles';
 import { ForbiddenError } from '../error/forbiddenError';
 
 const logger = loggerWithNameSpace('Auth Controller');
+/**
+ * Async function for user login.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next function.
+ * @return {Promise<Response>} The response with access token and user data.
+ */
 export async function login(req: Request, res: Response, next: NextFunction) {
   try {
     const { body } = req;
@@ -27,10 +35,19 @@ export async function login(req: Request, res: Response, next: NextFunction) {
       .json({ accessToken: accessToken, user: user });
   } catch (error) {
     logger.error('Login Failed');
+    logger.error('Error: ', error);
     next(error);
   }
 }
 
+/**
+ * Async function for admin login.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next function.
+ * @return {Promise<Response>} The response with access token and user data.
+ */
 export async function adminLogin(
   req: Request,
   res: Response,
@@ -48,11 +65,20 @@ export async function adminLogin(
       .json({ accessToken: accessToken, user: user });
   } catch (error) {
     logger.error('Login Failed');
+    logger.error('Error: ', error);
     next(error);
   }
 }
 
-//function to generate a new accesstoken with the refreshtoken
+/**
+ * Asynchronously generates a new access token using the provided refresh token ID from the request cookies.
+ *
+ * @param {Request} req - The request object containing the refresh token ID in the cookies.
+ * @param {Response} res - The response object used to send the new access token.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the new access token is successfully generated and sent in the response.
+ * @throws {Error} If there is an error generating the new access token.
+ */
 export async function refresh(req: Request, res: Response, next: NextFunction) {
   try {
     const { refreshTokenId } = req.cookies;
@@ -61,6 +87,7 @@ export async function refresh(req: Request, res: Response, next: NextFunction) {
     return res.status(HttpStatusCode.OK).json(tokenResponse);
   } catch (error) {
     logger.error('New access token generation failed');
+    logger.error('Error: ', error);
     next(error);
   }
 }

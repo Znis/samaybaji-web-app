@@ -8,6 +8,14 @@ import loggerWithNameSpace from '../utils/logger';
 
 const logger = loggerWithNameSpace('Authenticate Middleware');
 
+/**
+ * Authenticates the request by verifying the JWT token in the Authorization header.
+ *
+ * @param {Request} req - The Express request object.
+ * @param {Response} res - The Express response object.
+ * @param {NextFunction} next - The Express next function.
+ * @return {void} If the token is valid, the decoded user object is added to the request object and the next function is called. If the token is invalid or missing, an appropriate error response is sent.
+ */
 export function authenticate(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
   if (!authorization) {

@@ -7,6 +7,14 @@ import loggerWithNameSpace from '../utils/logger';
 
 const logger = loggerWithNameSpace('Restaurant Controller');
 
+/**
+ * Controller function to retrieve all restaurants and sends them as a JSON response.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next function in the middleware chain.
+ * @return {Promise<void>} JSON response containing all restaurants.
+ */
 export async function getAllRestaurants(
   req: Request,
   res: Response,
@@ -25,6 +33,14 @@ export async function getAllRestaurants(
     next(error);
   }
 }
+/**
+ * Controller function to get restaurant information based on the provided restaurantId.
+ *
+ * @param {Request} req - The request object containing the restaurantId parameter.
+ * @param {Response} res - The response object used to send the restaurant information.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves with the restaurant information if found.
+ */
 export async function getRestaurantInfo(
   req: Request,
   res: Response,
@@ -34,11 +50,9 @@ export async function getRestaurantInfo(
     const restaurantId = req.params.restaurantId as string;
     const restaurant = await RestaurantService.getRestaurantInfo(restaurantId);
     if (!restaurant) {
-      logger.error(`No restaurant found for restaurantId ${restaurantId}`);
       next(new BaseError('No Restaurant Found'));
       return;
     }
-    logger.info(`Restaurant for restaurantId ${restaurantId} found`);
     return res.status(HttpStatusCode.OK).json(restaurant);
   } catch (error) {
     logger.error('Restaurant fetch failed');
@@ -47,6 +61,15 @@ export async function getRestaurantInfo(
     next(error);
   }
 }
+/**
+ * Controller function to get a restaurant based on the provided userId.
+ *
+ * @param {Request} req - The request object containing the userId query parameter.
+ * @param {Response} res - The response object used to send the restaurant information.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves with the restaurant information if found.
+ * @throws {BaseError} If no restaurant is found for the specified userId.
+ */
 export async function getRestaurant(
   req: Request,
   res: Response,
@@ -56,11 +79,9 @@ export async function getRestaurant(
     const userId = req.query.userId as string;
     const restaurant = await RestaurantService.getRestaurant(userId);
     if (!restaurant) {
-      logger.error(`No restaurant found for userId ${userId}`);
       next(new BaseError('No Restaurant Found'));
       return;
     }
-    logger.info(`Restaurant for userId ${userId} found`);
     return res.status(HttpStatusCode.OK).json(restaurant);
   } catch (error) {
     logger.error('Restaurant fetch failed');
@@ -70,6 +91,14 @@ export async function getRestaurant(
   }
 }
 
+/**
+ * Controller function to create a new restaurant for a user.
+ *
+ * @param {Request} req - The request object containing the restaurant data and userId.
+ * @param {Response} res - The response object used to send the created restaurant data.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the restaurant is created and sent as a response.
+ */
 export async function createRestaurant(
   req: Request,
   res: Response,
@@ -82,7 +111,6 @@ export async function createRestaurant(
       userId,
       restaurantData,
     );
-    logger.info(`New restaurant for userId ${userId} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {
     logger.error('Restaurant creation failed');
@@ -90,6 +118,14 @@ export async function createRestaurant(
     next(error);
   }
 }
+/**
+ * Controller function to edit a restaurant in the database with the given ID using the provided data.
+ *
+ * @param {Request} req - The request object containing the restaurant ID and data to update.
+ * @param {Response} res - The response object used to send the edited restaurant data.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the restaurant is edited and sent as a response.
+ */
 export async function editRestaurant(
   req: Request,
   res: Response,
@@ -102,7 +138,6 @@ export async function editRestaurant(
       restaurantId,
       restaurantData,
     );
-    logger.info(`Restaurant of restaurantId ${restaurantId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Restaurant edit failed');
@@ -110,6 +145,14 @@ export async function editRestaurant(
     next(error);
   }
 }
+/**
+ * Controller function to delete a restaurant from the database based on the provided restaurantId.
+ *
+ * @param {Request} req - The request object containing the restaurantId query parameter.
+ * @param {Response} res - The response object used to send the deletion status.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the restaurant is deleted.
+ */
 export async function deleteRestaurant(
   req: Request,
   res: Response,
@@ -118,7 +161,6 @@ export async function deleteRestaurant(
   try {
     const restaurantId = req.query.restaurantId as string;
     await RestaurantService.deleteRestaurant(restaurantId);
-    logger.info(`Restaurant of restaurantId ${restaurantId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Restaurant deletion failed');

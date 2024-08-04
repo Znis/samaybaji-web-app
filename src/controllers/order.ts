@@ -7,6 +7,14 @@ import loggerWithNameSpace from '../utils/logger';
 
 const logger = loggerWithNameSpace('Order Controller');
 
+/**
+ * Controller function to retrieve all orders.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next function.
+ * @return {Promise<void>} A promise that resolves when the function is complete.
+ */
 export async function getAllOrders(
   req: Request,
   res: Response,
@@ -25,6 +33,14 @@ export async function getAllOrders(
     next(error);
   }
 }
+/**
+ * Controller function to retrieve all orders associated with a specific user.
+ *
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next function.
+ * @return {Promise<void>} A promise that resolves when the function is complete.
+ */
 export async function getOrdersByUserId(
   req: Request,
   res: Response,
@@ -44,6 +60,15 @@ export async function getOrdersByUserId(
     next(error);
   }
 }
+/**
+ * Controller function to retrieve all orders associated with a specific restaurant.
+ *
+ * @param {Request} req - The request object containing the restaurantId query parameter.
+ * @param {Response} res - The response object used to send the orders.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the orders are retrieved and sent.
+ * @throws {BaseError} If no orders are found for the specified restaurant.
+ */
 export async function getOrdersByRestaurantId(
   req: Request,
   res: Response,
@@ -64,6 +89,15 @@ export async function getOrdersByRestaurantId(
   }
 }
 
+/**
+ * Controller function to retrieve the order items associated with a specific order ID.
+ *
+ * @param {Request} req - The request object containing the orderId query parameter.
+ * @param {Response} res - The response object used to send the order items.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the order items are retrieved and sent.
+ * @throws {BaseError} If no order items are found for the specified order ID.
+ */
 export async function getOrder(
   req: Request,
   res: Response,
@@ -73,11 +107,9 @@ export async function getOrder(
     const orderId = req.query.orderId as string;
     const orderItems = await OrderService.getOrder(orderId);
     if (!orderItems) {
-      logger.error(`No order found of orderId ${orderId}`);
       next(new BaseError('No order Found'));
       return;
     }
-    logger.info(`Menu items of orderId ${orderId} found`);
     return res.status(HttpStatusCode.OK).json(orderItems);
   } catch (error) {
     logger.error('Order fetch failed');
@@ -87,6 +119,15 @@ export async function getOrder(
   }
 }
 
+/**
+ * Controller function to create a new order for a user.
+ *
+ * @param {Request} req - The request object containing the order data and user ID.
+ * @param {Response} res - The response object used to send the created order.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the order is created and sent.
+ * @throws {Error} If there is an error creating the order.
+ */
 export async function createOrder(
   req: Request,
   res: Response,
@@ -96,7 +137,6 @@ export async function createOrder(
     const orderData = req.body;
     const userId = req.query.userId as string;
     const response = await OrderService.createOrder(userId, orderData);
-    logger.info(`New order for userId ${userId} created`);
     return res.status(HttpStatusCode.CREATED).json({ created: response });
   } catch (error) {
     logger.error('Order creation failed');
@@ -104,6 +144,15 @@ export async function createOrder(
     next(error);
   }
 }
+/**
+ * Controller function to edit an existing order based on the provided order ID and updated order data.
+ *
+ * @param {Request} req - The request object containing the order ID and updated order data.
+ * @param {Response} res - The response object used to send the edited order.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the order is edited and sent.
+ * @throws {Error} If there is an error editing the order.
+ */
 export async function editOrder(
   req: Request,
   res: Response,
@@ -113,7 +162,6 @@ export async function editOrder(
     const orderId = req.params.orderId as string;
     const orderData = req.body;
     const response = await OrderService.editOrder(orderId, orderData);
-    logger.info(`Order with orderId ${orderId} edited`);
     return res.status(HttpStatusCode.OK).json({ edited: response });
   } catch (error) {
     logger.error('Order edit failed');
@@ -121,6 +169,15 @@ export async function editOrder(
     next(error);
   }
 }
+/**
+ * Controller function to delete an order based on the provided order ID.
+ *
+ * @param {Request} req - The request object containing the order ID.
+ * @param {Response} res - The response object used to send the deletion status.
+ * @param {NextFunction} next - The next function to be called in the middleware chain.
+ * @return {Promise<void>} A promise that resolves when the order is deleted and the response is sent.
+ * @throws {Error} If there is an error deleting the order.
+ */
 export async function deleteOrder(
   req: Request,
   res: Response,
@@ -129,7 +186,6 @@ export async function deleteOrder(
   try {
     const orderId = req.params.orderId as string;
     await OrderService.deleteOrder(orderId);
-    logger.info(`Order with orderId ${orderId} deleted`);
     return res.status(HttpStatusCode.NO_CONTENT).json('Deleted Successfully');
   } catch (error) {
     logger.error('Order deletion failed');

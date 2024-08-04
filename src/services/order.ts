@@ -103,7 +103,6 @@ export default class OrderService {
         return { ...order, orderItems: orderItem };
       }),
     );
-    console.log(orderWithOrderItem);
     return orderWithOrderItem;
   }
 
