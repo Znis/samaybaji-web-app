@@ -34,6 +34,7 @@ app.use(
         callback(new Error('Not Allowed'));
       }
     },
+    credentials: true,
   }),
 );
 
