@@ -26,113 +26,109 @@ export default class AuthCard {
     return this.element;
   }
 
+  static get innerElements() {
+    return {
+      signupButton: document.getElementById('signup') as HTMLElement,
+      signinButton: document.getElementById('signin') as HTMLElement,
+      crossButtonRight: document.getElementById(
+        'auth-card-cross-button-right',
+      ) as HTMLElement,
+      crossButtonLeft: document.getElementById(
+        'auth-card-cross-button-left',
+      ) as HTMLElement,
+      passwordVisibility: document.getElementsByName(
+        'toggle-password',
+      ) as NodeListOf<HTMLElement>,
+      activeBox: document.querySelector(
+        '.auth-card__active-box',
+      ) as HTMLElement,
+      signinForm: this.element.querySelector(
+        '.auth-card__form--signin',
+      ) as HTMLFormElement,
+      signupForm: this.element.querySelector(
+        '.auth-card__form--signup',
+      ) as HTMLFormElement,
+      emailInput: this.element.querySelector(
+        '#login-email',
+      ) as HTMLInputElement,
+      passwordInput: this.element.querySelector(
+        '#login-password',
+      ) as HTMLInputElement,
+      fullNameInput: this.element.querySelector(
+        '#register-fullname',
+      ) as HTMLInputElement,
+      registerEmailInput: this.element.querySelector(
+        '#register-email',
+      ) as HTMLInputElement,
+      registerPasswordInput: this.element.querySelector(
+        '#register-password',
+      ) as HTMLInputElement,
+      confirmPasswordInput: this.element.querySelector(
+        '#register-confirm-password',
+      ) as HTMLInputElement,
+      phoneNumberInput: this.element.querySelector(
+        '#register-phone',
+      ) as HTMLInputElement,
+      emailError: this.element.querySelector(
+        '#login-email-validate-error',
+      ) as HTMLDivElement,
+      passwordError: this.element.querySelector(
+        '#login-password-validate-error',
+      ) as HTMLDivElement,
+      loginResponseMessage: this.element.querySelector(
+        '#login-response-message',
+      ) as HTMLDivElement,
+      fullNameError: this.element.querySelector(
+        '#register-fullname-validate-error',
+      ) as HTMLDivElement,
+      registerEmailError: this.element.querySelector(
+        '#register-email-validate-error',
+      ) as HTMLDivElement,
+      registerPasswordError: this.element.querySelector(
+        '#register-password-validate-error',
+      ) as HTMLDivElement,
+      confirmPasswordError: this.element.querySelector(
+        '#register-confirm-password-validate-error',
+      ) as HTMLDivElement,
+      phoneError: this.element.querySelector(
+        '#register-phone-validate-error',
+      ) as HTMLDivElement,
+      registerResponseMessage: this.element.querySelector(
+        '#register-response-message',
+      ) as HTMLDivElement,
+      loginButton: this.element.querySelector(
+        '#login-button',
+      ) as HTMLButtonElement,
+      registerButton: this.element.querySelector(
+        '#register-button',
+      ) as HTMLButtonElement,
+    };
+  }
   static setupEventListeners() {
-    const signupButton = document.getElementById('signup');
-    const signinButton = document.getElementById('signin');
-    const crossButtonRight = document.getElementById(
-      'auth-card-cross-button-right',
-    );
-    const crossButtonLeft = document.getElementById(
-      'auth-card-cross-button-left',
-    );
-    const passwordVisibility = document.getElementsByName('toggle-password');
-    const activeBox = document.querySelector(
-      '.auth-card__active-box',
-    ) as HTMLElement;
-    const signinForm = this.element.querySelector(
-      '.auth-card__form--signin',
-    ) as HTMLElement;
-    const signupForm = this.element.querySelector(
-      '.auth-card__form--signup',
-    ) as HTMLElement;
+    this.innerElements.signupButton.addEventListener('click', () => {
+      this.innerElements.activeBox.style.transform = 'translateX(80%)';
+      this.innerElements.signinForm.classList.add('auth-card__form--hidden');
+      this.innerElements.signupForm.classList.remove('auth-card__form--hidden');
+      this.innerElements.crossButtonLeft.style.visibility = 'visible';
+      this.innerElements.crossButtonRight.style.visibility = 'hidden';
+    });
 
-    const emailInput = this.element.querySelector(
-      '#login-email',
-    ) as HTMLInputElement;
-    const passwordInput = this.element.querySelector(
-      '#login-password',
-    ) as HTMLInputElement;
-    const fullNameInput = this.element.querySelector(
-      '#register-fullname',
-    ) as HTMLInputElement;
-    const registerEmailInput = this.element.querySelector(
-      '#register-email',
-    ) as HTMLInputElement;
-    const registerPasswordInput = this.element.querySelector(
-      '#register-password',
-    ) as HTMLInputElement;
-    const confirmPasswordInput = this.element.querySelector(
-      '#register-confirm-password',
-    ) as HTMLInputElement;
-    const phoneNumberInput = this.element.querySelector(
-      '#register-phone',
-    ) as HTMLInputElement;
-    const emailError = this.element.querySelector(
-      '#login-email-validate-error',
-    ) as HTMLDivElement;
-    const passwordError = this.element.querySelector(
-      '#login-password-validate-error',
-    ) as HTMLDivElement;
-    const loginResponseMessage = this.element.querySelector(
-      '#login-response-message',
-    ) as HTMLDivElement;
-    const fullNameError = this.element.querySelector(
-      '#register-fullname-validate-error',
-    ) as HTMLDivElement;
-    const registerEmailError = this.element.querySelector(
-      '#register-email-validate-error',
-    ) as HTMLDivElement;
-    const registerPasswordError = this.element.querySelector(
-      '#register-password-validate-error',
-    ) as HTMLDivElement;
-    const confirmPasswordError = this.element.querySelector(
-      '#register-confirm-password-validate-error',
-    ) as HTMLDivElement;
-    const phoneError = this.element.querySelector(
-      '#register-phone-validate-error',
-    ) as HTMLDivElement;
-    const registerResponseMessage = this.element.querySelector(
-      '#register-response-message',
-    ) as HTMLDivElement;
-    const loginButton = this.element.querySelector(
-      '#login-button',
-    ) as HTMLButtonElement;
-    const registerButton = this.element.querySelector(
-      '#register-button',
-    ) as HTMLButtonElement;
-    if (
-      signupButton &&
-      signinButton &&
-      activeBox &&
-      signinForm &&
-      signupForm &&
-      crossButtonLeft &&
-      crossButtonRight &&
-      passwordVisibility
-    ) {
-      signupButton.addEventListener('click', () => {
-        activeBox.style.transform = 'translateX(80%)';
-        signinForm.classList.add('auth-card__form--hidden');
-        signupForm.classList.remove('auth-card__form--hidden');
-        crossButtonLeft.style.visibility = 'visible';
-        crossButtonRight.style.visibility = 'hidden';
-      });
-
-      signinButton.addEventListener('click', () => {
-        activeBox.style.transform = 'translateX(0%)';
-        signupForm.classList.add('auth-card__form--hidden');
-        signinForm.classList.remove('auth-card__form--hidden');
-        crossButtonLeft.style.visibility = 'hidden';
-        crossButtonRight.style.visibility = 'visible';
-      });
-      crossButtonLeft.addEventListener('click', () => Modal.toggle());
-      crossButtonRight.addEventListener('click', () => Modal.toggle());
-      passwordVisibility.forEach((element) => {
-        element.addEventListener('click', () =>
-          this.togglePasswordVisibility(),
-        );
-      });
-    }
+    this.innerElements.signinButton.addEventListener('click', () => {
+      this.innerElements.activeBox.style.transform = 'translateX(0%)';
+      this.innerElements.signupForm.classList.add('auth-card__form--hidden');
+      this.innerElements.signinForm.classList.remove('auth-card__form--hidden');
+      this.innerElements.crossButtonLeft.style.visibility = 'hidden';
+      this.innerElements.crossButtonRight.style.visibility = 'visible';
+    });
+    this.innerElements.crossButtonLeft.addEventListener('click', () =>
+      Modal.toggle(),
+    );
+    this.innerElements.crossButtonRight.addEventListener('click', () =>
+      Modal.toggle(),
+    );
+    this.innerElements.passwordVisibility.forEach((element) => {
+      element.addEventListener('click', () => this.togglePasswordVisibility());
+    });
 
     const input = document.querySelector('#register-phone') as HTMLInputElement;
     intlTelInput(input, {
@@ -141,107 +137,157 @@ export default class AuthCard {
       utilsScript: "'node_modules/intl-tel-input/build/js/utils.js'",
     });
 
-    signupForm.addEventListener('submit', async (event: Event) => {
-      event.preventDefault();
-      this.clearError(fullNameError);
-      this.clearError(registerEmailError);
-      this.clearError(registerPasswordError);
-      this.clearError(confirmPasswordError);
-      this.clearError(phoneError);
-      this.clearError(registerResponseMessage);
+    this.innerElements.signupForm.addEventListener(
+      'submit',
+      async (event: Event) => {
+        event.preventDefault();
+        this.clearError(this.innerElements.fullNameError);
+        this.clearError(this.innerElements.registerEmailError);
+        this.clearError(this.innerElements.registerPasswordError);
+        this.clearError(this.innerElements.confirmPasswordError);
+        this.clearError(this.innerElements.phoneError);
+        this.clearError(this.innerElements.registerResponseMessage);
 
-      let isValid = true;
+        let isValid = true;
 
-      if (!this.validateFullName(fullNameInput.value)) {
-        this.showError(fullNameError, 'Please enter a valid name.');
-        isValid = false;
-      }
-
-      if (!this.validateEmail(registerEmailInput.value)) {
-        this.showError(registerEmailError, 'Please enter a valid email.');
-        isValid = false;
-      }
-
-      if (!this.validatePassword(registerPasswordInput.value)) {
-        this.showError(
-          registerPasswordError,
-          'Must be 4 char long, 1 ucase and 1 special character',
-        );
-        isValid = false;
-      }
-      if (
-        !this.validateConfirmPassword(
-          registerPasswordInput.value,
-          confirmPasswordInput.value,
-        )
-      ) {
-        this.showError(confirmPasswordError, 'Must be same as the password');
-        isValid = false;
-      }
-      if (!this.validatePhoneNumber(phoneNumberInput.value)) {
-        this.showError(phoneError, 'Please enter a valid phone number.');
-        isValid = false;
-      }
-
-      if (isValid) {
-        const formData = {
-          name: fullNameInput.value,
-          email: registerEmailInput.value,
-          password: registerPasswordInput.value,
-          phoneNumber: phoneNumberInput.value,
-        };
-        const response = await this.register(registerButton, formData);
-
-        if (response.status != HttpStatusCode.Accepted) {
-          this.showError(registerResponseMessage, response.message);
+        if (!this.validateFullName(this.innerElements.fullNameInput.value)) {
+          this.showError(
+            this.innerElements.fullNameError,
+            'Please enter a valid name.',
+          );
+          isValid = false;
         }
-      }
-    });
 
-    signinForm.addEventListener('submit', async (event: Event) => {
-      event.preventDefault();
-
-      this.clearError(emailError);
-      this.clearError(passwordError);
-      this.clearError(registerResponseMessage);
-
-      let isValid = true;
-
-      const existingSpinner = loginButton.querySelector('.loading-spinner');
-      if (existingSpinner) {
-        existingSpinner.remove();
-      }
-      if (!this.validateEmail(emailInput.value)) {
-        this.showError(emailError, 'Please enter a valid email.');
-        isValid = false;
-      }
-
-      if (!this.validatePassword(passwordInput.value)) {
-        this.showError(passwordError, 'Must be at least 4 characters long.');
-        isValid = false;
-      }
-
-      if (isValid) {
-        const formData = {
-          email: emailInput.value,
-          password: passwordInput.value,
-        };
-        const response = await this.login(loginButton, formData);
-        if (!response.response) {
-          this.showError(loginResponseMessage, 'Network Error');
-          return;
+        if (!this.validateEmail(this.innerElements.registerEmailInput.value)) {
+          this.showError(
+            this.innerElements.registerEmailError,
+            'Please enter a valid email.',
+          );
+          isValid = false;
         }
-        if (response.response.status != HttpStatusCode.Accepted) {
-          if (response.response.status == HttpStatusCode.Unauthorized) {
-            this.showError(loginResponseMessage, 'Invalid Credentials');
-          } else if (response.response.status == HttpStatusCode.Forbidden) {
-            this.showError(loginResponseMessage, 'Admin is not allowed');
-          } else {
-            this.showError(loginResponseMessage, response.message);
+
+        if (
+          !this.validatePassword(this.innerElements.registerPasswordInput.value)
+        ) {
+          this.showError(
+            this.innerElements.registerPasswordError,
+            'Must be 4 char long, 1 ucase and 1 special character',
+          );
+          isValid = false;
+        }
+        if (
+          !this.validateConfirmPassword(
+            this.innerElements.registerPasswordInput.value,
+            this.innerElements.confirmPasswordInput.value,
+          )
+        ) {
+          this.showError(
+            this.innerElements.confirmPasswordError,
+            'Must be same as the password',
+          );
+          isValid = false;
+        }
+        if (
+          !this.validatePhoneNumber(this.innerElements.phoneNumberInput.value)
+        ) {
+          this.showError(
+            this.innerElements.phoneError,
+            'Please enter a valid phone number.',
+          );
+          isValid = false;
+        }
+
+        if (isValid) {
+          const formData = {
+            name: this.innerElements.fullNameInput.value,
+            email: this.innerElements.registerEmailInput.value,
+            password: this.innerElements.registerPasswordInput.value,
+            phoneNumber: this.innerElements.phoneNumberInput.value,
+          };
+          const response = await this.register(
+            this.innerElements.registerButton,
+            formData,
+          );
+
+          if (response.status != HttpStatusCode.Accepted) {
+            this.showError(
+              this.innerElements.registerResponseMessage,
+              response.message,
+            );
           }
         }
-      }
-    });
+      },
+    );
+
+    this.innerElements.signinForm.addEventListener(
+      'submit',
+      async (event: Event) => {
+        event.preventDefault();
+
+        this.clearError(this.innerElements.emailError);
+        this.clearError(this.innerElements.passwordError);
+        this.clearError(this.innerElements.registerResponseMessage);
+
+        let isValid = true;
+
+        const existingSpinner =
+          this.innerElements.loginButton.querySelector('.loading-spinner');
+        if (existingSpinner) {
+          existingSpinner.remove();
+        }
+        if (!this.validateEmail(this.innerElements.emailInput.value)) {
+          this.showError(
+            this.innerElements.emailError,
+            'Please enter a valid email.',
+          );
+          isValid = false;
+        }
+
+        if (!this.validatePassword(this.innerElements.passwordInput.value)) {
+          this.showError(
+            this.innerElements.passwordError,
+            'Must be at least 4 characters long.',
+          );
+          isValid = false;
+        }
+
+        if (isValid) {
+          const formData = {
+            email: this.innerElements.emailInput.value,
+            password: this.innerElements.passwordInput.value,
+          };
+          const response = await this.login(
+            this.innerElements.loginButton,
+            formData,
+          );
+          if (!response.response) {
+            this.showError(
+              this.innerElements.loginResponseMessage,
+              'Network Error',
+            );
+            return;
+          }
+          if (response.response.status != HttpStatusCode.Accepted) {
+            if (response.response.status == HttpStatusCode.Unauthorized) {
+              this.showError(
+                this.innerElements.loginResponseMessage,
+                'Invalid Credentials',
+              );
+            } else if (response.response.status == HttpStatusCode.Forbidden) {
+              this.showError(
+                this.innerElements.loginResponseMessage,
+                'Admin is not allowed',
+              );
+            } else {
+              this.showError(
+                this.innerElements.loginResponseMessage,
+                response.message,
+              );
+            }
+          }
+        }
+      },
+    );
   }
 
   static togglePasswordVisibility() {
@@ -344,7 +390,6 @@ export default class AuthCard {
     const spinner = LoaderSpinner.render(20);
 
     formSubmissionButton.innerText = 'Signing Up';
-
     formSubmissionButton.classList.add('auth-card__button--loading');
     formSubmissionButton.appendChild(spinner);
 

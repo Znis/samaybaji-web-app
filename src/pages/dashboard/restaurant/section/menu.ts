@@ -64,7 +64,7 @@ export default class RestaurantMenuDashboard {
     this.render(ownMenu?.menuItems as unknown as IMenuItem[]);
   }
   static setEventListeners() {
-    const addItemButtom = this.element.querySelector(
+    const addItemButton = this.element.querySelector(
       '#add-menu-item-button',
     ) as HTMLButtonElement;
     const createMenuForm = this.element.querySelector(
@@ -111,7 +111,7 @@ export default class RestaurantMenuDashboard {
         submitButton.disabled = false;
       }
     });
-    addItemButtom?.addEventListener('click', () => {
+    addItemButton?.addEventListener('click', () => {
       Modal.toggle();
       const modal = document.querySelector('.modal') as HTMLDivElement;
       modal.innerHTML = '';

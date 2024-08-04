@@ -19,7 +19,6 @@ export class RestaurantForm {
         .then(async (html) => {
           this.element.classList.add('modal-form');
           this.element.innerHTML = html;
-          this.innerElements();
           this.setupEventListeners();
           this.render(type);
         });
@@ -28,14 +27,14 @@ export class RestaurantForm {
   }
   static render(type: string) {
     if (type === 'create') {
-      this.innerElements().submitButton.innerHTML = 'Register';
-      this.innerElements().formHeading.innerHTML = 'Register Restaurant';
+      this.innerElements.submitButton.innerHTML = 'Register';
+      this.innerElements.formHeading.innerHTML = 'Register Restaurant';
     } else {
-      this.innerElements().submitButton.innerHTML = 'Edit';
-      this.innerElements().formHeading.innerHTML = 'Edit Restaurant';
+      this.innerElements.submitButton.innerHTML = 'Edit';
+      this.innerElements.formHeading.innerHTML = 'Edit Restaurant';
     }
   }
-  static innerElements() {
+  static get innerElements() {
     return {
       formHeading: this.element.querySelector(
         '.modal-form__heading',
@@ -76,15 +75,15 @@ export class RestaurantForm {
     };
   }
   static setupEventListeners() {
-    this.innerElements().crossButton.addEventListener('click', () =>
+    this.innerElements.crossButton.addEventListener('click', () =>
       Modal.toggle(),
     );
-    this.innerElements().registrationForm.addEventListener(
+    this.innerElements.registrationForm.addEventListener(
       'submit',
       async (event) => {
         event.preventDefault();
-        if (!this.innerElements().registrationForm.checkValidity()) {
-          this.innerElements().registrationForm.reportValidity();
+        if (!this.innerElements.registrationForm.checkValidity()) {
+          this.innerElements.registrationForm.reportValidity();
           return;
         }
         this.submitFormRegistration();
@@ -100,7 +99,7 @@ export class RestaurantForm {
     await makeApiCall(
       uploadImage,
       profileImageUploadUrl!.url.url,
-      this.innerElements().profilePic.files![0],
+      this.innerElements.profilePic.files![0],
     );
     const coverImageUploadUrl = (await makeApiCall(
       getUploadUrl,
@@ -110,24 +109,24 @@ export class RestaurantForm {
     await makeApiCall(
       uploadImage,
       coverImageUploadUrl!.url.url,
-      this.innerElements().coverPic.files![0],
+      this.innerElements.coverPic.files![0],
     );
 
-    const openHours = `${this.innerElements().openingTime.value} - ${this.innerElements().closingTime.value}`;
+    const openHours = `${this.innerElements.openingTime.value} - ${this.innerElements.closingTime.value}`;
     const data: ICreateRestaurant = {
-      name: this.innerElements().restaurantName.value,
-      location: this.innerElements().location.value,
-      contactNumber: this.innerElements().contactNumber.value,
+      name: this.innerElements.restaurantName.value,
+      location: this.innerElements.location.value,
+      contactNumber: this.innerElements.contactNumber.value,
       openHours: openHours,
-      panNumber: this.innerElements().panNumber.value,
+      panNumber: this.innerElements.panNumber.value,
       profilePic: profileImageUploadUrl.url.fileName,
       coverPic: coverImageUploadUrl.url.fileName,
-      description: this.innerElements().description.value,
+      description: this.innerElements.description.value,
     };
     const spinner = LoaderSpinner.render(20);
     try {
-      this.innerElements().submitButton.append(spinner);
-      this.innerElements().submitButton.disabled = true;
+      this.innerElements.submitButton.append(spinner);
+      this.innerElements.submitButton.disabled = true;
       const formSubmissionResponse = (await makeApiCall(
         createRestaurant,
         data,
@@ -143,16 +142,16 @@ export class RestaurantForm {
       Modal.toggle();
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        this.innerElements().errorMessage.innerHTML = error.message;
+        this.innerElements.errorMessage.innerHTML = error.message;
         Toast.show('Restaurant Registration Failed');
       } else {
-        this.innerElements().errorMessage.innerHTML =
+        this.innerElements.errorMessage.innerHTML =
           'An unexpected error occurred';
         Toast.show('An unexpected error occurred');
       }
     } finally {
       spinner.remove();
-      this.innerElements().submitButton.disabled = false;
+      this.innerElements.submitButton.disabled = false;
     }
   }
 

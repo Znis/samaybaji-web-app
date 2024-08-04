@@ -27,7 +27,6 @@ export class MenuItemForm {
         .then(async (html) => {
           this.element.classList.add('modal-form');
           this.element.innerHTML = html;
-          this.innerElements();
           this.type = type;
           if (dishDetail) {
             this.prefillForm(dishDetail);
@@ -42,16 +41,16 @@ export class MenuItemForm {
   }
   static render() {
     if (this.type === 'create') {
-      this.innerElements().submitButton.innerHTML = 'Register';
-      this.innerElements().menuItemHeading.innerHTML = 'Register Menu Item';
-      this.innerElements().dishHeading.innerHTML = 'Dish Details';
+      this.innerElements.submitButton.innerHTML = 'Register';
+      this.innerElements.menuItemHeading.innerHTML = 'Register Menu Item';
+      this.innerElements.dishHeading.innerHTML = 'Dish Details';
     } else {
-      this.innerElements().submitButton.innerHTML = 'Edit';
-      this.innerElements().menuItemHeading.innerHTML = 'Edit Menu Item';
-      this.innerElements().dishHeading.innerHTML = 'Dish Details';
+      this.innerElements.submitButton.innerHTML = 'Edit';
+      this.innerElements.menuItemHeading.innerHTML = 'Edit Menu Item';
+      this.innerElements.dishHeading.innerHTML = 'Dish Details';
     }
   }
-  static innerElements() {
+  static get innerElements() {
     return {
       menuItemHeading: this.element.querySelector(
         '#menu-item-creation-heading',
@@ -94,22 +93,21 @@ export class MenuItemForm {
     };
   }
   static prefillForm(dishDetail: IDish) {
-    this.innerElements().menuItemName.value = dishDetail.name;
-    this.innerElements().menuItemPortion.value = dishDetail.portion;
-    this.innerElements().menuItemPrice.value = dishDetail.price.toString();
-    this.innerElements().dishDescription.value = dishDetail.description;
-    this.innerElements().dishAttributes.value =
-      dishDetail.attributes.toString();
-    this.innerElements().dishItems.value = dishDetail.items.toString();
+    this.innerElements.menuItemName.value = dishDetail.name;
+    this.innerElements.menuItemPortion.value = dishDetail.portion;
+    this.innerElements.menuItemPrice.value = dishDetail.price.toString();
+    this.innerElements.dishDescription.value = dishDetail.description;
+    this.innerElements.dishAttributes.value = dishDetail.attributes.toString();
+    this.innerElements.dishItems.value = dishDetail.items.toString();
   }
   static setupEventListeners() {
-    this.innerElements().crossButton.addEventListener('click', () =>
+    this.innerElements.crossButton.addEventListener('click', () =>
       Modal.toggle(),
     );
-    this.innerElements().mainform.addEventListener('submit', async (event) => {
+    this.innerElements.mainform.addEventListener('submit', async (event) => {
       event.preventDefault();
-      if (!this.innerElements().mainform.checkValidity()) {
-        this.innerElements().mainform.reportValidity();
+      if (!this.innerElements.mainform.checkValidity()) {
+        this.innerElements.mainform.reportValidity();
         return;
       }
       this.submitForm();
@@ -121,27 +119,27 @@ export class MenuItemForm {
     };
     await uploadImage(
       imageUploadUrl!.url.url,
-      this.innerElements().menuItemImage.files![0],
+      this.innerElements.menuItemImage.files![0],
     );
     const menuItemData = {
-      name: this.innerElements().menuItemName.value,
-      portion: this.innerElements().menuItemPortion.value,
-      price: parseInt(this.innerElements().menuItemPrice.value),
+      name: this.innerElements.menuItemName.value,
+      portion: this.innerElements.menuItemPortion.value,
+      price: parseInt(this.innerElements.menuItemPrice.value),
       imageSrc: imageUploadUrl!.url.fileName,
-      isPopular: this.innerElements().isPopular.checked,
+      isPopular: this.innerElements.isPopular.checked,
     };
 
-    const itemsList = this.innerElements()
-      .dishItems.value.split(',')
+    const itemsList = this.innerElements.dishItems.value
+      .split(',')
       .map((item) => item.trim());
-    const attributesList = this.innerElements()
-      .dishAttributes.value.split(',')
+    const attributesList = this.innerElements.dishAttributes.value
+      .split(',')
       .map((item) => item.trim());
 
     const spinner = LoaderSpinner.render();
     try {
-      this.innerElements().submitButton.append(spinner);
-      this.innerElements().submitButton.disabled = true;
+      this.innerElements.submitButton.append(spinner);
+      this.innerElements.submitButton.disabled = true;
 
       let menuItemApiResponse;
       let dishData;
@@ -151,11 +149,11 @@ export class MenuItemForm {
           menuItemData,
         )) as unknown as { created: IMenuItem };
         dishData = {
-          name: this.innerElements().menuItemName.value,
-          portion: this.innerElements().menuItemPortion.value,
-          price: parseInt(this.innerElements().menuItemPrice.value),
+          name: this.innerElements.menuItemName.value,
+          portion: this.innerElements.menuItemPortion.value,
+          price: parseInt(this.innerElements.menuItemPrice.value),
           imgSrc: imageUploadUrl!.url.fileName,
-          description: this.innerElements().dishDescription.value,
+          description: this.innerElements.dishDescription.value,
           attributes: attributesList,
           items: itemsList,
         };
@@ -167,11 +165,11 @@ export class MenuItemForm {
           this.menuItemId,
         );
         dishData = {
-          name: this.innerElements().menuItemName.value,
-          portion: this.innerElements().menuItemPortion.value,
-          price: parseInt(this.innerElements().menuItemPrice.value),
+          name: this.innerElements.menuItemName.value,
+          portion: this.innerElements.menuItemPortion.value,
+          price: parseInt(this.innerElements.menuItemPrice.value),
           imgSrc: imageUploadUrl!.url.fileName,
-          description: this.innerElements().dishDescription.value,
+          description: this.innerElements.dishDescription.value,
           attributes: attributesList,
           items: itemsList,
         };
@@ -182,16 +180,16 @@ export class MenuItemForm {
       RestaurantMenuDashboard.init();
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        this.innerElements().errorMessage.innerHTML = error.message;
+        this.innerElements.errorMessage.innerHTML = error.message;
         Toast.show('Menu Item Addition Failed');
       } else {
-        this.innerElements().errorMessage.innerHTML =
+        this.innerElements.errorMessage.innerHTML =
           'An unexpected error occurred';
         Toast.show('An unexpected error occurred');
       }
     } finally {
-      this.innerElements().submitButton.removeChild(spinner);
-      this.innerElements().submitButton.disabled = false;
+      this.innerElements.submitButton.removeChild(spinner);
+      this.innerElements.submitButton.disabled = false;
     }
   }
 

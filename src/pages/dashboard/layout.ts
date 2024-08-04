@@ -30,7 +30,7 @@ export default class DashboardLayout {
     }
     return this.element;
   }
-  static innerElements() {
+  static get innerElements() {
     return {
       admin: {
         userMenuOption: this.element.querySelector(
@@ -95,7 +95,7 @@ export default class DashboardLayout {
     }
   }
   static setEventListeners(type: string) {
-    const innerElems = this.innerElements();
+    const innerElems = this.innerElements;
     if (type === 'admin') {
       this.renderContent(AdminUsersDashboard.init(this.adminAccessToken));
       this.setActiveMenuOption(
@@ -105,7 +105,7 @@ export default class DashboardLayout {
     } else if (type === 'restaurant') {
       this.renderContent(RestaurantMenuDashboard.init());
 
-      this.innerElements().restaurant.editDetailsOption!.addEventListener(
+      this.innerElements.restaurant.editDetailsOption!.addEventListener(
         'click',
         () => {
           this.renderContent(EditRestaurantDetailsDashboard.init());
@@ -115,7 +115,7 @@ export default class DashboardLayout {
           );
         },
       );
-      this.innerElements().restaurant.menuOption!.addEventListener(
+      this.innerElements.restaurant.menuOption!.addEventListener(
         'click',
         () => {
           this.renderContent(RestaurantMenuDashboard.init());
@@ -125,7 +125,7 @@ export default class DashboardLayout {
           );
         },
       );
-      this.innerElements().restaurant.ordersMenuOption!.addEventListener(
+      this.innerElements.restaurant.ordersMenuOption!.addEventListener(
         'click',
         () => {
           this.renderContent(RestaurantOrdersDashboard.init());
@@ -135,7 +135,7 @@ export default class DashboardLayout {
           );
         },
       );
-      this.innerElements().restaurant.reviewsMenuOption!.addEventListener(
+      this.innerElements.restaurant.reviewsMenuOption!.addEventListener(
         'click',
         () => {
           this.renderContent(RestaurantReviewDashboard.init());
@@ -148,7 +148,7 @@ export default class DashboardLayout {
     } else {
       this.renderContent(CustomerOrdersDashboard.init());
 
-      this.innerElements().customer.ordersMenuOption!.addEventListener(
+      this.innerElements.customer.ordersMenuOption!.addEventListener(
         'click',
         () => {
           this.renderContent(CustomerOrdersDashboard.init());
@@ -158,7 +158,7 @@ export default class DashboardLayout {
           );
         },
       );
-      this.innerElements().customer.reviewsMenuOption!.addEventListener(
+      this.innerElements.customer.reviewsMenuOption!.addEventListener(
         'click',
         () => {
           this.renderContent(CustomerReviewDashboard.init());
@@ -168,7 +168,7 @@ export default class DashboardLayout {
           );
         },
       );
-      this.innerElements().customer.editDetailsOption!.addEventListener(
+      this.innerElements.customer.editDetailsOption!.addEventListener(
         'click',
         () => {
           this.renderContent(EditCustomerDetailsDashboard.init());
