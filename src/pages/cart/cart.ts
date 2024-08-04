@@ -54,6 +54,9 @@ export default class Cart {
       emptyCartImageWrapper: this.element.querySelector(
         '.cart__image-wrapper',
       ) as HTMLDivElement,
+      errorMessage: this.element.querySelector(
+        '.form__error-message',
+      ) as HTMLParagraphElement,
     };
   }
   static async loadHtmlTemplate(): Promise<string> {
@@ -68,9 +71,12 @@ export default class Cart {
   static setEventListeners() {
     if (!StateManager.state.user || !StateManager.state.cart.length) {
       this.innerElements.checkoutButton.disabled = true;
+      this.innerElements.errorMessage.textContent =
+        'Login and fill the cart to checkout';
       return;
     }
     this.innerElements.checkoutButton.disabled = false;
+    this.innerElements.errorMessage.textContent = '';
     this.innerElements.checkoutButton.addEventListener('click', () => {
       history.pushState(null, '', '/checkout');
       navigate('/checkout');
@@ -117,8 +123,11 @@ export default class Cart {
     this.updatePrices();
     if (!StateManager.state.user || !StateManager.state.cart.length) {
       this.innerElements.checkoutButton.disabled = true;
+      this.innerElements.errorMessage.textContent =
+        'Login and fill the cart to checkout';
     } else {
       this.innerElements.checkoutButton.disabled = false;
+      this.innerElements.errorMessage.textContent = '';
     }
     if (!StateManager.state.cart.length) {
       this.innerElements.emptyCartImageWrapper.style.display = 'flex';

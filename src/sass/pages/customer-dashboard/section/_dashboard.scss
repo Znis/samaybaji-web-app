@@ -6,6 +6,12 @@
     font-size: 2rem;
     color: #333;
     text-align: center;
+    @include phone{
+      text-align: left;
+    }
+    @include tablet{
+      text-align: left;
+    }
   }
   &__container {
     display: flex;
@@ -14,6 +20,8 @@
     gap: 1rem;
     padding: 1rem;
     border-radius: 1rem;
+    min-width: 28rem;
+
   }
   &__container-heading {
     font-size: 1.6rem;

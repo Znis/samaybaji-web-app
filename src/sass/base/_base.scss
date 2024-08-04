@@ -35,8 +35,7 @@
 p {
   text-transform: none;
   text-align: justify;
-  letter-spacing: 0.1rem;
-  word-spacing: -0.12rem;
+  letter-spacing: 1px;
 }
 
 h1,
@@ -60,6 +59,12 @@ section {
   width: 100%;
   min-height: 90vh;
   padding: 2rem 8%;
+  @include phone{
+    padding: 2rem 5%;
+  }
+  @include tablet{
+    padding: 2rem 5%;
+  }
 }
 
 input[type='radio'] {

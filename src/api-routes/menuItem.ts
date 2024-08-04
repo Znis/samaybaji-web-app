@@ -7,14 +7,26 @@ const menuItemsUrl = `/menu-items`;
 const popularMenuItemsUrl = '/menu-items/popular';
 
 export const fetchAllMenuItems = async () => {
-  return await axios.get(`${baseUrl}${menuItemsUrl}`).then((res) => {
-    return res.data;
-  });
+  return await axios
+    .get(`${baseUrl}${menuItemsUrl}`, {
+      headers: {
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
 };
 export const fetchPopularMenuItems = async () => {
-  return await axios.get(`${baseUrl}${popularMenuItemsUrl}`).then((res) => {
-    return res.data;
-  });
+  return await axios
+    .get(`${baseUrl}${popularMenuItemsUrl}`, {
+      headers: {
+        Authorization: `Bearer ${StateManager.state.accessToken}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    });
 };
 export const createMenuItem = async (createMenuItemData: ICreateMenuItem) => {
   return await axios

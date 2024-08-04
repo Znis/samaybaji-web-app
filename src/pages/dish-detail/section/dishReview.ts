@@ -41,9 +41,22 @@ export default class DishReview {
     const toggleButton = this.element.querySelector(
       '#add-review-toggle-button',
     ) as HTMLButtonElement;
+    const errorMessage = this.element.querySelector(
+      '.form__error-message',
+    ) as HTMLParagraphElement;
+    const emptyMessage = this.element.querySelector(
+      '#empty-message',
+    ) as HTMLParagraphElement;
+    if (!this.dishReviews.length) {
+      emptyMessage.style.display = 'block';
+    } else {
+      emptyMessage.style.display = 'none';
+    }
     toggleButton.disabled = true;
+    errorMessage.textContent = 'Login to add review';
     if (StateManager.state.user) {
       toggleButton.disabled = false;
+      errorMessage.textContent = '';
       const ownReview = this.dishReviews.find((review) => {
         return review.userId == StateManager.state.user!.id;
       });

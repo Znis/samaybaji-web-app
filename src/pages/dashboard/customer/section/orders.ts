@@ -178,6 +178,10 @@ export default class CustomerOrdersDashboard {
       activeOrderContainer!.innerHTML = `<h3>No active orders</h3>`;
       historyOrderContainer!.innerHTML = `<h3>No history orders</h3>`;
     }
+    orders.sort(
+      (a, b) =>
+        new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime(),
+    );
     orders.forEach(async (order) => {
       const orderSummary = {
         customerName: order.customerName,

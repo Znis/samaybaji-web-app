@@ -15,6 +15,9 @@
     display: flex;
     gap: 2rem;
     justify-content: space-between;
+    @include phone{
+      gap: 1rem;
+    }
   }
   &__stars-wrapper {
     display: flex;
@@ -25,6 +28,9 @@
   &__score {
     font-size: 1.5rem;
     color: var(--brown);
+    @include phone{
+      font-size: 1rem;
+    }
   }
   &__star {
     font-size: 1.5rem;
@@ -33,5 +39,9 @@
     &:hover {
       transform: scale(1.1);
     }
+    @include phone{
+      font-size: 1rem;
+    }
+
   }
 }

@@ -77,6 +77,11 @@
         opacity 0.5s ease-in-out;
     }
   }
+  &__empty-message{
+    text-align: center;
+    color: #555;
+    font-size: 1.2rem;
+  }
   &__button-wrapper {
     display: flex;
     align-items: center;

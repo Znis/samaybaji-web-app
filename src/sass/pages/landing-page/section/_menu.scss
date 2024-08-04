@@ -8,7 +8,7 @@
   background-position: center;
   background-attachment: fixed;
 
-  .heading {
+  &__heading {
     text-align: center;
     font-size: 3rem;
     color: #333;
@@ -18,7 +18,7 @@
     }
   }
 
-  .box-container {
+  &__box-container {
     display: flex;
     align-items: center;
     flex-wrap: nowrap;

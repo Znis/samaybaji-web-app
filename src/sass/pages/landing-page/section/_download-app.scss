@@ -3,6 +3,7 @@
   background: rgb(252, 252, 252);
   align-items: center;
   justify-content: center;
+  gap: 2rem;
   flex-wrap: wrap;
 
   h3 {
@@ -17,7 +18,7 @@
     color: #555;
     padding: 1rem 0;
   }
-  .image {
+  &__image-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,13 +27,13 @@
     flex: 1 1 27rem;
   }
 
-  .box1 {
+  &__content-box {
     margin: auto;
 
     display: flex;
     flex-direction: column;
   }
-  .box-container {
+  &__box-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -40,16 +41,18 @@
     flex-wrap: wrap;
     gap: 2rem;
 
-    .box {
-      margin: auto;
-      display: flex;
-      flex-direction: row;
-      gap: 1rem;
 
-      img {
-        flex: 1 1 50%;
-        height: 4rem;
-      }
+  }
+  &__image-box {
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+    img {
+      flex: 1 1 50%;
+      height: 4rem;
     }
   }
+
 }

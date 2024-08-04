@@ -13,6 +13,8 @@
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
   gap: 2rem;
+  min-width: 10rem;
+  text-align: center;
 
   &__profile-name {
     font-size: 1.5rem;

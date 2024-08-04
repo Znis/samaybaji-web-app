@@ -33,6 +33,7 @@ export default class CustomerReviewDashboard {
     const dishReviews = (reviews as unknown as IReviewResponse).dishReviews;
     const restaurantReviews = (reviews as unknown as IReviewResponse)
       .restaurantReviews;
+
     this.render(dishReviews, restaurantReviews);
   }
   static createAccordionHeader(heading: string) {
@@ -101,6 +102,8 @@ export default class CustomerReviewDashboard {
     const reviewRestaurantContainer = this.element.querySelector(
       '#review-restaurant',
     ) as HTMLDivElement;
+    reviewDishContainer.innerHTML = '';
+    reviewRestaurantContainer.innerHTML = '';
     if (!dishReviews.length) {
       reviewDishContainer.innerHTML = '<h3>No reviews</h3>';
     }

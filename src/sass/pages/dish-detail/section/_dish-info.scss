@@ -1,7 +1,15 @@
 .dish-info {
   display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: auto;
   gap: 1rem;
+  @include phone {
+    flex-direction: column;
+  }
+  @include tablet {
+    flex-direction: column;
+  }
 
   &__image-wrapper {
     flex: 1 1 45%;
@@ -9,6 +17,12 @@
     align-items: center;
     justify-content: center;
     padding: 1.5rem 0;
+    @include phone {
+      width: 100%;
+    }
+    @include tablet {
+      width: 80%;
+    }
   }
   &__image {
     height: 100%;
@@ -23,6 +37,14 @@
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
+    @include phone{
+      gap: 1.5rem;
+      text-align: center;
+    }
+    @include tablet{
+      gap: 1.5rem;
+      text-align: center;
+    }
   }
   &__name {
     color: #333;
