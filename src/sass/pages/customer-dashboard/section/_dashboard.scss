@@ -6,10 +6,10 @@
     font-size: 2rem;
     color: #333;
     text-align: center;
-    @include phone{
+    @include phone {
       text-align: left;
     }
-    @include tablet{
+    @include tablet {
       text-align: left;
     }
   }
@@ -21,7 +21,6 @@
     padding: 1rem;
     border-radius: 1rem;
     min-width: 28rem;
-
   }
   &__container-heading {
     font-size: 1.6rem;

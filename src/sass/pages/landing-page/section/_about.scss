@@ -3,10 +3,10 @@
   background-color: rgb(252, 252, 252);
   align-items: center;
   justify-content: center;
-  @include phone{
+  @include phone {
     flex-direction: column;
   }
-  @include tablet{
+  @include tablet {
     flex-direction: column;
   }
 
@@ -14,13 +14,12 @@
     position: relative;
     flex: 1 1 27rem;
     height: 25rem;
-    @include tablet{
+    @include tablet {
       max-height: 20rem;
     }
-    @include phone{
+    @include phone {
       max-height: 15rem;
     }
-
   }
   &__image-stack-top {
     position: absolute;
@@ -39,20 +38,19 @@
     object-fit: cover;
   }
 
-
   &__content {
     flex: 1 1 40rem;
     padding: 3rem;
     display: flex;
     flex-direction: column;
-    @include tablet{
+    @include tablet {
       flex: 1 1 30rem;
       text-align: center;
       flex-direction: column;
       justify-content: center;
       align-items: center;
     }
-    @include phone{
+    @include phone {
       flex: 1 1 20rem;
       text-align: center;
       flex-direction: column;

@@ -37,11 +37,11 @@
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
-    @include phone{
+    @include phone {
       gap: 1.5rem;
       text-align: center;
     }
-    @include tablet{
+    @include tablet {
       gap: 1.5rem;
       text-align: center;
     }

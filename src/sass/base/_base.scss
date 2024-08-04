@@ -59,10 +59,10 @@ section {
   width: 100%;
   min-height: 90vh;
   padding: 2rem 8%;
-  @include phone{
+  @include phone {
     padding: 2rem 5%;
   }
-  @include tablet{
+  @include tablet {
     padding: 2rem 5%;
   }
 }

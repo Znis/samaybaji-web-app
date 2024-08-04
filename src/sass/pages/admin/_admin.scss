@@ -23,10 +23,10 @@
     color: white;
     width: 30%;
     box-shadow: 8px 8px 8px #080113;
-    @include phone{
+    @include phone {
       width: 50%;
     }
-    @include tablet{
+    @include tablet {
       width: 50%;
     }
   }
