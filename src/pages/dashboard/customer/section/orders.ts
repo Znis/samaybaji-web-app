@@ -97,8 +97,13 @@ export default class CustomerOrdersDashboard {
       });
     return accordionContent;
   }
-  static async renderAccordionContent(orderSummary: { [key: string]: string }) {
+  static async renderAccordionContent(orderSummary: {
+    [key: string]: string | IOrderItem[];
+  }) {
     const accordionContent = await this.initialiseAccordionContent();
+    const orderSummaryDiv = accordionContent.querySelector(
+      '#summary',
+    ) as HTMLDivElement;
     const orderSummaryName = accordionContent.querySelector(
       '#order-summary-name',
     ) as HTMLSpanElement;
@@ -139,6 +144,24 @@ export default class CustomerOrdersDashboard {
       '#order-summary-total-amount',
     ) as HTMLSpanElement;
     totalAmount.innerHTML = `${orderSummary.totalAmount || ''}`;
+    const orderItems = orderSummary.orderItems as IOrderItem[];
+    orderItems.forEach((item) => {
+      const pElement = document.createElement('p');
+      pElement.className = 'summary-attribute';
+
+      const textNode = document.createTextNode(
+        `${item.menuItemData.name} x${item.quantity}: `,
+      );
+
+      const spanElement = document.createElement('span');
+      spanElement.className = 'summary-attribute-value';
+      spanElement.textContent = item.status;
+
+      pElement.appendChild(textNode);
+      pElement.appendChild(spanElement);
+      orderSummaryDiv.appendChild(pElement);
+    });
+
     return accordionContent;
   }
   static accordionHeaderEventListener(
@@ -195,6 +218,7 @@ export default class CustomerOrdersDashboard {
         deliveryAmount: order.deliveryAmount.toString(),
         paymentMethod: order.paymentMethod,
         status: order.status,
+        orderItems: order.orderItems,
       };
       let heading = '';
       order.orderItems.forEach((item: IOrderItem) => {
