@@ -11,7 +11,11 @@ export class MinioModel {
    * @return {string} A presigned URL for uploading the object.
    */
   static presignedPutObject(bucketName: string, fileName: string) {
-    return minioClient.presignedPutObject(bucketName, fileName, 5 * 60);
+    return minioClient.presignedPutObject(
+      bucketName,
+      fileName,
+      config.minio.GET_TIME,
+    );
   }
 
   /**

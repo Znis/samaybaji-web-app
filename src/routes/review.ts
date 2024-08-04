@@ -29,13 +29,6 @@ reviewRouter.get(
   getAllReviews,
 );
 
-//Route for Everyone
-reviewRouter.get(
-  '/:targetId',
-  validateReqParams(reviewCRParamsSchema),
-  getReviewsByTargetId,
-);
-
 //Routes for Authenticated User
 reviewRouter.get(
   '/user',
@@ -43,6 +36,13 @@ reviewRouter.get(
   authorize(Permissions.VIEW_REVIEW),
   authorizeCRUD,
   getReviewsByUserId,
+);
+
+// Route for Everyone
+reviewRouter.get(
+  '/:targetId',
+  validateReqParams(reviewCRParamsSchema),
+  getReviewsByTargetId,
 );
 
 reviewRouter.post(

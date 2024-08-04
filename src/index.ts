@@ -11,8 +11,8 @@ import router from './routes';
 const app = express();
 
 const limiter = rateLimiter({
-  windowMs: 60 * 1000,
-  limit: 10,
+  windowMs: 1 * 1000,
+  limit: 100,
   message: 'Too many request',
 });
 
@@ -20,20 +20,9 @@ app.use(helmet());
 
 app.use(limiter);
 
-const allowerdOrigins = [
-  'http://localhost:5173/',
-  'https://66af2a270e15ab4bba459ca4--spontaneous-pegasus-f8422c.netlify.app/',
-];
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || !allowerdOrigins.includes(origin)) {
-        callback(null, origin);
-      } else {
-        callback(new Error('Not Allowed'));
-      }
-    },
+    origin: 'http://localhost:5173',
     credentials: true,
   }),
 );

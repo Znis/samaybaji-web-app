@@ -23,13 +23,13 @@ const dishRouter = express();
 //Route for Everyone
 dishRouter.get('/all', getAllDishes);
 
-dishRouter.get('/:dishId', validateReqParams(dishIdParamsSchema), getDish);
-
 dishRouter.get(
   '/menu-item-id/:menuItemId',
   validateReqParams(menuItemIdParamsSchema),
   getDishByMenuItemId,
 );
+
+dishRouter.get('/:dishId', validateReqParams(dishIdParamsSchema), getDish);
 
 //Routes for Authenticated User
 dishRouter.post(
