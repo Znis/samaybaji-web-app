@@ -36,16 +36,6 @@ export default class DashboardLayout {
         userMenuOption: this.element.querySelector(
           '#users-option',
         ) as HTMLElement,
-        ordersMenuOption: this.element.querySelector(
-          '#orders-option',
-        ) as HTMLElement,
-        reviewsMenuOption: this.element.querySelector(
-          '#reviews-option',
-        ) as HTMLElement,
-        menuOption: this.element.querySelector('#menu-option') as HTMLElement,
-        restaurantMenuOption: this.element.querySelector(
-          '#restaurants-option',
-        ) as HTMLElement,
       },
       restaurant: {
         ordersMenuOption: this.element.querySelector(

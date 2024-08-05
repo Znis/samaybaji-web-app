@@ -112,9 +112,11 @@ export default class AdminUsersDashboard {
     const usersContainer = this.element.querySelector(
       '#users-container',
     ) as HTMLDivElement;
-    if (!users.length) {
+    usersContainer!.innerHTML = '';
+    if (users.length == 1 || !users.length) {
       usersContainer.innerHTML = '<h3>No Users</h3>';
     }
+
     users.forEach(async (user) => {
       if (user.name === 'Admin') return;
       const userSummary = {
