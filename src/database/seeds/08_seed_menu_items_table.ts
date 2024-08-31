@@ -26,6 +26,7 @@ export async function seed(knex: Knex): Promise<void> {
 
   const menuIds = menus.map((menu) => menu.id);
 
+  await knex('menu_items').del(); // Deletes ALL existing entries
   // Insert seed entries for menu items
   await knex('menu_items').insert([
     {

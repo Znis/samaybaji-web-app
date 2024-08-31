@@ -46,7 +46,7 @@ export async function seed(knex: Knex): Promise<void> {
     hashPassword('Customer3$'),
     hashPassword('Customer4$'),
   ]);
-
+  await knex('users').del(); // Deletes ALL existing entries
   // Inserts seed entries
   await knex('users').insert([
     {
