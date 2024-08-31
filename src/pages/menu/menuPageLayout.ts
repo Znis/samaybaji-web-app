@@ -9,11 +9,16 @@ export default class MenuPageLayout {
     this.element.setAttribute('class', 'menu-page');
     this.element.innerHTML = '';
     const spinner = LoaderSpinner.render(50);
+    const spinnerMessage = document.createElement('p');
+    spinnerMessage.className = 'spinner-message';
+    spinnerMessage.textContent =
+      'The Backend Server may take around a minute to boot up. Please wait.';
     this.element.appendChild(spinner);
-    this.fetchMenus(spinner);
+    this.element.appendChild(spinnerMessage);
+    this.fetchMenus(spinner, spinnerMessage);
     return this.element;
   }
-  static async fetchMenus(spinner: HTMLElement) {
+  static async fetchMenus(spinner: HTMLElement, spinnerMessage: HTMLElement) {
     try {
       this.menus = await fetchAllMenus();
       this.renderRestaurantsMenu();
@@ -21,6 +26,7 @@ export default class MenuPageLayout {
       this.element.innerHTML = `<h3>${error}</h3>`;
     } finally {
       spinner.remove();
+      spinnerMessage.remove();
     }
   }
   static async renderRestaurantsMenu() {
