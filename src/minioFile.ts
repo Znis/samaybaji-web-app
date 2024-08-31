@@ -1,6 +1,5 @@
 import * as Minio from 'minio';
 import config from './config';
-import { exec } from 'child_process';
 
 const minioClient = new Minio.Client({
   endPoint: config.minio.MINIO_ENDPOINT!,
